@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="easyfarm.dao.plan.ResultMapper">
+  	<resultMap type="EtcPay" id="resultEtcPay">
+  		<id column=""  property=""/>
+  		<result column="" property="" />
+  	</resultMap>
+  	
+	
+   <select id="getEtcPayResult" resultType="EtcPayResult" >
+   SELECT 
+	etc_pay_run_code 					as 'etcPayRunCode'
+	, etc_pay_code  					as 'etcPayCode'
+	, plan_workphase_code 				as 'planWorkphaseCode'
+	, plan_workphase_cate_code 			as 'planWorkphaseCateCode'
+	, client_code 						as 'clientCode'
+	, etc_pay_run_date 					as 'etcPayRunDate'
+	, etc_pay_run_pay 					as 'etcPayRunPay'
+	, etc_pay_run_memo 					as 'etcPayRunMemo'
+	, complete_status 					as 'complete_status'
+	, reg_farm_member_code 				as 'regFarmMemberCode'
+	, reg_date 							as 'regDate'
+	, mod_farm_member_code 				as 'modFarmMemberCode'
+	, mod_date 							as 'modDate'
+	FROM tb_etc_pay_run
+   </select>
+  
+  	<select id="getResourcePayResult" resultType="ResourcePayResult" >
+   SELECT 
+	farm_resource_pay_run_code          AS farmResourcePayRunCode, 
+	farm_resource_pay_code          	AS farmResourcePayCode, 
+	farm_code                  			AS farmCode, 
+	stock_item_code          			AS stockItemCode,
+	stock_item_income_quantity          AS stockItemIncomeQuantity, 
+	stock_item_income_quantity_total    AS stockItemIncomeQuantityTotal, 
+	stock_item_income_per_pay          	AS stockItemIncomePerPay, 
+	stock_item_total_pay          		AS stockItemTotalPay, 
+	stock_item_income_date          	AS stockItemIncomeDate, 
+	complete_status          			AS completeStatus, 
+	reg_farm_member_code          		AS regFarmMemberCode, 
+	reg_date          					AS regDate, 
+	mod_farm_member_code          		AS modFarmMemberCode, 
+	mod_date          					AS modDate
+	FROM tb_farm_resource_pay_run
+   </select>
+   
+  	<select id="getInsurancePayResult" resultType="InsurancePayResult" >
+   SELECT 
+		insure_pay_run_code             AS insurePayRunCode, 
+		insure_pay_code                 AS insurePayCode, 
+		project_code                 	AS projectCode, 
+		insure_company                 	AS insureCompany, 
+		insure_name                 	AS insureName, 
+		insure_datail                 	AS insureDatail, 
+		insure_begin                 	AS insureBegin, 
+		insure_area                 	AS insureArea, 
+		insure_end                 		AS insureEnd, 
+		insure_pay_total                AS insurePayTotal, 
+		insure_pay_per_month            AS insurePayPerMonth, 
+		complete_status                 AS completeStatus, 
+		reg_farm_member_code            AS regFarmMemberCode, 
+		reg_date                 		AS regDate, 
+		mod_farm_member_code            AS modFarmMemberCode, 
+		mod_date                 		AS modDate
+	FROM tb_insure_pay_run
+   </select>
+   
+  	<select id="getMachineLeasePayResult" resultType="MachineLeasePayResult" >
+   SELECT 
+		machine_lease_run_code          AS machineLeaseRunCode, 
+		machine_lease_code          	AS machineLeaseCode, 
+		client_code          			AS clientCode, 
+		common_machine_code          	AS commonMachineCode, 
+		machine_lease_run_date          AS machineLeaseRunDate, 
+		machine_lease_run_pay          	AS machineLeaseRunPay, 
+		complete_status          		AS completeStatus, 
+		reg_farm_member_code          	AS regFarmMemberCode, 
+		reg_date          				AS regDate, 
+		mod_farm_member_code          	AS modFarmMemberCode, 
+		mod_date          				AS modDate
+	FROM tb_machine_lease_run
+   </select>
+   
+  	<select id="getMachineUsePayResult" resultType="MachineUsePayResult" >
+   SELECT 
+		machine_use_run_code          	AS machineUseRunCode, 
+		machine_use_code          		AS machineUseCode, 
+		machine_use_run_date          	AS machineUseRunDate, 
+		farm_retain_machine_code        AS farmRetainMachineCode, 
+		complete_status          		AS completeStatus, 
+		reg_farm_member_code          	AS regFarmMemberCode, 
+		reg_date         				AS regDate, 
+		mod_farm_member_code          	AS modFarmMemberCode, 
+		mod_date          				AS modDate
+	FROM tb_machine_use_run
+   </select>
+   
+  	<select id="getProductGainRunResult" resultType="ProductGainRunResult" >
+	  SELECT 
+		product_gain_run_code        	AS productGainRunCode, 
+		product_gain_code         		AS productGainCode,
+		project_code         			AS projectCode, 
+		stock_item_code         		AS stockItemCode, 
+		gain_quantity         			AS gainQuantity, 
+		gain_quantity_capacity         	AS gainQuantityCapacity, 
+		complete_status         		AS completeStatus, 
+		gain_date         				AS gainDate, 
+		reg_farm_member_code         	AS regFarmMemberCode, 
+		reg_date         				AS regDate, 
+		mod_farm_member_code        	AS modFarmMemberCode, 
+		mod_date         				AS modDate
+		FROM tb_product_gain_run
+   </select>
+   
+  	<select id="getResourceUsePlanRunResult" resultType="ResourceUsePlanRunResult" >
+	  SELECT 
+		resource_useplan_run_code  				AS resourceUseplanRunCode, 
+		resource_useplan_code 					AS resourceUseplanCode, 
+		plan_workphase_code						AS planWorkphaseCode, 
+		plan_workphase_cate_code 				AS planWorkphaseCateCode, 
+		stock_status_code 						AS stockStatusCode, 
+		stock_item_use_quantity 				AS stockItemUseQuantity, 
+		stock_item_use_quantity_total 			AS stockItemUseQuantityTotal, 
+		stock_item_use_quantity_conversion_pay 	AS stockItemUseQuantityConversionPay, 
+		stock_item_use_date 					AS stockItemUseDate, 
+		complete_status 						AS completeStatus, 
+		reg_farm_member_code 					AS regFarmMemberCode, 
+		reg_date 								AS regDate, 
+		mod_farm_member_code 					AS modFarmMemberCode, 
+		mod_date 								AS modDate
+	FROM tb_resource_useplan_run
+   </select>
+   
+  	<select id="getTaxPayRunResult" resultType="TaxPayRunResult" >
+	  SELECT 
+		tax_pay_run_code 						AS taxPayRunCode, 
+		tax_pay_code 							AS taxPayCode,
+		plan_workphase_code 					AS planWorkphaseCode, 
+		plan_workphase_cate_code				AS planWorkphaseCateCode, 
+		client_code 							AS clientCode, 
+		tax_pay_cate_code 						AS taxPayCateCode, 
+		tax_pay_run_date 						AS taxPayRunDate, 
+		tax_pay_run_corr_month 					AS taxPayRunCorrMonth, 
+		tax_pay_run_pay 						AS taxPayRunPay, 
+		tax_pay_run_memo 						AS taxPayRunMemo, 
+		complete_status 						AS completeStatus, 
+		reg_farm_member_code 					AS regFarmMemberCode, 
+		reg_date 								AS regDate, 
+		mod_farm_member_code 					AS modFarmMemberCode, 
+		mod_date 								AS modDate
+	FROM tb_tax_pay_run
+   </select>
+   
+  	<select id="getWorkForcePayRunResult" resultType="WorkForcePayRunResult" >
+	  SELECT 
+		workforce_pay_run_code                 AS workforcePayRunCode , 
+		workforce_pay_code                     AS workforcePayCode , 
+		workforce_run_date                     AS workforceRunDate , 
+		workforce_run_quantity                 AS workforceRunQuantity , 
+		workforce_run_begin                    AS workforceRunBegin , 
+		workforce_run_end                      AS workforceRunEnd , 
+		workforce_pay_run_day                  AS workforcePayRunDay , 
+		complete_status                        AS completeStatus , 
+		workforce_pay_run_total                AS workforcePayRunTotal , 
+		reg_farm_member_code                   AS regFarmMemberCode , 
+		reg_date                               AS regDate , 
+		mod_farm_member_code                   AS modFarmMemberCode , 
+		mod_date							   AS modDate 
+	FROM tb_workforce_pay_run
+   </select>
+  	
+  
+  	
+  	
+  	
+  	
+  </mapper>
+  
+  
+  
