@@ -30,17 +30,5 @@ public interface ResultMapper {
 	public List<TaxPayRunResult> getTaxPayRunResult();
 	public List<WorkForcePayRunResult> getWorkForcePayRunResult();
 	
-	
-	/*
-	 * public int exaddMember(Map<String s, int i> map)
-	 */	
-	
-	//회원목록 조회하는 추상메서드 만듦
-	
-	//로그인이력 조회
-	public List<Map<String, Object>> getLoginHistory(Map<String, Object> paramMap);
-	
-	// 로그인 이력 전체 행의 갯수
-	public int getLoginHistoryCount();
 
 }

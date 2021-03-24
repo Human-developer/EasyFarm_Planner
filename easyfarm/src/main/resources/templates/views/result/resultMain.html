@@ -22,7 +22,7 @@
 		  <!-- Nav tabs -->
 		  <ul class="nav nav-tabs" role="tablist">
 		    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">실행 전체</a></li>
-		    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+		    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile 대비실행?</a></li>
 		    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
 		    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
 		  </ul>
@@ -45,10 +45,9 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="e : ${etcpayList}">
+								<tr th:each="e : ${etcpayResult}">
 									<td th:text="${e.etcPayRunCode}"></td>
 								</tr>
-								
 							</tbody>
 						</table>
 					</div>
@@ -68,7 +67,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="r : ${resourcePayList}">
+									<tr th:each="r : ${resourcePayResult}">
 										<td th:text="${r.farmResourcePayRunCode}"></td>
 									</tr>
 								</tbody> 	
@@ -89,7 +88,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="i : ${insurancePayList}">
+							<tr th:each="i : ${insurancePayResult}">
 								<td th:text="${i.insurePayRunCode}"></td>
 							</tr>
 						</tbody> 	
@@ -110,7 +109,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="m : ${machineLeasePay}">
+							<tr th:each="m : ${machineLeasePayResult}">
 								<td th:text="${m.machineLeaseRunCode}"></td>
 							</tr>
 						</tbody> 	
@@ -131,7 +130,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="u : ${machineUsePay}">
+							<tr th:each="u : ${machineUsePayResult}">
 								<td th:text="${u.machineUseRunCode}"></td>
 							</tr>
 						</tbody> 	
@@ -152,7 +151,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="u : ${productGainRun}">
+							<tr th:each="u : ${productGainResult}">
 								<td th:text="${u.productGainRunCode}"></td>
 							</tr>
 						</tbody> 	
@@ -173,7 +172,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="p : ${resourceUsePlanRun}">
+							<tr th:each="p : ${resourceUsePlanResult}">
 								<td th:text="${p.resourceUseplanRunCode}"></td>
 							</tr>
 						</tbody> 	
@@ -194,7 +193,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="t : ${taxPayRun}">
+							<tr th:each="t : ${taxPayResult}">
 								<td th:text="${t.taxPayRunCode}"></td>
 							</tr>
 						</tbody> 	
@@ -215,7 +214,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="w : ${workForcePayRun}">
+							<tr th:each="w : ${workForcePayResult}">
 								<td th:text="${w.workforcePayRunCode}"></td>
 							</tr>
 						</tbody> 	

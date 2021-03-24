@@ -3,27 +3,25 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="easyfarm.dao.result.ResultMapper">
-  	<resultMap type="EtcPay" id="resultEtcPay">
-  		<id column=""  property=""/>
-  		<result column="" property="" />
+  	<resultMap type="EtcPayResult" id="resultEtcPayMap">
+  		<id column="etc_pay_run_code"  property="etcPayRunCode"/>
+  		<result column="etc_pay_code" property="etcPayCode" />
+  		<result column="plan_workphase_code" property="planWorkphaseCode" />
+  		<result column="plan_workphase_cate_code" property="planWorkphaseCateCode" />
+  		<result column="client_code" property="clientCode" />
+  		<result column="etc_pay_run_date" property="etcPayRunDate" />
+  		<result column="etc_pay_run_pay" property="etcPayRunPay" />
+  		<result column="etc_pay_run_memo" property="etcPayRunMemo" />
+  		<result column="complete_status" property="complete_status" />
+  		<result column="reg_farm_member_code" property="regFarmMemberCode" /> 
+  		<result column="reg_date" property="regDate" />
+  		<result column="mod_farm_member_code" property="modFarmMemberCode" />
+  		<result column="mod_date" property="modDate" />
   	</resultMap>
   	
 	
-   <select id="getEtcPayResult" resultType="EtcPayResult" >
-   SELECT 
-	etc_pay_run_code 					as 'etcPayRunCode'
-	, etc_pay_code  					as 'etcPayCode'
-	, plan_workphase_code 				as 'planWorkphaseCode'
-	, plan_workphase_cate_code 			as 'planWorkphaseCateCode'
-	, client_code 						as 'clientCode'
-	, etc_pay_run_date 					as 'etcPayRunDate'
-	, etc_pay_run_pay 					as 'etcPayRunPay'
-	, etc_pay_run_memo 					as 'etcPayRunMemo'
-	, complete_status 					as 'complete_status'
-	, reg_farm_member_code 				as 'regFarmMemberCode'
-	, reg_date 							as 'regDate'
-	, mod_farm_member_code 				as 'modFarmMemberCode'
-	, mod_date 							as 'modDate'
+   <select id="getEtcPayResult" resultMap="resultEtcPayMap" >
+  SELECT etc_pay_run_code, etc_pay_code, plan_workphase_code, plan_workphase_cate_code, client_code, etc_pay_run_date, etc_pay_run_pay, etc_pay_run_memo, complete_status, reg_farm_member_code, reg_date, mod_farm_member_code, mod_date
 	FROM tb_etc_pay_run
    </select>
   

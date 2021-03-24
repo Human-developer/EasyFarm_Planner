@@ -7,6 +7,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import easyfarm.domain.plan.EtcPay;
+import easyfarm.domain.plan.InsurancePay;
+import easyfarm.domain.plan.MachineLeasePay;
+import easyfarm.domain.plan.MachineUsePay;
+import easyfarm.domain.plan.ProductGain;
+import easyfarm.domain.plan.ResourcePay;
+import easyfarm.domain.plan.ResourceUsePlan;
+import easyfarm.domain.plan.TaxPay;
+import easyfarm.domain.plan.WorkForcePay;
 import easyfarm.domain.result.EtcPayResult;
 import easyfarm.domain.result.InsurancePayResult;
 import easyfarm.domain.result.MachineLeasePayResult;
@@ -16,6 +25,7 @@ import easyfarm.domain.result.ResourcePayResult;
 import easyfarm.domain.result.ResourceUsePlanRunResult;
 import easyfarm.domain.result.TaxPayRunResult;
 import easyfarm.domain.result.WorkForcePayRunResult;
+import easyfarm.service.plan.PlanService;
 import easyfarm.service.result.ResultService;
 
 @Controller
@@ -23,6 +33,9 @@ public class ResultController {
 
 	@Autowired
 	ResultService resultService;
+	
+	@Autowired
+	PlanService planService;
 	
 	@GetMapping("/result")
 	public String resultMain(Model model) {
@@ -33,25 +46,47 @@ public class ResultController {
 	@GetMapping("/resultEtc")
 	public String resultEtc(Model model) {
 		
-		List<EtcPayResult> etcpayList = resultService.getEtcPayResult();
-		List<ResourcePayResult> resourcePayList = resultService.getResourcePayResult();
-		List<InsurancePayResult> insurancePayList = resultService.getInsurancePayResult();
-		List<MachineLeasePayResult> machineLeasePay = resultService.getMachineLeasePayResult();
-		List<MachineUsePayResult> machineUsePay = resultService.getMachineUsePayResult();
-		List<ProductGainRunResult> productGainRun = resultService.getProductGainRunResult();
-		List<ResourceUsePlanRunResult> resourceUsePlanRun = resultService.getResourceUsePlanRunResult();
-		List<TaxPayRunResult> taxPayRun = resultService.getTaxPayRunResult();
-		List<WorkForcePayRunResult> workForcePayRun = resultService.getWorkForcePayRunResult();
+		List<EtcPayResult> etcpayResult = resultService.getEtcPayResult();
+		List<ResourcePayResult> resourcePayResult = resultService.getResourcePayResult();
+		List<InsurancePayResult> insurancePayResult = resultService.getInsurancePayResult();
+		List<MachineLeasePayResult> machineLeasePayResult = resultService.getMachineLeasePayResult();
+		List<MachineUsePayResult> machineUsePayResult = resultService.getMachineUsePayResult();
+		List<ProductGainRunResult> productGainResult = resultService.getProductGainRunResult();
+		List<ResourceUsePlanRunResult> resourceUsePlanResult = resultService.getResourceUsePlanRunResult();
+		List<TaxPayRunResult> taxPayResult = resultService.getTaxPayRunResult();
+		List<WorkForcePayRunResult> workForcePayResult = resultService.getWorkForcePayRunResult();
 		
-		model.addAttribute("etcpayList", etcpayList);
-		model.addAttribute("resourcePayList", resourcePayList);
-		model.addAttribute("insurancePayList", insurancePayList);
-		model.addAttribute("machineLeasePay", machineLeasePay);
-		model.addAttribute("machineUsePay", machineUsePay);
-		model.addAttribute("productGainRun", productGainRun);
-		model.addAttribute("resourceUsePlanRun", resourceUsePlanRun);
-		model.addAttribute("taxPayRun", taxPayRun);
-		model.addAttribute("workForcePayRun", workForcePayRun);
+		
+		List<EtcPay> etcPayPlan = planService.getEtcPayPlan();
+		List<ResourcePay> resourcePayPlan = planService.getResourcePayPlan();
+		List<InsurancePay> insurancePayPlan = planService.getInsurancePayPlan();
+		List<MachineLeasePay> machineLeasePayPlan = planService.getMachineLeasePayPlan();
+		List<MachineUsePay> machineUsePlan = planService.getMachineUsePayPlan();
+		List<ProductGain> productGainPlan = planService.getProductGainPlan();
+		List<ResourceUsePlan> resourceUsePlan = planService.getResourceUsePlanPlan();
+		List<TaxPay> taxPayPlan = planService.getTaxPayPlan();
+		List<WorkForcePay> workForcePayPlan = planService.getWorkForcePayPlan();
+		
+		
+		model.addAttribute("etcpayResult", etcpayResult);
+		model.addAttribute("resourcePayResult", resourcePayResult);
+		model.addAttribute("insurancePayResult", insurancePayResult);
+		model.addAttribute("machineLeasePayResult", machineLeasePayResult);
+		model.addAttribute("machineUsePayResult", machineUsePayResult);
+		model.addAttribute("productGainResult", productGainResult);
+		model.addAttribute("resourceUsePlanResult", resourceUsePlanResult);
+		model.addAttribute("taxPayResult", taxPayResult);
+		model.addAttribute("workForcePayResult", workForcePayResult);
+		
+		model.addAttribute("etcPayPlan", etcPayPlan);
+		model.addAttribute("resourcePayPlan", resourcePayPlan);
+		model.addAttribute("insurancePayPlan", insurancePayPlan);
+		model.addAttribute("machineLeasePayPlan", machineLeasePayPlan);
+		model.addAttribute("machineUsePlan", machineUsePlan);
+		model.addAttribute("productGainPlan", productGainPlan);
+		model.addAttribute("resourceUsePlan", resourceUsePlan);
+		model.addAttribute("taxPayPlan", taxPayPlan);
+		model.addAttribute("workForcePayPlan", workForcePayPlan);
 		
 		return "views/result/resultMain";
 	}

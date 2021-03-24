@@ -3,44 +3,35 @@ package easyfarm.dao.plan;
 import java.util.List;
 
 
+
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import easyfarm.domain.result.EtcPayResult;
-import easyfarm.domain.result.InsurancePayResult;
-import easyfarm.domain.result.MachineLeasePayResult;
-import easyfarm.domain.result.MachineUsePayResult;
-import easyfarm.domain.result.ProductGainRunResult;
-import easyfarm.domain.result.ResourcePayResult;
-import easyfarm.domain.result.ResourceUsePlanRunResult;
-import easyfarm.domain.result.TaxPayRunResult;
-import easyfarm.domain.result.WorkForcePayRunResult;
+import easyfarm.domain.plan.EtcPay;
+import easyfarm.domain.plan.InsurancePay;
+import easyfarm.domain.plan.MachineLeasePay;
+import easyfarm.domain.plan.MachineUsePay;
+import easyfarm.domain.plan.ProductGain;
+import easyfarm.domain.plan.ResourcePay;
+import easyfarm.domain.plan.ResourceUsePlan;
+import easyfarm.domain.plan.TaxPay;
+import easyfarm.domain.plan.WorkForcePay;
 
 @Mapper
 public interface PlanMapper {
 	
-	public List<EtcPayResult> getEtcPayResult();
-	public List<ResourcePayResult> getResourcePayResult();
-	public List<InsurancePayResult> getInsurancePayResult();
-	public List<MachineLeasePayResult> getMachineLeasePayResult();
-	public List<MachineUsePayResult> getMachineUsePayResult();
-	public List<ProductGainRunResult> getProductGainRunResult();
-	public List<ResourceUsePlanRunResult> getResourceUsePlanRunResult();
-	public List<TaxPayRunResult> getTaxPayRunResult();
-	public List<WorkForcePayRunResult> getWorkForcePayRunResult();
+	public List<EtcPay> getEtcPayPlan();
+	public List<ResourcePay> getResourcePayPlan();
+	public List<InsurancePay> getInsurancePayPlan();
+	public List<MachineLeasePay> getMachineLeasePayPlan();
+	public List<MachineUsePay> getMachineUsePayPlan();
+	public List<ProductGain> getProductGainPlan();
+	public List<ResourceUsePlan> getResourceUsePlan();
+	public List<TaxPay> getTaxPayPlan();
+	public List<WorkForcePay> getWorkForcePayPlan();
 	
 	
-	/*
-	 * public int exaddMember(Map<String s, int i> map)
-	 */	
 	
-	//회원목록 조회하는 추상메서드 만듦
-	
-	//로그인이력 조회
-	public List<Map<String, Object>> getLoginHistory(Map<String, Object> paramMap);
-	
-	// 로그인 이력 전체 행의 갯수
-	public int getLoginHistoryCount();
 
 }
