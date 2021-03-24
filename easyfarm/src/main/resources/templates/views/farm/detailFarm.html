@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+
+	<th:block layout:fragment="customTitle">
+		<title>농가관리>농가상세보기</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		농가관리>농가상세보기
+	</th:block>
+	
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">		
+	
+		</script>
+	</th:block>
+	
+	
+	<th:block layout:fragment="customContents">
+
+		<div class ="box-content">
+			<h3>내 농가 상세보기</h3>
+			<hr>
+			<table border="1" class ="table">
+				<thead>
+					<tr>
+						<th th:text ="${'농가명'}"/>
+						<th th:text ="${'대표자 아이디'}"/>
+						<th th:text ="${'토지 면적'}"/>
+						<th th:text ="${'주소'}"/>
+						<th th:text ="${'농가 공개유무'}"/>
+						<th th:text ="${'농가 등록일'}"/>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:unless="${myFarm != null}">
+						<td colspan="6">내농가가 없습니다</td>
+					</tr>
+					<tr th:if ="${myFarm!=null}">
+						<td class ="hidden" th:text = "${myFarm.farmCode}"/>
+						<td th:text = "${myFarm.farmName}"/>
+						<td th:text = "${myFarm.ceoId}"/>
+						<td th:text = "${myFarm.farmArea}"/>
+						<td th:text = "${myFarm.farmAddress}"/>
+						<td th:text = "${myFarm.farmPublicStatus}"/>
+						<td th:text = "${myFarm.farmRegDate}"/>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	
+	
+		
+		<div class ="box-content">
+			<h3>농가 소속 회원</h3>
+			<hr>
+			<table border="1" class ="table">
+				<thead>
+					<tr>
+						<th th:text ="${'회원아이디'}"/>
+						<th th:text ="${'회원 등급'}"/>
+						<th th:text ="${'가입일'}"/>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="farmMember : ${myFarmMemberList}">
+						<td class ="hidden" th:text = "${farmMember.farmMemberCode}"/>
+						<td th:text = "${farmMember.farmMemberId}"/>
+						<td th:text = "${farmMember.farmLevelName}"/>
+						<td th:text = "${farmMember.farmJoinApprovalDate}"/>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</th:block>
+
+</html>
