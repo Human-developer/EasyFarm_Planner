@@ -1,4 +1,4 @@
-package easyfarm.dao.result;
+package easyfarm.dao;
 
 import java.util.List;
 

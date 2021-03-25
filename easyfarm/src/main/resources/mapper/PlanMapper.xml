@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="easyfarm.dao.plan.PlanMapper">
+  <mapper namespace="easyfarm.dao.PlanMapper">
   	<resultMap type="EtcPay" id="resultEtcPay">
   		<id column=""  property=""/>
   		<result column="" property="" />
@@ -22,7 +22,7 @@
 		reg_date 						AS	regDate	,
 		mod_farm_member_code 			AS	modFarmMemberCode	,
 		mod_date						AS	modDate	
-	FROM tb_exp_etc_pay				
+	FROM tb_exp_etc_pay		
    </select>
   
   	<select id="getResourcePayPlan" resultType="ResourcePay" >
@@ -154,11 +154,6 @@
 		mod_date        			AS modDate
 	FROM tb_exp_workforce_pay
    </select>
-  	
-  
-  	
-  	
-  	
   	
   </mapper>
   

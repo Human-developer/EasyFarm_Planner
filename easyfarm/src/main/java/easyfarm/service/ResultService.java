@@ -1,4 +1,4 @@
-package easyfarm.service.result;
+package easyfarm.service;
 
 import java.util.HashMap;
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
-import easyfarm.dao.result.ResultMapper;
+import easyfarm.dao.ResultMapper;
 import easyfarm.domain.result.EtcPayResult;
 import easyfarm.domain.result.InsurancePayResult;
 import easyfarm.domain.result.MachineLeasePayResult;

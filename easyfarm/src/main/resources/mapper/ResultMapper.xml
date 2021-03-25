@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="easyfarm.dao.result.ResultMapper">
+  <mapper namespace="easyfarm.dao.ResultMapper">
   	<resultMap type="EtcPayResult" id="resultEtcPayMap">
   		<id column="etc_pay_run_code"  property="etcPayRunCode"/>
   		<result column="etc_pay_code" property="etcPayCode" />

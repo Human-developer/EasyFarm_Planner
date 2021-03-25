@@ -25,8 +25,8 @@ import easyfarm.domain.result.ResourcePayResult;
 import easyfarm.domain.result.ResourceUsePlanRunResult;
 import easyfarm.domain.result.TaxPayRunResult;
 import easyfarm.domain.result.WorkForcePayRunResult;
-import easyfarm.service.plan.PlanService;
-import easyfarm.service.result.ResultService;
+import easyfarm.service.PlanService;
+import easyfarm.service.ResultService;
 
 @Controller
 public class ResultController {
@@ -41,6 +41,12 @@ public class ResultController {
 	public String resultMain(Model model) {
 		
 		return "views/result/resultMain";
+	}
+	
+	@GetMapping("/resultTable")
+	public String resultTable(Model model) {
+		
+		return "views/result/resultMain2";
 	}
 	
 	@GetMapping("/resultEtc")
