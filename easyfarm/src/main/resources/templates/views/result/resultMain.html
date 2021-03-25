@@ -452,7 +452,8 @@
 					      </div>
 					      <div role="tabpanel" class="tab-pane fade" id="dropdown1" aria-labelledby="dropdown1-tab">
 					        			<div class="col-xs-6 box-content" style="border: none; overflow: auto;">
-											인건비계획
+											<h2>인건비계획</h2><br/>
+											예상인건비 합계 : <p class="total"></p>
 											<table id="example-edit" class="display" style="width: 100% ">
 												<thead>
 													<tr>
@@ -471,15 +472,15 @@
 														<td th:text="${e.workforceHowlong}"style="padding: 20px"></td>
 														<td th:text="${e.workforceRequireDay}"style="padding: 20px"></td>
 														<td th:text="${e.workforcePayDay}"style="padding: 20px"></td>
-														<td th:text="${e.workforcePayTotal}"style="padding: 20px" name="workpaytotal"></td>
+														<td th:text="${e.workforcePayTotal}"style="padding: 20px" class="workpaytotal"></td>
 													</tr>
 												</tbody>
 											</table>
+											
 										</div>
 										
-										
 										<div class="col-xs-6 box-content" style="border: none; overflow: auto; ">
-											인건비 실행결과
+											<h2>인건비 실행결과</h2><br/>
 											<table id="example-edit" class="display" style="width: 100%" border="1">
 												<thead>
 													<tr>
@@ -531,17 +532,42 @@
 				</div>	
 			</div>
 		</div>
-	
+		
+		
 
 	
-	<script type="text/javascript">
-		
-		console.log("asdasd");
-		console.log($('td[name=workpaytotal]').val());
-	
-	</script>
 	
 	</th:block>	
 	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+	
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+	
+		<script type="text/javascript">
+			$(function(){
+				var paytotal = $(".workpaytotal"); 
+				console.log(paytotal);
+				console.log(Number(paytotal.eq(0).text()));
+				console.log(paytotal.eq(1).text());
+				console.log(paytotal.eq(2).text());
+				var sum = 0;
+				
+				paytotal.each(function(i){
+					sum += Number(paytotal.eq(i).text());
+				})
+				console.log(sum);
+				$('.total').text(sum);
+			})
+		
+			
+			
+			
+		</script>
+	
+	</th:block>
 	
 </html>
