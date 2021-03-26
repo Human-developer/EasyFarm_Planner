@@ -8,8 +8,17 @@
 	</th:block>
 	
 	<th:block layout:fragment="pageTitle">
-		농가관리
+		<a th:href="@{/farm}">농가관리</a>
 	</th:block>
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+			.farmList:hover{
+				background-color: rgba(0,0,0,0.3);
+			}
+		</style>
+	</th:block>
+	
 	<th:block layout:fragment="customJavaScript">
 		<script type="text/javascript">		
 			$('.farmList').click(function(){
@@ -23,69 +32,74 @@
 	
 	
 	<th:block layout:fragment="customContents">
+		<div class ="container-fluid">
+			<div class ="row"> 
+				<div class ="box-content">
+					<h3>내농가</h3>
+					<hr>
+					<!-- <table border="1" class ="table">
+						<thead>
+							<tr>
+								<th th:text ="${'농가명'}"/>
+								<th th:text ="${'대표자 아이디'}"/>
+								<th th:text ="${'토지 면적'}"/>
+								<th th:text ="${'주소'}"/>
+								<th th:text ="${'농가 공개유무'}"/>
+								<th th:text ="${'농가 생성일'}"/>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr th:if ="${myFarmList == null || #lists.size(myFarmList) == 0} ">
+								<td colspan="6"  th:text ="${'내 농가가 없습니다'}"/>
+							</tr>
+							<tr th:each="farm : ${myFarmList}" class ="farmList">
+								<td class ="hidden" th:text = "${farm.farmCode}"/>
+								<td th:text = "${farm.farmName}"/>
+								<td th:text = "${farm.ceoId}"/>
+								<td th:text = "${farm.farmArea}"/>
+								<td th:text = "${farm.farmAddress}"/>
+								<td th:text = "${farm.farmPublicStatus}"/>
+								<td th:text = "${farm.farmRegDate}"/>
+							</tr>
+							
+						</tbody>
+					</table> -->
+				</div>
 		
-		<div class ="box-content">
-			<h3>내농가</h3>
-			<hr>
-			<table border="1" class ="table">
-				<thead>
-					<tr>
-						<th th:text ="${'농가명'}"/>
-						<th th:text ="${'대표자 아이디'}"/>
-						<th th:text ="${'토지 면적'}"/>
-						<th th:text ="${'주소'}"/>
-						<th th:text ="${'농가 공개유무'}"/>
-						<th th:text ="${'농가 생성일'}"/>
-					</tr>
-				</thead>
-				
-				<tbody>
-					<tr th:if ="${myFarmList == null || #lists.size(myFarmList) == 0} ">
-						<td colspan="6"  th:text ="${'내 농가가 없습니다'}"/>
-					</tr>
-					<tr th:each="farm : ${myFarmList}" class ="farmList">
-						<td class ="hidden" th:text = "${farm.farmCode}"/>
-						<td th:text = "${farm.farmName}"/>
-						<td th:text = "${farm.ceoId}"/>
-						<td th:text = "${farm.farmArea}"/>
-						<td th:text = "${farm.farmAddress}"/>
-						<td th:text = "${farm.farmPublicStatus}"/>
-						<td th:text = "${farm.farmRegDate}"/>
-					</tr>
-					
-				</tbody>
-			</table>
-		</div>
-
-	
-		<div class ="box-content">
-			<h3>내가 속한 농가</h3>
-			<hr>
-			<table border="1" class ="table">
-				<thead>
-					<tr>
-						<th th:text ="${'농가명'}"/>
-						<th th:text ="${'대표자 아이디'}"/>
-						<th th:text ="${'토지 면적'}"/>
-						<th th:text ="${'주소'}"/>
-						<th th:text ="${'농가 생성일'}"/>
-					</tr>
-				</thead>
-				
-				<tbody>
-					<tr th:if ="${belongFarmList == null || #lists.size(belongFarmList) == 0}">
-						<td colspan="6"  th:text ="${'내가 속한 농가가 없습니다'}"/>
-					</tr>
-					<tr th:each="farm : ${belongFarmList}" class ="farmList">
-						<td class ="hidden" th:text = "${farm.farmCode}"/>
-						<td th:text = "${farm.farmName}"/>
-						<td th:text = "${farm.ceoId}"/>
-						<td th:text = "${farm.farmArea}"/>
-						<td th:text = "${farm.farmAddress}"/>
-						<td th:text = "${farm.farmRegDate}"/>
-					</tr>
-				</tbody>
-			</table>				
+			
+				<div class ="box-content">
+					<h3>내가 속한 농가</h3>
+					<hr>
+					<!-- <div class ="table-responsive">
+						<table border="1" class ="table">
+							<thead>
+								<tr>
+									<th th:text ="${'농가명'}"/>
+									<th th:text ="${'대표자 아이디'}"/>
+									<th th:text ="${'토지 면적'}"/>
+									<th th:text ="${'주소'}"/>
+									<th th:text ="${'농가 생성일'}"/>
+								</tr>
+							</thead>
+							
+							<tbody>
+								<tr th:if ="${belongFarmList == null || #lists.size(belongFarmList) == 0}">
+									<td colspan="6"  th:text ="${'내가 속한 농가가 없습니다'}"/>
+								</tr>
+								<tr th:each="farm : ${belongFarmList}" class ="farmList">
+									<td class ="hidden" th:text = "${farm.farmCode}"/>
+									<td th:text = "${farm.farmName}"/>
+									<td th:text = "${farm.ceoId}"/>
+									<td th:text = "${farm.farmArea}"/>
+									<td th:text = "${farm.farmAddress}"/>
+									<td th:text = "${farm.farmRegDate}"/>
+								</tr>
+							</tbody>
+						</table>				
+					</div> -->
+				</div>
+			</div>
 		</div>
 		
 

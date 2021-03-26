@@ -4,11 +4,11 @@
 	  layout:decorate="@{layout/default}">
 
 	<th:block layout:fragment="customTitle">
-		<title>농가관리>농가상세보기</title>
+		<title>농가상세보기</title>
 	</th:block>
 	
 	<th:block layout:fragment="pageTitle">
-		농가관리>농가상세보기
+		<a th:href="@{/farm}">농가관리</a>>농가상세보기
 	</th:block>
 	
 	<th:block layout:fragment="customJavaScript">
@@ -19,61 +19,87 @@
 	
 	
 	<th:block layout:fragment="customContents">
+		<div class ="container-fluid">
+			<div class ="row">
+			
+				<div class ="box-content">
+					<h3>농가 상세보기</h3>
+					<hr>
+					<div class ="col-sm-8 col-sm-offset-2">
+						<table class ="table">
+							<!-- <thead>
+								<tr>
+									<th th:text ="${'농가명'}"/>
+									<th th:text ="${'대표자 아이디'}"/>
+									<th th:text ="${'토지 면적'}"/>
+									<th th:text ="${'주소'}"/>
+									<th th:text ="${'농가 공개유무'}"/>
+									<th th:text ="${'농가 등록일'}"/>
+								</tr>
+							</thead> -->
+							<!-- <tbody>
+								<tr th:unless="${myFarm != null}">
+									<td colspan="6">내농가가 없습니다</td>
+								</tr>
+								<tr th:if ="${myFarm!=null}">
+									<td class ="hidden" th:text = "${myFarm.farmCode}"/>
+									<td th:text = "${myFarm.farmName}"/>
+									<td th:text = "${myFarm.ceoId}"/>
+									<td th:text = "${myFarm.farmArea}"/>
+									<td th:text = "${myFarm.farmAddress}"/>
+									<td th:text = "${myFarm.farmPublicStatus}"/>
+									<td th:text = "${myFarm.farmRegDate}"/>
+								</tr>
+							</tbody> -->
+							
+							<tbody>
+								<tr>
+									<th>농가명</th>
+									<td>1</td>
+								</tr>
+								<tr>
+									<th>대표아이디</th>
+									<td>2</td>
+								</tr>
+								<tr>
+									<th>토지면적</th>
+									<td>3</td>
+								</tr>
+								<tr>
+									<th>주소</th>
+									<td>4</td>
+								</tr>
+								<tr>
+									<th>생성일</th>
+									<td>5</td>
+								</tr>
+								<tr>
+									<th>공개유무</th>
+									<td>6</td>
+								</tr>
+							</tbody>
+							
+							
+						</table>
+						<a class="btn" th:href="@{/farm/modifyFarm}">!농가수정(간부)</a>
+						<a class="btn" th:href="@{#}">농가삭제(대표)</a>
+						<a class="btn" th:href="@{/farm/getMemberFarm}">!회원조회(간부)</a>
+						<a class="btn" th:href="@{#}">농가탈퇴(전부)</a>
+						<a class="btn" th:href="@{/farm/getJoinFarm}">!가입신청리스트(간부)</a>
+						<a class="btn" th:href="@{#}">탈퇴신청리스트(대표)</a>
+						
+						<br><br>
+						<a class="btn" th:href="@{#}">대표자수정?</a>
+						<a class="btn" th:href="@{#}">공개유무수정?</a>
+					</div>
+				</div>
 
-		<div class ="box-content">
-			<h3>내 농가 상세보기</h3>
-			<hr>
-			<table border="1" class ="table">
-				<thead>
-					<tr>
-						<th th:text ="${'농가명'}"/>
-						<th th:text ="${'대표자 아이디'}"/>
-						<th th:text ="${'토지 면적'}"/>
-						<th th:text ="${'주소'}"/>
-						<th th:text ="${'농가 공개유무'}"/>
-						<th th:text ="${'농가 등록일'}"/>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:unless="${myFarm != null}">
-						<td colspan="6">내농가가 없습니다</td>
-					</tr>
-					<tr th:if ="${myFarm!=null}">
-						<td class ="hidden" th:text = "${myFarm.farmCode}"/>
-						<td th:text = "${myFarm.farmName}"/>
-						<td th:text = "${myFarm.ceoId}"/>
-						<td th:text = "${myFarm.farmArea}"/>
-						<td th:text = "${myFarm.farmAddress}"/>
-						<td th:text = "${myFarm.farmPublicStatus}"/>
-						<td th:text = "${myFarm.farmRegDate}"/>
-					</tr>
-				</tbody>
-			</table>
+			</div>
 		</div>
 	
 	
 		
-		<div class ="box-content">
-			<h3>농가 소속 회원</h3>
-			<hr>
-			<table border="1" class ="table">
-				<thead>
-					<tr>
-						<th th:text ="${'회원아이디'}"/>
-						<th th:text ="${'회원 등급'}"/>
-						<th th:text ="${'가입일'}"/>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="farmMember : ${myFarmMemberList}">
-						<td class ="hidden" th:text = "${farmMember.farmMemberCode}"/>
-						<td th:text = "${farmMember.farmMemberId}"/>
-						<td th:text = "${farmMember.farmLevelName}"/>
-						<td th:text = "${farmMember.farmJoinApprovalDate}"/>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+		
 	</th:block>
 
 </html>

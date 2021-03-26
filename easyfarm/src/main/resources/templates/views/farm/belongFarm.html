@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>내 소속 농가</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		<a th:href="@{/farm}">농가관리</a>>내 소속 농가
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib"></th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss"></th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+		<div class ="container-fluid">
+			<div class ="row">
+				<div class ="box-content">
+					<h3>내 소속 농가</h3>
+					<hr>
+					<table class ="table">
+						<thead>
+							<tr>
+								<th th:text ="${'농가명'}"/>
+								<th th:text ="${'대표자 아이디'}"/>
+								<th th:text ="${'토지 면적'}"/>
+								<th th:text ="${'주소'}"/>
+								<th th:text ="${'농가 생성일'}"/>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<!-- <tr th:if ="${belongFarmList == null || #lists.size(belongFarmList) == 0}">
+								<td colspan="6"  th:text ="${'내가 속한 농가가 없습니다'}"/>
+							</tr>
+							<tr th:each="farm : ${belongFarmList}" class ="farmList">
+								<td class ="hidden" th:text = "${farm.farmCode}"/>
+								<td th:text = "${farm.farmName}"/>
+								<td th:text = "${farm.ceoId}"/>
+								<td th:text = "${farm.farmArea}"/>
+								<td th:text = "${farm.farmAddress}"/>
+								<td th:text = "${farm.farmRegDate}"/>
+							</tr> -->
+							
+							<tr>
+								<td>내 권한(숨김)</td>
+								<td>농가코드(숨김)</td>
+								<td>농가명</td>
+								<td>대표아이디</td>
+								<td>토지면적</td>
+								<td>주소</td>
+								<td>생성일</td>
+							</tr>
+						</tbody>
+					</table>		
+					<a class ="btn" th:href="@{/farm/detailFarm}">!농가상세보기</a>			
+				</div>
+			</div>
+		</div>
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib"></th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript"></th:block>
+
+</html>

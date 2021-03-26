@@ -10,6 +10,7 @@ public class Farm {
 	private String farmPublicStatus; 
 	private String farmRegDate;
 	
+	
 	public String getFarmCode() {
 		return farmCode;
 	}

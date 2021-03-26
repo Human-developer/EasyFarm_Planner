@@ -25,70 +25,7 @@
 		<result property="farmMemberStatus" column="farm_member_status"/>
 	</resultMap>
 
-	<select id="searchFarm" resultMap ="farmResultMap" parameterType="String">
-		SELECT 
-			f.farm_code, 
-			f.farm_name, 
-			f.ceo_member_id, 
-			f.farm_area, 
-			f.farm_address, 
-			f.farm_public_status, 
-			f.farm_reg_date
-		FROM 
-			tb_farm AS f
-			join
-			tb_farm_member AS m
-			on
-			m.farm_code = f.farm_code
-		<trim prefix="WHERE">
-			<if test="searchKey != null">
-				<if test="'ceoId'.equals(searchKey)">
-					f.ceo_member_id =#{searchValue}
-				</if>
-				<if test="'memberId'.equals(searchKey)">
-					m.farm_member_id= #{searchValue}
-					AND
-					f.ceo_member_id != #{searchValue}	
-				</if>
-			</if>
-		</trim>
-		GROUP BY f.farm_code
-	</select>
-	<select id="myFarm" resultMap="farmResultMap" parameterType="String">
-		SELECT 
-			f.farm_code, 
-			f.farm_name, 
-			f.ceo_member_id, 
-			f.farm_area, 
-			f.farm_address, 
-			f.farm_public_status, 
-			f.farm_reg_date
-		FROM 
-			tb_farm AS f
-		WHERE
-			f.farm_code =#{fCode}
-	
-	</select>
+
 	
 	
-	<select id="myFarmMemberList" resultMap="farmMemberResultMap" parameterType="String" >
-		SELECT
-			m.farm_member_code,
-			m.farm_code,
-			m.farm_member_id,
-			l.farm_level_name,
-			m.farm_level_code,
-			m.farm_join_approval_date,
-			m.farm_member_status
-		FROM
-			tb_farm_member AS m
-		JOIN
-			tb_farm_member_level AS l
-			ON
-			l.farm_level_code = m.farm_level_code
-		WHERE
-			m.farm_member_status=#{memberStatus}
-			AND
-			m.farm_code =#{fCode}
-	</select>
 </mapper>

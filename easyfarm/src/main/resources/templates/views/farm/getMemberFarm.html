@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>농가 회원조회</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		<a th:href="@{/farm}">농가관리</a>>농가 회원 조회
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib"></th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss"></th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+		<div class ="container-fluid">
+			<div class ="row">
+				<div class ="box-content">
+					<h3>농가 회원 조회</h3>
+					<hr>
+					<table class ="table">
+						<thead>
+							<tr>
+								<th>아이디</th>
+								<th>이름</th>
+								<th>성별</th>
+								<th>나이</th>
+								<th>핸드폰</th>
+								<th>권한</th>
+								<th>가입일</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>농가회원코드(숨김)</td>
+								<td>아이디</td>
+								<td>이름</td>
+								<td>성별</td>
+								<td>핸드폰</td>
+								<td>권한</td>
+								<td>가입일</td>
+							</tr>
+						</tbody> 
+					</table>
+					<a th:href="@{#}">회원수정(권한수정뿐)</a>
+					<a th:href="@{#}">회원추방</a>
+				</div>
+			</div>
+		</div>
+		
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib"></th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript"></th:block>
+
+</html>
