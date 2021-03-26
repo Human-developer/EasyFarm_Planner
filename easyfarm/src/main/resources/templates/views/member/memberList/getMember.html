@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+
+	<th:block layout:fragment="customTitle">
+		<title>회원조회</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		회원관리 - 회원조회
+	</th:block>
+	
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+			.row{
+					padding :0;
+				}
+		</style>
+	</th:block>
+	
+	<th:block layout:fragment="customContents">
+	
+	
+			<div th:include="views/member/memberList/search :: searchFragment"></div>
+	
+				
+			<div class="box-content">
+					<table  class="table table-hover table-striped" >
+						<thead>
+							<tr>
+								<th>회원 아이디</th>
+								<th>회원 이름</th>
+								<th>회원 권한</th>
+								<th>회원 성별</th>					
+								<th>회원 등록일자</th>
+								<th>회원 상태</th>
+								<th th:if = "${session.SLEVEL == '관리자'}">상세정보</th>
+								<th th:if = "${session.SLEVEL == '관리자'}">수정</th>
+								<th th:if = "${session.SLEVEL == '관리자'}">삭제</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="l : ${memberList}">
+								<td th:text="${l.memberId}"></td>						
+								<td th:text="${l.memberName}"></td>				
+								<td th:text="${l.LevelName}"></td>			
+								<td th:text="${l.memberGender}"></td>				
+								<td th:text="${l.memberRegDate}"></td>
+								<td th:text="${l.memberStatus}"></td>
+								<td th:if = "${session.SLEVEL == '관리자'}">
+									<a th:href ="@{/member/detailMember(memberId=${l.memberId})}">상세정보</a>
+								</td>
+								<td th:if = "${session.SLEVEL == '관리자'}">
+									<a th:href ="@{/member/modifyMember(memberId=${l.memberId})}">수정</a>
+								</td>
+								<td th:if = "${session.SLEVEL == '관리자' && l.memberStatus != '탈퇴'}">
+									<a th:href ="@{/member/removeMember(memberId=${l.memberId})}">탈퇴</a>
+								</td>
+							
+							</tr>
+							<tr th:if="${memberList.size() == 0}"> 
+								<td colspan="10" style ="text-align: center;">
+								조회된 내용이 없습니다
+								</td>
+							</tr>
+						</tbody>		
+						<tfoot>
+							<tr>
+								<td>
+									<a th:href="@{/member/getMember(currentPage=${1},searchKey=${searchKey},searchValue=${searchValue})}">맨처음</a>
+									<a th:if="${currentPage > 1}" th:href="@{/member/getMember(currentPage=${currentPage-1},searchKey=${searchKey},searchValue=${searchValue})}">이전</a>
+									
+									<th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">	
+										<a th:if="${num != currentPage}" th:href="@{/member/getMember(currentPage=${num},searchKey=${searchKey},searchValue=${searchValue})}">[[${num}]]</a>
+										<span th:unless="${num != currentPage}" th:text="${num}"></span>
+									</th:block>
+									
+									<a th:if="${currentPage < lastPage}" th:href="@{/member/getMember(currentPage=${currentPage+1},searchKey=${searchKey},searchValue=${searchValue})}">다음</a>
+									<a th:href="@{/member/getMember(currentPage=${lastPage},searchKey=${searchKey},searchValue=${searchValue})}">맨마지막</a>
+								</td>
+								
+							</tr>
+						
+						</tfoot>	
+						
+					</table>
+				
+			</div>
+			
+	</th:block>

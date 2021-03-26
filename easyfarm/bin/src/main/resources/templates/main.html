@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>메인화면</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		Home
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib"></th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss"></th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+		메인화면
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib"></th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript"></th:block>
+
+</html>

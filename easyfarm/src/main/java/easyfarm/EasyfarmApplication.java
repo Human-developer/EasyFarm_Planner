@@ -3,6 +3,7 @@ package easyfarm;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
 public class EasyfarmApplication {
 
@@ -10,4 +11,5 @@ public class EasyfarmApplication {
 		SpringApplication.run(EasyfarmApplication.class, args);
 	}
 
+	
 }

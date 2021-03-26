@@ -23,6 +23,19 @@
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
 	<th:block layout:fragment="customContents">
 		메인화면
+		<a th:href="@{/member/login}">로그인</a>
+		<a th:href="@{/member/addMember}">회원가입</a>
+		<a th:href="@{/member/addAuthority}">권한등록</a>
+		<a th:href="@{/member/getAuthority}">권한조회</a>
+		<a th:href="@{/member/addBaseDate}">기준일등록</a>
+		<a th:href="@{/member/getBaseDate}">기준일조회</a>
+		<a th:href="@{/member/getExpectedDate}">휴면/탈퇴예정자</a>
+		<a th:href="@{/member/getSuspend}">정지회원조회</a>
+		<a th:href="@{/member/getReasonReport}">신고사유조회</a>
+		<a th:href="@{/member/addReasonReport}">신고사유등록</a>
+		<a th:href="@{/member/addReport}">신고등록</a>
+		<a th:href="@{/member/getReport}">신고조회</a>
+		
 	</th:block>
 	
 	
