@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="easyfarm.dao.MemberMapper">
+
+	<resultMap type="Member" id="memberResultMap">   
+      <result property="memberId" 		column="member_id"/>
+      <result property="memberPw"		column="member_pw"/>
+      <result property="memberName" 	column="member_name"/>
+      <result property="levelCode"	 	column="level_code"/>
+      <result property="memberGender" 	column="member_gender"/>
+      <result property="memberAddress" 	column="member_address"/>
+      <result property="memberEmail" 	column="member_email"/>
+      <result property="memberPhone" 	column="member_phone"/>
+      <result property="memberIdenNum" 	column="member_iden_num"/>
+      <result property="memberRegDate"	column="member_reg_date"/>
+      <result property="memberStatus" 	column="member_status"/>
+      <result property="levelName" 		column="level_name"/>
+   </resultMap>
+	<select id="countMember" resultType="int">
+		SELECT COUNT(*) FROM tb_member
+	</select>
+	<select id="getLogin" resultType="String">
+		SELECT 
+			login_code
+		FROM 
+			tb_login	
+		WHERE 
+			login_member_id = #{memberId};
+	</select>
+	
+	<update id="updateLogin">
+		UPDATE tb_login
+			SET
+				login_date=NOW(),
+				logout_date=NOW()
+			WHERE login_member_id = #{memberId};
+	</update>
+	<update id="updateLogout">
+		UPDATE tb_login
+			SET
+				logout_date=NOW()
+			WHERE login_member_id = #{memberId};
+	</update>
+	<select	id="getMemberInfoById" resultMap="memberResultMap" parameterType="String">
+			SELECT 
+				 m.member_id
+				,m.member_pw
+				,m.member_name
+				,m.level_code
+				,m.member_gender
+				,m.member_address
+				,m.member_email
+				,m.member_phone
+				,m.member_iden_num
+				,m.member_reg_date
+				,m.member_status
+				,l.level_name
+			FROM 
+				tb_member AS m
+			JOIN
+				tb_member_level AS l
+			ON
+			m.level_code = l.level_code
+			
+			WHERE m.member_id = #{memberId};
+	</select>
+
+	<insert id="addMember" parameterType="Member">
+	INSERT INTO tb_member
+		(member_id
+		, member_pw
+		, member_name
+		, level_code
+		, member_gender
+		, member_address
+		, member_email
+		, member_phone
+		, member_iden_num
+		, member_reg_date
+		, member_status
+		)
+		VALUES 
+		(#{memberId}
+		, #{memberPw}
+		, #{memberName}
+		, #{levelCode}
+		, #{memberGender}
+		, #{memberAddress}
+		, #{memberEmail}
+		, #{memberPhone}
+		, #{memberIdenNum}
+		, NOW()
+		, #{memberStatus})
+	</insert>
+	
+	<select id="getMemberList" resultMap="memberResultMap">
+		SELECT 
+				 m.member_id
+				,m.member_pw
+				,m.member_name
+				,m.level_code
+				,m.member_gender
+				,m.member_address
+				,m.member_email
+				,m.member_phone
+				,m.member_iden_num
+				,m.member_reg_date
+				,m.member_status
+				,l.level_name
+			FROM 
+				tb_member AS m
+			JOIN
+				tb_member_level AS l
+			
+		<if test="searchValue != null and searchValue != ''">
+			WHERE
+			<if test="searchKey != null and searchKey != ''">
+				<if test="searchKey == 'memberId'">m.member_id like concat('%',#{searchValue},'%')</if>
+				<if test="searchKey == 'memberName'"> m.member_name like concat('%',#{searchValue},'%')</if>
+				<if test="searchKey == 'memberEmail'">m.member_email like concat('%',#{searchValue},'%')</if>
+				<if test="searchKey == 'memberStatus'">m.member_status like concat('%',#{searchValue},'%')</if>
+						
+			</if>
+	
+		</if>
+		
+	</select>
+<!-- LIMIT #{start}, #{end} -->
+
+</mapper>

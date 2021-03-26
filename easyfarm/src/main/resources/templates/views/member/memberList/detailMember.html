@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>회원상세정보</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		회원 상세정보
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib"></th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss">
+		<style>
+		button {
+		    border: 0;
+		    border-radius: 0;
+		    padding: 0;
+		    outline: none;
+		    cursor: pointer;
+		    background-color: transparent;
+		    font-family: 'Noto Sans KR', sans-serif;
+		    
+		}
+		.lc-round-btn {
+		    display: block;
+		    width: 100%;
+		    height: 60px;
+		    line-height: 58px;
+		    font-weight: 700;
+		    font-size: 20px;
+		    border-radius: 60px;
+		    background-color: #3BBD5A;
+		    color: #fff;
+		    transition: box-shadow .2s;
+		    margin-top: 30px;
+		    
+		}
+		
+		.ma-tap-20{margin-top: 20px;}
+		.ma-tap-10{margin-top: 10px;}
+		.hid{   display: block;
+		    width: 100%;
+		    border: 2px solid white;
+		    height: 50px;
+		    padding: 0 10px;
+		    line-height: 46px;
+		    font-size: 16px;  }
+		</style>
+	</th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents" th:with="m = ${member}">
+	<form th:action="@{/member/modifyMember}" method="get">
+		<div class="box-content">
+			<div class="row">
+				<div class="col-md-offset-4 col-md-4 box-content " style="text-align: center;">
+					<h1>회원정보</h1>
+					<div class="box-content ma-tap-20"  >
+						<div class="form-group" >
+							<label for="memberId" class="col-sm-3 control-label ma-tap-10"  ><strong>ID</strong></label>
+						    <div class="col-sm-9">
+						      <input type="text" class="form-control" name="memberId" id="memberId" readonly="readonly" th:value="${m.memberId}" >
+						    </div>				   					   
+						</div>
+						<div class="form-group" >
+							<label for="memberPwCheck" class="col-sm-3 control-label ma-tap-20"  ><strong>PW</strong></label>
+						    <div class="col-sm-9 ma-tap-10" >
+						      <input type="password" class="form-control" name="memberPwCheck" id="memberPwCheck" readonly="readonly" th:value="${m.memberPw}" placeholder="비밀번호확인">
+						    </div>
+						</div>
+						
+						
+						
+					</div>
+				</div>
+				<div class="col-md-offset-4 col-md-4 box-content" style="text-align: center;">
+					<h1>회원연락처</h1>
+					<div class="box-content ma-tap-20">
+						<div class="form-group">
+							<label for="memberPhone" class="col-sm-3 control-label ma-tap-10" ><strong>번호</strong></label>
+						    <div class="col-sm-9">
+						      <input type="tel" class="form-control" name="memberPhone" id="memberPhone" readonly="readonly" th:value="${m.memberPhone}" placeholder="000-0000-0000">
+						    </div>
+						</div>
+						<div class="form-group">
+							<label for="memberEmail" class="col-sm-3 control-label" style="margin-top: 20px"><strong>이메일</strong></label>
+						    <div class="col-sm-9">
+						      <input type="email" class="form-control ma-tap-10" name="memberEmail"  readonly="readonly" id="memberEmail" th:value="${m.memberEmail}" placeholder="test@email.com">
+						    </div>
+						</div>
+					</div>
+					
+				</div>		
+				<div class="col-md-offset-4 col-md-4 box-content" style="text-align: center;">
+					<h1>회원주소</h1>
+					<div class="box-content ma-tap-20" >
+						<div class="form-group">
+							<label for="memberAddress" class="col-sm-3 control-label ma-tap-10 " ><strong>주소</strong></label>
+						    <div class="col-sm-9">
+						      <input type="text" class="form-control" name="memberAddress" id="memberAddress"  readonly="readonly" th:value="${m.memberAddress}" placeholder="Address">
+						    </div>
+						</div>				
+						<div class="form-group">
+							<label  class="col-sm-3 control-label  ma-tap-20" ><strong></strong></label>
+						    <div class="col-sm-9">
+						      <input type="text" class="hid ma-tap-10"  hidden="" readonly="readonly" >
+						    </div>
+						</div>				
+					</div>				
+				</div>	
+				
+					<div class="form-group ">
+						<div class="col-sm-offset-1 col-sm-4">
+						<button type="submit" class="lc-round-btn">수정</button>
+						</div>
+					</div>
+	
+					<div class="form-group ">
+						<div class="col-sm-offset-1 col-sm-4">
+							<a th:href="@{/}" style="color: white;"><button type="button" class ="lc-round-btn"> 메인 </button></a>
+						</div>
+					</div>
+						
+				
+					
+			</div>
+		</div>
+	</form>
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib"></th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript"></th:block>
+
+</html>
