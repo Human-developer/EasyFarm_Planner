@@ -8,48 +8,95 @@
 	</th:block>
 	
 	<th:block layout:fragment="pageTitle">
-		실행 메인
+		프로젝트별 수입/지출 (결과)
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+		
+		<!-- Main Styles -->
+		<link rel="stylesheet" href="assets/styles/style.min.css">
+		
+		<!-- Material Design Icon -->
+		<link rel="stylesheet" href="assets/fonts/material-design/css/materialdesignicons.css">
+	
+		<!-- mCustomScrollbar -->
+		<link rel="stylesheet" href="assets/plugin/mCustomScrollbar/jquery.mCustomScrollbar.min.css">
+	
+		<!-- Waves Effect -->
+		<link rel="stylesheet" href="assets/plugin/waves/waves.min.css">
+	
+		<!-- Sweet Alert -->
+		<link rel="stylesheet" href="assets/plugin/sweet-alert/sweetalert.css">
+		
+		<!-- Data Tables -->
+		<link rel="stylesheet" href="assets/plugin/datatables/media/css/dataTables.bootstrap.min.css">
+		<link rel="stylesheet" href="assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css">
+		
+	</th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss">
 	</th:block>
 	
 	<th:block layout:fragment="customContents">
 	
-	
-	
-		<div class="row small-spacing">
-				<div class="col-xs-12">
-					<div class="box-content" style="overflow: auto;">
-						<a th:href="@{/resultEtc}"> :: 데이터 :: </a>
-						
-						<a th:href="@{/result}"> :: 구조 :: </a>
-						<a th:href="@{/resultTable}"> :: 견본 :: </a>
-						<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs" style="overflow: auto;">
-				    <ul id="myTab" class="nav nav-tabs" role="tablist">
-				      <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false">실행 종합</a></li>
-				      <li role="presentation" class=""><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="true">계획 종합</a></li>
-				      <li role="presentation" class="dropdown">
-				        <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"> 지출별 상세정보 <span class="caret"></span></a>
-				        <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents">
-				          <li><a href="#dropdown1" tabindex="-1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1">인건비</a></li>
-				          <li><a href="#dropdown2" tabindex="-1" role="tab" id="dropdown2-tab" data-toggle="tab" aria-controls="dropdown2">공과금</a></li>
-				          <li><a href="#dropdown3" tabindex="-1" role="tab" id="dropdown3-tab" data-toggle="tab" aria-controls="dropdown3">기타비용</a></li>
-				          <li><a href="#dropdown4" tabindex="-1" role="tab" id="dropdown4-tab" data-toggle="tab" aria-controls="dropdown4">구매비</a></li>
-				          <li><a href="#dropdown5" tabindex="-1" role="tab" id="dropdown5-tab" data-toggle="tab" aria-controls="dropdown5">농기계대여</a></li>
-				          <li><a href="#dropdown6" tabindex="-1" role="tab" id="dropdown6-tab" data-toggle="tab" aria-controls="dropdown6">농기계유지비</a></li>
-				          <li><a href="#dropdown7" tabindex="-1" role="tab" id="dropdown7-tab" data-toggle="tab" aria-controls="dropdown7">수확물 판매</a></li>
-				        </ul>
-				      </li>
-				    </ul>
-					    <div id="myTabContent" class="tab-content" style="overflow: auto;">
-					      <div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
-					        
-					
-											<div class="col-xs-6">
-												etcPayRunCode
-												<table border="1" style="width: 100%">
+	<div class="row small-spacing">
+			<div class="col-xs-12">
+				<div class="box-content" style="overflow: auto;">
+					<a th:href="@{/resultData}"> :: 데이터 :: </a>
+					<a th:href="@{/result}"> :: 구조 :: </a>
+					<a th:href="@{/resultTable}"> :: 견본 :: </a>
+					<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs" style="overflow: auto;">
+			    <ul id="myTab" class="nav nav-tabs" role="tablist">
+			      <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false">실행 종합</a></li>
+			      <li role="presentation" class=""><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="true">계획 종합</a></li>
+			      <li role="presentation" class="dropdown ">
+			        <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"> 지출항목별 상세정보 <span class="caret"></span></a>
+			        <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents">
+			          <li><a href="#dropdown1" tabindex="-1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1">인건비</a></li>
+			          <li><a href="#dropdown2" tabindex="-1" role="tab" id="dropdown2-tab" data-toggle="tab" aria-controls="dropdown2">공과금</a></li>
+			          <li><a href="#dropdown3" tabindex="-1" role="tab" id="dropdown3-tab" data-toggle="tab" aria-controls="dropdown3">기타비용</a></li>
+			          <li><a href="#dropdown4" tabindex="-1" role="tab" id="dropdown4-tab" data-toggle="tab" aria-controls="dropdown4">구매비</a></li>
+			          <li><a href="#dropdown5" tabindex="-1" role="tab" id="dropdown5-tab" data-toggle="tab" aria-controls="dropdown5">농기계대여</a></li>
+			          <li><a href="#dropdown6" tabindex="-1" role="tab" id="dropdown6-tab" data-toggle="tab" aria-controls="dropdown6">농기계유지비</a></li>
+			          <li><a href="#dropdown7" tabindex="-1" role="tab" id="dropdown7-tab" data-toggle="tab" aria-controls="dropdown7">수확물 판매</a></li>
+			        </ul>
+			      </li>
+			    </ul>
+				    <div id="myTabContent" class="tab-content" style="overflow: auto;">
+				      <div role="tabpanel" class="tab-pane fade  active in" id="home" aria-labelledby="home-tab">
+				
+										<div class="col-xs-6">
+											etcPayRunCode
+											<table border="1" style="width: 100%">
+												<thead>
+													<tr>
+														<th style="text-align: center;">etcPayRunCode</th>
+														<th style="text-align: center;">계획코드</th>
+														<th style="text-align: center;">가격</th>
+														<th style="text-align: center;">판매자 아이디</th>
+														<th style="text-align: center;">상품 등록일</th>
+														<th style="text-align: center;">수정</th>
+														<th style="text-align: center;">삭제</th>
+													</tr>
+												</thead>
+												<tbody th:each="e : ${etcpayResult}">
+													<tr>
+														<td th:text="${e.etcPayRunCode}"></td>
+														<td th:text="${e.etcPayPlan.etcPayCode}"></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+							    
+									    <div class="col-xs-6">
+												farmResourcePayRun
+												<table border="1">
 													<thead>
 														<tr>
-															<th style="text-align: center;">etcPayRunCode</th>
-															<th style="text-align: center;">계획코드</th>
+															<th style="text-align: center;">farmResourcePayRun code</th>
+															<th style="text-align: center;">상품명</th>
 															<th style="text-align: center;">가격</th>
 															<th style="text-align: center;">판매자 아이디</th>
 															<th style="text-align: center;">상품 등록일</th>
@@ -58,480 +105,519 @@
 														</tr>
 													</thead>
 													<tbody>
-														<tr th:each="e : ${etcpayResult}">
-															<td th:text="${e.etcPayRunCode}"></td>
+														<tr th:each="r : ${resourcePayResult}">
+															<td th:text="${r.farmResourcePayRunCode}" style="padding-right: 10px"></td>
 														</tr>
-														<tr th:each="ep : ${etcPayPlan}">
-															<td th:text="${ep.etcPayCode}"></td>
-														</tr>
-													</tbody>
+													</tbody> 	
 												</table>
 											</div>
-								    
-										    <div class="col-xs-6">
-													farmResourcePayRun
-													<table border="1">
-														<thead>
-															<tr>
-																<th style="text-align: center;">farmResourcePayRun code</th>
-																<th style="text-align: center;">상품명</th>
-																<th style="text-align: center;">가격</th>
-																<th style="text-align: center;">판매자 아이디</th>
-																<th style="text-align: center;">상품 등록일</th>
-																<th style="text-align: center;">수정</th>
-																<th style="text-align: center;">삭제</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr th:each="r : ${resourcePayResult}">
-																<td th:text="${r.farmResourcePayRunCode}" style="padding-right: 10px"></td>
-															</tr>
-														</tbody> 	
-													</table>
-												</div>
-												<div class="col-xs-6">
-											insurePayRun
-											<table border="1">
-												<thead>
+											<div class="col-xs-6">
+										insurePayRun
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">insurePayRun code</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="i : ${insurancePayResult}">
+													<td th:text="${i.insurePayRunCode}"></td>
+												</tr>
+											</tbody> 	
+										</table>
+									</div>
+									<div class="col-xs-6">
+										machineLeasePay
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">machineLeasePay code</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="m : ${machineLeasePayResult}">
+													<td th:text="${m.machineLeaseRunCode}"></td>
+												</tr>
+											</tbody> 	
+										</table>
+									</div>
+									<div class="col-xs-6">
+										machineUsePay
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">machineUsePay code</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="u : ${machineUsePayResult}">
+													<td th:text="${u.machineUseRunCode}"></td>
+												</tr>
+											</tbody> 	
+										</table>
+									</div>
+									<div class="col-xs-6">
+										productGainRun
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">productGainRun code</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="u : ${productGainResult}">
+													<td th:text="${u.productGainRunCode}"></td>
+												</tr>
+											</tbody> 	
+										</table>
+									</div>
+									<div class="col-xs-6">
+										resourceUsePlanRun
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">resourceUsePlanRun code</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="p : ${resourceUsePlanResult}">
+													<td th:text="${p.resourceUseplanRunCode}"></td>
+												</tr>
+											</tbody> 	
+										</table>
+									</div>
+									<div class="col-xs-6">
+										taxPayRun
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">taxPayRun code</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="t : ${taxPayResult}">
+													<td th:text="${t.taxPayRunCode}"></td>
+												</tr>
+											</tbody> 	
+										</table>
+									</div>
+									
+									
+									<div class="col-xs-6">
+										workForcePayRun
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">workForcePayRun code</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="w : ${workForcePayResult}">
+													<td th:text="${w.workforcePayRunCode}"></td>
+												</tr>
+											</tbody> 	
+										</table>
+									</div>
+				
+				
+				
+				      </div>
+				      <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
+				        <div class="col-xs-6">
+										etcPayPlan
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">etcPayPlan code</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="e : ${etcPayPlan}">
+													<td th:text="${e.etcPayCode}"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									
+									
+						    		<div class="col-xs-6">
+										resourcePayPlan
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">resourcePayPlan code</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="e : ${resourcePayPlan}">
+													<td th:text="${e.resourcePayCode}"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									
+									
+						    		<div class="col-xs-6">
+										insurancePayPlan
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">insurancePayPlan code</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="e : ${insurancePayPlan}">
+													<td th:text="${e.insurePayCode}"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									
+									
+						    		<div class="col-xs-6">
+										machineLeasePayPlan
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">machineLeasePayPlan code</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="e : ${machineLeasePayPlan}">
+													<td th:text="${e.machineLeaseCode}"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									
+									
+						    		<div class="col-xs-6">
+										machineUsePlan
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">machineUsePlan code</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="e : ${machineUsePlan}">
+													<td th:text="${e.machineUseCode}"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									
+									
+						    		<div class="col-xs-6">
+										productGainPlan
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">productGainPlan code</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="e : ${productGainPlan}">
+													<td th:text="${e.productGainCode}"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									
+									
+						    		<div class="col-xs-6">
+										resourceUsePlan
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">resourceUsePlan code</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="e : ${resourceUsePlan}">
+													<td th:text="${e.resourceUseplanCode}"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									
+									
+						    		<div class="col-xs-6">
+										taxPayPlan
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">taxPayPlan code</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="e : ${taxPayPlan}">
+													<td th:text="${e.taxPayCode}"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									
+									
+						    		<div class="col-xs-6">
+										인건비실행결과
+										<table border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">인건비실행결과코드</th>
+													<th style="text-align: center;">상품명</th>
+													<th style="text-align: center;">가격</th>
+													<th style="text-align: center;">판매자 아이디</th>
+													<th style="text-align: center;">상품 등록일</th>
+													<th style="text-align: center;">수정</th>
+													<th style="text-align: center;">삭제</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="e : ${workForcePayPlan}">
+													<td th:text="${e.workforcePayCode}"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+				      </div>
+				      <div role="tabpanel" class="tab-pane fade" id="dropdown1" aria-labelledby="dropdown1-tab">
+				        			<!-- <div class="col-xs-12 box-content" style="border: none; overflow: auto;" >
+										<h2>인건비계획</h2><br/>
+										예상인건비 합계 : <p class="total"></p>
+										<table id="example-edit" class="display" style="width: 100%" border="1">
+											<thead>
+												<tr>
+													<th style="text-align: center;">인건비계획코드</th>
+													<th style="text-align: center;">계획 근무인원</th>
+													<th style="text-align: center;">계획 근무일수</th>
+													<th style="text-align: center;">맨데이</th>
+													<th style="text-align: center;">계획 일일인건비</th>
+													<th style="text-align: center;">계획 인건비합계</th>
+												</tr>
+											</thead>
+											<tbody th:each="e : ${workForcePayPlan}">
+												<tr>
+													<td th:text="${e.workforcePayCode}" style="padding: 20px"></td>
+													<td th:text="${e.workforceCount}"style="padding: 20px"></td>
+													<td th:text="${e.workforceHowlong}"style="padding: 20px"></td>
+													<td th:text="${e.workforceRequireDay}"style="padding: 20px"></td>
+													<td th:text="${e.workforcePayDay}"style="padding: 20px"></td>
+													<td th:text="${e.workforcePayTotal}"style="padding: 20px" ></td>
+												</tr>
+											</tbody>
+										</table>
+										
+									</div> -->
+									
+									<div class="col-xs-12 box-content " style="border: none; overflow: auto; ">
+										<div th:each="w : ${workForcePayResult}">
+											<h2>인건비 실행결과</h2>
+											<div class="pull-right">
+												인건비 실행코드 : <i th:text="${w.workforcePayRunCode}"></i>	<br/>
+												인건비 계획코드 : <i th:text="${w.workforcePayPlan.workforcePayCode}"></i>	<br/>
+												근무일자 : <i th:text="${w.workforceRunDate}"></i>	<br/>
+												실제인건비 합계 : <i class="total"></i><br/>
+												<br/>
+											</div>
+											<table id="example" class="table table-striped table-bordered display" style="width: 100%" border="1" >
+												<thead >
 													<tr>
-														<th style="text-align: center;">insurePayRun code</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="i : ${insurancePayResult}">
-														<td th:text="${i.insurePayRunCode}"></td>
-													</tr>
-												</tbody> 	
-											</table>
-										</div>
-										<div class="col-xs-6">
-											machineLeasePay
-											<table border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">machineLeasePay code</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="m : ${machineLeasePayResult}">
-														<td th:text="${m.machineLeaseRunCode}"></td>
-													</tr>
-												</tbody> 	
-											</table>
-										</div>
-										<div class="col-xs-6">
-											machineUsePay
-											<table border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">machineUsePay code</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="u : ${machineUsePayResult}">
-														<td th:text="${u.machineUseRunCode}"></td>
-													</tr>
-												</tbody> 	
-											</table>
-										</div>
-										<div class="col-xs-6">
-											productGainRun
-											<table border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">productGainRun code</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="u : ${productGainResult}">
-														<td th:text="${u.productGainRunCode}"></td>
-													</tr>
-												</tbody> 	
-											</table>
-										</div>
-										<div class="col-xs-6">
-											resourceUsePlanRun
-											<table border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">resourceUsePlanRun code</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="p : ${resourceUsePlanResult}">
-														<td th:text="${p.resourceUseplanRunCode}"></td>
-													</tr>
-												</tbody> 	
-											</table>
-										</div>
-										<div class="col-xs-6">
-											taxPayRun
-											<table border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">taxPayRun code</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="t : ${taxPayResult}">
-														<td th:text="${t.taxPayRunCode}"></td>
-													</tr>
-												</tbody> 	
-											</table>
-										</div>
-										
-										
-										<div class="col-xs-6">
-											workForcePayRun
-											<table border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">workForcePayRun code</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="w : ${workForcePayResult}">
-														<td th:text="${w.workforcePayRunCode}"></td>
-													</tr>
-												</tbody> 	
-											</table>
-										</div>
-					
-					
-					
-					      </div>
-					      <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
-					        <div class="col-xs-6">
-											etcPayPlan
-											<table border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">etcPayPlan code</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="e : ${etcPayPlan}">
-														<td th:text="${e.etcPayCode}"></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										
-										
-							    		<div class="col-xs-6">
-											resourcePayPlan
-											<table border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">resourcePayPlan code</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="e : ${resourcePayPlan}">
-														<td th:text="${e.resourcePayCode}"></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										
-										
-							    		<div class="col-xs-6">
-											insurancePayPlan
-											<table border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">insurancePayPlan code</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="e : ${insurancePayPlan}">
-														<td th:text="${e.insurePayCode}"></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										
-										
-							    		<div class="col-xs-6">
-											machineLeasePayPlan
-											<table border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">machineLeasePayPlan code</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="e : ${machineLeasePayPlan}">
-														<td th:text="${e.machineLeaseCode}"></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										
-										
-							    		<div class="col-xs-6">
-											machineUsePlan
-											<table border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">machineUsePlan code</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="e : ${machineUsePlan}">
-														<td th:text="${e.machineUseCode}"></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										
-										
-							    		<div class="col-xs-6">
-											productGainPlan
-											<table border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">productGainPlan code</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="e : ${productGainPlan}">
-														<td th:text="${e.productGainCode}"></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										
-										
-							    		<div class="col-xs-6">
-											resourceUsePlan
-											<table border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">resourceUsePlan code</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="e : ${resourceUsePlan}">
-														<td th:text="${e.resourceUseplanCode}"></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										
-										
-							    		<div class="col-xs-6">
-											taxPayPlan
-											<table border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">taxPayPlan code</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="e : ${taxPayPlan}">
-														<td th:text="${e.taxPayCode}"></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										
-										
-							    		<div class="col-xs-6">
-											인건비실행결과
-											<table border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">인건비실행결과코드</th>
-														<th style="text-align: center;">상품명</th>
-														<th style="text-align: center;">가격</th>
-														<th style="text-align: center;">판매자 아이디</th>
-														<th style="text-align: center;">상품 등록일</th>
-														<th style="text-align: center;">수정</th>
-														<th style="text-align: center;">삭제</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="e : ${workForcePayPlan}">
-														<td th:text="${e.workforcePayCode}"></td>
-														<td th:text="${e.workforcePayCode}"></td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-					      </div>
-					      <div role="tabpanel" class="tab-pane fade" id="dropdown1" aria-labelledby="dropdown1-tab">
-					        			<div class="col-xs-6 box-content" style="border: none; overflow: auto;">
-											<h2>인건비계획</h2><br/>
-											예상인건비 합계 : <p class="total"></p>
-											<table id="example-edit" class="display" style="width: 100% ">
-												<thead>
-													<tr>
-														<th style="text-align: center;">인건비계획코드</th>
-														<th style="text-align: center;">근무인원</th>
-														<th style="text-align: center;">근무일수</th>
-														<th style="text-align: center;">맨데이</th>
-														<th style="text-align: center;">일일인건비</th>
-														<th style="text-align: center;">인건비합계</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="e : ${workForcePayPlan}">
-														<td th:text="${e.workforcePayCode}" style="padding: 20px"></td>
-														<td th:text="${e.workforceCount}"style="padding: 20px"></td>
-														<td th:text="${e.workforceHowlong}"style="padding: 20px"></td>
-														<td th:text="${e.workforceRequireDay}"style="padding: 20px"></td>
-														<td th:text="${e.workforcePayDay}"style="padding: 20px"></td>
-														<td th:text="${e.workforcePayTotal}"style="padding: 20px" class="workpaytotal"></td>
-													</tr>
-												</tbody>
-											</table>
-											
-										</div>
-										
-										<div class="col-xs-6 box-content" style="border: none; overflow: auto; ">
-											<h2>인건비 실행결과</h2><br/>
-											<table id="example-edit" class="display" style="width: 100%" border="1">
-												<thead>
-													<tr>
-														<th style="text-align: center;">인건비 실행결과 코드</th>
-														<th style="text-align: center;">인건비 지출계획 코드</th>
-														<th style="text-align: center;">근무일</th>
-														<th style="text-align: center;">근무인원</th>
-														<th style="text-align: center;">일일인건비</th>
+														<th style="text-align: center;">계획 일일인건비</th>
+														<th style="text-align: center;">실제 일일인건비</th>
+														<th style="text-align: center;">계획 근무인원</th>
+														<th style="text-align: center;">실제 근무인원</th>
+														<th style="text-align: center;">계획 인건비합계</th>
+														<th style="text-align: center;">실제 인건비합계</th>
 														<th style="text-align: center;">실행완료여부</th>
-														<th style="text-align: center;">인건비합계</th>
 														<th style="text-align: center;">등록일</th>
+														<th style="text-align: center;">수정일</th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr th:each="w : ${workForcePayResult}" style="padding: 20px">
-														<td th:text="${w.workforcePayRunCode}"style="padding: 20px"></td>
-														<td th:text="${w.workforcePayCode}" style="padding: 20px"></td>
-														<td th:text="${w.workforceRunDate}" style="padding: 20px"></td>
-														<td th:text="${w.workforceRunQuantity}" style="padding: 20px"></td>
+													<tr style="padding: 20px">
+														<td th:text="${w.workforcePayPlan.workforcePayDay}" style="padding: 20px"></td>
 														<td th:text="${w.workforcePayRunDay}" style="padding: 20px"></td>
+														<td th:text="${w.workforcePayPlan.workforceCount}" style="padding: 20px"></td>
+														<td th:text="${w.workforceRunQuantity}" style="padding: 20px"></td>
+														<td th:text="${w.workforcePayPlan.workforcePayTotal}" style="padding: 20px"></td>
+														<td th:text="${w.workforcePayRunTotal}" style="padding: 20px" class="workpaytotal"></td>
 														<td th:text="${w.completeStatus}" style="padding: 20px"></td>
-														<td th:text="${w.workforcePayRunTotal}" style="padding: 20px"></td>
 														<td th:text="${w.regDate}" style="padding: 20px"></td>
+														<td th:text="${w.modDate}" style="padding: 20px"></td>
 													</tr>
 												</tbody> 	
 											</table>
 										</div>
-					      </div>
-					      <div role="tabpanel" class="tab-pane fade" id="dropdown2" aria-labelledby="dropdown2-tab">
-					      	<p>22222</p>
-					      </div>
-					      <div role="tabpanel" class="tab-pane fade" id="dropdown3" aria-labelledby="dropdown3-tab">
-					      	<p>33333</p>
-					      </div>
-					      <div role="tabpanel" class="tab-pane fade" id="dropdown4" aria-labelledby="dropdown4-tab">
-					      	<p>44444</p>
-					      </div>
-					      <div role="tabpanel" class="tab-pane fade" id="dropdown5" aria-labelledby="dropdown5-tab">
-					      	<p>55555</p>
-					      </div>
-					      <div role="tabpanel" class="tab-pane fade" id="dropdown6" aria-labelledby="dropdown6-tab">
-					      	<p>66666</p>
-					      </div>
-					      <div role="tabpanel" class="tab-pane fade" id="dropdown7" aria-labelledby="dropdown7-tab">
-					      	<p>77777</p>
-					      </div>
-					    </div>
-					</div>
-				</div>	
-			</div>
+									</div>
+				      </div>
+				      <div role="tabpanel" class="tab-pane fade" id="dropdown2" aria-labelledby="dropdown2-tab">
+				      	<div class="col-xs-12 box-content " style="border: none; overflow: auto; ">
+								<div th:each="e : ${etcpayResult}">
+									<h2>인건비 실행결과</h2>
+									<div class="pull-right">
+										기타비용 실행코드 : <i th:text="${e.etcPayRunCode}"></i>	<br/>
+										기타비용 계획코드 : <i th:text="${e.etcPayPlan.etcPayCode}"></i>	<br/>
+										지불일자 : <i th:text="${e.etcPayRunDate}"></i>	<br/>
+										실제기타비용 합계 : <i class="total"></i><br/>
+										<br/>
+									</div>
+									<table id="example2" class="table table-striped table-bordered display" style="width: 100%" border="1" >
+										<thead >
+											<tr>
+												<th style="text-align: center;">기타비용 집행명</th>
+												<th style="text-align: center;">계획 기타비용 금액</th>
+												<th style="text-align: center;">실행결과 기타비용 금액</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr style="padding: 20px">
+												<td th:text="${e.etcPayRunMemo}" style="padding: 20px"></td>
+												<td th:text="${e.etcPayPlan.etcPay}" style="padding: 20px"></td>
+												<td th:text="${e.etcPayRunPay}" style="padding: 20px"></td>
+											</tr>
+										</tbody> 	
+									</table>
+								</div>
+							</div>
+				      </div>
+				      <div role="tabpanel" class="tab-pane fade" id="dropdown3" aria-labelledby="dropdown3-tab">
+				      		<div class="col-xs-12 box-content " style="border: none; overflow: auto; ">
+								<div th:each="e : ${etcpayResult}">
+									<h2>인건비 실행결과</h2>
+									<div class="pull-right">
+										기타비용 실행코드 : <i th:text="${e.etcPayRunCode}"></i>	<br/>
+										기타비용 계획코드 : <i th:text="${e.etcPayPlan.etcPayCode}"></i>	<br/>
+										지불일자 : <i th:text="${e.etcPayRunDate}"></i>	<br/>
+										실제기타비용 합계 : <i class="total"></i><br/>
+										<br/>
+									</div>
+									<table id="example3" class="table table-striped table-bordered display" style="width: 100%" border="1" >
+										<thead >
+											<tr>
+												<th style="text-align: center;">기타비용 집행명</th>
+												<th style="text-align: center;">계획 기타비용 금액</th>
+												<th style="text-align: center;">실행결과 기타비용 금액</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr style="padding: 20px">
+												<td th:text="${e.etcPayRunMemo}" style="padding: 20px"></td>
+												<td th:text="${e.etcPayPlan.etcPay}" style="padding: 20px"></td>
+												<td th:text="${e.etcPayRunPay}" style="padding: 20px"></td>
+											</tr>
+										</tbody> 	
+									</table>
+								</div>
+							</div>
+				      </div>
+				      <div role="tabpanel" class="tab-pane fade" id="dropdown4" aria-labelledby="dropdown4-tab">
+				      	<p>44444</p>
+				      </div>
+				      <div role="tabpanel" class="tab-pane fade" id="dropdown5" aria-labelledby="dropdown5-tab">
+				      	<p>55555</p>
+				      </div>
+				      <div role="tabpanel" class="tab-pane fade" id="dropdown6" aria-labelledby="dropdown6-tab">
+				      	<p>66666</p>
+				      </div>
+				      <div role="tabpanel" class="tab-pane fade" id="dropdown7" aria-labelledby="dropdown7-tab">
+				      	<p>77777</p>
+				      </div>
+				    </div>
+				</div>
+			</div>	
 		</div>
+	</div>
 		
 		
 
@@ -541,7 +627,13 @@
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
 	<th:block layout:fragment="customScriptLib">
+		<script src="assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+		<script src="assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+		<script src="assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+		<script src="assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+		<script src="assets/scripts/datatables.demo.min.js"></script>
 	
+		<script src="assets/scripts/main.min.js"></script>
 	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 -->
@@ -562,12 +654,9 @@
 				console.log(sum);
 				$('.total').text(sum);
 			})
-		
 			
-			
-			
+			$('#example2, #example3').DataTable();
 		</script>
-	
 	</th:block>
 	
 </html>

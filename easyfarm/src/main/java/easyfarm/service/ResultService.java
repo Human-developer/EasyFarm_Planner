@@ -20,11 +20,11 @@ import easyfarm.domain.result.EtcPayResult;
 import easyfarm.domain.result.InsurancePayResult;
 import easyfarm.domain.result.MachineLeasePayResult;
 import easyfarm.domain.result.MachineUsePayResult;
-import easyfarm.domain.result.ProductGainRunResult;
+import easyfarm.domain.result.ProductGainResult;
 import easyfarm.domain.result.ResourcePayResult;
-import easyfarm.domain.result.ResourceUsePlanRunResult;
-import easyfarm.domain.result.TaxPayRunResult;
-import easyfarm.domain.result.WorkForcePayRunResult;
+import easyfarm.domain.result.ResourceUsePlanResult;
+import easyfarm.domain.result.TaxPayResult;
+import easyfarm.domain.result.WorkForcePayResult;
 
 @Service
 @Transactional
@@ -108,9 +108,9 @@ public class ResultService {
 		
 		return machineUsePay;
 	}
-	public List<ProductGainRunResult> getProductGainRunResult(){
+	public List<ProductGainResult> getProductGainRunResult(){
 		/* MemberMapper member = new MemberMapper(); */
-		List<ProductGainRunResult> productGainRun = null;
+		List<ProductGainResult> productGainRun = null;
 		productGainRun =resultmapper.getProductGainRunResult();
 		
 		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
@@ -118,9 +118,9 @@ public class ResultService {
 		
 		return productGainRun;
 	}
-	public List<ResourceUsePlanRunResult> getResourceUsePlanRunResult(){
+	public List<ResourceUsePlanResult> getResourceUsePlanRunResult(){
 		/* MemberMapper member = new MemberMapper(); */
-		List<ResourceUsePlanRunResult> resourceUsePlanRun = null;
+		List<ResourceUsePlanResult> resourceUsePlanRun = null;
 		resourceUsePlanRun =resultmapper.getResourceUsePlanRunResult();
 		
 		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
@@ -128,9 +128,9 @@ public class ResultService {
 		
 		return resourceUsePlanRun;
 	}
-	public List<TaxPayRunResult> getTaxPayRunResult(){
+	public List<TaxPayResult> getTaxPayRunResult(){
 		/* MemberMapper member = new MemberMapper(); */
-		List<TaxPayRunResult> taxPayRun = null;
+		List<TaxPayResult> taxPayRun = null;
 		taxPayRun =resultmapper.getTaxPayRunResult();
 		
 		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
@@ -138,9 +138,9 @@ public class ResultService {
 		
 		return taxPayRun;
 	}
-	public List<WorkForcePayRunResult> getWorkForcePayRunResult(){
+	public List<WorkForcePayResult> getWorkForcePayRunResult(){
 		/* MemberMapper member = new MemberMapper(); */
-		List<WorkForcePayRunResult> workForcePayRun = null;
+		List<WorkForcePayResult> workForcePayRun = null;
 		workForcePayRun =resultmapper.getWorkForcePayRunResult();
 		
 		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅

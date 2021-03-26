@@ -1,5 +1,7 @@
 package easyfarm.domain.result;
 
+import easyfarm.domain.plan.ResourcePay;
+
 public class ResourcePayResult {
 	// 농가별농자재매입지출계획대비실행코드
     private String farmResourcePayRunCode;
@@ -45,6 +47,9 @@ public class ResourcePayResult {
 
     // 수정일
     private String modDate;
+    
+    //계획
+    private ResourcePay resourcePayPlan;
 
     public String getFarmResourcePayRunCode() {
         return farmResourcePayRunCode;
@@ -165,5 +170,13 @@ public class ResourcePayResult {
     public void setModDate(String modDate) {
         this.modDate = modDate;
     }
+
+	public ResourcePay getResourcePay() {
+		return resourcePayPlan;
+	}
+
+	public void setResourcePay(ResourcePay resourcePay) {
+		this.resourcePayPlan = resourcePay;
+	}
 	
 }

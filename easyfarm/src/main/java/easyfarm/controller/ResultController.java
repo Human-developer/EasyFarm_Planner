@@ -20,11 +20,11 @@ import easyfarm.domain.result.EtcPayResult;
 import easyfarm.domain.result.InsurancePayResult;
 import easyfarm.domain.result.MachineLeasePayResult;
 import easyfarm.domain.result.MachineUsePayResult;
-import easyfarm.domain.result.ProductGainRunResult;
+import easyfarm.domain.result.ProductGainResult;
 import easyfarm.domain.result.ResourcePayResult;
-import easyfarm.domain.result.ResourceUsePlanRunResult;
-import easyfarm.domain.result.TaxPayRunResult;
-import easyfarm.domain.result.WorkForcePayRunResult;
+import easyfarm.domain.result.ResourceUsePlanResult;
+import easyfarm.domain.result.TaxPayResult;
+import easyfarm.domain.result.WorkForcePayResult;
 import easyfarm.service.PlanService;
 import easyfarm.service.ResultService;
 
@@ -49,18 +49,18 @@ public class ResultController {
 		return "views/result/resultMain2";
 	}
 	
-	@GetMapping("/resultEtc")
-	public String resultEtc(Model model) {
+	@GetMapping("/resultData")
+	public String resultData(Model model) {
 		
 		List<EtcPayResult> etcpayResult = resultService.getEtcPayResult();
 		List<ResourcePayResult> resourcePayResult = resultService.getResourcePayResult();
 		List<InsurancePayResult> insurancePayResult = resultService.getInsurancePayResult();
 		List<MachineLeasePayResult> machineLeasePayResult = resultService.getMachineLeasePayResult();
 		List<MachineUsePayResult> machineUsePayResult = resultService.getMachineUsePayResult();
-		List<ProductGainRunResult> productGainResult = resultService.getProductGainRunResult();
-		List<ResourceUsePlanRunResult> resourceUsePlanResult = resultService.getResourceUsePlanRunResult();
-		List<TaxPayRunResult> taxPayResult = resultService.getTaxPayRunResult();
-		List<WorkForcePayRunResult> workForcePayResult = resultService.getWorkForcePayRunResult();
+		List<ProductGainResult> productGainResult = resultService.getProductGainRunResult();
+		List<ResourceUsePlanResult> resourceUsePlanResult = resultService.getResourceUsePlanRunResult();
+		List<TaxPayResult> taxPayResult = resultService.getTaxPayRunResult();
+		List<WorkForcePayResult> workForcePayResult = resultService.getWorkForcePayRunResult();
 		
 		
 		List<EtcPay> etcPayPlan = planService.getEtcPayPlan();
@@ -73,7 +73,7 @@ public class ResultController {
 		List<TaxPay> taxPayPlan = planService.getTaxPayPlan();
 		List<WorkForcePay> workForcePayPlan = planService.getWorkForcePayPlan();
 		
-		
+
 		model.addAttribute("etcpayResult", etcpayResult);
 		model.addAttribute("resourcePayResult", resourcePayResult);
 		model.addAttribute("insurancePayResult", insurancePayResult);
@@ -83,6 +83,7 @@ public class ResultController {
 		model.addAttribute("resourceUsePlanResult", resourceUsePlanResult);
 		model.addAttribute("taxPayResult", taxPayResult);
 		model.addAttribute("workForcePayResult", workForcePayResult);
+		
 		
 		model.addAttribute("etcPayPlan", etcPayPlan);
 		model.addAttribute("resourcePayPlan", resourcePayPlan);

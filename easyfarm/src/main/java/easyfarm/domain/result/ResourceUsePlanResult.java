@@ -1,7 +1,7 @@
 package easyfarm.domain.result;
 
 
-public class ResourceUsePlanRunResult {
+public class ResourceUsePlanResult {
 	// 농자재사용계획대비실행코드
     private String resourceUseplanRunCode;
 

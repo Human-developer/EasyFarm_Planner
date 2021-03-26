@@ -1,5 +1,7 @@
 package easyfarm.domain.result;
 
+import easyfarm.domain.plan.EtcPay;
+
 public class EtcPayResult {
 	private String etcPayRunCode;
 	private String etcPayCode;
@@ -14,6 +16,7 @@ public class EtcPayResult {
 	private String regDate;
 	private String modFarmMemberCode;
 	private String modDate;
+	private EtcPay etcPayPlan;
 	
 	public String getEtcPayRunCode() {
 		return etcPayRunCode;
@@ -124,5 +127,11 @@ public class EtcPayResult {
 		builder.append(modDate);
 		builder.append("]");
 		return builder.toString();
+	}
+	public EtcPay getEtcPayPlan() {
+		return etcPayPlan;
+	}
+	public void setEtcPayPlan(EtcPay etcPayPlan) {
+		this.etcPayPlan = etcPayPlan;
 	}
 }

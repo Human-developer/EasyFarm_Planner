@@ -1,7 +1,8 @@
 package easyfarm.domain.result;
 
+import easyfarm.domain.plan.WorkForcePay;
 
-public class WorkForcePayRunResult {
+public class WorkForcePayResult {
 	// 인건비지출계획대비실행코드
     private String workforcePayRunCode;
 
@@ -40,6 +41,9 @@ public class WorkForcePayRunResult {
 
     // 수정일
     private String modDate;
+    
+    //계획
+    private WorkForcePay workforcePayPlan;
 
     public String getWorkforcePayRunCode() {
         return workforcePayRunCode;
@@ -144,6 +148,14 @@ public class WorkForcePayRunResult {
     public void setModDate(String modDate) {
         this.modDate = modDate;
     }
+
+	public WorkForcePay getWorkforcePayPlan() {
+		return workforcePayPlan;
+	}
+
+	public void setWorkforcePayPlan(WorkForcePay workforcePayPlan) {
+		this.workforcePayPlan = workforcePayPlan;
+	}
 
 	
 }

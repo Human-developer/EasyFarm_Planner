@@ -1,7 +1,7 @@
 package easyfarm.domain.result;
 
 
-public class TaxPayRunResult {
+public class TaxPayResult {
 	// 공과금지출계획대비실행코드
     private String taxPayRunCode;
 

@@ -1,7 +1,7 @@
 package easyfarm.domain.result;
 
 
-public class ProductGainRunResult {
+public class ProductGainResult {
 	// 생산물수확실행코드
     private String productGainRunCode;
 
