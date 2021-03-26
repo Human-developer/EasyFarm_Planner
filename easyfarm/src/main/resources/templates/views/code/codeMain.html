@@ -4,15 +4,26 @@
 	  layout:decorate="@{layout/default}">
 
 	<th:block layout:fragment="customTitle">
-		<title>코드 메인</title>
+		<title>코드관리</title>
 	</th:block>
 	
 	<th:block layout:fragment="pageTitle">
-		코드 메인
+		코드 사이트맵
 	</th:block>
 	
 	<th:block layout:fragment="customContents">
-		메인화면
+		<div class="box-content" >
+			<h1>코드관리</h1> 
+			<hr/>
+			<a th:href="@{/code/getCropCode}">작물 리스트</a>  <br> 
+			<a th:href="@{/code/addCrop}">작물 등록</a> <br><br>
+			<a th:href="@{/code/getCropWorkStage}">작업단계 리스트</a>  <br><br>
+			<a th:href="@{/code/getCropDetailCategory}">상세작업항목 리스트</a>  <br> 
+			<a th:href="@{/code/addCropDetailCategory}">상세작업항목 등록</a> <br><br>
+			<a th:href="@{code/getCommonMachineCode}">공통 농기계 리스트</a> <br>
+			<a th:href="@{/code/}">###</a> <br>
+			<a th:href="@{/code/}">###</a> <br>
+		</div>
 	</th:block>
 
 </html>
