@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+
+	<th:block layout:fragment="customTitle">
+		<title>월간 계획 간편보기</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		월간 계획 간편보기
+	</th:block>
+	
+	<th:block layout:fragment="customCssLib">
+		<!-- FullCalendar -->
+		<link rel="stylesheet" th:href="@{/assets/plugin/fullcalendar/fullcalendar.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/fullcalendar/fullcalendar.print.css}" media='print'>
+		
+		<!-- Jquery UI -->
+		<link rel="stylesheet" th:href="@{/assets/plugin/jquery-ui/jquery-ui.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/jquery-ui/jquery-ui.structure.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/jquery-ui/jquery-ui.theme.min.css}">
+	</th:block>
+	
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+			.fc-sat, .fc-day-top.fc-sat.fc-past .fc-day-number, .fc-day-top.fc-sat.fc-future .fc-day-number { color:#0000FF; }	/* 토요일 */
+			.fc-sun, .fc-day-top.fc-sun.fc-past .fc-day-number, .fc-day-top.fc-sun.fc-future .fc-day-number { color:#FF0000; }	/* 일요일 */
+			.fc-day:hover {
+			  background: #EEF7FF;
+			  cursor: pointer;
+			}
+			hr{border-bottom: 1px solid grey;};
+			.pl-0{padding-right: 0px;}
+		</style>
+	</th:block>
+	
+	<th:block layout:fragment="customContents">
+	
+		<div class="container-fluid">
+		    <div class="row">
+				<div class="col-md-12">
+					<div class="box-content">
+						<div class="pull-left">
+							<div style="font-size: 24px;">1차 월간 계획 간편보기</div>
+						</div>
+						<div class="pull-right">
+							<button type="button" id="planAddBtn" class="btn btn-primary btn-sm waves-effect waves-light btn-rounded">계획서 등록</button>
+							<button type="button" id="planAciveBtn" class="btn btn-success btn-sm waves-effect waves-light btn-rounded">계획서 실행</button>
+						</div>
+						<div style="margin-top: 6px;">
+							<small style="color: red; margin-left: 6px;"><i class="fa fa-lightbulb-o"> 일정을 클릭하면 상세보기가 가능합니다.</i></small>
+						</div>
+						<hr/>
+						<div id="calendar"></div>
+						<!-- /#calendar -->
+					</div>
+					<!-- /.box-content -->
+				</div>
+			</div>
+		</div>
+		
+	</th:block>
+	
+	<th:block layout:fragment="customModals">
+		<div class="modal fade" id="planModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel-1">계획서간편보기</h4>
+					</div>
+					<div class="modal-body">
+						
+						<div class="form-horizontal">
+							<div class="form-group form-group-sm">
+								<label for="workPhase" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>작업단계</strong></label>
+							    <div class="col-sm-4">
+									<input type="text" class="form-control" name="workPhase" id="workPhase"/>
+							    </div>
+						    	<label for="workPhaseDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
+								<div class="col-sm-5">
+									<div class="input-daterange input-group" id="date-range">
+										<input type="text" class="form-control" name="start" />
+										<span class="input-group-addon bg-primary text-white"> ~ </span>
+										<input type="text" class="form-control" name="end" />
+									</div>
+								</div>
+							</div>
+							<div class="form-group form-group-sm">
+								<label for="workPhaseCate" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>상세항목</strong></label>
+							    <div class="col-sm-4">
+									<input type="text" class="form-control" name="workPhaseCate" id="workPhaseCate"/>
+							    </div>
+							    
+							    <label for="workPhaseCateDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
+								<div class="col-sm-5">
+									<div class="input-daterange input-group" id="date-range">
+										<input type="text" class="form-control" name="start" />
+										<span class="input-group-addon bg-primary text-white"> ~ </span>
+										<input type="text" class="form-control" name="end" />
+									</div>
+								</div>
+							</div>
+							
+							<div id="accordion" class="js__ui_accordion">
+								<h3 class="accordion-title">인건비</h3>
+								<div class="accordion-content">
+									<p>내용</p>
+								</div>
+								<h3 class="accordion-title">보유농기계사용</h3>
+								<div class="accordion-content">
+									<p>내용</p>
+								</div>
+								<h3 class="accordion-title">농기계대여</h3>
+								<div class="accordion-content">
+									<p>내용</p>
+								</div>
+								<h3 class="accordion-title">농기계사용</h3>
+								<div class="accordion-content">
+									<p>내용</p>
+								</div>
+								<h3 class="accordion-title">농자재매입</h3>
+								<div class="accordion-content">
+									<p>내용</p>
+								</div>
+								<h3 class="accordion-title">공과금</h3>
+								<div class="accordion-content">
+									<p>내용</p>
+								</div>
+								<h3 class="accordion-title">보험료</h3>
+								<div class="accordion-content">
+									<p>내용</p>
+								</div>
+								<h3 class="accordion-title">기타비용</h3>
+								<div class="accordion-content">
+									<p>내용</p>
+								</div>
+								<h3 class="accordion-title">생산물수확</h3>
+								<div class="accordion-content">
+									<p>내용</p>
+								</div>
+							</div>
+					
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
+						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">수정</button>
+						<button type="button" class="btn btn-success btn-sm waves-effect waves-light">실행</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+	
+	<th:block layout:fragment="customScriptLib">
+		<!-- FullCalendar -->
+		<script th:src="@{/assets/plugin/moment/moment.js}"></script>
+		<script th:src="@{/assets/plugin/fullcalendar/fullcalendar.min.js}"></script>
+		<script th:src="@{/assets/scripts/fullcalendar.custom.PGS.js}"></script>
+		<script th:src="@{/assets/plugin/fullcalendar/ko.js}"></script>
+		
+		<!-- Jquery UI -->
+		<script th:src="@{/assets/plugin/jquery-ui/jquery-ui.min.js}"></script>
+		<script th:src="@{/assets/plugin/jquery-ui/jquery.ui.touch-punch.min.js}"></script>
+	</th:block>
+	
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+			function onChangeDate(yy,mm,dd){
+				var date = yy + "-" + mm + "-" + dd;
+				$('[name="start"], [name="end"]').val(date);
+			}
+			
+			$('#planAddBtn').click(function(){
+				location.href = '/plan/addSpend';
+			})
+		</script>
+	</th:block>
+	
+</html>
