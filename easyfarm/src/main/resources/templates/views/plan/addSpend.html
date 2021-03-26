@@ -100,9 +100,11 @@
 								    <div class="col-sm-4">
 										<select class="form-control" name="workPhaseCate" id="workPhaseCate">
 											<option value=""> :: 상세항목선택 :: </option>
-											<option value="1">Dropdown 1</option>
-											<option value="2">Dropdown 1</option>
-											<option value="3">Dropdown 1</option>
+											<th:block th:if="${#lists.size(workphaseCateNameList) > 0}" th:each="w, st : ${workphaseCateNameList}">
+												<option th:value="" th:text="">Dropdown 1</option>
+												<option value="2">Dropdown 1</option>
+												<option value="3">Dropdown 1</option>
+											</th:block>
 										</select>
 								    </div>
 								    <label for="workPhaseCateDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
