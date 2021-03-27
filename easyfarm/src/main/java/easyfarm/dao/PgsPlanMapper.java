@@ -31,8 +31,14 @@ public interface PgsPlanMapper {
 	public List<TaxPay> getTaxPayPlan();
 	public List<WorkForcePay> getWorkForcePayPlan();
 	
+	//프로젝트 계획차수 조회
+	public Map<String, Object> getProjectPlanInfo(String projectPlanCode);
+	
+	//프로젝트별 작업단계
+	public List<Map<String, Object>> getWorkphaseName(String projectCode);
+	
 	//프로젝트별 상세작업항목
-	public List<Map<String, Object>> getWorkphaseCateName();
+	public List<Map<String, Object>> getWorkphaseCateName(String projectCode);
 	
 	
 	

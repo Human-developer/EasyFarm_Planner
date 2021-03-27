@@ -36,9 +36,19 @@ public class PgsPlanService {
 		this.pgsPlanMapper = pgsPlanMapper;
 	}
 	
-	public List<Map<String, Object>> getWorkphaseCateName() {
-		
-		return pgsPlanMapper.getWorkphaseCateName();
+	//프로젝트 계획차수 조회
+	public Map<String, Object> getProjectPlanInfo(String projectPlanCode) {
+		return pgsPlanMapper.getProjectPlanInfo(projectPlanCode);
+	}
+	
+	//프로젝트별 작업단계
+	public List<Map<String, Object>> getWorkphaseName(String projectCode) {
+		return pgsPlanMapper.getWorkphaseName(projectCode);
+	}
+	
+	//프로젝트별 상세작업항목
+	public List<Map<String, Object>> getWorkphaseCateName(String projectCode) {
+		return pgsPlanMapper.getWorkphaseCateName(projectCode);
 	}
 	
 	public List<EtcPay> getEtcPayPlan(){

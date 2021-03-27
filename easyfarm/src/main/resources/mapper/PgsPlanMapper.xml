@@ -10,9 +10,35 @@
 		<result column="" property="" />
 	</resultMap>
   	
-  	<select id="getWorkphaseCateName" resultType="map">
+  	<select id="getWorkphaseName" resultType="map" parameterType="String">
   		SELECT
-			cwc.common_workphase_cate_name
+			cpi.workphase_name AS workphaseName
+		FROM
+			tb_project_workphase AS pw
+			INNER join
+			tb_crop_phase_info AS cpi
+			on
+			pw.crop_phase_info_code = cpi.crop_phase_info_code
+			AND
+			cpi.use_status = 'O'
+		WHERE
+			pw.project_code = #{projectCode}
+		ORDER BY cpi.crop_phase_info_code*1 ASC
+  	</select>
+  	
+  	<select id="getProjectPlanInfo" resultType="map" parameterType="String">
+  		SELECT
+			 pp.project_plan_n as projectPlanN
+			,pp.project_code as projectCode
+		FROM
+			tb_project_plan AS pp
+		WHERE
+			pp.project_plan_code = #{projectPlanCode}
+  	</select>
+  	
+  	<select id="getWorkphaseCateName" resultType="map" parameterType="String">
+  		SELECT
+			cwc.common_workphase_cate_name as commonWorkphaseCateName
 		FROM
 			tb_farm_workphase_cate AS fwc
 			INNER join
@@ -20,7 +46,8 @@
 			on
 			fwc.common_workphase_cate_code = cwc.common_workphase_cate_code
 		WHERE
-			fwc.project_code = 'project_1';
+			fwc.project_code = #{projectCode}
+		ORDER BY fwc.common_workphase_cate_code*1 asc
   	</select>
 	
 	<select id="getEtcPayPlan" resultType="EtcPay" >

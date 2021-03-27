@@ -73,7 +73,7 @@
 								<div class="form-group">
 									<label for="projectPlanN" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>계획차수</strong></label>
 								    <div class="col-sm-2">
-										<input class="form-control t-center" name="projectPlanN" id="projectPlanN" value="1차" readonly="readonly"/>
+										<input class="form-control t-center" name="projectPlanN" id="projectPlanN" th:value="${projectPlanN}" readonly="readonly"/>
 								    </div>
 								</div>
 								<div class="form-group">
@@ -81,9 +81,9 @@
 								    <div class="col-sm-4">
 										<select class="form-control" name="workPhase" id="workPhase">
 											<option value=""> :: 단계선택 :: </option>
-											<option value="1">Dropdown 1</option>
-											<option value="2">Dropdown 1</option>
-											<option value="3">Dropdown 1</option>
+											<th:block th:if="${#lists.size(workphaseNameList) > 0}" th:each="w, st : ${workphaseNameList}">
+												<option th:value="${st.count}" th:text="${w.workphaseName}">Dropdown 1</option>
+											</th:block>
 										</select>
 								    </div>
 							    	<label for="workPhaseDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
@@ -101,9 +101,7 @@
 										<select class="form-control" name="workPhaseCate" id="workPhaseCate">
 											<option value=""> :: 상세항목선택 :: </option>
 											<th:block th:if="${#lists.size(workphaseCateNameList) > 0}" th:each="w, st : ${workphaseCateNameList}">
-												<option th:value="" th:text="">Dropdown 1</option>
-												<option value="2">Dropdown 1</option>
-												<option value="3">Dropdown 1</option>
+												<option th:value="${st.count}" th:text="${w.commonWorkphaseCateName}"></option>
 											</th:block>
 										</select>
 								    </div>
