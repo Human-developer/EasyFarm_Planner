@@ -48,5 +48,12 @@ public interface PgsPlanMapper {
 	
 	//농가별 보유농기계
 	public List<Map<String, Object>> getFarmRetainMachine(String projectCode);
+	
+	//농가별 품목조회
+	public List<Map<String, Object>> getStockItem(String projectCode);
+	
+	//품목정보조회
+	public Map<String, Object> getStockItemInfo(String stockItemCode);
+	
 
 }

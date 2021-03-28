@@ -10,6 +10,48 @@
 		<result column="" property="" />
 	</resultMap>
   	
+  	<select id="getStockItemInfo" resultType="map" parameterType="String">
+  		SELECT
+			 si.stock_item_code 					AS stockItemCode
+			,si.stock_item_name 					AS stockItemName
+			,si.stock_item_quantity 				AS stockItemQuantity
+			,si.stock_item_quantity_unit 			AS stockItemQuantityUnit
+			,si.stock_item_quantity_capacity 		AS stockItemQuantityCapacity
+			,si.stock_item_quantity_capacity_unit 	AS stockItemQuantityCapacityUnit
+		FROM
+			tb_stock_item AS si
+		WHERE
+			si.stock_item_code = #{stockItemCode}
+  	</select>
+  	
+  	<select id="getStockItem" resultType="map" parameterType="String">
+  		SELECT
+			 si.stock_item_code 					AS stockItemCode
+			,sc.stock_cate_name						AS stockCateName
+			,si.stock_item_name 					AS stockItemName
+			,si.stock_item_quantity 				AS stockItemQuantity
+			,si.stock_item_quantity_unit 			AS stockItemQuantityUnit
+			,si.stock_item_quantity_capacity 		AS stockItemQuantityCapacity
+			,si.stock_item_quantity_capacity_unit 	AS stockItemQuantityCapacityUnit
+		FROM
+			tb_farm AS f
+			INNER join
+			tb_stock_item AS si
+			on
+			f.farm_code = si.farm_code
+			INNER join
+			tb_stock_cate AS sc
+			on
+			si.stock_cate_code = sc.stock_cate_code
+		WHERE
+			f.farm_code = (SELECT
+			fp.farm_code
+		FROM
+			tb_farm_project AS fp
+		WHERE
+			fp.project_code = #{projectCode})
+  	</select>
+  	
   	<select id="getFarmRetainMachine" resultType="map" parameterType="String">
   		SELECT
 			 cm.common_machine_code AS commonMachineCode

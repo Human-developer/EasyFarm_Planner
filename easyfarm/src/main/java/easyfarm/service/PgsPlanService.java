@@ -66,6 +66,16 @@ public class PgsPlanService {
 		return pgsPlanMapper.getFarmRetainMachine(projectCode);
 	}
 	
+	//농가별 품목조회
+	public List<Map<String, Object>> getStockItem(String projectCode) {
+		return pgsPlanMapper.getStockItem(projectCode);
+	}
+	
+	//품목정보조회
+	public Map<String, Object> getStockItemInfo(String stockItemCode) {
+		return pgsPlanMapper.getStockItemInfo(stockItemCode);
+	}
+	
 	public List<EtcPay> getEtcPayPlan(){
 		List<EtcPay> etcPayPlan = null;
 		System.out.println("getEtcPayPlan !@@@@@@@@@@@@@@@@@@@@@@@@");

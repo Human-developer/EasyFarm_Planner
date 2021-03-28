@@ -1,5 +1,6 @@
 package easyfarm.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import easyfarm.service.PgsPlanService;
 
@@ -73,8 +76,26 @@ public class PlanController {
 			/* 보유농기계조회 */
 			List<Map<String, Object>> farmRetainMachineList = pgsPlanService.getFarmRetainMachine(projectCode);
 			model.addAttribute("farmRetainMachineList", farmRetainMachineList);
+			
+			/* 품목조회 */
+			List<Map<String, Object>> stockItemList = pgsPlanService.getStockItem(projectCode);
+			model.addAttribute("stockItemList", stockItemList);
+			
 		}
 		
 		return "views/plan/addSpend";
 	}
+	
+	@PostMapping("/ajax/getStockItemInfo")
+	@ResponseBody
+	public Map<String, Object> getStockItemInfo(@RequestParam(value = "stockItemCode", required = false) String stockItemCode) {
+		Map<String, Object> stockItemInfo = null;
+		if(stockItemCode != null && !"".equals(stockItemCode)) {
+			stockItemInfo = pgsPlanService.getStockItemInfo(stockItemCode);
+		}
+		return stockItemInfo;
+	}
+	
+	
+	
 }
