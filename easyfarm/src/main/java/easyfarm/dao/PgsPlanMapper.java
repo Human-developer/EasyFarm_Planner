@@ -40,7 +40,13 @@ public interface PgsPlanMapper {
 	//프로젝트별 상세작업항목
 	public List<Map<String, Object>> getWorkphaseCateName(String projectCode);
 	
+	//농가별 거래처
+	public List<Map<String, Object>> getClientName(String projectCode);
 	
+	//농가별 농기계즐겨찾기
+	public List<Map<String, Object>> getFarmBookmarkMachine(String projectCode);
 	
+	//농가별 보유농기계
+	public List<Map<String, Object>> getFarmRetainMachine(String projectCode);
 
 }

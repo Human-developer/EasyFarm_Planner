@@ -198,9 +198,9 @@
 												    <div class="col-md-4">
 														<select class="form-control" name="clientCode" id="machineClientCode" readonly="readonly">
 															<option value=""> :: 거래처선택 :: </option>
-															<option value="1" disabled="disabled">Dropdown 1</option>
-															<option value="2">Dropdown 1</option>
-															<option value="3">Dropdown 1</option>
+															<th:block th:if="${#lists.size(clientNameList) > 0}" th:each="c : ${clientNameList}">
+																<option th:value="${c.clientCode}" th:text="${c.clientName}" disabled="disabled"></option>
+															</th:block>
 														</select>
 												    </div>
 												</div>
@@ -209,28 +209,28 @@
 												    <div class="col-md-4">
 														<select class="form-control" name="commonMachineCode" id="commonMachineCode" readonly="readonly">
 															<option value=""> :: 종류선택 :: </option>
-															<option value="1" disabled="disabled">Dropdown 1</option>
-															<option value="2">Dropdown 1</option>
-															<option value="3">Dropdown 1</option>
+															<th:block th:if="${#lists.size(farmBookmarkMachineList) > 0}" th:each="f : ${farmBookmarkMachineList}">
+																<option th:value="${f.commonMachineCode}" th:text="${f.commonMachineName}" disabled="disabled"></option>
+															</th:block>
 														</select>
 												    </div>
 												</div>
 												<div class="form-group">
 													<label for="machineLeaseHowlong" class="col-sm-2 control-label"><strong>대여일수</strong></label>
 												    <div class="col-md-4">
-												      <input id="machineLeaseHowlong" type="text" name="machineLeaseHowlong" class="form-control" readonly="readonly">
+												      <input id="machineLeaseHowlong" type="text" name="machineLeaseHowlong" class="form-control" readonly="readonly" placeholder="0">
 												    </div>
 												</div>
 												<div class="form-group">
 													<label for="machineLeasePayDay" class="col-sm-2 control-label"><strong>일일대여료</strong></label>
 												    <div class="col-md-4">
-												      <input id="machineLeasePayDay" type="text" name="machineLeasePayDay" class="form-control" readonly="readonly">
+												      <input id="machineLeasePayDay" type="text" name="machineLeasePayDay" class="form-control" readonly="readonly" placeholder="1000">
 												    </div>
 												</div>
 												<div class="form-group">
 													<label for="machineLeasePayTotal" class="col-sm-2 control-label"><strong>총대여료합계</strong></label>
 												    <div class="col-md-4">
-												      <input id="machineLeasePayTotal" type="text" name="machineLeasePayTotal" class="form-control" readonly="readonly">
+												      <input id="machineLeasePayTotal" type="text" name="machineLeasePayTotal" class="form-control" readonly="readonly" placeholder="0">
 												    </div>
 												</div>
 											</div>
@@ -256,9 +256,9 @@
 												    <div class="col-md-4">
 														<select class="form-control" name="farmRetainMachineCode" id="farmRetainMachineCode" readonly="readonly">
 															<option value=""> :: 종류선택 :: </option>
-															<option value="1" disabled="disabled">Dropdown 1</option>
-															<option value="2">Dropdown 1</option>
-															<option value="3">Dropdown 1</option>
+															<th:block th:if="${#lists.size(farmRetainMachineList) > 0}" th:each="f : ${farmRetainMachineList}">
+																<option th:value="${f.commonMachineCode}" th:text="${f.commonMachineName}" disabled="disabled"></option>
+															</th:block>
 														</select>
 												    </div>
 												</div>
@@ -272,9 +272,9 @@
 										<div class="card-content">
 											<div class="form-horizontal">
 												<div class="form-group">
-													<label for="workPhase" class="col-sm-2 control-label"><strong>품목</strong></label>
+													<label class="col-sm-2 control-label"><strong>품목</strong></label>
 												    <div class="col-md-4">
-														<select class="form-control" name="workPhase" id="workPhase">
+														<select class="form-control" name="stockItemCode" id="stockItemCode">
 															<option value=""> :: 품목선택 :: </option>
 															<option value="1">Dropdown 1</option>
 															<option value="2">Dropdown 1</option>
@@ -283,34 +283,39 @@
 												    </div>
 												</div>
 												<div class="form-group">
-													<label for="workPhase" class="col-sm-2 control-label"><strong>잔여수량</strong></label>
+													<label for="resourceRetainQuantity" class="col-sm-2 control-label"><strong>잔여수량</strong></label>
 												    <div class="col-md-4">
-												    	<input id="insureDatail" type="text" name="insureDatail" class="form-control">
+												    	<input class="hidden" id="resourceRetainQuantityUnit" value="단위"/>
+												    	<input id="resourceRetainQuantity" type="text" name="resourceRetainQuantity" class="form-control">
 												    </div>
 												</div>
 												<div class="form-group">
-													<label for="insureDatail" class="col-sm-2 control-label"><strong>총잔여량소계</strong></label>
+													<label for="resourceRetainQuantityCapacityExtra" class="col-sm-2 control-label"><strong>총잔여량소계</strong></label>
 												    <div class="col-md-4">
-												      <input id="insureDatail" type="text" name="insureDatail" class="form-control">
+												    	<input class="hidden" id="resourceRetainQuantityCapacityExtraUnit" value="단위"/>
+												    	<input id="resourceRetainQuantityCapacityExtra" type="text" name="resourceRetainQuantityCapacityExtra" class="form-control">
 												    </div>
 												</div>
 												<hr/>
 												<div class="form-group">
-													<label for="workPhase" class="col-sm-2 control-label"><strong>사용수량</strong></label>
+													<label for="stockItemUseQuantity" class="col-sm-2 control-label"><strong>사용수량</strong></label>
 												    <div class="col-md-4">
-												    	<input id="insureDatail" type="text" name="insureDatail" class="form-control">
+												    	<input class="hidden" id="stockItemUseQuantityUnit" value="단위"/>
+												    	<input id="stockItemUseQuantity" type="text" name="stockItemUseQuantity" class="form-control">
 												    </div>
 												</div>
 												<div class="form-group">
-													<label for="insureDatail" class="col-sm-2 control-label"><strong>총사용량소계</strong></label>
+													<label for="stockItemUseQuantityTotal" class="col-sm-2 control-label"><strong>총사용량소계</strong></label>
 												    <div class="col-md-4">
-												      <input id="insureDatail" type="text" name="insureDatail" class="form-control">
+												    	<input class="hidden" id="stockItemUseQuantityTotalUnit" value="단위"/>
+												    	<input id="stockItemUseQuantityTotal" type="text" name="stockItemUseQuantityTotal" class="form-control">
 												    </div>
 												</div>
 												<div class="form-group">
-													<label for="insureDatail" class="col-sm-2 control-label"><strong>총사용량금액환산</strong></label>
+													<label for="stockItemUseQuantityConversionPay" class="col-sm-2 control-label"><strong>총사용량금액환산</strong></label>
 												    <div class="col-md-4">
-												      <input id="insureDatail" type="text" name="insureDatail" class="form-control">
+												    	<input class="hidden" id="stockItemUseQuantityConversionPayUnit" value="원"/>
+												    	<input id="stockItemUseQuantityConversionPay" type="text" name="stockItemUseQuantityConversionPay" class="form-control">
 												    </div>
 												</div>
 											</div>
@@ -513,76 +518,14 @@
 	
 		<!-- Demo Scripts -->
 		<script th:src="@{/assets/scripts/form.custom.PGS.js}"></script>
+		
+		<!-- addSpend.html Scripts -->
+		<script th:src="@{/assets/scripts/addSpend.js}"></script>
 	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 -->
 	<th:block layout:fragment="customJavaScript">
-		<script type="text/javascript">
-			$('#workPhaseCateDate-range, #workPhaseDate-range').datepicker({
-				language: 'kr',
-		        autoClose: true,
-			});
-			
-			$('#workforcePayDay, #machineLeasePayDay').TouchSpin({
-				min: 0,
-				max: 1000000000,
-				step: 1000,
-				stepinterval: 50,
-				maxboostedstep: 10000000,
-				postfix: '원'
-			});
-			
-			$('#gainQuantity').TouchSpin({
-				min: 0,
-				max: 1000000000,
-				step: 1,
-				stepinterval: 50,
-				maxboostedstep: 10000000,
-			});
-
-			$('#workforceCount').TouchSpin({
-				min: 0,
-				max: 1000000000,
-				stepinterval: 50,
-				maxboostedstep: 10000000,
-				postfix: '명'
-			});
-			
-			$('#workforceHowlong, #machineLeaseHowlong').TouchSpin({
-				min: 0,
-				max: 1000000000,
-				stepinterval: 50,
-				maxboostedstep: 10000000,
-				postfix: '일'
-			});
-			
-			$('#leaseSwitch, #useSwitch').prop('checked', false);
-			
-			$('#leaseSwitch, #useSwitch').on('click', function(){
-				if($('#leaseSwitch').prop('checked')){
-					$('#machineClientCode, #commonMachineCode, #machineLeaseHowlong, #machineLeasePayDay, #farmRetainMachineCode').removeAttr('readonly');
-					$('#machineClientCode option, #commonMachineCode option, #farmRetainMachineCode option').removeAttr('disabled');
-				}else{
-					$('#machineClientCode, #commonMachineCode, #machineLeaseHowlong, #machineLeasePayDay, #farmRetainMachineCode').attr('readonly', 'readonly');
-					$('#machineClientCode option, #commonMachineCode option, #farmRetainMachineCode option').attr('disabled', 'disabled');
-				}
-				if($('#useSwitch').prop('checked')){
-					$('#farmRetainMachineCode').removeAttr('readonly');
-					$('#farmRetainMachineCode option').removeAttr('disabled');
-				}else{
-					$('#farmRetainMachineCode').attr('readonly', 'readonly');
-					$('#farmRetainMachineCode option').attr('disabled', 'disabled');
-				}
-			});
-			
-			$('#workforceCount, #workforceHowlong, #workforcePayDay').on('propertychange change keyup', function(){
-				var workforceCountValue = $('#workforceCount').val();
-				var workforceHowlongValue = $('#workforceHowlong').val();
-				var workforcePayDayValue = $('#workforcePayDay').val();
-				var totalSum = (workforceCountValue * workforceHowlongValue * workforcePayDayValue);
-				$('#workforcePayTotal').val(totalSum);
-			});
-		</script>
+		
 	</th:block>
 
 </html>

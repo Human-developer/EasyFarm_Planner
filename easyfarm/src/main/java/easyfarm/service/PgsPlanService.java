@@ -51,6 +51,21 @@ public class PgsPlanService {
 		return pgsPlanMapper.getWorkphaseCateName(projectCode);
 	}
 	
+	//농가별 거래처
+	public List<Map<String, Object>> getClientName(String projectCode) {
+		return pgsPlanMapper.getClientName(projectCode);
+	}
+	
+	//농가별 농기계즐겨찾기
+	public List<Map<String, Object>> getFarmBookmarkMachine(String projectCode) {
+		return pgsPlanMapper.getFarmBookmarkMachine(projectCode);
+	}
+	
+	//농가별 보유농기계
+	public List<Map<String, Object>> getFarmRetainMachine(String projectCode) {
+		return pgsPlanMapper.getFarmRetainMachine(projectCode);
+	}
+	
 	public List<EtcPay> getEtcPayPlan(){
 		List<EtcPay> etcPayPlan = null;
 		System.out.println("getEtcPayPlan !@@@@@@@@@@@@@@@@@@@@@@@@");

@@ -10,6 +10,78 @@
 		<result column="" property="" />
 	</resultMap>
   	
+  	<select id="getFarmRetainMachine" resultType="map" parameterType="String">
+  		SELECT
+			 cm.common_machine_code AS commonMachineCode
+			,cm.common_machine_name AS commonMachineName
+		FROM
+			tb_farm AS f
+			INNER join
+			tb_farm_retain_machine AS frm
+			on
+			f.farm_code = frm.farm_code
+			INNER join
+			tb_farm_bookmark_machine AS fbm
+			on
+			frm.farm_bookmark_machine_code = fbm.farm_bookmark_machine_code
+			INNER join
+			tb_common_machine AS cm
+			on
+			fbm.common_machine_code = cm.common_machine_code
+		WHERE
+			f.farm_code = (SELECT
+			fp.farm_code
+		FROM
+			tb_farm_project AS fp
+		WHERE
+			fp.project_code = #{projectCode})
+		ORDER BY commonMachineCode*1 ASC
+  	</select>
+  	
+  	<select id="getFarmBookmarkMachine" resultType="map" parameterType="String">
+  		SELECT
+			 cm.common_machine_code AS commonMachineCode
+			,cm.common_machine_name AS commonMachineName
+		FROM
+			tb_farm AS f
+			INNER join
+			tb_farm_bookmark_machine AS fbm
+			on
+			f.farm_code = fbm.farm_code
+			INNER join
+			tb_common_machine AS cm
+			on
+			fbm.common_machine_code = cm.common_machine_code
+		WHERE
+			f.farm_code = (SELECT
+			fp.farm_code
+		FROM
+			tb_farm_project AS fp
+		WHERE
+			fp.project_code = #{projectCode})
+		ORDER BY commonMachineCode*1 ASC
+  	</select>
+  	
+  	<select id="getClientName" resultType="map" parameterType="String">
+  		SELECT
+			 c.client_code AS clientCode
+			,c.client_name AS clientName
+		FROM
+			tb_farm AS f
+			INNER join
+			tb_client AS c
+			on
+			f.farm_code = c.farm_code
+		WHERE
+			f.farm_code = (SELECT
+			fp.farm_code
+		FROM
+			tb_farm_project AS fp
+		WHERE
+			fp.project_code = #{projectCode})
+		ORDER BY c.client_code*1 ASC
+  	</select>
+  	
   	<select id="getWorkphaseName" resultType="map" parameterType="String">
   		SELECT
 			 cpi.workphase
