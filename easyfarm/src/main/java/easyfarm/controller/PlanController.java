@@ -19,7 +19,21 @@ public class PlanController {
 	
 	/* 월켈린더조회 */
 	@GetMapping("/plan/getSchedule")
-	public String getSchedule(Model model) {
+	public String getSchedule(Model model
+							 ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode) {
+		if(projectPlanCode == null) {
+			projectPlanCode = "project_plan_1";
+		}
+		if(projectPlanCode != null && !"".equals(projectPlanCode)) {
+			/* 계획차수조회 */
+			Map<String, Object> projectPlanInfo = pgsPlanService.getProjectPlanInfo(projectPlanCode);
+			String projectPlanN = (String) projectPlanInfo.get("projectPlanN");
+			String projectCode = (String) projectPlanInfo.get("projectCode");
+			model.addAttribute("projectPlanCode", projectPlanCode);
+			model.addAttribute("projectPlanN", projectPlanN);
+			model.addAttribute("projectCode", projectCode);
+		}
+		
 		return "views/plan/getSchedule";
 	}
 	
@@ -27,9 +41,7 @@ public class PlanController {
 	@GetMapping("/plan/addSpend")
 	public String addSpend(Model model
 						  ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode) {
-		if(projectPlanCode == null) {
-			projectPlanCode = "project_plan_1";
-		}
+		
 		if(projectPlanCode != null && !"".equals(projectPlanCode)) {
 			
 			/* 계획차수조회 */
@@ -40,6 +52,7 @@ public class PlanController {
 			/* 작업단계 */
 			String projectCode = (String) projectPlanInfo.get("projectCode");
 			List<Map<String, Object>> workphaseNameList = pgsPlanService.getWorkphaseName(projectCode);
+			System.out.println(workphaseNameList);
 			model.addAttribute("workphaseNameList", workphaseNameList);
 			
 			/* 상세작업항목조회 */

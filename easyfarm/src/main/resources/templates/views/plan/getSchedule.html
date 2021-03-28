@@ -32,6 +32,10 @@
 			}
 			hr{border-bottom: 1px solid grey;};
 			.pl-0{padding-right: 0px;}
+			button a{color: white;}
+			button a:link { color: white; text-decoration: none;}
+			button a:visited { color: white; text-decoration: none;}
+			button a:hover { color: white; text-decoration: none;}
 		</style>
 	</th:block>
 	
@@ -42,10 +46,12 @@
 				<div class="col-md-12">
 					<div class="box-content">
 						<div class="pull-left">
-							<div style="font-size: 24px;">1차 월간 계획 간편보기</div>
+							<div style="font-size: 24px;" th:text="|${projectPlanN} 월간 계획 간편보기|"></div>
 						</div>
 						<div class="pull-right">
-							<button type="button" id="planAddBtn" class="btn btn-primary btn-sm waves-effect waves-light btn-rounded">계획서 등록</button>
+							<button type="button" id="planAddBtn" class="btn btn-primary btn-sm waves-effect waves-light btn-rounded">
+								<a th:href="@{/plan/addSpend(projectPlanCode=${projectPlanCode})}">계획서 등록</a>
+							</button>
 							<button type="button" id="planAciveBtn" class="btn btn-success btn-sm waves-effect waves-light btn-rounded">계획서 실행</button>
 						</div>
 						<div style="margin-top: 6px;">
@@ -173,9 +179,9 @@
 				$('[name="start"], [name="end"]').val(date);
 			}
 			
-			$('#planAddBtn').click(function(){
+			/* $('#planAddBtn').click(function(){
 				location.href = '/plan/addSpend';
-			})
+			}) */
 		</script>
 	</th:block>
 	

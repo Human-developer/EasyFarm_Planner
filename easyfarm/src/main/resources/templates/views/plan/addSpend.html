@@ -82,7 +82,7 @@
 										<select class="form-control" name="workPhase" id="workPhase">
 											<option value=""> :: 단계선택 :: </option>
 											<th:block th:if="${#lists.size(workphaseNameList) > 0}" th:each="w, st : ${workphaseNameList}">
-												<option th:value="${st.count}" th:text="${w.workphaseName}">Dropdown 1</option>
+												<option th:value="${st.count}" th:text="|${w.workphase} : ${w.workphaseName}|"></option>
 											</th:block>
 										</select>
 								    </div>
@@ -154,25 +154,25 @@
 										<div class="form-group">
 											<label for="workforceCount" class="col-sm-2 control-label"><strong>근무인원</strong></label>
 										    <div class="col-md-4">
-										      <input id="workforceCount" type="text" value="0" name="workforceCount" class="form-control">
+										      <input id="workforceCount" type="text" name="workforceCount" class="form-control" placeholder="0">
 										    </div>
 										</div>
 										<div class="form-group">
 											<label for="workforceHowlong" class="col-sm-2 control-label"><strong>근무일수</strong></label>
 										    <div class="col-md-4">
-										      <input id="workforceHowlong" type="text" value="0" name="workforceHowlong" class="form-control">
+										      <input id="workforceHowlong" type="text" name="workforceHowlong" class="form-control" placeholder="0">
 										    </div>
 										</div>
 										<div class="form-group">
 											<label for="workforcePayDay" class="col-sm-2 control-label"><strong>일일인건비</strong></label>
 										    <div class="col-md-4">
-										      <input id="workforcePayDay" type="text" value="1000" name="workforcePayDay" class="form-control">
+										      <input id="workforcePayDay" type="text" name="workforcePayDay" class="form-control" placeholder="1000">
 										    </div>
 										</div>
 										<div class="form-group">
 											<label for="workforcePayTotal" class="col-sm-2 control-label"><strong>인건비합계</strong></label>
 										    <div class="col-md-4">
-										      <input id="workforcePayTotal" type="text" value="0" name="workforcePayTotal" class="form-control">
+										      <input id="workforcePayTotal" type="text" value="0" name="workforcePayTotal" class="form-control" readonly="readonly">
 										    </div>
 										</div>
 									</div>
@@ -194,43 +194,43 @@
 										<div class="card-content">
 											<div class="form-horizontal">
 												<div class="form-group">
-													<label for="workPhase" class="col-sm-2 control-label"><strong>거래처</strong></label>
+													<label class="col-sm-2 control-label"><strong>거래처</strong></label>
 												    <div class="col-md-4">
-														<select class="form-control" name="workPhase" id="workPhase">
+														<select class="form-control" name="clientCode" id="machineClientCode" readonly="readonly">
 															<option value=""> :: 거래처선택 :: </option>
-															<option value="1">Dropdown 1</option>
+															<option value="1" disabled="disabled">Dropdown 1</option>
 															<option value="2">Dropdown 1</option>
 															<option value="3">Dropdown 1</option>
 														</select>
 												    </div>
 												</div>
 												<div class="form-group">
-													<label for="workPhase" class="col-sm-2 control-label"><strong>대여농기계종류</strong></label>
+													<label class="col-sm-2 control-label"><strong>대여농기계종류</strong></label>
 												    <div class="col-md-4">
-														<select class="form-control" name="workPhase" id="workPhase">
+														<select class="form-control" name="commonMachineCode" id="commonMachineCode" readonly="readonly">
 															<option value=""> :: 종류선택 :: </option>
-															<option value="1">Dropdown 1</option>
+															<option value="1" disabled="disabled">Dropdown 1</option>
 															<option value="2">Dropdown 1</option>
 															<option value="3">Dropdown 1</option>
 														</select>
 												    </div>
 												</div>
 												<div class="form-group">
-													<label for="insureDatail" class="col-sm-2 control-label"><strong>대여일수</strong></label>
+													<label for="machineLeaseHowlong" class="col-sm-2 control-label"><strong>대여일수</strong></label>
 												    <div class="col-md-4">
-												      <input id="insureDatail" type="text" name="insureDatail" class="form-control">
+												      <input id="machineLeaseHowlong" type="text" name="machineLeaseHowlong" class="form-control" readonly="readonly">
 												    </div>
 												</div>
 												<div class="form-group">
-													<label for="insureDatail" class="col-sm-2 control-label"><strong>일일대여료</strong></label>
+													<label for="machineLeasePayDay" class="col-sm-2 control-label"><strong>일일대여료</strong></label>
 												    <div class="col-md-4">
-												      <input id="insureDatail" type="text" name="insureDatail" class="form-control">
+												      <input id="machineLeasePayDay" type="text" name="machineLeasePayDay" class="form-control" readonly="readonly">
 												    </div>
 												</div>
 												<div class="form-group">
-													<label for="insureDatail" class="col-sm-2 control-label"><strong>총대여료합계</strong></label>
+													<label for="machineLeasePayTotal" class="col-sm-2 control-label"><strong>총대여료합계</strong></label>
 												    <div class="col-md-4">
-												      <input id="insureDatail" type="text" name="insureDatail" class="form-control">
+												      <input id="machineLeasePayTotal" type="text" name="machineLeasePayTotal" class="form-control" readonly="readonly">
 												    </div>
 												</div>
 											</div>
@@ -252,11 +252,11 @@
 										<div class="card-content">
 											<div class="form-horizontal">
 												<div class="form-group">
-													<label for="workPhase" class="col-sm-2 control-label"><strong>보유농기계종류</strong></label>
+													<label for="farmRetainMachineCode" class="col-sm-2 control-label"><strong>보유농기계종류</strong></label>
 												    <div class="col-md-4">
-														<select class="form-control" name="workPhase" id="workPhase">
+														<select class="form-control" name="farmRetainMachineCode" id="farmRetainMachineCode" readonly="readonly">
 															<option value=""> :: 종류선택 :: </option>
-															<option value="1">Dropdown 1</option>
+															<option value="1" disabled="disabled">Dropdown 1</option>
 															<option value="2">Dropdown 1</option>
 															<option value="3">Dropdown 1</option>
 														</select>
@@ -491,7 +491,7 @@
 		<script th:src="@{/assets/plugin/multiselect/multiselect.min.js}"></script>
 	
 		<!-- Touch Spin -->
-		<script th:src="@{/assets/plugin/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+		<script th:src="@{/assets/plugin/touchspin/jquery.bootstrap-touchspin-custom-Pgs.js}"></script>
 	
 		<!-- Timepicker -->
 		<script th:src="@{/assets/plugin/timepicker/bootstrap-timepicker.min.js}"></script>
@@ -523,7 +523,7 @@
 		        autoClose: true,
 			});
 			
-			$("#workforcePayDay").TouchSpin({
+			$('#workforcePayDay, #machineLeasePayDay').TouchSpin({
 				min: 0,
 				max: 1000000000,
 				step: 1000,
@@ -532,15 +532,56 @@
 				postfix: '원'
 			});
 			
-			$("#gainQuantity").TouchSpin({
+			$('#gainQuantity').TouchSpin({
 				min: 0,
 				max: 1000000000,
 				step: 1,
 				stepinterval: 50,
 				maxboostedstep: 10000000,
 			});
+
+			$('#workforceCount').TouchSpin({
+				min: 0,
+				max: 1000000000,
+				stepinterval: 50,
+				maxboostedstep: 10000000,
+				postfix: '명'
+			});
 			
-			$("#leaseSwitch, #useSwitch").prop("checked", false);
+			$('#workforceHowlong, #machineLeaseHowlong').TouchSpin({
+				min: 0,
+				max: 1000000000,
+				stepinterval: 50,
+				maxboostedstep: 10000000,
+				postfix: '일'
+			});
+			
+			$('#leaseSwitch, #useSwitch').prop('checked', false);
+			
+			$('#leaseSwitch, #useSwitch').on('click', function(){
+				if($('#leaseSwitch').prop('checked')){
+					$('#machineClientCode, #commonMachineCode, #machineLeaseHowlong, #machineLeasePayDay, #farmRetainMachineCode').removeAttr('readonly');
+					$('#machineClientCode option, #commonMachineCode option, #farmRetainMachineCode option').removeAttr('disabled');
+				}else{
+					$('#machineClientCode, #commonMachineCode, #machineLeaseHowlong, #machineLeasePayDay, #farmRetainMachineCode').attr('readonly', 'readonly');
+					$('#machineClientCode option, #commonMachineCode option, #farmRetainMachineCode option').attr('disabled', 'disabled');
+				}
+				if($('#useSwitch').prop('checked')){
+					$('#farmRetainMachineCode').removeAttr('readonly');
+					$('#farmRetainMachineCode option').removeAttr('disabled');
+				}else{
+					$('#farmRetainMachineCode').attr('readonly', 'readonly');
+					$('#farmRetainMachineCode option').attr('disabled', 'disabled');
+				}
+			});
+			
+			$('#workforceCount, #workforceHowlong, #workforcePayDay').on('propertychange change keyup', function(){
+				var workforceCountValue = $('#workforceCount').val();
+				var workforceHowlongValue = $('#workforceHowlong').val();
+				var workforcePayDayValue = $('#workforcePayDay').val();
+				var totalSum = (workforceCountValue * workforceHowlongValue * workforcePayDayValue);
+				$('#workforcePayTotal').val(totalSum);
+			});
 		</script>
 	</th:block>
 

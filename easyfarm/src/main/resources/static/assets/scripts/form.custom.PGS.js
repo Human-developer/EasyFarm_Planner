@@ -44,24 +44,6 @@
 		maxboostedstep: 10,
 		postfix: '%'
 	});
-
-	if ($("input[name='workforceCount']").length)
-		$("input[name='workforceCount']").TouchSpin({
-			min: 0,
-			max: 1000000000,
-			stepinterval: 50,
-			maxboostedstep: 10000000,
-			postfix: '명'
-		});
-	
-	if ($("input[name='workforceHowlong']").length)
-		$("input[name='workforceHowlong']").TouchSpin({
-			min: 0,
-			max: 1000000000,
-			stepinterval: 50,
-			maxboostedstep: 10000000,
-			postfix: '일'
-		});
 	
 	if ($("input[name='demo_vertical']").length)
 		$("input[name='demo_vertical']").TouchSpin({

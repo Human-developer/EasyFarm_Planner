@@ -12,7 +12,8 @@
   	
   	<select id="getWorkphaseName" resultType="map" parameterType="String">
   		SELECT
-			cpi.workphase_name AS workphaseName
+			 cpi.workphase
+			,cpi.workphase_name AS workphaseName
 		FROM
 			tb_project_workphase AS pw
 			INNER join
@@ -23,7 +24,7 @@
 			cpi.use_status = 'O'
 		WHERE
 			pw.project_code = #{projectCode}
-		ORDER BY cpi.crop_phase_info_code*1 ASC
+		ORDER BY workphase*1 ASC
   	</select>
   	
   	<select id="getProjectPlanInfo" resultType="map" parameterType="String">
