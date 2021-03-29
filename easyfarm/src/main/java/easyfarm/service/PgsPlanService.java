@@ -38,7 +38,11 @@ public class PgsPlanService {
 	
 	//프로젝트 계획차수 조회
 	public Map<String, Object> getProjectPlanInfo(String projectPlanCode) {
-		return pgsPlanMapper.getProjectPlanInfo(projectPlanCode);
+		Map<String, Object> result = null;
+		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
+			result = pgsPlanMapper.getProjectPlanInfo(projectPlanCode);
+		}
+		return result;
 	}
 	
 	//프로젝트별 작업단계

@@ -33,6 +33,7 @@
 			,si.stock_item_quantity_unit 			AS stockItemQuantityUnit
 			,si.stock_item_quantity_capacity 		AS stockItemQuantityCapacity
 			,si.stock_item_quantity_capacity_unit 	AS stockItemQuantityCapacityUnit
+			,ru.available_status					AS availableStatus
 		FROM
 			tb_farm AS f
 			INNER join
@@ -43,6 +44,14 @@
 			tb_stock_cate AS sc
 			on
 			si.stock_cate_code = sc.stock_cate_code
+			INNER join
+			tb_exp_resource_pay AS erp
+			on
+			si.stock_item_code = erp.stock_item_code
+			INNER join
+			tb_resource_usecapacity AS ru
+			on
+			erp.resource_pay_code = ru.resource_pay_code
 		WHERE
 			f.farm_code = (SELECT
 			fp.farm_code
@@ -50,6 +59,8 @@
 			tb_farm_project AS fp
 		WHERE
 			fp.project_code = #{projectCode})
+			and
+			ru.available_status = 'Y'
   	</select>
   	
   	<select id="getFarmRetainMachine" resultType="map" parameterType="String">

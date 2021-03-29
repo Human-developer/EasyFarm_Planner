@@ -45,15 +45,57 @@ $(function(){
 		if($('#leaseSwitch').prop('checked')){
 			$('#machineClientCode, #commonMachineCode, #machineLeaseHowlong, #machineLeasePayDay, #farmRetainMachineCode').removeAttr('readonly');
 			$('#machineClientCode option, #commonMachineCode option, #farmRetainMachineCode option').removeAttr('disabled');
-			$('#inputFormLeaseHowlong, #inputFormLeasePayDay').children().remove();
-			$('#inputFormLeaseHowlong').html('<div class="input-group bootstrap-touchspin"><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-down" type="button">-</button></span><span class="input-group-addon bootstrap-touchspin-prefix" style="display: none;"></span><input id="machineLeaseHowlong" type="text" name="machineLeaseHowlong" class="form-control" placeholder="0" style="display: block;"><span class="input-group-addon bootstrap-touchspin-postfix">일</span><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-up" type="button">+</button></span></div>');
-			$('#inputFormLeasePayDay').html('<div class="input-group bootstrap-touchspin"><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-down" type="button">-</button></span><span class="input-group-addon bootstrap-touchspin-prefix" style="display: none;"></span><input id="machineLeasePayDay" type="text" name="machineLeasePayDay" class="form-control" placeholder="1000" style="display: block;"><span class="input-group-addon bootstrap-touchspin-postfix">원</span><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-up" type="button">+</button></span></div>');
+			
+			var touchSpinActive = "touchSpinActive";
+			$.ajax({
+				url: "/ajax/touchSpinActive",
+				method: "POST",
+				data: { touchSpinActive : touchSpinActive },
+				success : function(data) {
+					$('#machineLeaseHowlong').TouchSpin({
+						min: 0,
+						max: 1000000000,
+						stepinterval: 50,
+						maxboostedstep: 10000000,
+						postfix: '일'
+					});
+					$('#machineLeasePayDay').TouchSpin({
+						min: 0,
+						max: 1000000000,
+						step: 1000,
+						stepinterval: 50,
+						maxboostedstep: 10000000,
+						postfix: '원'
+					});
+				},
+				error : function(xhr, status, error) {
+					console.log('xhr : ' + xhr);
+					console.log('status : ' + status);
+					console.log('error : ' + error);
+				}
+				
+			});
 		}else{
 			$('#machineClientCode, #commonMachineCode, #machineLeaseHowlong, #machineLeasePayDay, #farmRetainMachineCode').attr('readonly', 'readonly');
 			$('#machineClientCode option, #commonMachineCode option, #farmRetainMachineCode option').attr('disabled', 'disabled');
-			$('#inputFormLeaseHowlong, #inputFormLeasePayDay').children().remove();
-			$('#inputFormLeaseHowlong').html('<input id="machineLeaseHowlong" type="text" name="machineLeaseHowlong" class="form-control" readonly="readonly" placeholder="0">');
-			$('#inputFormLeasePayDay').html('<input id="machineLeasePayDay" type="text" name="machineLeasePayDay" class="form-control" readonly="readonly" placeholder="1000">');
+			var touchSpinActive = "touchSpinActive";
+			$.ajax({
+				url: "/ajax/touchSpinActive",
+				method: "POST",
+				data: { touchSpinActive : touchSpinActive },
+				success : function(data) {
+					$('#inputFormLeaseHowlong, #inputFormLeasePayDay').children().detach();
+					$('#inputFormLeaseHowlong').html('<input id="machineLeaseHowlong" type="text" name="machineLeaseHowlong" class="form-control" readonly="readonly" placeholder="0">');
+					$('#inputFormLeasePayDay').html('<input id="machineLeasePayDay" type="text" name="machineLeasePayDay" class="form-control" readonly="readonly" placeholder="1000">');
+					$('#machineLeasePayTotal').val('');
+				},
+				error : function(xhr, status, error) {
+					console.log('xhr : ' + xhr);
+					console.log('status : ' + status);
+					console.log('error : ' + error);
+				}
+				
+			});
 		}
 		if($('#useSwitch').prop('checked')){
 			$('#farmRetainMachineCode').removeAttr('readonly');
@@ -71,8 +113,8 @@ $(function(){
 		var totalSum = (workforceCountValue * workforceHowlongValue * workforcePayDayValue);
 		$('#workforcePayTotal').val(totalSum);
 	});
-	
-	$('#machineLeaseHowlong, #machineLeasePayDay').on('propertychange change keyup', function(){
+
+	$(document).on('propertychange change keyup', '#machineLeaseHowlong, #machineLeasePayDay', function(){
 		var machineLeaseHowlongValue = $('#machineLeaseHowlong').val();
 		var machineLeasePayDayValue = $('#machineLeasePayDay').val();
 		var totalSum = (machineLeaseHowlongValue * machineLeasePayDayValue);
