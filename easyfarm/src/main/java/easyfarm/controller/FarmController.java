@@ -33,17 +33,14 @@ public class FarmController {
 	@PostMapping("/json/farmNameCheck")
 	public @ResponseBody String farmNameCheck(@RequestParam(value = "farmName", required = false) String farmName) {
 		String result = "생성불가";
+		Farm farm = null;
 		
-		Farm farm = farmService.farmByName(farmName); 
+		if(farmName != null)  {
+			farm = farmService.farmByName(farmName);
+		}
+		
 		if(farm == null) {
 			result ="생성가능";
-		}
-		else {
-			result ="해당 농가가 이미 존재합니다";
-		}
-		
-		if(farmName.length() < 2) {
-			result = "2글자 이상 입력해주세요";
 		}
 		
 		return result;
@@ -69,15 +66,33 @@ public class FarmController {
 	
 	/* 농가상세보기 */
 	@GetMapping("/farm/detailFarm")
-	public String farmDetailFarm(Model model, @RequestParam(name ="farmCode", required = false) String fCode) {
-	
-		return "views/farm/detailFarm";
+	public String farmDetailFarm(Model model, Farm farm, HttpSession session) {
+		
+		if(farm != null) {						
+			farm.setCeoId((String)session.getAttribute("SID"));
+			Farm resultFarm = farmService.detailFarm(farm);			
+			
+			model.addAttribute("farm", resultFarm);
+			return "views/farm/detailFarm";
+		}
+		else {
+			return "redirect:/farm/myFarm";
+		}
 	}
 	/* 농가상세보기 */
 	
 	/* 나의농가 */
 	@GetMapping("/farm/myFarm")
 	public String myFarm(Model model, HttpSession session ) {
+		String memberId = (String)session.getAttribute("SID");
+		
+		if(memberId != null) {
+			List<Farm> myFarmList =	farmService.myFarm(memberId);
+			
+			if(myFarmList != null) {
+				model.addAttribute("myFarmList",myFarmList);
+			}
+		}
 		
 		return "views/farm/myFarm";
 	}
@@ -86,7 +101,15 @@ public class FarmController {
 	/* 내소속농가보기 */
 	@GetMapping("/farm/belongFarm")
 	public String belongFarm(Model model, HttpSession session) {
+		String memberId = (String)session.getAttribute("SID");
 		
+		if(memberId != null) {
+			List<Farm> myFarmList = farmService.belongFarm(memberId);
+			
+			if(myFarmList != null) {
+				model.addAttribute("myFarmList",myFarmList);
+			}
+		}
 		
 		return "views/farm/belongFarm";
 	}
@@ -121,11 +144,20 @@ public class FarmController {
 		
 		
 		if(farm!=null)	{
+			int result = 0;
+			result = farmService.addFarm(farm);
 			
+			if(result > 0 ) {
+				System.out.println("농가생성 농가회원실패 조건이 뭘까?");
+			}
+			
+			return "redirect:/farm/myFarm";
+		}
+		else {
+			return "redirect:/farm/addFarm";
 		}
 
 		
-		return "redirect:/farm/myFarm";
 	}
 	/* 농가등록 */
 	

@@ -27,55 +27,33 @@
 					<hr>
 					<div class ="col-sm-8 col-sm-offset-2">
 						<table class ="table">
-							<!-- <thead>
-								<tr>
-									<th th:text ="${'농가명'}"/>
-									<th th:text ="${'대표자 아이디'}"/>
-									<th th:text ="${'토지 면적'}"/>
-									<th th:text ="${'주소'}"/>
-									<th th:text ="${'농가 공개유무'}"/>
-									<th th:text ="${'농가 등록일'}"/>
-								</tr>
-							</thead> -->
-							<!-- <tbody>
-								<tr th:unless="${myFarm != null}">
-									<td colspan="6">내농가가 없습니다</td>
-								</tr>
-								<tr th:if ="${myFarm!=null}">
-									<td class ="hidden" th:text = "${myFarm.farmCode}"/>
-									<td th:text = "${myFarm.farmName}"/>
-									<td th:text = "${myFarm.ceoId}"/>
-									<td th:text = "${myFarm.farmArea}"/>
-									<td th:text = "${myFarm.farmAddress}"/>
-									<td th:text = "${myFarm.farmPublicStatus}"/>
-									<td th:text = "${myFarm.farmRegDate}"/>
-								</tr>
-							</tbody> -->
-							
 							<tbody>
 								<tr>
+									<td th:text ="${farm.farmMemberLevel}">
+								</tr>
+								<tr>
 									<th>농가명</th>
-									<td>1</td>
+									<td th:text = "${farm.farmName}"/>
 								</tr>
 								<tr>
 									<th>대표아이디</th>
-									<td>2</td>
+									<td th:text = "${farm.ceoId}"/>
 								</tr>
 								<tr>
 									<th>토지면적</th>
-									<td>3</td>
+									<td th:text = "${farm.farmArea}"/>
 								</tr>
 								<tr>
 									<th>주소</th>
-									<td>4</td>
+									<td th:text = "${farm.farmAddress}"/>
 								</tr>
 								<tr>
 									<th>생성일</th>
-									<td>5</td>
+									<td th:text = "${farm.farmRegDate}"/>
 								</tr>
 								<tr>
 									<th>공개유무</th>
-									<td>6</td>
+									<td th:text = "${farm.farmPublicStatus}"/>
 								</tr>
 							</tbody>
 							

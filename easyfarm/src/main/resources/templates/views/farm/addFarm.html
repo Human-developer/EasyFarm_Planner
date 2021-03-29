@@ -40,13 +40,12 @@
 								<tbody>
 									<tr>
 										<td><label for="farmName"><strong>농가명</strong></label></td>
-										<td><input type="text" id="farmName" name ="farmName"class ="form-control"></td>
+										<td><input type="text" id="farmName" name ="farmName"class ="form-control" placeholder="한글,숫자 2글자 이상 입력해주세요"></td>
 										<td><button type="button" class ="btn btn-info btn-rounded waves-effect waves-light">중복확인</button></td>
 									</tr>
 									<tr>
 										<td><label for="farmArea"><strong>토지면적</strong></label></td>
-										<td><input type="text" id="farmArea" name ="farmArea" class ="form-control"></td>
-										<td>평</td>
+										<td><input type="text" id="farmArea" name ="farmArea" class ="form-control" value ="0"></td>
 									</tr>
 									<tr>
 										<td><label for="farmAddress"><strong>농가주소</strong></label></td>
@@ -87,17 +86,24 @@
 	<th:block layout:fragment="customJavaScript">
 		<script type="text/javascript">
 			var farmNameCheck = false;
-			var nameCheck= RegExp(/[^(가-힣a-zA-Z)]/);
-			var adrrCheck = RegExp(/[^(가-힣0-9)]/);
-
+			//[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9] | [\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]
+			var nameCheck = /^[a-zA-Z0-9]|[a-zA-Z]|[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/;
+			
+			$('#addForm input').keydown(function(){
+				farmNameCheck = false;
+			})
+			
+			
 			$('.btn').click(function(){
 				var text =	$(this).text();
 				if('취소' == text){
 					location.href="/farm";
 				}
 				else if('생성' == text){
-					console.log(farmNameCheck);
-					if(!farmNameCheck){
+					if(farmNameCheck){
+						$('#addForm').submit();
+					}
+					else{
 						swal({
 							title: "농가명 중복체크 해주세요",
 							confirmButtonColor: '#304ffe'
@@ -106,9 +112,10 @@
 				}
 				else if('중복확인' == text){
 					var farmName = $('input[name="farmName"]').val();
-					
-					if(farmName != null){
-						if(!farmName.trim() == ""){
+					nameCheck = /^[0-9\s]|[ㄱ-ㅎㅏ-ㅣa-zA-z]|[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]|[*\s$]/;
+					if(farmName != null && !farmName.trim() == ""){
+						
+						if(!nameCheck.test(farmName) && farmName.length >= 2){
 							
 							var request = $.ajax({
 					               url:"/json/farmNameCheck",
@@ -116,35 +123,48 @@
 					               data : {"farmName":farmName},
 					            });
 					            request.done(function(data){
-					            	
 					            	var checkType = 'error';
 					            	
 					            	if('생성가능' == data){
 					            		farmNameCheck = true;
 					            		checkType ='success';
 					            	}
-
-					            	swal({
+					            	else
+					            	{
+					            		farmNameCheck = false;
+					            	}
+	
+					            	 swal({
 										title: "농가명 중복체크",
 										text: data,
 										type: checkType,
 										confirmButtonColor: '#304ffe'
 									});
-									
+								
 									
 					            });
 					            request.fail(function( jqXHR, textStatus ){
 					               alert( "Request failed : " + textStatus );
 					            });
-						}
+						}	
 						else{
+							farmNameCheck = false;
 							swal({
-								title: "농가명을 입력해주세요",
+								title: "한글,숫자 2글자 이상 입력해주세요",
 								type:'error',
 								confirmButtonColor: '#304ffe'
 							});
 							$('input[name="farmName"]').focus();
 						}
+					}
+					else{
+						farmNameCheck = false;
+						swal({
+							title: "한글,숫자 2글자 이상 입력해주세요",
+							type:'error',
+							confirmButtonColor: '#304ffe'
+						});
+						$('input[name="farmName"]').focus();
 					}
 				}
 			});
@@ -154,7 +174,8 @@
 		      $("#farmArea").TouchSpin({
 		         verticalbuttons: true,
 		         min : 0,
-		         max : 10000000000
+		         max : 10000000000,
+		         postfix : '평'
 		      });
 			
 		</script>

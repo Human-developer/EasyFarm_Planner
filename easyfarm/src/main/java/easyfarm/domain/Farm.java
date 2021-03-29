@@ -5,6 +5,7 @@ public class Farm {
 	private String farmCode; 
 	private String farmName; 
 	private String ceoId; 
+	private String farmMemberLevel;
 	private String farmArea; 
 	private String farmAddress; 
 	private String farmPublicStatus; 
@@ -28,6 +29,12 @@ public class Farm {
 	}
 	public void setCeoId(String ceoId) {
 		this.ceoId = ceoId;
+	}
+	public String getFarmMemberLevel() {
+		return farmMemberLevel;
+	}
+	public void setFarmMemberLevel(String farmMemberLevel) {
+		this.farmMemberLevel = farmMemberLevel;
 	}
 	public String getFarmArea() {
 		return farmArea;
@@ -62,6 +69,8 @@ public class Farm {
 		builder.append(farmName);
 		builder.append(", ceoId=");
 		builder.append(ceoId);
+		builder.append(", farmMemberLevel=");
+		builder.append(farmMemberLevel);
 		builder.append(", farmArea=");
 		builder.append(farmArea);
 		builder.append(", farmAddress=");
@@ -73,6 +82,7 @@ public class Farm {
 		builder.append("]");
 		return builder.toString();
 	}
+	
 	
 	
 	

@@ -11,10 +11,12 @@ import easyfarm.domain.FarmMember;
 @Mapper
 public interface FarmMapper {
 
-	public List<Farm> myFarm(String memberId);
-	public List<Farm> belongFarm(String memberId);
-	public Farm detailFarm(String fCode);
-	public List<FarmMember> farmMemberList(String memberStatus, String fCode);
+
+	public Farm farmByName(String farmName);
 	public int addFarm(Farm farm);
-	public int addFarmMember(Map<String,String> member);
+	public int addFarmMember(FarmMember farmMember);
+	public List<Farm> myFamr(String memberId);
+	public List<Farm> belongFarm(String memberId);
+	public Farm detailFarm(Farm farm);
+	
 }
