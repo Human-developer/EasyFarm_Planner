@@ -13,7 +13,9 @@
   	<select id="getStockItemInfo" resultType="map" parameterType="String">
   		SELECT
   			 si.stock_item_code 						AS stockItemCode
+  			,si.stock_item_quantity 					AS stockItemQuantity
 			,si.stock_item_quantity_unit 				AS stockItemQuantityUnit
+			,si.stock_item_quantity_capacity 			AS stockItemQuantityCapacity
 			,si.stock_item_quantity_capacity_unit 		AS stockItemQuantityCapacityUnit
 			,ru.resource_retain_quantity 				AS resourceRetainQuantity
 			,ru.resource_retain_quantity_capacity_extra AS resourceRetainQuantityCapacityExtra

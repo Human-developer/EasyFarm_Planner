@@ -156,11 +156,13 @@ $(function(){
 					$('#resourceRetainQuantityCapacityExtraUnit').removeAttr('style');
 					$('#resourceRetainQuantityCapacityExtraUnit').text(data.stockItemQuantityCapacityUnit);
 					
+					var quantity = data.stockItemQuantity;
+					var quantityCapacity = data.stockItemQuantityCapacity;
 					var quantityUnit = data.stockItemQuantityUnit;
 					var quantityCapacityUnit = data.stockItemQuantityCapacityUnit;
 					$('#inputFormQuantity, #inputFormQuantityTotal').children().detach();
-					$('#inputFormQuantity').html('<input id="stockItemUseQuantity" type="text" name="stockItemUseQuantity" class="form-control">');
-					$('#inputFormQuantityTotal').html('<input id="stockItemUseQuantityTotal" type="text" name="stockItemUseQuantityTotal" class="form-control">');
+					$('#inputFormQuantity').html('<input id="stockItemUseQuantity" type="text" name="stockItemUseQuantity" class="form-control"  placeholder="0">');
+					$('#inputFormQuantityTotal').html('<input id="stockItemUseQuantityTotal" type="text" name="stockItemUseQuantityTotal" class="form-control"  placeholder="0">');
 					
 					$('#stockItemUseQuantity').TouchSpin({
 						min: 0,
@@ -168,7 +170,12 @@ $(function(){
 						stepinterval: 50,
 						maxboostedstep: 10000000,
 						postfix: quantityUnit
-					});
+					}).on('touchspin.on.startspin', function () {
+						var total =  $('#stockItemUseQuantity').val()*(quantityCapacity/quantity);
+						console.log(total);
+						$('#stockItemUseQuantityTotal').val(total);
+			        });
+
 					$('#stockItemUseQuantityTotal').TouchSpin({
 						min: 0,
 						max: 1000000000,
