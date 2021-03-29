@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<div class="fixed-navbar" th:fragment="navmenuFragment">
+	<div class="pull-left">
+		<button type="button" class="menu-mobile-button glyphicon glyphicon-menu-hamburger js__menu_mobile"></button>
+		
+		<!-- 네비 메뉴에 표시되는 경로 타이틀 -->
+		<h1 class="page-title">
+			<th:block layout:fragment="pageTitle"></th:block>
+		</h1>
+		<!-- /.page-title -->
+	</div>
+	<div class="pull-right">
+		<!-- /.ico-item -->
+		<a href="#" class="ico-item mdi mdi-logout js__logout" th:if="${session.SID != null}"></a>
+	</div>
+	<!-- /.pull-right -->
+</div>
+<!-- /.fixed-navbar -->
+</html>

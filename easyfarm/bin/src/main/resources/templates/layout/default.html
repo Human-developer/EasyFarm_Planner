@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	  
+<head th:replace="fragments/head :: headFragment"></head>
+
+<body>
+
+	<!-- leftmenu.html start -->
+	<div th:replace="fragments/leftmenu :: leftmenuFragment"></div>
+	<!-- leftmenu.html end -->
+
+	<!-- navmenu.html start -->
+	<div th:replace="fragments/navmenu :: navmenuFragment"></div>
+	<!-- navmenu.html end -->
+
+<div id="wrapper">
+	<div class="main-content">
+		
+		<div id="content-body">
+			<!-- customContents start -->
+			<th:block layout:fragment="customContents"></th:block>
+			<!-- customContents end -->
+		</div>
+		
+		<!-- footer.html start -->
+		<footer th:replace="fragments/footer :: footerFragment"></footer>
+		<!-- footer.html end -->
+		
+	</div>
+</div>
+
+	<!-- customModals start -->
+	<th:block layout:fragment="customModals"></th:block>
+	<!-- customModals end -->
+
+	<!-- bottom.html start -->
+	<div th:replace="fragments/bottom :: boottomFragment" th:remove="tag"></div>
+	<!-- bottom.html end -->
+
+</body>
+</html>

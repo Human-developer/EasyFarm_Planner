@@ -17,9 +17,16 @@ public class Member {
 	private String memberRegDate;		//회원 등록 일자
 	private String memberStatus;		//회원 상태
 	private String levelName;			//권한 이름
-	private String useStatus;			//권한 이름
+	private String useStatus;			//권한 사용 상태
+	private String cancelMemberReason;	//탈퇴사유
 	
 	
+	public String getCancelMemberReason() {
+		return cancelMemberReason;
+	}
+	public void setCancelMemberReason(String cancelMemberReason) {
+		this.cancelMemberReason = cancelMemberReason;
+	}
 	public String getUseStatus() {
 		return useStatus;
 	}
@@ -107,8 +114,6 @@ public class Member {
 	public void setMemberStatus(String memberStatus) {
 		this.memberStatus = memberStatus;
 	}
-	
-	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -118,7 +123,7 @@ public class Member {
 		builder.append(memberPw);
 		builder.append(", memberName=");
 		builder.append(memberName);
-		builder.append(", LevelCode=");
+		builder.append(", levelCode=");
 		builder.append(levelCode);
 		builder.append(", memberGender=");
 		builder.append(memberGender);
@@ -130,17 +135,24 @@ public class Member {
 		builder.append(memberPhone);
 		builder.append(", memberIdenNum=");
 		builder.append(memberIdenNum);
+		builder.append(", memberIdenNum2=");
+		builder.append(memberIdenNum2);
 		builder.append(", memberRegDate=");
 		builder.append(memberRegDate);
 		builder.append(", memberStatus=");
 		builder.append(memberStatus);
-		builder.append(", LevelName=");
+		builder.append(", levelName=");
 		builder.append(levelName);
 		builder.append(", useStatus=");
 		builder.append(useStatus);
+		builder.append(", cancelMemberReason=");
+		builder.append(cancelMemberReason);
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	
+	
 	
 
 	/*

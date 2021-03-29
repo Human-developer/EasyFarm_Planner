@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	  
+<head th:fragment="headFragment">
+
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	
+	<!-- Main Styles -->
+	<link rel="stylesheet" th:href="@{/assets/styles/style.css}">
+		
+	<!-- Material Design Icon -->
+	<link rel="stylesheet" th:href="@{/assets/fonts/material-design/css/materialdesignicons.css}">
+
+	<!-- mCustomScrollbar -->
+	<link rel="stylesheet" th:href="@{/assets/plugin/mCustomScrollbar/jquery.mCustomScrollbar.min.css}">
+
+	<!-- Waves Effect -->
+	<link rel="stylesheet" th:href="@{/assets/plugin/waves/waves.min.css}">
+
+	<!-- Sweet Alert -->
+	<link rel="stylesheet" th:href="@{/assets/plugin/sweet-alert/sweetalert.css}">
+	
+	<style type="text/css">
+	
+		.t-center{text-align: center;}
+		.boder-b{border-bottom: 1px solid grey;}
+		
+		.footer{position: fixed; bottom: 0;}
+		#content-body{padding-bottom: 60px;}
+		
+		.sidebar-activeA .main-menu {
+		    transform: translate(-110%, 0);
+		    -webkit-transform: translate(-110%, 0);
+		    -moz-transform: translate(-110%, 0);
+		    -o-transform: translate(-110%, 0);
+		    -ms-transform: translate(-110%, 0);
+		}
+		.sidebar-activeA .header {
+			text-align: left;
+			padding-left: 20px;
+		}
+		.sidebar-activeA .button-close {
+			display: block;
+		}
+		.sidebar-activeA .main-content {
+			margin-left: 20px;
+		}
+		.sidebar-activeA .fixed-navbar {
+			left: 0px;
+			right: 0px;
+			box-shadow: 0 0px 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);
+			-moz-box-shadow: 0 0px 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);
+			-webkit-box-shadow: 0 0px 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);
+		}
+		.sidebar-activeB .main-menu {
+			transform: translate(0, 0);
+			-webkit-transform: translate(0, 0);
+			-moz-transform: translate(0, 0);
+			-o-transform: translate(0, 0);
+			-ms-transform: translate(0, 0);
+		}
+		
+	</style>
+	
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle"></th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib"></th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss"></th:block>
+	
+</head>
+</html>
