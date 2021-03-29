@@ -122,41 +122,19 @@ $(function(){
 	});
 	
 	/*농자재탭*/
-	$('#resourceRetainQuantity').TouchSpin({
-		min: 0,
-		max: 1000000000,
-		stepinterval: 50,
-		maxboostedstep: 10000000,
-		postfix: $('#resourceRetainQuantityUnit').val()
-	});
-	$('#resourceRetainQuantityCapacityExtra').TouchSpin({
-		min: 0,
-		max: 1000000000,
-		stepinterval: 50,
-		maxboostedstep: 10000000,
-		postfix: $('#resourceRetainQuantityCapacityExtraUnit').val()
-	});
 	$('#stockItemUseQuantity').TouchSpin({
 		min: 0,
 		max: 1000000000,
 		stepinterval: 50,
 		maxboostedstep: 10000000,
-		postfix: $('#stockItemUseQuantityUnit').val()
 	});
 	$('#stockItemUseQuantityTotal').TouchSpin({
 		min: 0,
 		max: 1000000000,
 		stepinterval: 50,
 		maxboostedstep: 10000000,
-		postfix: $('#stockItemUseQuantityTotalUnit').val()
 	});
-	$('#stockItemUseQuantityConversionPay').TouchSpin({
-		min: 0,
-		max: 1000000000,
-		stepinterval: 50,
-		maxboostedstep: 10000000,
-		postfix: $('#stockItemUseQuantityConversionPayUnit').val()
-	});
+
 	$('#stockItemCode').change(function(){
 		var stockItemCode = $(this).val();
 		
@@ -166,8 +144,38 @@ $(function(){
 			data: { stockItemCode : stockItemCode },
 			success : function(data) {
 				if(data.stockItemCode != null){
-					$('#resourceRetainQuantity').val(data.stockItemQuantity);
+					$('#resourceRetainQuantity').val(data.resourceRetainQuantity);
 					
+					$('#quantityAddClass').addClass('input-group bootstrap-touchspin');
+					$('#resourceRetainQuantityUnit').removeAttr('style');
+					$('#resourceRetainQuantityUnit').text(data.stockItemQuantityUnit);
+					
+					$('#resourceRetainQuantityCapacityExtra').val(data.resourceRetainQuantityCapacityExtra);
+					
+					$('#quantityCapacityAddClass').addClass('input-group bootstrap-touchspin');
+					$('#resourceRetainQuantityCapacityExtraUnit').removeAttr('style');
+					$('#resourceRetainQuantityCapacityExtraUnit').text(data.stockItemQuantityCapacityUnit);
+					
+					var quantityUnit = data.stockItemQuantityUnit;
+					var quantityCapacityUnit = data.stockItemQuantityCapacityUnit;
+					$('#inputFormQuantity, #inputFormQuantityTotal').children().detach();
+					$('#inputFormQuantity').html('<input id="stockItemUseQuantity" type="text" name="stockItemUseQuantity" class="form-control">');
+					$('#inputFormQuantityTotal').html('<input id="stockItemUseQuantityTotal" type="text" name="stockItemUseQuantityTotal" class="form-control">');
+					
+					$('#stockItemUseQuantity').TouchSpin({
+						min: 0,
+						max: 1000000000,
+						stepinterval: 50,
+						maxboostedstep: 10000000,
+						postfix: quantityUnit
+					});
+					$('#stockItemUseQuantityTotal').TouchSpin({
+						min: 0,
+						max: 1000000000,
+						stepinterval: 50,
+						maxboostedstep: 10000000,
+						postfix: quantityCapacityUnit
+					});
 				}
 
 			},

@@ -27,8 +27,8 @@ public class PlanController {
 		if(projectPlanCode == null) {
 			projectPlanCode = "1";
 		}
-		if(projectPlanCode != null && !"".equals(projectPlanCode)) {
-			/* 계획차수조회 */
+		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
+			/* 계획정보조회 */
 			Map<String, Object> projectPlanInfo = pgsPlanService.getProjectPlanInfo(projectPlanCode);
 			String projectPlanN = (String)projectPlanInfo.get("projectPlanN");
 			int projectCode =  (int)projectPlanInfo.get("projectCode");
@@ -44,42 +44,57 @@ public class PlanController {
 	/* 계획등록 */
 	@GetMapping("/plan/addSpend")
 	public String addSpend(Model model
-						  ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode) {
+						  ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode
+						  ,@RequestParam(value = "stockItemCode", required = false) String stockItemCode) {
 		/* 임시값세팅 */
 		if(projectPlanCode == null) {
 			projectPlanCode = "1";
 		}
-		if(projectPlanCode != null && !"".equals(projectPlanCode)) {
+		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
 			
-			/* 계획차수조회 */
+			/* 계획정보조회 */
 			Map<String, Object> projectPlanInfo = pgsPlanService.getProjectPlanInfo(projectPlanCode);
 			String projectPlanN = (String) projectPlanInfo.get("projectPlanN");
+			String projectName = (String) projectPlanInfo.get("projectName");
+			int projectCode = (int) projectPlanInfo.get("projectCode");
+			int farmCode = (int) projectPlanInfo.get("farmCode");
+			int cropCode = (int) projectPlanInfo.get("cropCode");
+			
+			Map<String, Object> projectData = new HashMap<String, Object>();
+			projectData.put("projectPlanN", projectPlanN);
+			projectData.put("projectName", projectName);
+			projectData.put("projectCode", projectCode);
+			projectData.put("farmCode", farmCode);
+			projectData.put("cropCode", cropCode);
+			if(stockItemCode != null && !"".equals(stockItemCode.trim())) {
+				projectData.put("stockItemCode", stockItemCode);
+			}
+			
 			model.addAttribute("projectPlanN", projectPlanN);
 			
 			/* 작업단계 */
-			int projectCode = (int) projectPlanInfo.get("projectCode");
-			List<Map<String, Object>> workphaseNameList = pgsPlanService.getWorkphaseName(""+projectCode);
+			List<Map<String, Object>> workphaseNameList = pgsPlanService.getWorkphaseName(projectData);
 			System.out.println(workphaseNameList);
 			model.addAttribute("workphaseNameList", workphaseNameList);
 			
 			/* 상세작업항목조회 */
-			List<Map<String, Object>> workphaseCateNameList = pgsPlanService.getWorkphaseCateName(""+projectCode);
+			List<Map<String, Object>> workphaseCateNameList = pgsPlanService.getWorkphaseCateName(projectData);
 			model.addAttribute("workphaseCateNameList", workphaseCateNameList);
 			
 			/* 거래처항목조회 */
-			List<Map<String, Object>> clientNameList = pgsPlanService.getClientName(""+projectCode);
+			List<Map<String, Object>> clientNameList = pgsPlanService.getClientName(projectData);
 			model.addAttribute("clientNameList", clientNameList);
 			
 			/* 농기계즐겨찾기조회 */
-			List<Map<String, Object>> farmBookmarkMachineList = pgsPlanService.getFarmBookmarkMachine(""+projectCode);
+			List<Map<String, Object>> farmBookmarkMachineList = pgsPlanService.getFarmBookmarkMachine(projectData);
 			model.addAttribute("farmBookmarkMachineList", farmBookmarkMachineList);
 			
 			/* 보유농기계조회 */
-			List<Map<String, Object>> farmRetainMachineList = pgsPlanService.getFarmRetainMachine(""+projectCode);
+			List<Map<String, Object>> farmRetainMachineList = pgsPlanService.getFarmRetainMachine(projectData);
 			model.addAttribute("farmRetainMachineList", farmRetainMachineList);
 			
 			/* 품목조회 */
-			List<Map<String, Object>> stockItemList = pgsPlanService.getStockItem(""+projectCode);
+			List<Map<String, Object>> stockItemList = pgsPlanService.getStockItem(projectData);
 			model.addAttribute("stockItemList", stockItemList);
 			
 		}
@@ -90,8 +105,9 @@ public class PlanController {
 	@PostMapping("/ajax/getStockItemInfo")
 	@ResponseBody
 	public Map<String, Object> getStockItemInfo(@RequestParam(value = "stockItemCode", required = false) String stockItemCode) {
+		
 		Map<String, Object> stockItemInfo = null;
-		if(stockItemCode != null && !"".equals(stockItemCode)) {
+		if(stockItemCode != null && !"".equals(stockItemCode.trim())) {
 			stockItemInfo = pgsPlanService.getStockItemInfo(stockItemCode);
 		}
 		return stockItemInfo;

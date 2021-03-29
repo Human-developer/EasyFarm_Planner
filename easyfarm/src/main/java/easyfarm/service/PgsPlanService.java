@@ -46,33 +46,33 @@ public class PgsPlanService {
 	}
 	
 	//프로젝트별 작업단계
-	public List<Map<String, Object>> getWorkphaseName(String projectCode) {
-		return pgsPlanMapper.getWorkphaseName(projectCode);
+	public List<Map<String, Object>> getWorkphaseName(Map<String, Object> projectData) {
+		return pgsPlanMapper.getWorkphaseName(projectData);
 	}
 	
 	//프로젝트별 상세작업항목
-	public List<Map<String, Object>> getWorkphaseCateName(String projectCode) {
-		return pgsPlanMapper.getWorkphaseCateName(projectCode);
+	public List<Map<String, Object>> getWorkphaseCateName(Map<String, Object> projectData) {
+		return pgsPlanMapper.getWorkphaseCateName(projectData);
 	}
 	
 	//농가별 거래처
-	public List<Map<String, Object>> getClientName(String projectCode) {
-		return pgsPlanMapper.getClientName(projectCode);
+	public List<Map<String, Object>> getClientName(Map<String, Object> projectData) {
+		return pgsPlanMapper.getClientName(projectData);
 	}
 	
 	//농가별 농기계즐겨찾기
-	public List<Map<String, Object>> getFarmBookmarkMachine(String projectCode) {
-		return pgsPlanMapper.getFarmBookmarkMachine(projectCode);
+	public List<Map<String, Object>> getFarmBookmarkMachine(Map<String, Object> projectData) {
+		return pgsPlanMapper.getFarmBookmarkMachine(projectData);
 	}
 	
 	//농가별 보유농기계
-	public List<Map<String, Object>> getFarmRetainMachine(String projectCode) {
-		return pgsPlanMapper.getFarmRetainMachine(projectCode);
+	public List<Map<String, Object>> getFarmRetainMachine(Map<String, Object> projectData) {
+		return pgsPlanMapper.getFarmRetainMachine(projectData);
 	}
 	
 	//농가별 품목조회
-	public List<Map<String, Object>> getStockItem(String projectCode) {
-		return pgsPlanMapper.getStockItem(projectCode);
+	public List<Map<String, Object>> getStockItem(Map<String, Object> projectData) {
+		return pgsPlanMapper.getStockItem(projectData);
 	}
 	
 	//품목정보조회

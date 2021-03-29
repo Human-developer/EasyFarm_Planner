@@ -12,19 +12,27 @@
   	
   	<select id="getStockItemInfo" resultType="map" parameterType="String">
   		SELECT
-			 si.stock_item_code 					AS stockItemCode
-			,si.stock_item_name 					AS stockItemName
-			,si.stock_item_quantity 				AS stockItemQuantity
-			,si.stock_item_quantity_unit 			AS stockItemQuantityUnit
-			,si.stock_item_quantity_capacity 		AS stockItemQuantityCapacity
-			,si.stock_item_quantity_capacity_unit 	AS stockItemQuantityCapacityUnit
+  			 si.stock_item_code 						AS stockItemCode
+			,si.stock_item_quantity_unit 				AS stockItemQuantityUnit
+			,si.stock_item_quantity_capacity_unit 		AS stockItemQuantityCapacityUnit
+			,ru.resource_retain_quantity 				AS resourceRetainQuantity
+			,ru.resource_retain_quantity_capacity_extra AS resourceRetainQuantityCapacityExtra
+			,ru.available_status 						AS availableStatus
 		FROM
+			tb_resource_usecapacity AS ru
+			INNER join
+			tb_exp_resource_pay AS erp
+			on
+			ru.resource_pay_code = erp.resource_pay_code
+			INNER join
 			tb_stock_item AS si
+			on
+			erp.stock_item_code = si.stock_item_code
 		WHERE
-			si.stock_item_code = #{stockItemCode}
+			ru.resource_usecapacity_code = #{stockItemCode}
   	</select>
   	
-  	<select id="getStockItem" resultType="map" parameterType="String">
+  	<select id="getStockItem" resultType="map" parameterType="map">
   		SELECT
 			 si.stock_item_code 					AS stockItemCode
 			,sc.stock_cate_name						AS stockCateName
@@ -33,13 +41,12 @@
 			,si.stock_item_quantity_unit 			AS stockItemQuantityUnit
 			,si.stock_item_quantity_capacity 		AS stockItemQuantityCapacity
 			,si.stock_item_quantity_capacity_unit 	AS stockItemQuantityCapacityUnit
+			,ru.resource_usecapacity_code AS resourceUsecapacityCode
+			,ru.resource_retain_quantity AS resourceRetainQuantity
+			,ru.resource_retain_quantity_capacity_extra AS resourceRetainQuantityCapacityExtra
 			,ru.available_status					AS availableStatus
 		FROM
-			tb_farm AS f
-			INNER join
 			tb_stock_item AS si
-			on
-			f.farm_code = si.farm_code
 			INNER join
 			tb_stock_cate AS sc
 			on
@@ -53,26 +60,17 @@
 			on
 			erp.resource_pay_code = ru.resource_pay_code
 		WHERE
-			f.farm_code = (SELECT
-			fp.farm_code
-		FROM
-			tb_farm_project AS fp
-		WHERE
-			fp.project_code = #{projectCode})
+			si.farm_code = #{farmCode}
 			and
 			ru.available_status = 'Y'
   	</select>
   	
-  	<select id="getFarmRetainMachine" resultType="map" parameterType="String">
+  	<select id="getFarmRetainMachine" resultType="map" parameterType="map">
   		SELECT
-			 cm.common_machine_code AS commonMachineCode
-			,cm.common_machine_name AS commonMachineName
+			 cm.common_machine_code 		AS commonMachineCode
+			,cm.common_machine_name 		AS commonMachineName
 		FROM
-			tb_farm AS f
-			INNER join
 			tb_farm_retain_machine AS frm
-			on
-			f.farm_code = frm.farm_code
 			INNER join
 			tb_farm_bookmark_machine AS fbm
 			on
@@ -82,60 +80,34 @@
 			on
 			fbm.common_machine_code = cm.common_machine_code
 		WHERE
-			f.farm_code = (SELECT
-			fp.farm_code
-		FROM
-			tb_farm_project AS fp
-		WHERE
-			fp.project_code = #{projectCode})
-		ORDER BY commonMachineCode*1 ASC
+			frm.farm_code = #{farmCode}
   	</select>
   	
-  	<select id="getFarmBookmarkMachine" resultType="map" parameterType="String">
+  	<select id="getFarmBookmarkMachine" resultType="map" parameterType="map">
   		SELECT
-			 cm.common_machine_code AS commonMachineCode
-			,cm.common_machine_name AS commonMachineName
+			 cm.common_machine_code 		AS commonMachineCode
+			,cm.common_machine_name 		AS commonMachineName
 		FROM
-			tb_farm AS f
-			INNER join
 			tb_farm_bookmark_machine AS fbm
-			on
-			f.farm_code = fbm.farm_code
 			INNER join
 			tb_common_machine AS cm
 			on
 			fbm.common_machine_code = cm.common_machine_code
 		WHERE
-			f.farm_code = (SELECT
-			fp.farm_code
-		FROM
-			tb_farm_project AS fp
-		WHERE
-			fp.project_code = #{projectCode})
-		ORDER BY commonMachineCode*1 ASC
+			fbm.farm_code = #{farmCode}
   	</select>
   	
-  	<select id="getClientName" resultType="map" parameterType="String">
+  	<select id="getClientName" resultType="map" parameterType="map">
   		SELECT
-			 c.client_code AS clientCode
-			,c.client_name AS clientName
+			 c.client_code 		AS clientCode
+			,c.client_name 		AS clientName
 		FROM
-			tb_farm AS f
-			INNER join
 			tb_client AS c
-			on
-			f.farm_code = c.farm_code
 		WHERE
-			f.farm_code = (SELECT
-			fp.farm_code
-		FROM
-			tb_farm_project AS fp
-		WHERE
-			fp.project_code = #{projectCode})
-		ORDER BY c.client_code*1 ASC
+			c.farm_code = #{farmCode}
   	</select>
   	
-  	<select id="getWorkphaseName" resultType="map" parameterType="String">
+  	<select id="getWorkphaseName" resultType="map" parameterType="map">
   		SELECT
 			 cpi.workphase
 			,cpi.workphase_name AS workphaseName
@@ -149,22 +121,34 @@
 			cpi.use_status = 'O'
 		WHERE
 			pw.project_code = #{projectCode}
-		ORDER BY workphase*1 ASC
   	</select>
   	
   	<select id="getProjectPlanInfo" resultType="map" parameterType="String">
   		SELECT
-			 pp.project_plan_n as projectPlanN
-			,pp.project_code as projectCode
+			 pp.project_plan_code 			AS projectPlanCode
+			,pp.project_code 				AS projectCode
+			,pp.project_plan_n 				AS projectPlanN
+			,fp.farm_code 					AS farmCode
+			,fp.crop_code 					AS cropCode
+			,fp.project_name 				AS projectName
+			,fp.project_area 				AS projectArea
+			,fp.project_begin 				AS projectBegin
+			,fp.project_end 				AS projectEnd
+			,fp.project_estimate_income 	AS projectEstimateIncome
+			,fp.project_estimate_spending 	AS projectEstimateSpending
 		FROM
 			tb_project_plan AS pp
+			INNER join
+			tb_farm_project AS fp
+			on
+			pp.project_code = fp.project_code
 		WHERE
 			pp.project_plan_code = #{projectPlanCode}
   	</select>
   	
-  	<select id="getWorkphaseCateName" resultType="map" parameterType="String">
+  	<select id="getWorkphaseCateName" resultType="map" parameterType="map">
   		SELECT
-			cwc.common_workphase_cate_name as commonWorkphaseCateName
+			cwc.common_workphase_cate_name 	AS commonWorkphaseCateName
 		FROM
 			tb_farm_workphase_cate AS fwc
 			INNER join
@@ -173,7 +157,6 @@
 			fwc.common_workphase_cate_code = cwc.common_workphase_cate_code
 		WHERE
 			fwc.project_code = #{projectCode}
-		ORDER BY fwc.common_workphase_cate_code*1 asc
   	</select>
 	
 	<select id="getEtcPayPlan" resultType="EtcPay" >
