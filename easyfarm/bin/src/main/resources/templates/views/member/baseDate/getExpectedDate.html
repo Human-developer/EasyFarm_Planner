@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>휴면|탈퇴 예정일조회</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		휴면|탈퇴 예정일조회
+	</th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+	
+	
+			
+	
+			<div class="card">
+				<div class ="card-body">
+					<form th:action="@{/member/getExpectedDate}"  method="get">
+						<div class ="row col-12">
+							<div class ="col-lg-2">
+								<select name="searchKey" class="form-control">
+									<option value="memberId">회원아이디</option>
+								
+								</select>
+							</div>
+							<div class ="col-lg-4">
+								<input type="search" name="searchValue" class ="form-control" placeholder="검색창">
+							</div>
+							<div class ="col-lg-4">
+								<button type="submit" class ="btn btn-info">검색버튼  <i class="align-middle" data-feather="search"></i></button>
+							</div>
+						</div>	
+					</form>
+				</div>
+			</div>	
+			<div class="box-content">
+					<table  class="table table-hover table-striped">
+						<thead>
+							<tr>
+								<th>예정 코드</th>
+								<th>아이디</th>			
+								<th>자동휴면일</th>
+								<th>자동탈퇴일</th>
+							
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="e : ${ExpectedDate}">
+								<td th:text="${e.autoRestNum}"></td>							
+								<td th:text="${e.memberId}"></td>
+								<td th:text="${e.autoRestDate}"></td>				
+								<td th:text="${e.autoWithdrawalDate}"></td>							
+								
+							
+							</tr>
+							<tr th:if="${ExpectedDate.size() == 0}"> 
+								<td colspan="8" style ="text-align: center;">
+								조회된 내용이 없습니다
+								</td>
+							</tr>
+						</tbody>		
+	
+					</table>
+				
+			</div>
+			
+	</th:block>
+	
+	
+	
+
+</html>

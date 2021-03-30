@@ -20,52 +20,111 @@ public class FarmService {
 	@Autowired
 	private FarmMapper farmMapper;
 	
-	public Map<String,List<Farm>> myFarmList(String searchValue) {
+	public Farm farmByName(String farmName) {
+		Farm resultFarm = null;
 		
-		Map<String,List<Farm>> mapListFarm= null;
-		if(searchValue != null && !"".equals(searchValue.trim())) {
-			List<Farm> myFarmList = farmMapper.searchFarm("ceoId",searchValue);
-			List<Farm> belongFarmList = farmMapper.searchFarm("memberId",searchValue);
-			
-			if(myFarmList != null) {
-				if(mapListFarm == null) mapListFarm =new HashMap<>();
-				mapListFarm.put("myFarmList", myFarmList);
-			}
-			
-			if(belongFarmList != null) {
-				if(mapListFarm == null) mapListFarm =new HashMap<>();
-				
-				mapListFarm.put("belongFarmList", belongFarmList);	
-			}
-			
+		if(farmName != null) {			
+			resultFarm = farmMapper.farmByName(farmName);
 		}
 		
 		
-		
-		return mapListFarm;
-	}
-	public Map<String,Object> detailFarm(String fCode) {
-		Map<String,Object> resultMap =null;
-		
-		Farm myFarm = null;
-		myFarm = farmMapper.myFarm(fCode);
-		List<FarmMember> farmMemberList = null;
-		farmMemberList = farmMapper.myFarmMemberList("정상",fCode);
-		
-		if(myFarm != null) {
-			if(resultMap == null) resultMap = new HashMap<>();
-			
-			resultMap.put("myFarm",myFarm);
-		}
-		if(farmMemberList != null) {
-			if(resultMap == null) resultMap = new HashMap<>();
-			
-			resultMap.put("myFarmMemberList",farmMemberList);
-		}
-		
-		
-		
-		return resultMap;
+		return resultFarm;
 	}
 	
+	/* 농가등록 */
+	public int addFarm(Farm farm) {
+		int result = 0;
+		if(farm != null) {
+			FarmMember farmMember= new FarmMember();
+			result += farmMapper.addFarm(farm);
+			
+			farmMember.setFarmCode(farm.getFarmName());
+			farmMember.setFarmMemberId(farm.getCeoId());
+			farmMember.setFarmLevelName("대표");
+			farmMember.setFarmLevelCode("farm_level_1");
+			farmMember.setFarmMemberStatus("정상");
+			
+			result += farmMapper.addFarmMember(farmMember);
+		}
+		
+		return result;
+	}
+	/* 농가등록 */
+	
+	
+	/* 내 농가 */
+	public List<Farm> myFarm(String memberId){
+		List<Farm> resultFarmList = null;
+		if(memberId != null) {
+			resultFarmList = farmMapper.myFamr(memberId);
+		}
+		return resultFarmList;
+	}
+	/* 내 농가 */
+	
+	/* 내 소속 농가 */
+	public List<Farm> belongFarm(String memberId){
+		List<Farm> resultFarmList = null;
+		if(memberId != null) {
+			resultFarmList = farmMapper.belongFarm(memberId);
+		}
+		return resultFarmList;
+	}
+	/* 내 소속 농가 */
+	
+	/* 농가상세보기 */
+	public Farm detailFarm(Farm farm){
+		Farm resultFarm = null;
+		if(farm != null) {
+			System.out.println(farm +"testesttetstetste");
+			resultFarm = farmMapper.detailFarm(farm);
+		}
+		
+		return resultFarm;
+	}
+	/* 농가상세보기 */
+	
+	
+	/* 농가수정 */
+	public Farm updateByFarm(String farmCode, String memberId) {
+		Farm resultFarm = null;
+		
+		if(farmCode != null && memberId != null) {
+			
+			resultFarm = farmMapper.updateByFarm(farmCode, memberId);
+		}
+		
+		
+		return resultFarm;
+	}
+	
+	//처리
+	public int updateFarm(Farm farm) {
+		int result =0;
+		if(farm != null) {
+			result += farmMapper.updateFarm(farm);
+		}
+		return result;
+	}
+	/* 농가수정 */
+	
+	/* 농가검색 */
+	public List<Farm> searchFarm(String memberId){
+		List<Farm> resultFarm = null;
+		if(memberId != null) {
+			//resultFarm = farmMapper.searchFarm(memberId);
+		}
+		return resultFarm;
+	}
+	/* 농가검색 */
+	
+	/* 농가회원조회 */
+	public List<FarmMember> getMemberFarm(String farmCode){
+		List<FarmMember> resultFarmMemberList = null;
+		if(farmCode != null) {
+			resultFarmMemberList = farmMapper.getMemberFarm(farmCode);
+		}
+		return resultFarmMemberList;
+	}
+	/* 농가회원조회 */
 }

@@ -5,12 +5,12 @@
 	  
 	<!-- 화면 title 설정 -->
 	<th:block layout:fragment="customTitle">
-		<title>메인화면</title>
+		<title>농가탈퇴신청목록</title>
 	</th:block>
 	
 	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
 	<th:block layout:fragment="pageTitle">
-		Home
+		<a th:href="@{/farm}">농가관리</a>>농가탈퇴신청목록
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
@@ -22,19 +22,37 @@
 	
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
 	<th:block layout:fragment="customContents">
-		메인화면
-		<a th:href="@{/member/login}">로그인</a>
-		<a th:href="@{/member/addMember}">회원가입</a>
-		<a th:href="@{/member/addAuthority}">권한등록</a>
-		<a th:href="@{/member/getAuthority}">권한조회</a>
-		<a th:href="@{/member/addBaseDate}">기준일등록</a>
-		<a th:href="@{/member/getBaseDate}">기준일조회</a>
-		<a th:href="@{/member/getExpectedDate}">휴면/탈퇴예정자</a>
-		<a th:href="@{/member/getSuspend}">정지회원조회</a>
-		<a th:href="@{/member/getReasonReport}">신고사유조회</a>
-		<a th:href="@{/member/addReasonReport}">신고사유등록</a>
-		<a th:href="@{/member/addReport}">신고등록</a>
-		<a th:href="@{/member/getReport}">신고조회</a>
+		<div class ="container-fluid">
+			<div class ="row">
+				<div class ="box-content">
+					<h3>농가탈퇴신청목록</h3>
+					<hr>
+					<table class ="table">
+						<thead>
+							<tr>
+								<th>신청자아이디</th>
+								<th>신청자명</th>
+								<th>탈퇴사유</th>
+								<th>탈퇴신청일</th>
+								<th>승인</th>
+								<th>거부</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>아이디</td>
+								<td>이름</td>
+								<td>사유</td>
+								<td>신청일</td>
+								<td><a th:href="@{#}">승인(처리사유필요)</a></td>
+								<td><a th:href="@{#}">거부(처리사유필요)</a></td>
+							</tr>
+						</tbody>
+					</table>
+					<a th:href="@{/farm/getMemberFarm}">농가회원관리페이지</a>
+				</div>
+			</div>
+		</div>
 		
 	</th:block>
 	

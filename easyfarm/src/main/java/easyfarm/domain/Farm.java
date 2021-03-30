@@ -5,10 +5,13 @@ public class Farm {
 	private String farmCode; 
 	private String farmName; 
 	private String ceoId; 
+	private String farmMemberLevel;
 	private String farmArea; 
 	private String farmAddress; 
 	private String farmPublicStatus; 
 	private String farmRegDate;
+	private String farmMemberCount;
+	
 	
 	public String getFarmCode() {
 		return farmCode;
@@ -28,11 +31,20 @@ public class Farm {
 	public void setCeoId(String ceoId) {
 		this.ceoId = ceoId;
 	}
+	public String getFarmMemberLevel() {
+		return farmMemberLevel;
+	}
+	public void setFarmMemberLevel(String farmMemberLevel) {
+		this.farmMemberLevel = farmMemberLevel;
+	}
 	public String getFarmArea() {
 		return farmArea;
 	}
 	public void setFarmArea(String farmArea) {
-		this.farmArea = farmArea;
+		int area = Integer.parseInt(farmArea);
+		
+		
+		this.farmArea = area+"";
 	}
 	public String getFarmAddress() {
 		return farmAddress;
@@ -52,6 +64,13 @@ public class Farm {
 	public void setFarmRegDate(String farmRegDate) {
 		this.farmRegDate = farmRegDate;
 	}
+	public String getFarmMemberCount() {
+		return farmMemberCount;
+	}
+	public void setFarmMemberCount(String farmMemberCount) {
+		this.farmMemberCount = farmMemberCount;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -61,6 +80,8 @@ public class Farm {
 		builder.append(farmName);
 		builder.append(", ceoId=");
 		builder.append(ceoId);
+		builder.append(", farmMemberLevel=");
+		builder.append(farmMemberLevel);
 		builder.append(", farmArea=");
 		builder.append(farmArea);
 		builder.append(", farmAddress=");
@@ -69,9 +90,13 @@ public class Farm {
 		builder.append(farmPublicStatus);
 		builder.append(", farmRegDate=");
 		builder.append(farmRegDate);
+		builder.append(", farmMemberCount=");
+		builder.append(farmMemberCount);
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	
 	
 	
 	
