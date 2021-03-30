@@ -29,9 +29,6 @@
 						<table class ="table">
 							<tbody>
 								<tr>
-									<td th:text ="${farm.farmMemberLevel}">
-								</tr>
-								<tr>
 									<th>농가명</th>
 									<td th:text = "${farm.farmName}"/>
 								</tr>
@@ -57,18 +54,19 @@
 								</tr>
 							</tbody>
 							
-							
+						
 						</table>
-						<a class="btn" th:href="@{/farm/modifyFarm}">!농가수정(간부)</a>
-						<a class="btn" th:href="@{#}">농가삭제(대표)</a>
-						<a class="btn" th:href="@{/farm/getMemberFarm}">!회원조회(간부)</a>
-						<a class="btn" th:href="@{#}">농가탈퇴(전부)</a>
-						<a class="btn" th:href="@{/farm/getJoinFarm}">!가입신청리스트(간부)</a>
-						<a class="btn" th:href="@{#}">탈퇴신청리스트(대표)</a>
+						
+						<a class="btn btn-xs btn-success" th:href="@{/farm/modifyFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">농가수정(간부)</a>
+						<a class="btn btn-xs" th:href="@{#}">농가삭제(대표)</a>
+						<a class="btn btn-xs" th:href="@{/farm/getMemberFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">!회원조회(간부)</a>
+						<a class="btn btn-xs" th:href="@{#}">농가탈퇴(전부)</a>
+						<a class="btn btn-xs" th:href="@{/farm/getJoinFarm}">!가입신청리스트(간부)</a>
+						<a class="btn btn-xs" th:href="@{#}">탈퇴신청리스트(대표)</a>
 						
 						<br><br>
-						<a class="btn" th:href="@{#}">대표자수정?</a>
-						<a class="btn" th:href="@{#}">공개유무수정?</a>
+						<a class="btn btn-xs" th:href="@{#}">대표자수정?</a>
+						<a class="btn btn-xs" th:href="@{#}">공개유무수정?</a>
 					</div>
 				</div>
 

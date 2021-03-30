@@ -51,32 +51,37 @@
 								<th th:text ="${'토지 면적'}"/>
 								<th th:text ="${'주소'}"/>
 								<th th:text ="${'농가 생성일'}"/>
-								<th th:text ="${'농가 상세보기'}"/>
-								<th th:text ="${'농가 수정'}"/>
+								<th th:text ="${''}"/>
 							</tr>
 						</thead>
 						
 						<tbody>
 							<tr th:each="farm : ${myFarmList}" class ="farmList">
-								<td class ="hidden" th:text = "${farm.farmCode}"/>
-								<td class ="hidden" th:text = "${farm.farmMemberLevel}"/>
+								<td class ="hidden" id ="farmCode" th:text = "${farm.farmCode}"/>
+								<td class ="hidden" id ="farmMemberLevel" th:text = "${farm.farmMemberLevel}"/>
 								<td th:text = "${farm.farmName}"/>
 								<td th:text = "${farm.ceoId}"/>
 								<td th:text = "${farm.farmArea}"/>
 								<td th:text = "${farm.farmAddress}"/>
 								<td th:text = "${farm.farmRegDate}"/>
-								<td><a th:href="@{/farm/detailFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}" class ="btn btn-success btn-xs">상세보기</a></td>
-								<td><a th:href="@{/farm/modifyFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}" class ="btn btn-success btn-xs">수정</a></td>
+								<td>
+									<div class="btn-group">
+										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button> 
+										<ul class="dropdown-menu">
+											<li><a th:href="@{/farm/detailFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">상세보기</a></li>
+											<li th:if ="${farm.farmMemberLevel} < 3"><a th:href="@{/farm/modifyFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">수정</a></li>
+											<li><a th:href="@{#}">탈퇴</a></li>
+										</ul>
+									</div>
+								</td>
 							</tr>
 							
 						</tbody>
-					</table>
-					<a class ="btn" th:href="@{/farm/detailFarm}">!농가상세보기</a>			
-					<a class ="btn" th:href="@{/farm/modifyFarm}">!농가수정</a>	
-					</div>
-					
+					</table>	
 				</div>
+				
 			</div>
+		</div>
 					
 					
 	</th:block>
@@ -137,7 +142,14 @@
 				// 페이징 기능 숨기기
 				paging: true,
 				//언어설정
-				language :lang_kor
+				language :lang_kor,
+				"columnDefs": [
+		            {
+		                "targets": [ 0 ],
+		                "visible": false,
+		                "searchable": false
+		            }
+		        ]
 				});
 			
 		</script>

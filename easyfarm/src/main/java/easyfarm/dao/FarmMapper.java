@@ -18,5 +18,8 @@ public interface FarmMapper {
 	public List<Farm> myFamr(String memberId);
 	public List<Farm> belongFarm(String memberId);
 	public Farm detailFarm(Farm farm);
-	
+	public Farm updateByFarm(String farmCode, String memberId);
+	public int updateFarm(Farm farm);
+	public List<Farm> searchFarm(String memberId);
+	public List<FarmMember> getMemberFarm(String farmCode);
 }

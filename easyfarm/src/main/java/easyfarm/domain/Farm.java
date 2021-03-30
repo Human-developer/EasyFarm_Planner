@@ -10,6 +10,7 @@ public class Farm {
 	private String farmAddress; 
 	private String farmPublicStatus; 
 	private String farmRegDate;
+	private String farmMemberCount;
 	
 	
 	public String getFarmCode() {
@@ -40,7 +41,10 @@ public class Farm {
 		return farmArea;
 	}
 	public void setFarmArea(String farmArea) {
-		this.farmArea = farmArea;
+		int area = Integer.parseInt(farmArea);
+		
+		
+		this.farmArea = area+"";
 	}
 	public String getFarmAddress() {
 		return farmAddress;
@@ -60,6 +64,13 @@ public class Farm {
 	public void setFarmRegDate(String farmRegDate) {
 		this.farmRegDate = farmRegDate;
 	}
+	public String getFarmMemberCount() {
+		return farmMemberCount;
+	}
+	public void setFarmMemberCount(String farmMemberCount) {
+		this.farmMemberCount = farmMemberCount;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -79,9 +90,12 @@ public class Farm {
 		builder.append(farmPublicStatus);
 		builder.append(", farmRegDate=");
 		builder.append(farmRegDate);
+		builder.append(", farmMemberCount=");
+		builder.append(farmMemberCount);
 		builder.append("]");
 		return builder.toString();
 	}
+	
 	
 	
 	

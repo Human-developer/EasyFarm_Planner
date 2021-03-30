@@ -14,7 +14,9 @@
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
-	<th:block layout:fragment="customCssLib"></th:block>
+	<th:block layout:fragment="customCssLib">
+		<link rel="stylesheet" th:href="@{/assets/plugin/touchspin/jquery.bootstrap-touchspin.min.css}">
+	</th:block>
 	
 	<!-- 사용자 정의 css -->
 	<th:block layout:fragment="customCss"></th:block>
@@ -28,32 +30,41 @@
 					<div class ="box-content">
 						<h3>농가 수정</h3>
 						<hr>
-						<table class ="table">
-							<tbody>
-								<th>농가코드(숨김)</th>
-								<tr>
-									<th>농가명(수정가능?)</th>
-									<td><input type="text" class ="form-control"></td>
-								</tr>
-								<tr>
-									<th>대표아이디(대표만 수정가능)</th>
-									<td><input type="text" class ="form-control"></td>
-								</tr>
-								<tr>
-									<th>토지면적</th>
-									<td><input type="text" class ="form-control"></td>
-								</tr>
-								<tr>
-									<th>주소</th>
-									<td><input type="text" class ="form-control"></td>
-								</tr>
-								<tr>
-									<th>공개유무</th>
-									<td><input type="text" class ="form-control"></td>
-								</tr>
-							</tbody>
-						</table>
-						<a class ="btn" th:href="@{/farm/detailFarm}">농가수정>농가상세보기</a>
+						<form th:action="@{/farm/modifyFarm}" method="post">
+						
+							<input type="text" class ="form-control hidden" name ="farmCode" th:value="${farm.farmCode}" readonly="readonly">
+							<input type="text" class ="form-control hidden" name ="farmMemberLevel" th:value="${farm.farmMemberLevel}" readonly="readonly">
+							<table class ="table">
+								<tbody>
+									<tr>
+										<th>농가명</th>
+										<td><input type="text" class ="form-control" name ="farmName" th:value="${farm.farmName}" readonly="readonly"></td>
+									</tr>
+									<tr>
+										<th>대표아이디(대표만 수정가능, 농가회원중에 선택)</th>
+										<td><input type="text" class ="form-control" name ="ceoId" th:value="${farm.ceoId}" readonly="readonly"></td>
+									</tr>
+									<tr>
+										<th>토지면적</th>
+										<td><input type="text" class ="form-control" id ="farmArea" name ="farmArea" th:value="${farm.farmArea}"></td>
+									</tr>
+									<tr>
+										<th>주소</th>
+										<td><input type="text" class ="form-control" name ="farmAddress" th:value="${farm.farmAddress}"></td>
+									</tr>
+									<tr>
+										<th>공개유무</th>
+										<td>
+											<input type="radio" th:value="Y" th:checked="${'Y'.equals(farm.farmPublicStatus)}" name ="farmPublicStatus"> 공개
+											<input type="radio" th:value="N" th:checked="${'N'.equals(farm.farmPublicStatus)}" name ="farmPublicStatus"> 비공개
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class ="col-xs-12 t-center">
+								<button type="submit" id ="modifyButton" class ="btn btn-success">수정</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -62,9 +73,21 @@
 	
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
-	<th:block layout:fragment="customScriptLib"></th:block>
+	<th:block layout:fragment="customScriptLib">
+		<script th:src="@{/assets/plugin/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 -->
-	<th:block layout:fragment="customJavaScript"></th:block>
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+			$("#farmArea").TouchSpin({
+		         verticalbuttons: true,
+		         min : 0,
+		         max : 10000000000,
+		         postfix : '평'
+		      });
+			
+		</script>
+	</th:block>
 
 </html>

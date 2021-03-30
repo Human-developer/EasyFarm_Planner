@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 
 import easyfarm.domain.Farm;
 import easyfarm.domain.FarmMember;
@@ -58,6 +56,19 @@ public class FarmController {
 	/* 농가메인 */
 	@GetMapping("/farm/farmMain")
 	public String farmMain(Model model, HttpSession session) {
+		String memberId = (String)session.getAttribute("SID");
+		List<Farm> myFarmList =	farmService.myFarm(memberId);
+		
+		if(myFarmList != null) {
+			model.addAttribute("myFarmList",myFarmList);
+		}
+		
+		List<Farm> belongFarmList = farmService.belongFarm(memberId);
+		
+		if(belongFarmList != null) {
+			model.addAttribute("belongFarmList",belongFarmList);
+		}
+		
 		
 		return "views/farm/farmMain";
 	}
@@ -68,7 +79,7 @@ public class FarmController {
 	@GetMapping("/farm/detailFarm")
 	public String farmDetailFarm(Model model, Farm farm, HttpSession session) {
 		
-		if(farm != null) {						
+		if(farm != null && farm.getFarmCode() != null) {						
 			farm.setCeoId((String)session.getAttribute("SID"));
 			Farm resultFarm = farmService.detailFarm(farm);			
 			
@@ -117,19 +128,63 @@ public class FarmController {
 	
 	/* 농가검색 */
 	@GetMapping("farm/searchFarm")
-	public String searchFarm(Model model) {	
+	public String searchFarm(Model model, HttpSession session) {	
+		String memberId = (String)session.getAttribute("SID");
+		List<Farm> farmList = null;
+		farmList = farmService.searchFarm(memberId);
+		if(farmList != null) {
+			model.addAttribute("farmList", farmList);
+		}
 		return "views/farm/searchFarm";
 	}
 	/* 농가검색 */
 	
 	/* 농가수정 */
 	@GetMapping("/farm/modifyFarm")
-	public String modifyFarm(Model model, String fCode) {
-		return "views/farm/modifyFarm";
+	public String modifyFarm(Model model, HttpSession session, @RequestParam(value = "farmCode", required = false) String fCode) {
+		String memberId = (String)session.getAttribute("SID");
+		
+		if(fCode != null && memberId != null) {
+			Farm myFarm = farmService.updateByFarm(fCode, memberId);
+			
+			if(myFarm != null && !"3".equals(myFarm.getFarmMemberLevel())) {
+				model.addAttribute("farm", myFarm);
+			}
+			else {
+				//권한이없다
+				return "redirect:/farm/farmMain";
+			}
+			
+			
+			
+			return "views/farm/modifyFarm";
+		}
+		else {
+			return "redirect:/farm/farmMain";
+		}
 	}
+
+	//처리
 	@PostMapping("/farm/modifyFarm")
-	public String modifyFarm(Model model) {
-		return "redirect:/views/farmMain";
+	public String modifyFarm(Farm farm) {
+
+		if(farm!= null) {
+			int result =0;
+			result = farmService.updateFarm(farm);
+			
+			if(result > 0) {
+				
+				return "redirect:/farm/detailFarm?farmCode="+farm.getFarmCode()+",farmMemberLevel="+farm.getFarmMemberLevel();
+			}
+			else {
+				return "redirect:/farm/detailFarm?farmCode="+farm.getFarmCode()+",farmMemberLevel="+farm.getFarmMemberLevel();				
+			}
+		}
+		else {
+			return "redirect:/farm/detailFarm?farmCode="+farm.getFarmCode()+",farmMemberLevel="+farm.getFarmMemberLevel();
+		}
+		
+		
 	}
 	/* 농가수정 */
 	
@@ -163,7 +218,23 @@ public class FarmController {
 	
 	/* 농가회원조회 */
 	@GetMapping("/farm/getMemberFarm")
-	public String getMemberFarm(Model model) {
+	public String getMemberFarm(
+			Model model,
+			@RequestParam(value = "farmCode", required = false) String farmCode,
+			@RequestParam(value = "farmMemberLevel", required = false) String farmMemberLevel) {
+		
+		if(farmCode != null && farmMemberLevel != null) {
+			List<FarmMember> farmMemberList = farmService.getMemberFarm(farmCode);
+			if(farmMemberList != null) {
+				model.addAttribute("farmMemberList", farmMemberList);
+				model.addAttribute("myMemberLevel", farmMemberLevel);
+			}
+			
+		}
+		else {
+			return "redirect:/farm/belongFarm";
+		}
+		
 		return "views/farm/getMemberFarm";
 	}
 	/* 농가회원조회 */

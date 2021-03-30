@@ -69,7 +69,22 @@
 			
 		</style>
 	</th:block>
-	
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+			$('.loginBtn').click(function(){
+				if($('#memberId').val() == ""){
+					alert("아이디를 입력해주세요");
+					$('#memberId').focus();
+					return false;
+				}
+				if($('#memberPw').val() == ""){
+					alert("비밀번호를 입력해주세요");
+					$('#memberPw').focus();
+					return false;
+				}
+			});
+		</script>
+	</th:block>
 	<th:block layout:fragment="customContents">
 	
 		
@@ -78,14 +93,17 @@
 					
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-sm-offset-4 col-sm-4 align">
+						<div class=" align
+									col-md-offset-4 col-md-7
+									col-sm-offset-4 col-sm-7
+									col-lg-offset-4 col-lg-4">
 						
 							<article id="lcLoginPageWrap" >
 								<h1 class="col " style="margin-top: 110px;"><i class="glyphicon glyphicon-grain" ></i> Easy Farm </h1>
 								
 								<form th:action="@{/member/login}" method="post">
 									<div  style="text-align: left; margin-top: 15px;" >
-										<label style="margin-bottom: 4px;" name="memberId">아이디</label>
+										<label style="margin-bottom: 4px;" name="memberId" >아이디</label>
 										<input class="green-input"  name="memberId" id="memberId" type="text" placeholder="아이디 입력" value="">
 									</div>
 									<div style="text-align: left;">
@@ -93,9 +111,9 @@
 										<input class="green-input" name="memberPw" id="memberPw" type="password" placeholder="비밀번호 입력" value="">
 									</div>
 										
-											<button class="lc-round-btn" type="submit">로그인</button>
+											<button class="lc-round-btn loginBtn" type="submit">로그인</button>
+											<p style="font-size: 20px; color: red; margin-top: 20px; " th:text="${session.Error}">
 								</form>
-									
 									
 									<!-- <div  style="margin-top: 30px;">
 										<a th:href="#" style="margin-right: 50px;">아이디 | 비번찾기</a> <a th:href="#" >회원가입</a>  

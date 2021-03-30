@@ -27,7 +27,10 @@
 				text-align: right;
 			}
 			#myFarmTable tbody tr:hover{
-			background-color: rgba(0,0,0,0.1);
+				background-color: rgba(0,0,0,0.1);
+			}
+			.dropdown-menu li:hover{
+				background-color: rgba(0,0,0,0.3);
 			}
 		</style>
 	</th:block>
@@ -52,8 +55,7 @@
 								<th th:text ="${'주소'}"/>
 								<th th:text ="${'농가 생성일'}"/>
 								<th th:text ="${'농가 공개유무'}"/>
-								<th th:text ="${'농가 상세보기'}"/>
-								<th th:text ="${'농가 수정'}"/>
+								<th th:text ="${''}"/>
 							</tr>
 						</thead>
 						
@@ -67,18 +69,26 @@
 								<td th:text = "${farm.farmAddress}"/>
 								<td th:text = "${farm.farmRegDate}"/>
 								<td th:text = "${farm.farmPublicStatus}"/>
-								<td><a th:href="@{/farm/detailFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}" class ="btn btn-success btn-xs">상세보기</a></td>
-								<td><a th:href="@{/farm/modifyFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}" class ="btn btn-success btn-xs">수정</a></td>
+								<td>
+									<div class="btn-group">
+										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button> 
+										<ul class="dropdown-menu">
+											<li><a th:href="@{/farm/detailFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">상세보기</a></li>
+											<li><a th:href="@{/farm/modifyFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">수정</a></li>
+										</ul>
+									</div>
+								</td>
+								
 							</tr>
 							
 						</tbody>
 					</table>
-					<a class ="btn" th:href="@{/farm/detailFarm}">!농가상세보기</a>			
-					<a class ="btn" th:href="@{/farm/modifyFarm}">!농가수정</a>	
 					</div>
 					
 				</div>
 			</div>
+					
+					
 					
 					
 	</th:block>
@@ -140,8 +150,16 @@
 				// 페이징 기능 숨기기
 				paging: true,
 				//언어설정
-				language :lang_kor
+				language :lang_kor,
+				"columnDefs": [
+		            {
+		                "targets": [ 0 ],
+		                "visible": false,
+		                "searchable": false
+		            }
+		        ]
 				});
+			
 			
 		</script>
 	</th:block>

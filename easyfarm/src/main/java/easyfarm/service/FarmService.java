@@ -41,7 +41,7 @@ public class FarmService {
 			farmMember.setFarmCode(farm.getFarmName());
 			farmMember.setFarmMemberId(farm.getCeoId());
 			farmMember.setFarmLevelName("대표");
-			farmMember.setFarmLevelCode("1");
+			farmMember.setFarmLevelCode("farm_level_1");
 			farmMember.setFarmMemberStatus("정상");
 			
 			result += farmMapper.addFarmMember(farmMember);
@@ -76,6 +76,7 @@ public class FarmService {
 	public Farm detailFarm(Farm farm){
 		Farm resultFarm = null;
 		if(farm != null) {
+			System.out.println(farm +"testesttetstetste");
 			resultFarm = farmMapper.detailFarm(farm);
 		}
 		
@@ -83,6 +84,46 @@ public class FarmService {
 	}
 	/* 농가상세보기 */
 	
-
+	
+	/* 농가수정 */
+	public Farm updateByFarm(String farmCode, String memberId) {
+		Farm resultFarm = null;
+		
+		if(farmCode != null && memberId != null) {
+			
+			resultFarm = farmMapper.updateByFarm(farmCode, memberId);
+		}
+		
+		
+		return resultFarm;
+	}
+	
+	//처리
+	public int updateFarm(Farm farm) {
+		int result =0;
+		if(farm != null) {
+			result += farmMapper.updateFarm(farm);
+		}
+		return result;
+	}
+	/* 농가수정 */
+	
+	
+	public List<Farm> searchFarm(String memberId){
+		List<Farm> resultFarm = null;
+		if(memberId != null) {
+			resultFarm = farmMapper.searchFarm(memberId); 
+		}
+		return resultFarm;
+	}
+	
+	
+	public List<FarmMember> getMemberFarm(String farmCode){
+		List<FarmMember> resultFarmMemberList = null;
+		if(farmCode != null) {
+			resultFarmMemberList = farmMapper.getMemberFarm(farmCode);
+		}
+		return resultFarmMemberList;
+	}
 	
 }
