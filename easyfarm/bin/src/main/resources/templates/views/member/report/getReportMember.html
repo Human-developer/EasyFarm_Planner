@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>신고목록 조회</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		신고목록 조회
+	</th:block>
+
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+	
+	 
+			
+				
+			<div class="box-content">
+					<table  class="table table-hover table-striped">
+						<thead>
+							<tr>
+								
+								<th>신고사유</th>
+								<th>대상 아이디</th>
+								
+								<th>내용</th>			
+								<th>등록일</th>
+								<th>승인/반려 상태</th>
+								<th>승인/반려 사유</th>
+								<th>수정</th>
+								<th>취소</th>
+								<th>삭제</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="r : ${reportList}">
+														
+								<td th:text="${r.reportReason}"></td>				
+								<td th:text="${r.reportedMemberId}"></td>				
+										
+								<a th:href="#" id="abc"><td th:text="내용" style="color: blue;"><input type="text" hidden="" id="reportDetailReason" th:value="${r.reportDetailReason}"></td></a>
+								<td th:text="${r.regDate}"></td>													
+								<td th:text="${reportApproval}"></td>				
+								<td th:text="${reportApprovalReason}"></td>				
+								
+								<td>
+									<a th:href ="@{/member/modifReasonReport(reportCode=${r.reportCode})}">수정</a>
+								</td>
+								<td>
+									<a th:href ="@{/member/cancelReasonReport(reportCode=${r.reportCode})}">취소</a>
+								</td>
+								<td>
+									<a th:href ="@{/member/removeReasonReport(reportCode=${r.reportCode})}">삭제</a>
+								</td>
+							
+							</tr>
+						
+							<tr th:if="${reportReasonList.size() == 0}"> 
+								<td colspan="8" style ="text-align: center;">
+								조회된 내용이 없습니다
+								</td>
+							</tr>
+						</tbody>		
+	
+					</table>
+				
+			</div>
+			
+	</th:block>
+	
+	<th:block layout:fragment="customJavaScript">
+		<script>
+			$(function(){
+				
+				$('#abc').on('click',function(){
+					alert($('#reportDetailReason').vel());
+					
+				
+				});
+				
+				
+			});
+		
+		
+		</script>
+	
+	</th:block>
+	
+
+</html>
