@@ -17,6 +17,8 @@
 			,si.stock_item_quantity_unit 				AS stockItemQuantityUnit
 			,si.stock_item_quantity_capacity 			AS stockItemQuantityCapacity
 			,si.stock_item_quantity_capacity_unit 		AS stockItemQuantityCapacityUnit
+			,erp.stock_item_income_quantity_total 		AS stockItemIncomeQuantityTotal
+			,erp.stock_item_income_per_pay 				AS stockItemIncomePerPay
 			,ru.resource_retain_quantity 				AS resourceRetainQuantity
 			,ru.resource_retain_quantity_capacity_extra AS resourceRetainQuantityCapacityExtra
 			,ru.available_status 						AS availableStatus
