@@ -66,15 +66,17 @@
 								<td th:text = "${farm.farmRegDate}"/>
 								<td>
 									<div class="btn-group">
-										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button> 
+										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button>
 										<ul class="dropdown-menu">
 											<li><a th:href="@{/farm/detailFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">상세보기</a></li>
-											<li th:if ="${farm.farmMemberLevel} < 3"><a th:href="@{/farm/modifyFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">수정</a></li>
+											<li th:if ="${farm.farmMemberLevel == 'farm_level_1' AND farm.farmMemberLevel == 'farm_level_2' }"><a th:href="@{/farm/modifyFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">수정</a></li>
 											<li><a th:href="@{#}">탈퇴</a></li>
 										</ul>
 									</div>
 								</td>
+								
 							</tr>
+							
 							
 						</tbody>
 					</table>	
@@ -89,12 +91,11 @@
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
 	<th:block layout:fragment="customScriptLib">
-		<script src="/assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
-		<script src="/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
-		<script src="/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
-		<script src="/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
-		<script src="/assets/scripts/datatables.demo.min.js"></script>
-		
+		<script th:src="@{/assets/plugin/datatables/media/js/jquery.dataTables.min.js}"></script>
+		<script th:src="@{/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js}"></script>
+		<script th:src="@{/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js}"></script>
+		<script th:src="@{/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js}"></script>
+		<script th:src="@{/assets/scripts/datatables.demo.min.js}"></script>
 	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 -->

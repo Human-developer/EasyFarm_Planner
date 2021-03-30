@@ -108,16 +108,17 @@ public class FarmService {
 	}
 	/* 농가수정 */
 	
-	
+	/* 농가검색 */
 	public List<Farm> searchFarm(String memberId){
 		List<Farm> resultFarm = null;
 		if(memberId != null) {
-			resultFarm = farmMapper.searchFarm(memberId); 
+			//resultFarm = farmMapper.searchFarm(memberId);
 		}
 		return resultFarm;
 	}
+	/* 농가검색 */
 	
-	
+	/* 농가회원조회 */
 	public List<FarmMember> getMemberFarm(String farmCode){
 		List<FarmMember> resultFarmMemberList = null;
 		if(farmCode != null) {
@@ -125,5 +126,5 @@ public class FarmService {
 		}
 		return resultFarmMemberList;
 	}
-	
+	/* 농가회원조회 */
 }

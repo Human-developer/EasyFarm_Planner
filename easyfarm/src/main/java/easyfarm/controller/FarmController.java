@@ -174,14 +174,14 @@ public class FarmController {
 			
 			if(result > 0) {
 				
-				return "redirect:/farm/detailFarm?farmCode="+farm.getFarmCode()+",farmMemberLevel="+farm.getFarmMemberLevel();
+				return "redirect:/farm/detailFarm?farmCode="+farm.getFarmCode()+"&farmMemberLevel="+farm.getFarmMemberLevel();
 			}
 			else {
-				return "redirect:/farm/detailFarm?farmCode="+farm.getFarmCode()+",farmMemberLevel="+farm.getFarmMemberLevel();				
+				return "redirect:/farm/detailFarm?farmCode="+farm.getFarmCode()+"&farmMemberLevel="+farm.getFarmMemberLevel();				
 			}
 		}
 		else {
-			return "redirect:/farm/detailFarm?farmCode="+farm.getFarmCode()+",farmMemberLevel="+farm.getFarmMemberLevel();
+			return "redirect:/farm/detailFarm?farmCode="+farm.getFarmCode()+"&farmMemberLevel="+farm.getFarmMemberLevel();
 		}
 		
 		
