@@ -148,13 +148,13 @@ $(function(){
 	    postfix: '단위'
 	});
 
-	$('#stockItemCode').change(function(){
-		var stockItemCode = $(this).val();
+	$('#resourceStockItemCode').change(function(){
+		var resourceStockItemCode = $(this).val();
 		
 		$.ajax({
 			url: "/ajax/getStockItemInfo",
 			method: "POST",
-			data: { stockItemCode : stockItemCode },
+			data: { resourceStockItemCode : resourceStockItemCode },
 			success : function(data) {
 				if(data.stockItemCode != null){
 					
@@ -307,6 +307,48 @@ $(function(){
 		maxboostedstep: 10000000,
 		buttondown_class: 'hidden',
 		buttonup_class: 'hidden',
+		postfix: '원'
+	});
+	
+	/*공과금탭*/
+	$('#taxPayWhatmonth').TouchSpin({
+		min: 0,
+		max: 1000000000,
+		maxboostedstep: 10000000,
+		buttondown_class: 'btn btn-default',
+		buttonup_class: 'btn btn-default',
+		postfix: '월'
+	});
+	
+	$("#taxPayWhatmonth").datepicker({
+		dateFormat: 'yy.mm', changeMonth: true, changeYear: true, 
+		showButtonPanel: true, 
+		onClose: function(dateText, inst) { 
+			var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
+			var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+			$(this).datepicker('setDate', new Date(year, month, 1)); 
+			$(".ui-datepicker-calendar").css("display","none"); 
+			} 
+	});
+	
+	$("#taxPayWhatmonth").focus(function () {
+		$(".ui-datepicker-calendar").css("display","none"); 
+		$("#ui-datepicker-div").position({
+			my: "center top", 
+			at: "center bottom", 
+			of: $(this) 
+		}); 
+	});
+
+	
+	/*기타비용탭*/
+	$('#etcPay').TouchSpin({
+		min: 0,
+		max: 1000000000,
+		step: 1000,
+		maxboostedstep: 10000000,
+		buttondown_class: 'btn btn-default',
+		buttonup_class: 'btn btn-default',
 		postfix: '원'
 	});
 	

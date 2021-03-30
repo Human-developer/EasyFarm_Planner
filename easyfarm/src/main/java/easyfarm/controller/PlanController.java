@@ -98,6 +98,11 @@ public class PlanController {
 			List<Map<String, Object>> stockItemList = pgsPlanService.getStockItem(projectData);
 			model.addAttribute("stockItemList", stockItemList);
 			
+			/* 공과금항목조회 */
+			List<Map<String, Object>> taxPayCateCodeList = pgsPlanService.getTaxPayCateCode();
+			System.out.println(taxPayCateCodeList);
+			model.addAttribute("taxPayCateCodeList", taxPayCateCodeList);
+			
 		}
 		
 		return "views/plan/addSpend";
@@ -105,11 +110,11 @@ public class PlanController {
 	
 	@PostMapping("/ajax/getStockItemInfo")
 	@ResponseBody
-	public Map<String, Object> getStockItemInfo(@RequestParam(value = "stockItemCode", required = false) String stockItemCode) {
+	public Map<String, Object> getStockItemInfo(@RequestParam(value = "resourceStockItemCode", required = false) String resourceStockItemCode) {
 		
 		Map<String, Object> stockItemInfo = null;
-		if(stockItemCode != null && !"".equals(stockItemCode.trim())) {
-			stockItemInfo = pgsPlanService.getStockItemInfo(stockItemCode);
+		if(resourceStockItemCode != null && !"".equals(resourceStockItemCode.trim())) {
+			stockItemInfo = pgsPlanService.getStockItemInfo(resourceStockItemCode);
 		}
 		return stockItemInfo;
 	}

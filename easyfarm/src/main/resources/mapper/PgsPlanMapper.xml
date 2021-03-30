@@ -10,6 +10,16 @@
 		<result column="" property="" />
 	</resultMap>
   	
+  	<select id="getTaxPayCateCode" resultType="map">
+  		SELECT
+			 tpc.tax_pay_cate_code	AS taxPayCateCode
+			,tpc.tax_pay_cate_name	AS taxPayCateName
+		FROM
+			tb_tax_pay_cate AS tpc
+		WHERE
+			tpc.use_status = 'O'
+  	</select>
+  	
   	<select id="getStockItemInfo" resultType="map" parameterType="String">
   		SELECT
   			 si.stock_item_code 						AS stockItemCode
