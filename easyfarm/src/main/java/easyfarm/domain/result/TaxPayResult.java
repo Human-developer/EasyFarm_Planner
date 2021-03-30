@@ -1,5 +1,6 @@
 package easyfarm.domain.result;
 
+import easyfarm.domain.plan.TaxPay;
 
 public class TaxPayResult {
 	// 공과금지출계획대비실행코드
@@ -36,16 +37,12 @@ public class TaxPayResult {
     private String completeStatus;
 
     // 작성자농가회원코드
-    private String regFarmMemberCode;
+    private String regMemberId;
 
     // 작성일
     private String regDate;
-
-    // 수정자농가회원코드
-    private String modFarmMemberCode;
-
-    // 수정일
-    private String modDate;
+    
+    private TaxPay taxPayPlan;
 
     public String getTaxPayRunCode() {
         return taxPayRunCode;
@@ -135,12 +132,12 @@ public class TaxPayResult {
         this.completeStatus = completeStatus;
     }
 
-    public String getRegFarmMemberCode() {
-        return regFarmMemberCode;
+    public String getregMemberId() {
+        return regMemberId;
     }
 
-    public void setRegFarmMemberCode(String regFarmMemberCode) {
-        this.regFarmMemberCode = regFarmMemberCode;
+    public void setregMemberId(String regMemberId) {
+        this.regMemberId = regMemberId;
     }
 
     public String getRegDate() {
@@ -151,20 +148,21 @@ public class TaxPayResult {
         this.regDate = regDate;
     }
 
-    public String getModFarmMemberCode() {
-        return modFarmMemberCode;
-    }
+	public String getRegMemberId() {
+		return regMemberId;
+	}
 
-    public void setModFarmMemberCode(String modFarmMemberCode) {
-        this.modFarmMemberCode = modFarmMemberCode;
-    }
+	public void setRegMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
+	}
 
-    public String getModDate() {
-        return modDate;
-    }
+	public TaxPay getTaxPayPlan() {
+		return taxPayPlan;
+	}
 
-    public void setModDate(String modDate) {
-        this.modDate = modDate;
-    }
+	public void setTaxPayPlan(TaxPay taxPayPlan) {
+		this.taxPayPlan = taxPayPlan;
+	}
+
 	
 }

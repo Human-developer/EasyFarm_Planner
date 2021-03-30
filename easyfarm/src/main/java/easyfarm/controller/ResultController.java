@@ -46,7 +46,7 @@ public class ResultController {
 	@GetMapping("/resultTable")
 	public String resultTable(Model model) {
 		
-		return "views/result/resultMain2";
+		return "views/result/tables-datatable";
 	}
 	
 	@GetMapping("/resultData")
@@ -57,10 +57,10 @@ public class ResultController {
 		List<InsurancePayResult> insurancePayResult = resultService.getInsurancePayResult();
 		List<MachineLeasePayResult> machineLeasePayResult = resultService.getMachineLeasePayResult();
 		List<MachineUsePayResult> machineUsePayResult = resultService.getMachineUsePayResult();
-		List<ProductGainResult> productGainResult = resultService.getProductGainRunResult();
-		List<ResourceUsePlanResult> resourceUsePlanResult = resultService.getResourceUsePlanRunResult();
-		List<TaxPayResult> taxPayResult = resultService.getTaxPayRunResult();
-		List<WorkForcePayResult> workForcePayResult = resultService.getWorkForcePayRunResult();
+		List<ProductGainResult> productGainResult = resultService.getProductGainResult();
+		List<ResourceUsePlanResult> resourceUsePlanResult = resultService.getResourceUsePlanResult();
+		List<TaxPayResult> taxPayResult = resultService.getTaxPayResult();
+		List<WorkForcePayResult> workForcePayResult = resultService.getWorkForcePayResult();
 		
 		
 		List<EtcPay> etcPayPlan = planService.getEtcPayPlan();

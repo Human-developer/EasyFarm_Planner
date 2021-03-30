@@ -4,37 +4,28 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="easyfarm.dao.ResultMapper">
   	
-  	
-  	
   	<resultMap type="EtcPayResult" id="resultEtcPayMap">
-	  		<id column="etc_pay_run_code"  				property="etcPayRunCode"/>
-	  		<result column="etc_pay_code" 				property="etcPayCode" />
-	  		<result column="plan_workphase_code" 		property="planWorkphaseCode" />
-	  		<result column="plan_workphase_cate_code" 	property="planWorkphaseCateCode" />
-	  		<result column="client_code" 				property="clientCode" />
-	  		<result column="etc_pay_run_date" 			property="etcPayRunDate" />
-	  		<result column="etc_pay_run_pay" 			property="etcPayRunPay" />
-	  		<result column="etc_pay_run_memo" 			property="etcPayRunMemo" />
-	  		<result column="complete_status" 			property="complete_status" />
-	  		<result column="reg_farm_member_code" 		property="regFarmMemberCode" /> 
-	  		<result column="reg_date" 					property="regDate" />
-	  		<result column="mod_farm_member_code" 		property="modFarmMemberCode" />
-	  		<result column="mod_date" 					property="modDate" />
+	  		<id column="etc_pay_run_code"  				property="etcPayRunCode"/>          <!--기타비용지출계획대비실행코드-->                              
+	  		<result column="etc_pay_code" 				property="etcPayCode" />            <!--기타비용지출계획코드-->         
+	  		<result column="client_code" 				property="clientCode" />            <!--거래처코드-->            
+	  		<result column="etc_pay_run_date" 			property="etcPayRunDate" />         <!--지출일-->            
+	  		<result column="etc_pay_run_pay" 			property="etcPayRunPay" />          <!--지출금액-->            
+	  		<result column="etc_pay_run_memo" 			property="etcPayRunMemo" />         <!--추가메모(항목)-->            
+	  		<result column="complete_status" 			property="completeStatus" />        <!--실행완료여부-->            
+	  		<result column="reg_member_id" 				property="regMemberId" />       	<!--작성자아이디-->            
+	  		<result column="reg_date" 					property="regDate" />               <!--작성일-->                              
 	  	<association property="etcPayPlan" javaType="EtcPay">
-	  		<id column="etc_pay_code" 					property="etcPayCode"/>				<!--농가별농자재매입지출계획코드-->
-	  		<result column="plan_workphase_code" 		property="planWorkphaseCode" />		<!--인건비지출계획대비실행-->
-	  		<result column="plan_workphase_cate_code" 	property="planWorkphaseCateCode" />	<!--인건비지출계획대비실행-->
-	  		<result column="client_code" 				property="clientCode" />			<!--인건비지출계획대비실행-->
-	  		<result column="etc_pay_date" 				property="etcPayDate" />			<!--인건비지출계획대비실행-->
-	  		<result column="etc_pay" 					property="etcPay" />				<!--인건비지출계획대비실행-->
-	  		<result column="etc_pay_detail" 			property="etcPayDetail" />			<!--인건비지출계획대비실행-->
-	  		<result column="reg_farm_member_code" 		property="regFarmMemberCode" />		<!--인건비지출계획대비실행-->
-	  		<result column="reg_date" 					property="regDate" />				<!--인건비지출계획대비실행-->
-	  		<result column="mod_farm_member_code" 		property="modFarmMemberCode" />		<!--인건비지출계획대비실행-->
-	  		<result column="mod_date" 					property="modDate" />				<!--인건비지출계획대비실행-->
+	  		<id column="etc_pay_code" 					property="etcPayCode"/>				<!--기타비용지출계획코드-->
+	  		<result column="plan_workphase_code" 		property="planWorkphaseCode" />		<!--기간별작업단계계획코드-->
+	  		<result column="plan_workphase_cate_code" 	property="planWorkphaseCateCode" />	<!--작업단계별상세항목코드-->
+	  		<result column="client_code" 				property="clientCode" />			<!--거래처코드-->
+	  		<result column="etc_pay_date" 				property="etcPayDate" />			<!--지출일-->
+	  		<result column="etc_pay" 					property="etcPay" />				<!--지출금액-->
+	  		<result column="etc_pay_detail" 			property="etcPayDetail" />			<!--추가메모-->
+	  		<result column="reg_member_id" 				property="regMemberId" />			<!--작성자아이디-->
+	  		<result column="reg_date" 					property="regDate" />				<!--작성일-->
 	  	</association>
   	</resultMap>
-
 	
    <select id="getEtcPayResult" resultMap="resultEtcPayMap" parameterType="String" >
 		 SELECT
@@ -44,11 +35,15 @@
 			,p.etc_pay_date
 			,p.etc_pay
 			,p.etc_pay_detail
+			,p.reg_member_id
+			,p.reg_date
 			,r.etc_pay_run_code
 			,r.etc_pay_run_date
 			,r.etc_pay_run_pay
 			,r.etc_pay_run_memo
 			,r.complete_status
+			,r.reg_member_id
+			,r.reg_date
 		FROM
 		tb_etc_pay_run AS r
 		JOIN
@@ -56,7 +51,7 @@
 		ON
 		r.etc_pay_code=p.etc_pay_code
 		WHERE
-		p.etc_pay_code='etc_pay_1'
+		p.plan_workphase_code='1'
    </select>
   
     	<resultMap type="ResourcePayResult" id="resultResourcePayMap">
@@ -70,10 +65,8 @@
 	  		<result column="stock_item_total_pay" 				property="stockItemTotalPay" />
 	  		<result column="stock_item_income_date" 			property="stockItemIncomeDate" />
 	  		<result column="complete_status" 					property="completeStatus" /> 
-	  		<result column="reg_farm_member_code" 				property="regFarmMemberCode" /> 
+	  		<result column="reg_member_id" 						property="regMemberId" /> 
 	  		<result column="reg_date" 							property="regDate" />
-	  		<result column="mod_farm_member_code" 				property="modFarmMemberCode" />
-	  		<result column="mod_date" 							property="modDate" />
 	  	<association property="resourcePayPlan" javaType="ResourcePay">
 	  		<id column="resource_pay_code" 						property="resourcePayCode"/>
 	  		<result column="farm_code" 							property="farmCode" />
@@ -84,123 +77,378 @@
 	  		<result column="stock_item_income_per_pay" 			property="stockItemIncomePerPay" />
 	  		<result column="stock_item_total_pay" 				property="stockItemTotalPay" />
 	  		<result column="stock_item_income_date" 			property="stockItemIncomeDate" />
-	  		<result column="reg_farm_member_code" 				property="regFarmMemberCode" />
+	  		<result column="reg_member_id" 						property="regMemberId" />
 	  		<result column="reg_date" 							property="regDate" />
-	  		<result column="mod_farm_member_code" 				property="modFarmMemberCode" />
-	  		<result column="mod_date" 							property="modDate" />
 	  	</association>
   	</resultMap>
   
   	<select id="getResourcePayResult" resultMap="resultResourcePayMap" parameterType="String" >
-   SELECT resource_pay_code, farm_code, client_code, stock_item_code, stock_item_income_quantity, stock_item_income_quantity_total, stock_item_income_per_pay, stock_item_total_pay, stock_item_income_date, reg_farm_member_code, reg_date, mod_farm_member_code, mod_date
-	FROM tb_exp_resource_pay
+   SELECT
+		r.farm_resource_pay_run_code
+		, r.farm_resource_pay_code
+		, r.farm_code
+		, r.client_code
+		, r.stock_item_code
+		, r.stock_item_income_quantity
+		, r.stock_item_income_quantity_total
+		, r.stock_item_income_per_pay
+		, r.stock_item_total_pay
+		, r.stock_item_income_date
+		, r.complete_status
+		, r.reg_member_id
+		, r.reg_date
+		, p.resource_pay_code
+		, p.farm_code
+		, p.client_code
+		, p.stock_item_code
+		, p.stock_item_income_quantity
+		, p.stock_item_income_quantity_total
+		, p.stock_item_income_per_pay
+		, p.stock_item_total_pay
+		, p.stock_item_income_date
+		, p.reg_member_id
+		, p.reg_date
+		FROM
+		tb_farm_resource_pay_run AS r
+		JOIN
+		tb_exp_resource_pay AS p
+		ON
+		r.farm_resource_pay_code=p.resource_pay_code
+		WHERE
+		p.farm_code='1'
    </select>
    
-  	<select id="getInsurancePayResult" resultType="InsurancePayResult" >
-   SELECT 
-		insure_pay_run_code             AS insurePayRunCode, 
-		insure_pay_code                 AS insurePayCode, 
-		project_code                 	AS projectCode, 
-		insure_company                 	AS insureCompany, 
-		insure_name                 	AS insureName, 
-		insure_datail                 	AS insureDatail, 
-		insure_begin                 	AS insureBegin, 
-		insure_area                 	AS insureArea, 
-		insure_end                 		AS insureEnd, 
-		insure_pay_total                AS insurePayTotal, 
-		insure_pay_per_month            AS insurePayPerMonth, 
-		complete_status                 AS completeStatus, 
-		reg_farm_member_code            AS regFarmMemberCode, 
-		reg_date                 		AS regDate, 
-		mod_farm_member_code            AS modFarmMemberCode, 
-		mod_date                 		AS modDate
-	FROM tb_insure_pay_run
+   
+   <resultMap type="InsurancePayResult" id="resultInsurancePayMap">
+	  		<id column="insure_pay_run_code"  			property="insurePayRunCode"/>   <!--농가별농자재매입지출계획코드-->                              
+	  		<result column="insure_pay_code" 			property="insurePayCode" />     <!--농가별농자재매입지출계획코드-->         
+	  		<result column="project_code" 				property="projectCode" />       <!--인건비지출계획대비실행-->            
+	  		<result column="insure_company" 			property="insureCompany" />   	<!--인건비지출계획대비실행-->            
+	  		<result column="insure_name" 				property="insureName" />        <!--인건비지출계획대비실행-->            
+	  		<result column="insure_datail" 				property="insureDatail" />      <!--인건비지출계획대비실행-->            
+	  		<result column="insure_begin" 				property="insureBegin" />       <!--인건비지출계획대비실행-->            
+	  		<result column="insure_area" 				property="insureArea" />        <!--인건비지출계획대비실행-->            
+	  		<result column="insure_end" 				property="insureEnd" />         <!--인건비지출계획대비실행-->            
+	  		<result column="insure_pay_total" 			property="insurePayTotal" />    <!--인건비지출계획대비실행-->            
+	  		<result column="insure_pay_per_month" 		property="insurePayPerMonth" /> <!--인건비지출계획대비실행-->            
+	  		<result column="complete_status" 			property="completeStatus" />    <!--인건비지출계획대비실행-->            
+	  		<result column="reg_member_id" 				property="regMemberId" />       <!--인건비지출계획대비실행-->            
+	  		<result column="reg_date" 					property="regDate" />           <!--농가별농자재매입지출계획코드-->                              
+	  	<association property="insurancePayPlan" javaType="InsurancePay">
+	  		<id column="insure_pay_code" 				property="insurePayCode"/>		<!--농가별농자재매입지출계획코드-->
+	  		<result column="project_code" 				property="projectCode" />		<!--인건비지출계획대비실행-->
+	  		<result column="insure_company" 			property="insureCompany" />		<!--인건비지출계획대비실행-->
+	  		<result column="insure_name" 				property="insureName" />		<!--인건비지출계획대비실행-->
+	  		<result column="insure_datail" 				property="insureDatail" />		<!--인건비지출계획대비실행-->
+	  		<result column="insure_area" 				property="insureArea" />		<!--인건비지출계획대비실행-->
+	  		<result column="insure_pay_total" 			property="insurePayTotal" />	<!--인건비지출계획대비실행-->
+	  		<result column="reg_member_id" 				property="regMemberId" />		<!--인건비지출계획대비실행-->
+	  		<result column="reg_date" 					property="regDate" />			<!--인건비지출계획대비실행-->
+	  	</association>
+  	</resultMap>
+   
+   
+   <select id="getInsurancePayResult" resultMap="resultInsurancePayMap" parameterType="String" >
+   SELECT
+		r.insure_pay_run_code
+		, r.insure_pay_code
+		, r.project_code
+		, r.insure_company
+		, r.insure_name
+		, r.insure_datail
+		, r.insure_begin
+		, r.insure_area
+		, r.insure_end
+		, r.insure_pay_total
+		, r.insure_pay_per_month
+		, r.complete_status
+		, r.reg_member_id
+		, r.reg_date
+		, p.insure_pay_code
+		, p.project_code
+		, p.insure_company
+		, p.insure_name
+		, p.insure_datail
+		, p.insure_area
+		, p.insure_pay_total
+		, p.reg_member_id
+		, p.reg_date
+		FROM
+		tb_insure_pay_run AS r
+		JOIN
+		tb_exp_insure_pay AS p
+		ON
+		r.insure_pay_code=p.insure_pay_code
+		WHERE
+		p.project_code='1'
    </select>
    
-  	<select id="getMachineLeasePayResult" resultType="MachineLeasePayResult" >
-   SELECT 
-		machine_lease_run_code          AS machineLeaseRunCode, 
-		machine_lease_code          	AS machineLeaseCode, 
-		client_code          			AS clientCode, 
-		common_machine_code          	AS commonMachineCode, 
-		machine_lease_run_date          AS machineLeaseRunDate, 
-		machine_lease_run_pay          	AS machineLeaseRunPay, 
-		complete_status          		AS completeStatus, 
-		reg_farm_member_code          	AS regFarmMemberCode, 
-		reg_date          				AS regDate, 
-		mod_farm_member_code          	AS modFarmMemberCode, 
-		mod_date          				AS modDate
-	FROM tb_machine_lease_run
+   
+   <resultMap type="MachineLeasePayResult" id="resultMachineLeasePayMap">
+	  		<id column="machine_lease_run_code"  		property="machineLeaseRunCode"/>   		<!--농기계대여계획대비실행코드-->                              
+	  		<result column="machine_lease_code" 		property="machineLeaseCode" />     		<!--농기계대여료지출계획코드-->         
+	  		<result column="client_code" 				property="clientCode" />       			<!--거래처코드-->            
+	  		<result column="common_machine_code" 		property="commonMachineCode" />   		<!--공통농기계코드-->            
+	  		<result column="machine_lease_run_date" 	property="machineLeaseRunDate" />       <!--대여일-->            
+	  		<result column="machine_lease_run_pay" 		property="machineLeaseRunPay" />      	<!--대여료-->            
+	  		<result column="complete_status" 			property="completeStatus" />       		<!--실행완료여부-->            
+	  		<result column="reg_member_id" 				property="regMemberId" />       		<!--작성자아이디-->            
+	  		<result column="reg_date" 					property="regDate" />           		<!--작성일-->                              
+	  	<association property="machineLeasePayPlan" javaType="MachineLeasePay">
+	  		<id column="machine_lease_code" 			property="machineLeaseCode"/>			<!--농기계대여료지출계획코드-->
+	  		<result column="plan_workphase_code" 		property="planWorkphaseCode" />			<!--기간별작업단계계획코드-->
+	  		<result column="plan_workphase_cate_code" 	property="planWorkphaseCateCode" />		<!--작업단계별상세항목코드-->
+	  		<result column="client_code" 				property="clientCode" />				<!--거래처코드-->
+	  		<result column="farm_bookmark_machine_code" property="farmBookmarkMachineCode" />	<!--농가별농기계즐겨찾기코드-->
+	  		<result column="machine_lease_howlong" 		property="machineLeaseHowlong" />		<!--대여일수-->
+	  		<result column="machine_lease_pay_day" 		property="machineLeasePayDay" />		<!--일일대여료-->
+	  		<result column="machine_lease_pay_total" 	property="machineLeasePayTotal" />		<!--대여료합계-->
+	  		<result column="reg_member_id" 				property="regMemberId" />				<!--작성자아이디-->
+	  		<result column="reg_date" 					property="regDate" />					<!--작성일-->
+	  	</association>
+  	</resultMap>
+   
+    <select id="getMachineLeasePayResult" resultMap="resultMachineLeasePayMap" parameterType="String" >
+   SELECT
+		r.machine_lease_run_code
+		, r.machine_lease_code
+		, r.client_code
+		, r.common_machine_code
+		, r.machine_lease_run_date
+		, r.machine_lease_run_pay
+		, r.complete_status
+		, r.reg_member_id
+		, r.reg_date
+		, p.machine_lease_code
+		, p.plan_workphase_code
+		, p.plan_workphase_cate_code
+		, p.client_code
+		, p.farm_bookmark_machine_code
+		, p.machine_lease_howlong
+		, p.machine_lease_pay_day
+		, p.machine_lease_pay_total
+		, p.reg_member_id
+		, p.reg_date
+		FROM
+		tb_machine_lease_run AS r
+		JOIN
+		tb_exp_machine_lease AS p
+		ON
+		r.machine_lease_code=p.machine_lease_code
+		WHERE
+		p.plan_workphase_code='1'
    </select>
    
-  	<select id="getMachineUsePayResult" resultType="MachineUsePayResult" >
-   SELECT 
-		machine_use_run_code          	AS machineUseRunCode, 
-		machine_use_code          		AS machineUseCode, 
-		machine_use_run_date          	AS machineUseRunDate, 
-		farm_retain_machine_code        AS farmRetainMachineCode, 
-		complete_status          		AS completeStatus, 
-		reg_farm_member_code          	AS regFarmMemberCode, 
-		reg_date         				AS regDate, 
-		mod_farm_member_code          	AS modFarmMemberCode, 
-		mod_date          				AS modDate
-	FROM tb_machine_use_run
+   
+   <resultMap type="MachineUsePayResult" id="resultMachineUsePayMap">
+	  		<id column="machine_use_run_code"  			property="machineUseRunCode"/>   	<!--농기계사용계획대비실행코드-->                              
+	  		<result column="machine_use_code" 			property="machineUseCode" />     	<!--농기계사용지출계획-->         
+	  		<result column="machine_use_run_date" 		property="machineUseRunDate" />     <!--사용일-->            
+	  		<result column="farm_retain_machine_code" 	property="farmRetainMachineCode" /> <!--농가별보유농기계코드-->            
+	  		<result column="complete_status" 			property="completeStatus" />        <!--실행완료여부-->            
+	  		<result column="reg_member_id" 				property="regMemberId" />       	<!--작성자아이디-->            
+	  		<result column="reg_date" 					property="regDate" />           	<!--작성일-->                              
+	  	<association property="machineUsePayPlan" javaType="MachineUsePay">
+	  		<id column="machine_use_code" 				property="machineUseCode"/>			<!--농가별농자재매입지출계획코드-->
+	  		<result column="plan_workphase_code" 		property="planWorkphaseCode" />		<!--인건비지출계획대비실행-->
+	  		<result column="plan_workphase_cate_code" 	property="planWorkphaseCateCode" />	<!--인건비지출계획대비실행-->
+	  		<result column="farm_retain_machine_code" 	property="farmRetainMachineCode" />	<!--인건비지출계획대비실행-->
+	  		<result column="reg_member_id" 				property="regMemberId" />			<!--작성자아이디-->
+	  		<result column="reg_date" 					property="regDate" />				<!--작성일-->
+	  	</association>
+  	</resultMap>
+   
+    <select id="getMachineUsePayResult" resultMap="resultMachineUsePayMap" parameterType="String" >
+   SELECT
+		r.machine_use_run_code
+		, r.machine_use_code
+		, r.machine_use_run_date
+		, r.farm_retain_machine_code
+		, r.complete_status
+		, r.reg_member_id
+		, r.reg_date
+		, p.machine_use_code
+		, p.plan_workphase_code
+		, p.plan_workphase_cate_code
+		, p.farm_retain_machine_code
+		, p.reg_member_id
+		, p.reg_date
+		FROM
+		tb_machine_use_run AS r
+		JOIN
+		tb_exp_machine_use AS p
+		ON
+		r.machine_use_code=p.machine_use_code
+		WHERE
+		p.plan_workphase_code='1'
    </select>
   
-  	<select id="getProductGainRunResult" resultType="ProductGainResult" >
-	  SELECT 
-		product_gain_run_code        	AS productGainRunCode, 
-		product_gain_code         		AS productGainCode,
-		project_code         			AS projectCode, 
-		stock_item_code         		AS stockItemCode, 
-		gain_quantity         			AS gainQuantity, 
-		gain_quantity_capacity         	AS gainQuantityCapacity, 
-		complete_status         		AS completeStatus, 
-		gain_date         				AS gainDate, 
-		reg_farm_member_code         	AS regFarmMemberCode, 
-		reg_date         				AS regDate, 
-		mod_farm_member_code        	AS modFarmMemberCode, 
-		mod_date         				AS modDate
-		FROM tb_product_gain_run
+  
+  	<resultMap type="ProductGainResult" id="resultProductGainMap">
+	  		<id column="product_gain_run_code"  		property="productGainRunCode"/>   <!--농가별농자재매입지출계획코드-->                              
+	  		<result column="product_gain_code" 			property="productGainCode" />     <!--농가별농자재매입지출계획코드-->         
+	  		<result column="project_code" 				property="projectCode" />       	<!--인건비지출계획대비실행-->            
+	  		<result column="stock_item_code" 			property="stockItemCode" />   	<!--인건비지출계획대비실행-->            
+	  		<result column="gain_quantity" 				property="gainQuantity" />        <!--인건비지출계획대비실행-->            
+	  		<result column="gain_quantity_capacity" 	property="gainQuantityCapacity" />        <!--인건비지출계획대비실행-->            
+	  		<result column="complete_status" 			property="completeStatus" />        <!--인건비지출계획대비실행-->            
+	  		<result column="gain_date" 					property="gainDate" />        <!--인건비지출계획대비실행-->            
+	  		<result column="reg_member_id" 				property="regMemberId" />       <!--인건비지출계획대비실행-->            
+	  		<result column="reg_date" 					property="regDate" />           <!--농가별농자재매입지출계획코드-->                              
+	  	<association property="productGainPlan" javaType="ProductGain">
+	  		<id column="product_gain_code" 				property="productGainCode"/>		<!--농가별농자재매입지출계획코드-->
+	  		<result column="project_code" 				property="projectCode" />			<!--인건비지출계획대비실행-->
+	  		<result column="stock_item_code" 			property="stockItemCode" />			<!--인건비지출계획대비실행-->
+	  		<result column="gain_quantity" 				property="gainQuantity" />			<!--인건비지출계획대비실행-->
+	  		<result column="gain_quantity_capacity" 	property="gainQuantityCapacity" />	<!--인건비지출계획대비실행-->
+	  		<result column="gain_date" 					property="gainDate" />				<!--인건비지출계획대비실행-->
+	  		<result column="reg_member_id" 				property="regMemberId" />			<!--인건비지출계획대비실행-->
+	  		<result column="reg_date" 					property="regDate" />				<!--인건비지출계획대비실행-->
+	  	</association>
+  	</resultMap>
+  
+  	<select id="getProductGainResult" resultMap="resultProductGainMap" parameterType="String" >
+	 SELECT
+		r.product_gain_run_code
+		, r.product_gain_code
+		, r.project_code
+		, r.stock_item_code
+		, r.gain_quantity
+		, r.gain_quantity_capacity
+		, r.complete_status
+		, r.gain_date
+		, r.reg_member_id
+		, r.reg_date
+		, p.product_gain_code
+		, p.project_code
+		, p.stock_item_code
+		, p.gain_quantity
+		, p.gain_quantity_capacity
+		, p.gain_date
+		, p.reg_member_id
+		, p.reg_date
+		FROM
+		tb_product_gain_run AS r
+		JOIN
+		tb_product_gain AS p
+		ON
+		r.product_gain_code=p.product_gain_code
+		WHERE
+		p.project_code='1'
    </select>
    
-  	<select id="getResourceUsePlanRunResult" resultType="ResourceUsePlanResult" >
-	  SELECT 
-		resource_useplan_run_code  				AS resourceUseplanRunCode, 
-		resource_useplan_code 					AS resourceUseplanCode, 
-		plan_workphase_code						AS planWorkphaseCode, 
-		plan_workphase_cate_code 				AS planWorkphaseCateCode, 
-		stock_status_code 						AS stockStatusCode, 
-		stock_item_use_quantity 				AS stockItemUseQuantity, 
-		stock_item_use_quantity_total 			AS stockItemUseQuantityTotal, 
-		stock_item_use_quantity_conversion_pay 	AS stockItemUseQuantityConversionPay, 
-		stock_item_use_date 					AS stockItemUseDate, 
-		complete_status 						AS completeStatus, 
-		reg_farm_member_code 					AS regFarmMemberCode, 
-		reg_date 								AS regDate, 
-		mod_farm_member_code 					AS modFarmMemberCode, 
-		mod_date 								AS modDate
-	FROM tb_resource_useplan_run
+   
+   <resultMap type="ResourceUsePlanResult" id="resultResourceUsePlanMap">
+	  		<id column="resource_useplan_run_code"  				property="resourceUseplanRunCode"/>   <!--농가별농자재매입지출계획코드-->                              
+	  		<result column="resource_useplan_code" 					property="resourceUseplanCode" />     <!--농가별농자재매입지출계획코드-->         
+	  		<result column="stock_status_code" 						property="stockStatusCode" />       	<!--인건비지출계획대비실행-->            
+	  		<result column="stock_item_use_quantity" 				property="stockItemUseQuantity" />   	<!--인건비지출계획대비실행-->            
+	  		<result column="stock_item_use_quantity_total" 			property="stockItemUseQuantityTotal" />        <!--인건비지출계획대비실행-->            
+	  		<result column="stock_item_use_quantity_conversion_pay" property="stockItemUseQuantityConversionPay" />        <!--인건비지출계획대비실행-->            
+	  		<result column="stock_item_use_date" 					property="stockItemUseDate" />        <!--인건비지출계획대비실행-->            
+	  		<result column="complete_status" 						property="completeStatus" />        <!--인건비지출계획대비실행-->            
+	  		<result column="reg_member_id" 							property="regMemberId" />       <!--인건비지출계획대비실행-->            
+	  		<result column="reg_date" 								property="regDate" />           <!--농가별농자재매입지출계획코드-->                              
+	  	<association property="resourceUsePlan" javaType="ResourceUsePlan">
+	  		<id column="resource_useplan_code" 						property="resourceUseplanCode"/>		<!--농가별농자재매입지출계획코드-->
+	  		<result column="resource_usecapacity_code" 				property="resourceUsecapacityCode" />			<!--인건비지출계획대비실행-->
+	  		<result column="stock_item_use_quantity" 				property="stockItemUseQuantity" />			<!--인건비지출계획대비실행-->
+	  		<result column="stock_item_use_quantity_total" 			property="stockItemUseQuantityTotal" />			<!--인건비지출계획대비실행-->
+	  		<result column="stock_item_use_quantity_conversion_pay" property="stockItemUseQuantityConversionPay" />		<!--인건비지출계획대비실행-->
+	  		<result column="reg_member_id" 							property="regMemberId" />			<!--인건비지출계획대비실행-->
+	  		<result column="reg_date" 								property="regDate" />				<!--인건비지출계획대비실행-->
+	  	</association>
+  	</resultMap>
+   
+   	<select id="getResourceUsePlanResult" resultMap="resultResourceUsePlanMap" parameterType="String" >
+	  SELECT
+		r.resource_useplan_run_code
+		, r.resource_useplan_code
+		, r.stock_status_code
+		, r.stock_item_use_quantity
+		, r.stock_item_use_quantity_total
+		, r.stock_item_use_quantity_conversion_pay
+		, r.stock_item_use_date
+		, r.complete_status
+		, r.reg_member_id
+		, r.reg_date
+		, p.resource_useplan_code
+		, p.resource_usecapacity_code
+		, p.plan_workphase_code
+		, p.plan_workphase_cate_code
+		, p.stock_item_use_quantity
+		, p.stock_item_use_quantity_total
+		, p.stock_item_use_quantity_conversion_pay
+		, p.reg_member_id
+		, p.reg_date
+		FROM
+		tb_resource_useplan_run AS r
+		JOIN
+		tb_exp_resource_useplan AS p
+		ON
+		r.resource_useplan_code=p.resource_useplan_code
+		WHERE
+		p.plan_workphase_code='1'
    </select>
    
-  	<select id="getTaxPayRunResult" resultType="TaxPayResult" >
-	  SELECT 
-		tax_pay_run_code 						AS taxPayRunCode, 
-		tax_pay_code 							AS taxPayCode,
-		plan_workphase_code 					AS planWorkphaseCode, 
-		plan_workphase_cate_code				AS planWorkphaseCateCode, 
-		client_code 							AS clientCode, 
-		tax_pay_cate_code 						AS taxPayCateCode, 
-		tax_pay_run_date 						AS taxPayRunDate, 
-		tax_pay_run_corr_month 					AS taxPayRunCorrMonth, 
-		tax_pay_run_pay 						AS taxPayRunPay, 
-		tax_pay_run_memo 						AS taxPayRunMemo, 
-		complete_status 						AS completeStatus, 
-		reg_farm_member_code 					AS regFarmMemberCode, 
-		reg_date 								AS regDate, 
-		mod_farm_member_code 					AS modFarmMemberCode, 
-		mod_date 								AS modDate
-	FROM tb_tax_pay_run
+   
+   <resultMap type="TaxPayResult" id="resultTaxPayMap">
+	  		<id column="tax_pay_run_code"  							property="taxPayRunCode"/>   <!--농가별농자재매입지출계획코드-->                              
+	  		<result column="tax_pay_code" 							property="taxPayCode" />     <!--농가별농자재매입지출계획코드-->         
+	  		<result column="client_code" 							property="clientCode" />       	<!--인건비지출계획대비실행-->            
+	  		<result column="tax_pay_cate_code" 						property="taxPayCateCode" />   	<!--인건비지출계획대비실행-->            
+	  		<result column="tax_pay_run_date" 						property="taxPayRunDate" />        <!--인건비지출계획대비실행-->            
+	  		<result column="tax_pay_run_corr_month" 				property="taxPayRunCorrMonth" />        <!--인건비지출계획대비실행-->            
+	  		<result column="tax_pay_run_pay" 						property="taxPayRunPay" />        <!--인건비지출계획대비실행-->            
+	  		<result column="tax_pay_run_memo" 						property="taxPayRunMemo" />        <!--인건비지출계획대비실행-->            
+	  		<result column="complete_status" 						property="completeStatus" />        <!--인건비지출계획대비실행-->            
+	  		<result column="reg_member_id" 							property="regMemberId" />       <!--인건비지출계획대비실행-->            
+	  		<result column="reg_date" 								property="regDate" />           <!--농가별농자재매입지출계획코드-->                              
+	  	<association property="taxPayPlan" javaType="TaxPay">
+	  		<id column="tax_pay_code" 								property="taxPayCode"/>		<!--농가별농자재매입지출계획코드-->
+	  		<result column="plan_workphase_code" 					property="planWorkphaseCode" />			<!--인건비지출계획대비실행-->
+	  		<result column="plan_workphase_cate_code" 				property="planWorkphaseCateCode" />			<!--인건비지출계획대비실행-->
+	  		<result column="client_code" 							property="clientCode" />			<!--인건비지출계획대비실행-->
+	  		<result column="tax_pay_cate_code" 						property="taxPayCateCode" />		<!--인건비지출계획대비실행-->
+	  		<result column="tax_pay_whatmonth" 						property="taxPayWhatmonth" />		<!--인건비지출계획대비실행-->
+	  		<result column="tax_pay" 								property="taxPay" />		<!--인건비지출계획대비실행-->
+	  		<result column="tax_pay_detail" 						property="taxPayDetail" />		<!--인건비지출계획대비실행-->
+	  		<result column="reg_member_id" 							property="regMemberId" />			<!--인건비지출계획대비실행-->
+	  		<result column="reg_date" 								property="regDate" />				<!--인건비지출계획대비실행-->
+	  	</association>
+  	</resultMap>
+   
+   	<select id="getTaxPayResult" resultMap="resultTaxPayMap" parameterType="String" >
+	 SELECT
+		r.tax_pay_run_code
+		, r.tax_pay_code
+		, r.client_code
+		, r.tax_pay_cate_code
+		, r.tax_pay_run_date
+		, r.tax_pay_run_corr_month
+		, r.tax_pay_run_pay
+		, r.tax_pay_run_memo
+		, r.complete_status
+		, r.reg_member_id
+		, r.reg_date
+		, p.tax_pay_code
+		, p.plan_workphase_code
+		, p.plan_workphase_cate_code
+		, p.client_code
+		, p.tax_pay_cate_code
+		, p.tax_pay_whatmonth
+		, p.tax_pay
+		, p.tax_pay_detail
+		, p.reg_member_id
+		, p.reg_date
+		FROM
+		tb_tax_pay_run AS r
+		JOIN
+		tb_exp_tax_pay AS p
+		ON
+		r.tax_pay_code=p.tax_pay_code
+		WHERE
+		p.plan_workphase_code='1'
    </select>
    
 
@@ -217,7 +465,7 @@
 	  		<result column="workforce_pay_run_day" 		property="workforcePayRunDay" />        <!--일일인건비--> 
 	  		<result column="complete_status" 			property="completeStatus" />	        <!--실행완료여부-->     
 	  		<result column="workforce_pay_run_total" 	property="workforcePayRunTotal" />      <!--인건비합계--> 
-	  		<result column="reg_farm_member_code" 		property="regFarmMemberCode" />         <!--작성자농가회원코드-->     
+	  		<result column="reg_member_id" 		property="regMemberId" />         <!--작성자농가회원코드-->     
 	  		<result column="reg_date" 					property="regDate" />			        <!--작성일--> 
 	  		<result column="mod_farm_member_code" 		property="modFarmMemberCode" />	        <!--수정자농가회원코드--> 
 	  		<result column="mod_date" 					property="modDate" />			        <!--수정일-->      
@@ -230,14 +478,14 @@
 	  		<result column="workforce_require_day" 		property="workforceRequireDay" />       <!--맨데이--> 
 	  		<result column="workforce_pay_day" 			property="workforcePayDay" />           <!--일일인건비-->      
 	  		<result column="workforce_pay_total" 		property="workforcePayTotal" />         <!--인건비합계--> 
-	  		<result column="reg_farm_member_code" 		property="regFarmMemberCode" />         <!--작성자농가회원코드 -->      
+	  		<result column="reg_member_id" 				property="regMemberId" />         <!--작성자농가회원코드 -->      
 	  		<result column="reg_date" 					property="regDate" />                   <!--작성일--> 
 	  		<result column="mod_farm_member_code" 		property="modFarmMemberCode" />         <!--수정자농가회원코드--> 
 	  		<result column="mod_date" 					property="modDate" />                   <!--수정일 -->           
 	  	</association>
 	</resultMap>
 	
-  	<select id="getWorkForcePayRunResult" resultMap="WorkForcePayResultMap" parameterType="String">
+  	<select id="getWorkForcePayResult" resultMap="WorkForcePayResultMap" parameterType="String">
 	  	SELECT
 			p.workforce_pay_code
 			,p.plan_workphase_code
@@ -262,7 +510,7 @@
 		ON
 		r.workforce_pay_code=p.workforce_pay_code
 		WHERE
-		p.workforce_pay_code='workforce_pay_1'
+		p.workforce_pay_code='1'
    </select>
   	
   

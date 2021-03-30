@@ -1,5 +1,7 @@
 package easyfarm.domain.result;
 
+import easyfarm.domain.plan.MachineLeasePay;
+
 public class MachineLeasePayResult {
 	// 농기계대여계획대비실행코드
     private String machineLeaseRunCode;
@@ -23,16 +25,12 @@ public class MachineLeasePayResult {
     private String completeStatus;
 
     // 작성자농가회원코드
-    private String regFarmMemberCode;
+    private String regMemberId;
 
     // 작성일
     private String regDate;
-
-    // 수정자농가회원코드
-    private String modFarmMemberCode;
-
-    // 수정일
-    private String modDate;
+    
+    private MachineLeasePay machineLeasePayPlan;
 
     public String getMachineLeaseRunCode() {
         return machineLeaseRunCode;
@@ -90,12 +88,12 @@ public class MachineLeasePayResult {
         this.completeStatus = completeStatus;
     }
 
-    public String getRegFarmMemberCode() {
-        return regFarmMemberCode;
+    public String getregMemberId() {
+        return regMemberId;
     }
 
-    public void setRegFarmMemberCode(String regFarmMemberCode) {
-        this.regFarmMemberCode = regFarmMemberCode;
+    public void setregMemberId(String regMemberId) {
+        this.regMemberId = regMemberId;
     }
 
     public String getRegDate() {
@@ -106,20 +104,21 @@ public class MachineLeasePayResult {
         this.regDate = regDate;
     }
 
-    public String getModFarmMemberCode() {
-        return modFarmMemberCode;
-    }
+	public String getRegMemberId() {
+		return regMemberId;
+	}
 
-    public void setModFarmMemberCode(String modFarmMemberCode) {
-        this.modFarmMemberCode = modFarmMemberCode;
-    }
+	public void setRegMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
+	}
 
-    public String getModDate() {
-        return modDate;
-    }
+	public MachineLeasePay getMachineLeasePayPlan() {
+		return machineLeasePayPlan;
+	}
 
-    public void setModDate(String modDate) {
-        this.modDate = modDate;
-    }
+	public void setMachineLeasePayPlan(MachineLeasePay machineLeasePayPlan) {
+		this.machineLeasePayPlan = machineLeasePayPlan;
+	}
+
 	
 }

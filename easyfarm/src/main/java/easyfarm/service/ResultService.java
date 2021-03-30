@@ -108,45 +108,45 @@ public class ResultService {
 		
 		return machineUsePay;
 	}
-	public List<ProductGainResult> getProductGainRunResult(){
+	public List<ProductGainResult> getProductGainResult(){
 		/* MemberMapper member = new MemberMapper(); */
-		List<ProductGainResult> productGainRun = null;
-		productGainRun =resultmapper.getProductGainRunResult();
+		List<ProductGainResult> productGainResult = null;
+		productGainResult =resultmapper.getProductGainResult();
 		
 		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
 		//memberLevelName : 관리자 or 판매자 or 구매자 세팅
 		
-		return productGainRun;
+		return productGainResult;
 	}
-	public List<ResourceUsePlanResult> getResourceUsePlanRunResult(){
+	public List<ResourceUsePlanResult> getResourceUsePlanResult(){
 		/* MemberMapper member = new MemberMapper(); */
-		List<ResourceUsePlanResult> resourceUsePlanRun = null;
-		resourceUsePlanRun =resultmapper.getResourceUsePlanRunResult();
+		List<ResourceUsePlanResult> resourceUsePlanResult = null;
+		resourceUsePlanResult =resultmapper.getResourceUsePlanResult();
 		
 		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
 		//memberLevelName : 관리자 or 판매자 or 구매자 세팅
 		
-		return resourceUsePlanRun;
+		return resourceUsePlanResult;
 	}
-	public List<TaxPayResult> getTaxPayRunResult(){
+	public List<TaxPayResult> getTaxPayResult(){
 		/* MemberMapper member = new MemberMapper(); */
-		List<TaxPayResult> taxPayRun = null;
-		taxPayRun =resultmapper.getTaxPayRunResult();
+		List<TaxPayResult> taxPayResult = null;
+		taxPayResult =resultmapper.getTaxPayResult();
 		
 		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
 		//memberLevelName : 관리자 or 판매자 or 구매자 세팅
 		
-		return taxPayRun;
+		return taxPayResult;
 	}
-	public List<WorkForcePayResult> getWorkForcePayRunResult(){
+	public List<WorkForcePayResult> getWorkForcePayResult(){
 		/* MemberMapper member = new MemberMapper(); */
-		List<WorkForcePayResult> workForcePayRun = null;
-		workForcePayRun =resultmapper.getWorkForcePayRunResult();
+		List<WorkForcePayResult> workForcePayResult = null;
+		workForcePayResult =resultmapper.getWorkForcePayResult();
 		
 		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
 		//memberLevelName : 관리자 or 판매자 or 구매자 세팅
 		
-		return workForcePayRun;
+		return workForcePayResult;
 	}
 	
 	

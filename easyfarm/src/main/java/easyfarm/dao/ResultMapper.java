@@ -25,10 +25,10 @@ public interface ResultMapper {
 	public List<InsurancePayResult> getInsurancePayResult();
 	public List<MachineLeasePayResult> getMachineLeasePayResult();
 	public List<MachineUsePayResult> getMachineUsePayResult();
-	public List<ProductGainResult> getProductGainRunResult();
-	public List<ResourceUsePlanResult> getResourceUsePlanRunResult();
-	public List<TaxPayResult> getTaxPayRunResult();
-	public List<WorkForcePayResult> getWorkForcePayRunResult();
+	public List<ProductGainResult> getProductGainResult();
+	public List<ResourceUsePlanResult> getResourceUsePlanResult();
+	public List<TaxPayResult> getTaxPayResult();
+	public List<WorkForcePayResult> getWorkForcePayResult();
 	
 
 }

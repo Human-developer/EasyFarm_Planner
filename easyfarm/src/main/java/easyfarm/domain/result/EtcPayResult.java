@@ -11,11 +11,9 @@ public class EtcPayResult {
 	private String etcPayRunDate;
 	private String etcPayRunPay;
 	private String etcPayRunMemo;
-	private String complete_status;
-	private String regFarmMemberCode;
+	private String completeStatus;
+	private String regMemberId;
 	private String regDate;
-	private String modFarmMemberCode;
-	private String modDate;
 	private EtcPay etcPayPlan;
 	
 	public String getEtcPayRunCode() {
@@ -67,16 +65,16 @@ public class EtcPayResult {
 		this.etcPayRunMemo = etcPayRunMemo;
 	}
 	public String getComplete_status() {
-		return complete_status;
+		return completeStatus;
 	}
-	public void setComplete_status(String complete_status) {
-		this.complete_status = complete_status;
+	public void setComplete_status(String completeStatus) {
+		this.completeStatus = completeStatus;
 	}
-	public String getRegFarmMemberCode() {
-		return regFarmMemberCode;
+	public String getregMemberId() {
+		return regMemberId;
 	}
-	public void setRegFarmMemberCode(String regFarmMemberCode) {
-		this.regFarmMemberCode = regFarmMemberCode;
+	public void setregMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
 	}
 	public String getRegDate() {
 		return regDate;
@@ -84,54 +82,22 @@ public class EtcPayResult {
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
-	public String getModFarmMemberCode() {
-		return modFarmMemberCode;
-	}
-	public void setModFarmMemberCode(String modFarmMemberCode) {
-		this.modFarmMemberCode = modFarmMemberCode;
-	}
-	public String getModDate() {
-		return modDate;
-	}
-	public void setModDate(String modDate) {
-		this.modDate = modDate;
-	}
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("EtcPay [etcPayRunCode=");
-		builder.append(etcPayRunCode);
-		builder.append(", etcPayCode=");
-		builder.append(etcPayCode);
-		builder.append(", planWorkphaseCode=");
-		builder.append(planWorkphaseCode);
-		builder.append(", planWorkphaseCateCode=");
-		builder.append(planWorkphaseCateCode);
-		builder.append(", clientCode=");
-		builder.append(clientCode);
-		builder.append(", etcPayRunDate=");
-		builder.append(etcPayRunDate);
-		builder.append(", etcPayRunPay=");
-		builder.append(etcPayRunPay);
-		builder.append(", etcPayRunMemo=");
-		builder.append(etcPayRunMemo);
-		builder.append(", complete_status=");
-		builder.append(complete_status);
-		builder.append(", regFarmMemberCode=");
-		builder.append(regFarmMemberCode);
-		builder.append(", regDate=");
-		builder.append(regDate);
-		builder.append(", modFarmMemberCode=");
-		builder.append(modFarmMemberCode);
-		builder.append(", modDate=");
-		builder.append(modDate);
-		builder.append("]");
-		return builder.toString();
-	}
 	public EtcPay getEtcPayPlan() {
 		return etcPayPlan;
 	}
 	public void setEtcPayPlan(EtcPay etcPayPlan) {
 		this.etcPayPlan = etcPayPlan;
+	}
+	public String getCompleteStatus() {
+		return completeStatus;
+	}
+	public void setCompleteStatus(String completeStatus) {
+		this.completeStatus = completeStatus;
+	}
+	public String getRegMemberId() {
+		return regMemberId;
+	}
+	public void setRegMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
 	}
 }

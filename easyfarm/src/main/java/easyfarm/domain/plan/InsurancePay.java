@@ -23,16 +23,11 @@ public class InsurancePay {
     private String insurePayTotal;
 
     // 작성자농가회원코드
-    private String regFarmMemberCode;
+    private String regMemberId;
 
     // 작성일
     private String regDate;
 
-    // 수정자농가회원코드
-    private String modFarmMemberCode;
-
-    // 수정일
-    private String modDate;
 
     public String getInsurePayCode() {
         return insurePayCode;
@@ -90,12 +85,12 @@ public class InsurancePay {
         this.insurePayTotal = insurePayTotal;
     }
 
-    public String getRegFarmMemberCode() {
-        return regFarmMemberCode;
+    public String getregMemberId() {
+        return regMemberId;
     }
 
-    public void setRegFarmMemberCode(String regFarmMemberCode) {
-        this.regFarmMemberCode = regFarmMemberCode;
+    public void setregMemberId(String regMemberId) {
+        this.regMemberId = regMemberId;
     }
 
     public String getRegDate() {
@@ -106,21 +101,6 @@ public class InsurancePay {
         this.regDate = regDate;
     }
 
-    public String getModFarmMemberCode() {
-        return modFarmMemberCode;
-    }
-
-    public void setModFarmMemberCode(String modFarmMemberCode) {
-        this.modFarmMemberCode = modFarmMemberCode;
-    }
-
-    public String getModDate() {
-        return modDate;
-    }
-
-    public void setModDate(String modDate) {
-        this.modDate = modDate;
-    }
 	
 	
 }

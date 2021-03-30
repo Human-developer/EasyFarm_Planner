@@ -37,17 +37,11 @@ public class ResourcePayResult {
     private String completeStatus;
 
     // 작성자농가회원코드
-    private String regFarmMemberCode;
+    private String regMemberId;
 
     // 작성일
     private String regDate;
 
-    // 수정자농가회원코드
-    private String modFarmMemberCode;
-
-    // 수정일
-    private String modDate;
-    
     //계획
     private ResourcePay resourcePayPlan;
 
@@ -139,12 +133,12 @@ public class ResourcePayResult {
         this.completeStatus = completeStatus;
     }
 
-    public String getRegFarmMemberCode() {
-        return regFarmMemberCode;
+    public String getregMemberId() {
+        return regMemberId;
     }
 
-    public void setRegFarmMemberCode(String regFarmMemberCode) {
-        this.regFarmMemberCode = regFarmMemberCode;
+    public void setregMemberId(String regMemberId) {
+        this.regMemberId = regMemberId;
     }
 
     public String getRegDate() {
@@ -155,21 +149,6 @@ public class ResourcePayResult {
         this.regDate = regDate;
     }
 
-    public String getModFarmMemberCode() {
-        return modFarmMemberCode;
-    }
-
-    public void setModFarmMemberCode(String modFarmMemberCode) {
-        this.modFarmMemberCode = modFarmMemberCode;
-    }
-
-    public String getModDate() {
-        return modDate;
-    }
-
-    public void setModDate(String modDate) {
-        this.modDate = modDate;
-    }
 
 	public ResourcePay getResourcePay() {
 		return resourcePayPlan;
@@ -177,6 +156,22 @@ public class ResourcePayResult {
 
 	public void setResourcePay(ResourcePay resourcePay) {
 		this.resourcePayPlan = resourcePay;
+	}
+
+	public String getRegMemberId() {
+		return regMemberId;
+	}
+
+	public void setRegMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
+	}
+
+	public ResourcePay getResourcePayPlan() {
+		return resourcePayPlan;
+	}
+
+	public void setResourcePayPlan(ResourcePay resourcePayPlan) {
+		this.resourcePayPlan = resourcePayPlan;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package easyfarm.domain.result;
 
+import easyfarm.domain.plan.ResourceUsePlan;
 
 public class ResourceUsePlanResult {
 	// 농자재사용계획대비실행코드
@@ -7,12 +8,6 @@ public class ResourceUsePlanResult {
 
     // 농자재사용계획코드
     private String resourceUseplanCode;
-
-    // 기간별작업단계계획코드
-    private String planWorkphaseCode;
-
-    // 작업단계별상세항목코드
-    private String planWorkphaseCateCode;
 
     // 재고현황코드
     private String stockStatusCode;
@@ -33,17 +28,13 @@ public class ResourceUsePlanResult {
     private String completeStatus;
 
     // 작성자농가회원코드
-    private String regFarmMemberCode;
+    private String regMemberId;
 
     // 작성일
     private String regDate;
-
-    // 수정자농가회원코드
-    private String modFarmMemberCode;
-
-    // 수정일
-    private String modDate;
-
+    
+    // 계획
+    private ResourceUsePlan resourceUsePlan;
     
     
 	public String getResourceUseplanRunCode() {
@@ -60,22 +51,6 @@ public class ResourceUsePlanResult {
 
 	public void setResourceUseplanCode(String resourceUseplanCode) {
 		this.resourceUseplanCode = resourceUseplanCode;
-	}
-
-	public String getPlanWorkphaseCode() {
-		return planWorkphaseCode;
-	}
-
-	public void setPlanWorkphaseCode(String planWorkphaseCode) {
-		this.planWorkphaseCode = planWorkphaseCode;
-	}
-
-	public String getPlanWorkphaseCateCode() {
-		return planWorkphaseCateCode;
-	}
-
-	public void setPlanWorkphaseCateCode(String planWorkphaseCateCode) {
-		this.planWorkphaseCateCode = planWorkphaseCateCode;
 	}
 
 	public String getStockStatusCode() {
@@ -126,12 +101,12 @@ public class ResourceUsePlanResult {
 		this.completeStatus = completeStatus;
 	}
 
-	public String getRegFarmMemberCode() {
-		return regFarmMemberCode;
+	public String getregMemberId() {
+		return regMemberId;
 	}
 
-	public void setRegFarmMemberCode(String regFarmMemberCode) {
-		this.regFarmMemberCode = regFarmMemberCode;
+	public void setregMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
 	}
 
 	public String getRegDate() {
@@ -142,21 +117,22 @@ public class ResourceUsePlanResult {
 		this.regDate = regDate;
 	}
 
-	public String getModFarmMemberCode() {
-		return modFarmMemberCode;
+	public String getRegMemberId() {
+		return regMemberId;
 	}
 
-	public void setModFarmMemberCode(String modFarmMemberCode) {
-		this.modFarmMemberCode = modFarmMemberCode;
+	public void setRegMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
 	}
 
-	public String getModDate() {
-		return modDate;
+	public ResourceUsePlan getResourceUsePlan() {
+		return resourceUsePlan;
 	}
 
-	public void setModDate(String modDate) {
-		this.modDate = modDate;
+	public void setResourceUsePlan(ResourceUsePlan resourceUsePlan) {
+		this.resourceUsePlan = resourceUsePlan;
 	}
+
     
 	
 }

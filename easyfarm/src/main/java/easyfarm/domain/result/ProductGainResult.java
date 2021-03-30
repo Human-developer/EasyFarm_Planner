@@ -1,5 +1,6 @@
 package easyfarm.domain.result;
 
+import easyfarm.domain.plan.ProductGain;
 
 public class ProductGainResult {
 	// 생산물수확실행코드
@@ -27,16 +28,14 @@ public class ProductGainResult {
     private String gainDate;
 
     // 작성자농가회원코드
-    private String regFarmMemberCode;
+    private String regMemberId;
 
     // 작성일
     private String regDate;
+    
+    // 계획
+    private ProductGain productGainPlan;
 
-    // 수정자농가회원코드
-    private String modFarmMemberCode;
-
-    // 수정일
-    private String modDate;
 
     public String getProductGainRunCode() {
         return productGainRunCode;
@@ -102,12 +101,12 @@ public class ProductGainResult {
         this.gainDate = gainDate;
     }
 
-    public String getRegFarmMemberCode() {
-        return regFarmMemberCode;
+    public String getregMemberId() {
+        return regMemberId;
     }
 
-    public void setRegFarmMemberCode(String regFarmMemberCode) {
-        this.regFarmMemberCode = regFarmMemberCode;
+    public void setregMemberId(String regMemberId) {
+        this.regMemberId = regMemberId;
     }
 
     public String getRegDate() {
@@ -118,21 +117,22 @@ public class ProductGainResult {
         this.regDate = regDate;
     }
 
-    public String getModFarmMemberCode() {
-        return modFarmMemberCode;
-    }
+	public String getRegMemberId() {
+		return regMemberId;
+	}
 
-    public void setModFarmMemberCode(String modFarmMemberCode) {
-        this.modFarmMemberCode = modFarmMemberCode;
-    }
+	public void setRegMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
+	}
 
-    public String getModDate() {
-        return modDate;
-    }
+	public ProductGain getProductGainPlan() {
+		return productGainPlan;
+	}
 
-    public void setModDate(String modDate) {
-        this.modDate = modDate;
-    }
+	public void setProductGainPlan(ProductGain productGainPlan) {
+		this.productGainPlan = productGainPlan;
+	}
+
     
     
 	

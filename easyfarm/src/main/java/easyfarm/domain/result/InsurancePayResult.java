@@ -1,5 +1,7 @@
 package easyfarm.domain.result;
 
+import easyfarm.domain.plan.InsurancePay;
+
 public class InsurancePayResult {
 	// 보험료지출계획대비실행코드
     private String insurePayRunCode;
@@ -38,16 +40,14 @@ public class InsurancePayResult {
     private String completeStatus;
 
     // 작성자농가회원코드
-    private String regFarmMemberCode;
+    private String regMemberId;
 
     // 작성일
     private String regDate;
-
-    // 수정자농가회원코드
-    private String modFarmMemberCode;
-
-    // 수정일
-    private String modDate;
+    
+    //계획
+    private InsurancePay insurancePayPlan;
+    
 
     public String getInsurePayRunCode() {
         return insurePayRunCode;
@@ -145,12 +145,12 @@ public class InsurancePayResult {
         this.completeStatus = completeStatus;
     }
 
-    public String getRegFarmMemberCode() {
-        return regFarmMemberCode;
+    public String getregMemberId() {
+        return regMemberId;
     }
 
-    public void setRegFarmMemberCode(String regFarmMemberCode) {
-        this.regFarmMemberCode = regFarmMemberCode;
+    public void setregMemberId(String regMemberId) {
+        this.regMemberId = regMemberId;
     }
 
     public String getRegDate() {
@@ -161,21 +161,29 @@ public class InsurancePayResult {
         this.regDate = regDate;
     }
 
-    public String getModFarmMemberCode() {
-        return modFarmMemberCode;
-    }
+	public String getRegMemberId() {
+		return regMemberId;
+	}
 
-    public void setModFarmMemberCode(String modFarmMemberCode) {
-        this.modFarmMemberCode = modFarmMemberCode;
-    }
+	public void setRegMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
+	}
 
-    public String getModDate() {
-        return modDate;
-    }
+	public InsurancePay getInsurancePay() {
+		return insurancePayPlan;
+	}
 
-    public void setModDate(String modDate) {
-        this.modDate = modDate;
-    }
-	
+	public void setInsurancePay(InsurancePay insurancePayPlan) {
+		this.insurancePayPlan = insurancePayPlan;
+	}
+
+	public InsurancePay getInsurancePayPlan() {
+		return insurancePayPlan;
+	}
+
+	public void setInsurancePayPlan(InsurancePay insurancePayPlan) {
+		this.insurancePayPlan = insurancePayPlan;
+	}
+
 	
 }

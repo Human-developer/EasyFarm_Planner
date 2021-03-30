@@ -18,10 +18,8 @@
 		etc_pay_date 					AS	etcPayDate	,
 		etc_pay 						AS	etcPay	,
 		etc_pay_detail 					AS	etcPayDetail	,
-		reg_farm_member_code 			AS	regFarmMemberCode	,
-		reg_date 						AS	regDate	,
-		mod_farm_member_code 			AS	modFarmMemberCode	,
-		mod_date						AS	modDate	
+		reg_member_id 					AS	regMemberId	,
+		reg_date 						AS	regDate	
 	FROM tb_exp_etc_pay		
    </select>
   
@@ -36,10 +34,8 @@
 		stock_item_income_per_pay       	AS stockItemIncomePerPay, 
 		stock_item_total_pay        		AS stockItemTotalPay, 
 		stock_item_income_date        		AS stockItemIncomeDate, 
-		reg_farm_member_code        		AS regFarmMemberCode, 
-		reg_date        					AS regDate, 
-		mod_farm_member_code        		AS modFarmMemberCode, 
-		mod_date        					AS modDate
+		reg_member_id 						AS regMemberId, 
+		reg_date        					AS regDate
 	FROM tb_exp_resource_pay
    </select>
    
@@ -52,10 +48,8 @@
 		insure_datail            		AS insureDatail, 
 		insure_area            			AS insureArea, 
 		insure_pay_total            	AS insurePayTotal, 
-		reg_farm_member_code            AS regFarmMemberCode, 
-		reg_date            			AS regDate, 
-		mod_farm_member_code            AS modFarmMemberCode, 
-		mod_date            			AS modDate
+		reg_member_id            		AS regMemberId, 
+		reg_date            			AS regDate
 	FROM tb_exp_insure_pay
    </select>
    
@@ -65,14 +59,12 @@
 		plan_workphase_code        		AS planWorkphaseCode, 
 		plan_workphase_cate_code        AS planWorkphaseCateCode, 
 		client_code        				AS clientCode, 
-		common_machine_code        		AS commonMachineCode, 
+		farm_bookmark_machine_code   	AS farmBookmarkMachineCode, 
 		machine_lease_howlong        	AS machineLeaseHowlong, 
 		machine_lease_pay_day        	AS machineLeasePayDay, 
 		machine_lease_pay_total        	AS machineLeasePayTotal,
-		reg_farm_member_code        	AS regFarmMemberCode, 
-		reg_date        				AS regDate, 
-		mod_farm_member_code        	AS modFarmMemberCode, 
-		mod_date       					AS modDate
+		reg_member_id        			AS regMemberId, 
+		reg_date        				AS regDate
 	FROM tb_exp_machine_lease
    </select>
    
@@ -82,10 +74,8 @@
 		plan_workphase_code        		AS planWorkphaseCode, 
 		plan_workphase_cate_code        AS planWorkphaseCateCode, 
 		farm_retain_machine_code        AS farmRetainMachineCode, 
-		reg_farm_member_code        	AS regFarmMemberCode, 
-		reg_date        				AS regDate, 
-		mod_farm_member_code        	AS modFarmMemberCode,
-		mod_date				        AS modDate
+		reg_member_id        			AS regMemberId, 
+		reg_date        				AS regDate
 	FROM tb_exp_machine_use
    </select>
    
@@ -97,10 +87,8 @@
 		gain_quantity        			AS gainQuantity, 
 		gain_quantity_capacity        	AS gainQuantityCapacity,
 		gain_date        				AS gainDate, 
-		reg_farm_member_code        	AS regFarmMemberCode, 
-		reg_date       					AS regDate, 
-		mod_farm_member_code        	AS modFarmMemberCode, 
-		mod_date        				AS modDate
+		reg_member_id        			AS regMemberId, 
+		reg_date       					AS regDate
 	FROM tb_product_gain
    </select>
    
@@ -108,16 +96,11 @@
 	  SELECT 
 		resource_useplan_code        			AS resourceUseplanCode, 
 		resource_usecapacity_code        		AS resourceUsecapacityCode, 
-		plan_workphase_code        				AS planWorkphaseCode, 
-		plan_workphase_cate_code        		AS planWorkphaseCateCode, 
 		stock_item_use_quantity        			AS stockItemUseQuantity, 
 		stock_item_use_quantity_total        	AS stockItemUseQuantityTotal, 
 		stock_item_use_quantity_conversion_pay  AS stockItemUseQuantityConversionPay, 
-		stock_item_use_date        				AS stockItemUseDate, 
-		reg_farm_member_code       				AS regFarmMemberCode, 
-		reg_date        						AS regDate, 
-		mod_farm_member_code        			AS modFarmMemberCode, 
-		mod_date        						AS modDate
+		reg_member_id       					AS regMemberId, 
+		reg_date        						AS regDate
 	FROM tb_exp_resource_useplan
    </select>
    
@@ -131,10 +114,8 @@
 		tax_pay_whatmonth        	AS taxPayWhatmonth, 
 		tax_pay        				AS taxPay, 
 		tax_pay_detail        		AS taxPayDetail, 
-		reg_farm_member_code        AS regFarmMemberCode, 
-		reg_date        			AS regFarmMemberCode, 
-		mod_farm_member_code        AS modFarmMemberCode, 
-		mod_date        			AS modDate
+		reg_member_id        		AS regMemberId, 
+		reg_date        			AS regDate 
 	FROM tb_exp_tax_pay
    </select>
    
@@ -148,10 +129,8 @@
 		workforce_require_day       AS workforceRequireDay, 
 		workforce_pay_day        	AS workforcePayDay, 
 		workforce_pay_total        	AS workforcePayTotal, 
-		reg_farm_member_code        AS regFarmMemberCode, 
-		reg_date        			AS regDate, 
-		mod_farm_member_code        AS modFarmMemberCode, 
-		mod_date        			AS modDate
+		reg_member_id        		AS regMemberId, 
+		reg_date        			AS regDate
 	FROM tb_exp_workforce_pay
    </select>
   	
