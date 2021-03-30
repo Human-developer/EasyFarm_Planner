@@ -215,13 +215,15 @@ $(function(){
 							min: 0,
 							max: dataResourceRetainQuantity,
 							stepinterval: 50,
-							firstclickvalueifempty: 1,
+							step: 0.01,
+							decimals: 2,
+							firstclickvalueifempty: 0.01,
 							maxboostedstep: 10000000,
 							buttondown_class: 'btn btn-default',
 						    buttonup_class: 'btn btn-default',
 						    postfix: dataQuantityUnit
 						}
-					).on('touchspin.on.startspin keyup change', function () {
+					).on('touchspin.on.startspin keyup', function () {
 						var total =  $('#stockItemUseQuantity').val() * (dataQuantityCapacity / dataQuantity);
 						$('#stockItemUseQuantityTotal').val(total);
 						
@@ -230,7 +232,18 @@ $(function(){
 						if($('#stockItemUseQuantity').val() == '' || $('#stockItemUseQuantityTotal').val() == ''){
 							$('#stockItemUseQuantityTotal, #stockItemUseQuantityConversionPay').val('').attr('readonly', 'readonly');
 						}
+						
 						if($('#stockItemUseQuantity').val() > 0){
+							
+							var stepNum = 0;
+							if(100 <= dataQuantityCapacity){
+								stepNum = 10;
+							}else if(100 > dataQuantityCapacity && dataQuantityCapacity >= 10){
+								stepNum = 1;
+							}else if(10 > dataQuantityCapacity && dataQuantityCapacity > 0){
+								stepNum = 0.1;
+							}
+							
 							$("#stockItemUseQuantityTotal")
 								.removeAttr('readonly')
 								.trigger('touchspin.destroy')
@@ -238,12 +251,19 @@ $(function(){
 								min: 0,
 								max: dataResourceCapacityExtra,
 								stepinterval: 50,
-								firstclickvalueifempty: 1,
+								step: stepNum,
+								decimals: 2,
+								firstclickvalueifempty: stepNum,
 								maxboostedstep: 10000000,
 								buttondown_class: 'btn btn-default',
 							    buttonup_class: 'btn btn-default',
 								postfix: dataQuantityCapacityUnit
-							});
+							}).on('touchspin.on.startspin keyup', function(){
+								var inputStockItemUseQuantity = (dataQuantity * $('#stockItemUseQuantityTotal').val())/dataQuantityCapacity;
+								$('#stockItemUseQuantity').val(inputStockItemUseQuantity);
+								$('#stockItemUseQuantityConversionPay').val($('#stockItemUseQuantityTotal').val()*dataIncomeQuantityPerPay);
+							})
+							
 						}else{
 							$("#stockItemUseQuantityTotal")
 								.attr('readonly', 'readonly')
@@ -259,17 +279,15 @@ $(function(){
 						}
 			        })
 			        
-			        $('#stockItemUseQuantityTotal, #resourceRetainQuantity').on('change keyup', function(){
+			        /*$('#stockItemUseQuantityTotal').on('change keyup', function(){
 			        	var resourceExtra = $('#resourceRetainQuantityCapacityExtra');
-			        	var stockItemUseQuantity = $('#stockItemUseQuantity');
-			        	if($("#stockItemUseQuantityTotal").val() >= resourceExtra.val() || $("#resourceRetainQuantity").val() >= stockItemUseQuantity.val()){
+			        	if($("#stockItemUseQuantityTotal").val() > resourceExtra.val()){
 			        		console.log($("#stockItemUseQuantityTotal").val());
 			        		alert('예상 사용가능한 용량을 초과했습니다. 추가로 소모하실 품목을 선택해주세요');
 			        	}
 			        	$('#stockItemUseQuantityConversionPay').val($('#stockItemUseQuantityTotal').val()*dataIncomeQuantityPerPay);
-			        })
+			        })*/
 			        
-		
 				}
 
 			},
@@ -282,6 +300,15 @@ $(function(){
 		});
 	});
 	
+	/*보험료탭*/
+	$('#insurePayTotal').TouchSpin({
+		min: 0,
+		max: 1000000000,
+		maxboostedstep: 10000000,
+		buttondown_class: 'hidden',
+		buttonup_class: 'hidden',
+		postfix: '원'
+	});
 	
 	
 });

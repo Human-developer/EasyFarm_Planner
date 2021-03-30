@@ -25,13 +25,13 @@ public class PlanController {
 	public String getSchedule(Model model
 							 ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode) {
 		if(projectPlanCode == null) {
-			projectPlanCode = "1";
+			projectPlanCode = "project_plan_1";
 		}
 		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
 			/* 계획정보조회 */
 			Map<String, Object> projectPlanInfo = pgsPlanService.getProjectPlanInfo(projectPlanCode);
 			String projectPlanN = (String)projectPlanInfo.get("projectPlanN");
-			int projectCode =  (int)projectPlanInfo.get("projectCode");
+			String projectCode =  (String)projectPlanInfo.get("projectCode");
 			
 			model.addAttribute("projectPlanCode", projectPlanCode);
 			model.addAttribute("projectPlanN", projectPlanN);
@@ -48,7 +48,7 @@ public class PlanController {
 						  ,@RequestParam(value = "stockItemCode", required = false) String stockItemCode) {
 		/* 임시값세팅 */
 		if(projectPlanCode == null) {
-			projectPlanCode = "1";
+			projectPlanCode = "project_plan_1";
 		}
 		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
 			
@@ -56,9 +56,9 @@ public class PlanController {
 			Map<String, Object> projectPlanInfo = pgsPlanService.getProjectPlanInfo(projectPlanCode);
 			String projectPlanN = (String) projectPlanInfo.get("projectPlanN");
 			String projectName = (String) projectPlanInfo.get("projectName");
-			int projectCode = (int) projectPlanInfo.get("projectCode");
-			int farmCode = (int) projectPlanInfo.get("farmCode");
-			int cropCode = (int) projectPlanInfo.get("cropCode");
+			String projectCode = (String) projectPlanInfo.get("projectCode");
+			String farmCode = (String) projectPlanInfo.get("farmCode");
+			String cropCode = (String) projectPlanInfo.get("cropCode");
 			
 			Map<String, Object> projectData = new HashMap<String, Object>();
 			projectData.put("projectPlanN", projectPlanN);
@@ -66,6 +66,7 @@ public class PlanController {
 			projectData.put("projectCode", projectCode);
 			projectData.put("farmCode", farmCode);
 			projectData.put("cropCode", cropCode);
+			
 			if(stockItemCode != null && !"".equals(stockItemCode.trim())) {
 				projectData.put("stockItemCode", stockItemCode);
 			}
@@ -111,12 +112,6 @@ public class PlanController {
 			stockItemInfo = pgsPlanService.getStockItemInfo(stockItemCode);
 		}
 		return stockItemInfo;
-	}
-	
-	@PostMapping("/ajax/touchSpinActive")
-	@ResponseBody
-	public String test(@RequestParam(value = "touchSpinActive", required = false) String touchSpinActive) {
-		return touchSpinActive;
 	}
 	
 	
