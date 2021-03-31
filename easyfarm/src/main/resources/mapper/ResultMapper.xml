@@ -51,7 +51,7 @@
 		ON
 		r.etc_pay_code=p.etc_pay_code
 		WHERE
-		p.plan_workphase_code='1'
+		p.plan_workphase_code='plan_workphase_1'
    </select>
   
     	<resultMap type="ResourcePayResult" id="resultResourcePayMap">
@@ -115,35 +115,35 @@
 		ON
 		r.farm_resource_pay_code=p.resource_pay_code
 		WHERE
-		p.farm_code='1'
+		p.farm_code='farm_1'
    </select>
    
    
    <resultMap type="InsurancePayResult" id="resultInsurancePayMap">
-	  		<id column="insure_pay_run_code"  			property="insurePayRunCode"/>   <!--농가별농자재매입지출계획코드-->                              
-	  		<result column="insure_pay_code" 			property="insurePayCode" />     <!--농가별농자재매입지출계획코드-->         
-	  		<result column="project_code" 				property="projectCode" />       <!--인건비지출계획대비실행-->            
-	  		<result column="insure_company" 			property="insureCompany" />   	<!--인건비지출계획대비실행-->            
-	  		<result column="insure_name" 				property="insureName" />        <!--인건비지출계획대비실행-->            
-	  		<result column="insure_datail" 				property="insureDatail" />      <!--인건비지출계획대비실행-->            
-	  		<result column="insure_begin" 				property="insureBegin" />       <!--인건비지출계획대비실행-->            
-	  		<result column="insure_area" 				property="insureArea" />        <!--인건비지출계획대비실행-->            
-	  		<result column="insure_end" 				property="insureEnd" />         <!--인건비지출계획대비실행-->            
-	  		<result column="insure_pay_total" 			property="insurePayTotal" />    <!--인건비지출계획대비실행-->            
-	  		<result column="insure_pay_per_month" 		property="insurePayPerMonth" /> <!--인건비지출계획대비실행-->            
-	  		<result column="complete_status" 			property="completeStatus" />    <!--인건비지출계획대비실행-->            
-	  		<result column="reg_member_id" 				property="regMemberId" />       <!--인건비지출계획대비실행-->            
-	  		<result column="reg_date" 					property="regDate" />           <!--농가별농자재매입지출계획코드-->                              
+	  		<id column="insure_pay_run_code"  			property="insurePayRunCode"/>   <!--보험료지출계획대비실행코드-->                              
+	  		<result column="insure_pay_code" 			property="insurePayCode" />     <!--보험료지출계획코드-->         
+	  		<result column="project_code" 				property="projectCode" />       <!--프로젝트코드-->            
+	  		<result column="insure_company" 			property="insureCompany" />   	<!--보험사-->            
+	  		<result column="insure_name" 				property="insureName" />        <!--보험명-->            
+	  		<result column="insure_datail" 				property="insureDatail" />      <!--보장내용-->            
+	  		<result column="insure_begin" 				property="insureBegin" />       <!--보험가입일-->            
+	  		<result column="insure_area" 				property="insureArea" />        <!--가입면적-->            
+	  		<result column="insure_end" 				property="insureEnd" />         <!--보험만료일-->            
+	  		<result column="insure_pay_total" 			property="insurePayTotal" />    <!--총보험비-->            
+	  		<result column="insure_pay_per_month" 		property="insurePayPerMonth" /> <!--예상월보험료-->            
+	  		<result column="complete_status" 			property="completeStatus" />    <!--실행완료여부-->            
+	  		<result column="reg_member_id" 				property="regMemberId" />       <!--작성자아이디-->            
+	  		<result column="reg_date" 					property="regDate" />           <!--작성일-->                              
 	  	<association property="insurancePayPlan" javaType="InsurancePay">
-	  		<id column="insure_pay_code" 				property="insurePayCode"/>		<!--농가별농자재매입지출계획코드-->
-	  		<result column="project_code" 				property="projectCode" />		<!--인건비지출계획대비실행-->
-	  		<result column="insure_company" 			property="insureCompany" />		<!--인건비지출계획대비실행-->
-	  		<result column="insure_name" 				property="insureName" />		<!--인건비지출계획대비실행-->
-	  		<result column="insure_datail" 				property="insureDatail" />		<!--인건비지출계획대비실행-->
-	  		<result column="insure_area" 				property="insureArea" />		<!--인건비지출계획대비실행-->
-	  		<result column="insure_pay_total" 			property="insurePayTotal" />	<!--인건비지출계획대비실행-->
-	  		<result column="reg_member_id" 				property="regMemberId" />		<!--인건비지출계획대비실행-->
-	  		<result column="reg_date" 					property="regDate" />			<!--인건비지출계획대비실행-->
+	  		<id column="insure_pay_code" 				property="insurePayCode"/>		<!--보험료지출계획코드-->
+	  		<result column="project_code" 				property="projectCode" />		<!--프로젝트코드-->
+	  		<result column="insure_company" 			property="insureCompany" />		<!--보험사-->
+	  		<result column="insure_name" 				property="insureName" />		<!--보험명-->
+	  		<result column="insure_datail" 				property="insureDatail" />		<!--보장내용-->
+	  		<result column="insure_area" 				property="insureArea" />		<!--가입면적-->
+	  		<result column="insure_pay_total" 			property="insurePayTotal" />	<!--예상총보험비-->
+	  		<result column="reg_member_id" 				property="regMemberId" />		<!--작성자아이디-->
+	  		<result column="reg_date" 					property="regDate" />			<!--작성일-->
 	  	</association>
   	</resultMap>
    
@@ -180,7 +180,7 @@
 		ON
 		r.insure_pay_code=p.insure_pay_code
 		WHERE
-		p.project_code='1'
+		p.project_code='project_1'
    </select>
    
    
@@ -213,7 +213,7 @@
 		r.machine_lease_run_code
 		, r.machine_lease_code
 		, r.client_code
-		, r.common_machine_code
+		, r.farm_bookmark_machine_code
 		, r.machine_lease_run_date
 		, r.machine_lease_run_pay
 		, r.complete_status
@@ -236,7 +236,7 @@
 		ON
 		r.machine_lease_code=p.machine_lease_code
 		WHERE
-		p.plan_workphase_code='1'
+		p.plan_workphase_code='plan_workphase_1'
    </select>
    
    
@@ -280,7 +280,7 @@
 		ON
 		r.machine_use_code=p.machine_use_code
 		WHERE
-		p.plan_workphase_code='1'
+		p.plan_workphase_code='plan_workphase_1'
    </select>
   
   
@@ -334,29 +334,31 @@
 		ON
 		r.product_gain_code=p.product_gain_code
 		WHERE
-		p.project_code='1'
+		p.project_code='project_1'
    </select>
    
    
    <resultMap type="ResourceUsePlanResult" id="resultResourceUsePlanMap">
-	  		<id column="resource_useplan_run_code"  				property="resourceUseplanRunCode"/>   <!--농가별농자재매입지출계획코드-->                              
-	  		<result column="resource_useplan_code" 					property="resourceUseplanCode" />     <!--농가별농자재매입지출계획코드-->         
-	  		<result column="stock_status_code" 						property="stockStatusCode" />       	<!--인건비지출계획대비실행-->            
-	  		<result column="stock_item_use_quantity" 				property="stockItemUseQuantity" />   	<!--인건비지출계획대비실행-->            
-	  		<result column="stock_item_use_quantity_total" 			property="stockItemUseQuantityTotal" />        <!--인건비지출계획대비실행-->            
-	  		<result column="stock_item_use_quantity_conversion_pay" property="stockItemUseQuantityConversionPay" />        <!--인건비지출계획대비실행-->            
-	  		<result column="stock_item_use_date" 					property="stockItemUseDate" />        <!--인건비지출계획대비실행-->            
-	  		<result column="complete_status" 						property="completeStatus" />        <!--인건비지출계획대비실행-->            
-	  		<result column="reg_member_id" 							property="regMemberId" />       <!--인건비지출계획대비실행-->            
-	  		<result column="reg_date" 								property="regDate" />           <!--농가별농자재매입지출계획코드-->                              
+	  		<id column="resource_useplan_run_code"  				property="resourceUseplanRunCode"/>   <!--농자재사용계획대비실행코드-->                              
+	  		<result column="resource_useplan_code" 					property="resourceUseplanCode" />     <!--농자재사용계획코드-->         
+	  		<result column="stock_status_code" 						property="stockStatusCode" />       	<!--재고현황코드-->            
+	  		<result column="stock_item_use_quantity" 				property="stockItemUseQuantity" />   	<!--사용수량-->            
+	  		<result column="stock_item_use_quantity_total" 			property="stockItemUseQuantityTotal" />        <!--사용용량소계-->            
+	  		<result column="stock_item_use_quantity_conversion_pay" property="stockItemUseQuantityConversionPay" />        <!--사용량금액환산-->            
+	  		<result column="stock_item_use_date" 					property="stockItemUseDate" />        <!--사용일-->            
+	  		<result column="complete_status" 						property="completeStatus" />        <!--실행완료여부-->            
+	  		<result column="reg_member_id" 							property="regMemberId" />       <!--작성자아이디-->            
+	  		<result column="reg_date" 								property="regDate" />           <!--작성일-->                              
 	  	<association property="resourceUsePlan" javaType="ResourceUsePlan">
-	  		<id column="resource_useplan_code" 						property="resourceUseplanCode"/>		<!--농가별농자재매입지출계획코드-->
-	  		<result column="resource_usecapacity_code" 				property="resourceUsecapacityCode" />			<!--인건비지출계획대비실행-->
-	  		<result column="stock_item_use_quantity" 				property="stockItemUseQuantity" />			<!--인건비지출계획대비실행-->
-	  		<result column="stock_item_use_quantity_total" 			property="stockItemUseQuantityTotal" />			<!--인건비지출계획대비실행-->
-	  		<result column="stock_item_use_quantity_conversion_pay" property="stockItemUseQuantityConversionPay" />		<!--인건비지출계획대비실행-->
-	  		<result column="reg_member_id" 							property="regMemberId" />			<!--인건비지출계획대비실행-->
-	  		<result column="reg_date" 								property="regDate" />				<!--인건비지출계획대비실행-->
+	  		<id column="resource_useplan_code" 						property="resourceUseplanCode"/>		<!--농자재사용계획코드-->
+	  		<result column="resource_usecapacity_code" 				property="resourceUsecapacityCode" />			<!--농자재소모현황코드-->
+	  		<result column="plan_workphase_code" 					property="planWorkphaseCode" />			<!--기간별작업단계계획코드-->
+	  		<result column="plan_workphase_cate_code" 				property="planWorkphaseCateCode" />			<!--작업단계별상세항목코드-->
+	  		<result column="stock_item_use_quantity" 				property="stockItemUseQuantity" />			<!--사용수량-->
+	  		<result column="stock_item_use_quantity_total" 			property="stockItemUseQuantityTotal" />			<!--사용용량소계-->
+	  		<result column="stock_item_use_quantity_conversion_pay" property="stockItemUseQuantityConversionPay" />		<!--사용량금액환산-->
+	  		<result column="reg_member_id" 							property="regMemberId" />			<!--작성자아이디-->
+	  		<result column="reg_date" 								property="regDate" />				<!--작성일-->
 	  	</association>
   	</resultMap>
    
@@ -388,7 +390,7 @@
 		ON
 		r.resource_useplan_code=p.resource_useplan_code
 		WHERE
-		p.plan_workphase_code='1'
+		p.plan_workphase_code='plan_workphase_1'
    </select>
    
    
@@ -448,7 +450,7 @@
 		ON
 		r.tax_pay_code=p.tax_pay_code
 		WHERE
-		p.plan_workphase_code='1'
+		p.plan_workphase_code='plan_workphase_1'
    </select>
    
 
@@ -465,10 +467,8 @@
 	  		<result column="workforce_pay_run_day" 		property="workforcePayRunDay" />        <!--일일인건비--> 
 	  		<result column="complete_status" 			property="completeStatus" />	        <!--실행완료여부-->     
 	  		<result column="workforce_pay_run_total" 	property="workforcePayRunTotal" />      <!--인건비합계--> 
-	  		<result column="reg_member_id" 		property="regMemberId" />         <!--작성자농가회원코드-->     
+	  		<result column="reg_member_id" 				property="regMemberId" />         <!--작성자농가회원코드-->     
 	  		<result column="reg_date" 					property="regDate" />			        <!--작성일--> 
-	  		<result column="mod_farm_member_code" 		property="modFarmMemberCode" />	        <!--수정자농가회원코드--> 
-	  		<result column="mod_date" 					property="modDate" />			        <!--수정일-->      
 	  	<association property="workforcePayPlan" javaType="WorkForcePay">                            
 	  		<id column="workforce_pay_code" 			property="workforcePayCode"/>           <!--인건비지출계획코드-->        
 	  		<result column="plan_workphase_code" 		property="planWorkphaseCode" />         <!--기간별작업단계계획코--> 
@@ -480,8 +480,6 @@
 	  		<result column="workforce_pay_total" 		property="workforcePayTotal" />         <!--인건비합계--> 
 	  		<result column="reg_member_id" 				property="regMemberId" />         <!--작성자농가회원코드 -->      
 	  		<result column="reg_date" 					property="regDate" />                   <!--작성일--> 
-	  		<result column="mod_farm_member_code" 		property="modFarmMemberCode" />         <!--수정자농가회원코드--> 
-	  		<result column="mod_date" 					property="modDate" />                   <!--수정일 -->           
 	  	</association>
 	</resultMap>
 	
@@ -510,7 +508,7 @@
 		ON
 		r.workforce_pay_code=p.workforce_pay_code
 		WHERE
-		p.workforce_pay_code='1'
+		p.workforce_pay_code='workforce_pay_1'
    </select>
   	
   

@@ -3,6 +3,7 @@ package easyfarm.domain;
 public class FarmMember {
 	private String farmMemberCode;
 	private String farmCode;
+	private String farmName;
 	private String farmMemberId;
 	private String farmLevelCode;
 	private String farmLevelName;
@@ -21,6 +22,12 @@ public class FarmMember {
 	}
 	public void setFarmCode(String farmCode) {
 		this.farmCode = farmCode;
+	}
+	public String getFarmName() {
+		return farmName;
+	}
+	public void setFarmName(String farmName) {
+		this.farmName = farmName;
 	}
 	public String getFarmMemberId() {
 		return farmMemberId;

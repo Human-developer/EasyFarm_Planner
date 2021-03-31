@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>기준일 삭제</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		기준일 삭제
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib"></th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss">
+	<style>
+			
+			.lc-round-btn {
+		    display: block;
+		    width: 100%;
+		    height: 60px;
+		    line-height: 58px;
+		    font-weight: 700;
+		    font-size: 20px;
+		    border-radius: 60px;
+		    background-color: #3BBD5A;
+		    color: #fff;
+		    transition: box-shadow .2s;
+		    margin-top: 30px;
+		</style>
+		
+	</th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents" >
+		<div class="box-content" style="text-align: center;">
+			<div class="form-horizontal " >
+				<h1> 기준일 삭제</h1>
+				<div class="row">	
+							
+					<form action="/member/removeAuthority" method="post">
+						<div class="col-md-offset-3 col-md-6" style="margin-top: 50px;">
+												
+								<div class="form-group" style="margin-top: 20px;">
+									<input type="text" readonly="readonly" hidden="" name="statusCriteriaCode" th:value="${statusCriteriaCode}">
+									<label  class="col-sm-2 control-label" ><strong>삭제확인</strong></label>
+									<div class="col-sm-10">
+											<input type="text" class="form-control" id="removeVal"  placeholder="'정말 삭제 하겠습니다.'를 입력해주세요" >						
+									</div>									    						   
+								</div>							
+								<div class="col-sm-offset-3 col-sm-3">
+								<button type="submit" class="lc-round-btn" id="removeCheck" style="margin-top: 10px; ">삭제하기</button>	
+								</div>
+								<div class="col-sm-3">
+								<a th:href="@{/member/getBaseDate}" style="color: white;"><button type="button" class="lc-round-btn" id="removeCancel" style="margin-top: 10px">취소하기</button></a>	
+								</div>
+						</div>				
+									
+					</form>
+				</div>
+			</div>
+		</div>
+	</th:block>
+	
+	
+<th:block layout:fragment="customJavaScript">
+		<script>
+			$('#removeCheck').click(function(){
+				if($('#removeVal').val() == ""){
+					 swal({
+							title: "삭제를 위해 문장을 입력 해주세요.",
+							confirmButtonColor: '#304ffe'
+						});
+					$('#removeVal').focus();
+					return false;
+				};
+				if($('#removeVal').val() != "정말 탈퇴 하겠습니다."){
+					 swal({
+							title: "삭제를 위해 문장을 제대로 입력 해주세요.",
+							confirmButtonColor: '#304ffe'
+						});
+					$('#removeVal').focus();
+					return false;
+				};
+				
+				
+			});
+							
+		</script>
+</html>

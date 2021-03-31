@@ -43,10 +43,10 @@ public class ResultController {
 		return "views/result/resultMain";
 	}
 	
-	@GetMapping("/resultTable")
+	@GetMapping("/resultCalendar")
 	public String resultTable(Model model) {
 		
-		return "views/result/tables-datatable";
+		return "views/result/resultCalendar";
 	}
 	
 	@GetMapping("/resultData")
