@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import easyfarm.domain.Farm;
 import easyfarm.domain.FarmMember;
+import easyfarm.domain.FarmMemberJoin;
 
 @Mapper
 public interface FarmMapper {
@@ -22,4 +23,7 @@ public interface FarmMapper {
 	public int updateFarm(Farm farm);
 	public List<Farm> searchFarm(String memberId);
 	public List<FarmMember> getMemberFarm(String farmCode);
+	public int addFarmMemberJoin(String farmName,String farmJoinPurpose, String memberId);
+	public FarmMemberJoin addFarmMemberJoinCheck(String farmName, String memberId);
+	public List<FarmMemberJoin> listJoinFarm(String memberId);
 }

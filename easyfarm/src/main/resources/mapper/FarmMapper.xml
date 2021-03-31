@@ -27,6 +27,16 @@
 		<result property="farmMemberStatus" column="farm_member_status"/>
 	</resultMap>
 	
+	<resultMap type="FarmMemberJoin" id="farmJoinResultMap">
+		<id property="farmJoinCode" column ="farm_join_code"/>
+		<result property="farmCode" column ="farm_code"/>
+		<result property="farmJoinRequestMemberId" column ="farm_join_request_member_id"/>
+		<result property="farmJoinRequestDate" column ="farm_join_request_date"/>
+		<result property="farmJoinPurpose" column ="farm_join_purpose"/>
+		<result property="farmJoinApproval" column ="farm_join_approval"/>
+		<result property="farmJoinApprovalMemberId" column ="farm_join_approval_member_id"/>
+	</resultMap>
+	
 	
 	<select id="farmByName" resultMap="farmResultMap" parameterType="String" >
 		SELECT 
@@ -235,5 +245,58 @@
 			fm.farm_code =#{farmCode}
 			AND
 			fm.farm_member_status = '정상'
+	</select>
+	
+	<insert id="addFarmMemberJoin" parameterType="String">
+		INSERT INTO tb_farm_member_join
+			(farm_join_code, 
+			farm_code, 
+			farm_join_request_member_id, 
+			farm_join_request_date, 
+			farm_join_purpose
+			)
+		VALUES 
+			(sf_farm_member_join_max_code(), 
+			sf_farm_name_by_code(#{farmName}), 
+			#{memberId}, 
+			NOW(), 
+			#{farmJoinPurpose})
+	</insert>
+	
+	
+	<select id="listJoinFarm"  resultMap="farmJoinResultMap" parameterType="String">
+		SELECT 
+			farm_join_code, 
+			farm_code, 
+			farm_join_request_member_id, 
+			farm_join_request_date, 
+			farm_join_purpose, 
+			farm_join_approval, 
+			farm_join_approval_member_id
+		FROM 
+			tb_farm_member_join
+		WHERE
+			farm_join_approval IS null
+			AND
+			farm_join_request_member_id =#{memberId}
+	</select>
+	
+	<select id="addFarmMemberJoinCheck"  resultMap="farmJoinResultMap" parameterType="String">
+		SELECT 
+			farm_join_code, 
+			farm_code, 
+			farm_join_request_member_id, 
+			farm_join_request_date, 
+			farm_join_purpose, 
+			farm_join_approval, 
+			farm_join_approval_member_id
+		FROM 
+			tb_farm_member_join
+		WHERE
+			farm_join_approval IS null
+			AND
+			farm_join_request_member_id =#{memberId}
+			AND
+			farm_code = sf_farm_name_by_code(#{farmName});
 	</select>
 </mapper>

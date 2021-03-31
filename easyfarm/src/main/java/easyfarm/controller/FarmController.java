@@ -28,6 +28,24 @@ public class FarmController {
 	@Autowired
 	private FarmService farmService;
 	
+	@PostMapping("/json/addfarmMemberJoin")
+	public @ResponseBody String addFarmMemberJoin(
+			HttpSession session,
+			@RequestParam(value = "farmName",required = false) String farmName,
+			@RequestParam(value = "farmJoinPurpose",required = false) String farmJoinPurpose) {
+		String result = "신청실패";
+		if(farmName != null && farmJoinPurpose != null) {
+			String memberId = (String)session.getAttribute("SID");
+			if(memberId != null && farmName != null && farmJoinPurpose != null) {
+				
+				result = farmService.addFarmMemberJoin(farmName, farmJoinPurpose, memberId);
+			}
+			
+		}
+		
+		return result;
+	}
+	
 	@PostMapping("/json/farmNameCheck")
 	public @ResponseBody String farmNameCheck(@RequestParam(value = "farmName", required = false) String farmName) {
 		String result = "생성불가";
