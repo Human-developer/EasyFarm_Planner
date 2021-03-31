@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import easyfarm.dao.FarmMapper;
 import easyfarm.domain.Farm;
 import easyfarm.domain.FarmMember;
+import easyfarm.domain.FarmMemberJoin;
 
 
 @Transactional
@@ -112,7 +113,7 @@ public class FarmService {
 	public List<Farm> searchFarm(String memberId){
 		List<Farm> resultFarm = null;
 		if(memberId != null) {
-			//resultFarm = farmMapper.searchFarm(memberId);
+			resultFarm = farmMapper.searchFarm(memberId);
 		}
 		return resultFarm;
 	}
@@ -127,4 +128,29 @@ public class FarmService {
 		return resultFarmMemberList;
 	}
 	/* 농가회원조회 */
+	
+	
+	/* 농가가입신청 */
+	public String addFarmMemberJoin(String farmName,String farmJoinPurpose, String memberId) {
+		String result = "신청실패";
+		
+		if(farmName != null && farmJoinPurpose != null) {
+			
+			FarmMemberJoin resultJoinList = farmMapper.addFarmMemberJoinCheck(farmName, memberId); 
+			if(resultJoinList == null) {
+				int insertResult = farmMapper.addFarmMemberJoin(farmName,farmJoinPurpose,memberId);
+				/* 실패체크 */
+				if(insertResult <=0) {
+					
+				}
+				result ="신청완료";
+			}
+			else {
+				result ="이미 신청하셨습니다";
+			}
+		}
+		
+		return result;
+	}
+	/* 농가가입신청 */
 }
