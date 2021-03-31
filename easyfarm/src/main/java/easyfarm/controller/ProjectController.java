@@ -32,15 +32,12 @@ public class ProjectController {
 	// 프로젝트 메인
 	@GetMapping("/project")
 	public String projectMain(Model model,
-								@RequestParam String farmCode,
-								HttpServletRequest request) {
-		// 임의로 회원아이디 세션 설정함
-		HttpSession session = request.getSession();
-		session.setAttribute("memberId", "id002");
+								@RequestParam(value = "farmCode", required = false) String farmCode,
+								HttpSession session) {
 		
-		//나중에 삭제
-		if(farmCode.equals("") || farmCode == null) farmCode = "farm_1";
-		
+		if(farmCode == null) {
+			farmCode = "farm_1";		
+		}
 		model.addAttribute("farmCode",farmCode);
 		return "views/project/projectMain";
 	}

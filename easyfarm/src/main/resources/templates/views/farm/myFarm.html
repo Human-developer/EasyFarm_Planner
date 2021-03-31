@@ -29,46 +29,47 @@
 				<div class ="box-content">
 					<h3 style = "display: none; visibility: visible;">내농가</h3>
 					<hr>
-					
-					<table id="myFarmTable" style ="width: 100%;">
-						<thead>
-							<tr>
-								<th th:text = "${'농가코드'}"/>
-								<th th:text = "${'권한'}"/>
-								<th th:text ="${'농가명'}"/>
-								<th th:text ="${'대표자 아이디'}"/>
-								<th th:text ="${'토지 면적'}"/>
-								<th th:text ="${'주소'}"/>
-								<th th:text ="${'농가 생성일'}"/>
-								<th th:text ="${'농가 공개유무'}"/>
-								<th th:text ="${''}"/>
-							</tr>
-						</thead>
-						
-						<tbody>
-							<tr th:each="farm : ${myFarmList}" class ="farmList">
-								<td th:text = "${farm.farmCode}"/>
-								<td th:text = "${farm.farmMemberLevel}"/>
-								<td th:text = "${farm.farmName}"/>
-								<td th:text = "${farm.ceoId}"/>
-								<td th:text = "${farm.farmArea}"/>
-								<td th:text = "${farm.farmAddress}"/>
-								<td th:text = "${farm.farmRegDate}"/>
-								<td th:text = "${farm.farmPublicStatus}"/>
-								<td>
-									<div class="btn-group">
-										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button> 
-										<ul class="dropdown-menu">
-											<li><a th:href="@{/farm/detailFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">상세보기</a></li>
-											<li><a th:href="@{/farm/modifyFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">수정</a></li>
-										</ul>
-									</div>
-								</td>
-								
-							</tr>
+						<div class ="table-responsive">
+						<table id="myFarmTable" style ="width: 100%;">
+							<thead>
+								<tr>
+									<th th:text = "${'농가코드'}"/>
+									<th th:text = "${'권한'}"/>
+									<th th:text ="${'농가명'}"/>
+									<th th:text ="${'대표자 아이디'}"/>
+									<th th:text ="${'토지 면적'}"/>
+									<th th:text ="${'주소'}"/>
+									<th th:text ="${'농가 생성일'}"/>
+									<th th:text ="${'농가 공개유무'}"/>
+									<th th:text ="${''}"/>
+								</tr>
+							</thead>
 							
-						</tbody>
-					</table>
+							<tbody>
+								<tr th:each="farm : ${myFarmList}" class ="farmList">
+									<td th:text = "${farm.farmCode}"/>
+									<td th:text = "${farm.farmMemberLevel}"/>
+									<td th:text = "${farm.farmName}"/>
+									<td th:text = "${farm.ceoId}"/>
+									<td th:text = "${farm.farmArea}"/>
+									<td th:text = "${farm.farmAddress}"/>
+									<td th:text = "${farm.farmRegDate}"/>
+									<td th:text = "${farm.farmPublicStatus}"/>
+									<td>
+										<div class="btn-group">
+											<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button> 
+											<ul class="dropdown-menu">
+												<li><a th:href="@{/farm/detailFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">상세보기</a></li>
+												<li><a th:href="@{/farm/modifyFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">수정</a></li>
+											</ul>
+										</div>
+									</td>
+									
+								</tr>
+								
+							</tbody>
+						</table>
+					</div>
 					</div>
 					
 				</div>

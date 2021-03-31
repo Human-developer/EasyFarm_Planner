@@ -216,7 +216,7 @@
 	 where
 	 crop_phase_info_code= #{cropPhaseInfoCode};
 	</select>
-	<select id="getCropListByCropCategory" resultMap="cropResultMap" resultType="map" parameterType="String">
+	<select id="getCropListByCropCategory" resultMap="CropResultMap" resultType="map" parameterType="String">
 		select
 			*
 		from tb_crop
