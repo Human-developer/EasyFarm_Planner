@@ -8,8 +8,6 @@
 		<result property="useStatus"	column="use_status"/>
 		<result property="regMemberId"	column="reg_member_id"/>
 		<result property="regDate"		column="reg_date"/>
-		<result property="modMemberId" 	column="mod_member_id"/>
-		<result property="modDate" 		column="mod_date"/>
 		<association property="member" javaType="Member">
 			<id property="memberId" 			column="member_id"/>
 		</association>
@@ -23,16 +21,12 @@
 		<result property="useStatus"			column="use_status"/>
 		<result property="regMemberId"			column="reg_member_id"/>
 		<result property="regDate"				column="reg_date"/>
-		<result property="modMemberId" 			column="mod_member_id"/>
-		<result property="modDate" 				column="mod_date"/>
 		<association property="cropDetailCategory" javaType="CropDetailCategory" >
 			<id property="commonWorkphaseCateCode"		column="common_workphase_cate_code"/>
 			<result property="commonWorkphaseCateCode"	column="common_workphase_cate_code"/>
 			<result property="commonWorkphaseCateName"	column="common_workphase_cate_name"/>
 			<result property="regMemberId"				column="reg_member_id"/>
 			<result property="regDate"					column="reg_date"/>
-			<result property="modMemberId" 				column="mod_member_id"/>
-			<result property="modDate" 					column="mod_date"/>
 		</association>
 		<association property="crop" javaType="Crop" >
 			<id property="cropCode"			column="crop_code"/>
@@ -42,8 +36,6 @@
 			<result property="useStatus"	column="use_status"/>
 			<result property="regMemberId"	column="reg_member_id"/>
 			<result property="regDate"		column="reg_date"/>
-			<result property="modMemberId" 	column="mod_member_id"/>
-			<result property="modDate" 		column="mod_date"/>
 		</association>
 	</resultMap>          
 	
@@ -52,48 +44,44 @@
 		<result property="commonWorkphaseCateName"	column="common_workphase_cate_name"/>
 		<result property="regMemberId"			column="reg_member_id"/>
 		<result property="regDate"				column="reg_date"/>
-		<result property="modMemberId" 			column="mod_member_id"/>
-		<result property="modDate" 				column="mod_date"/>
 	</resultMap>          
 	
-	<select id="getCropCode" parameterType="String" resultMap="CropResultMap">
+	<select id="getCropCode" parameterType="map" resultMap="CropResultMap">
 	SELECT 
 		c.crop_code,
 		c.crop_cate,
 		c.crop_name,
 		c.use_status,
 		c.reg_member_id,
-		c.reg_date,
-		c.mod_member_id,
-		c.mod_date
+		c.reg_date
 	FROM
 		tb_crop	as c
-	<!-- INNER JOIN
-		tb_member as m 
-	on
-		c.crop_code = m.member_id -->
 	<trim prefix="WHERE" prefixOverrides="AND |OR ">
 		<if test="searchKey != null and searchKey != ''.toString()">
 			${searchKey} LIKE CONCAT('%',#{searchValue},'%')					
 		</if>
 	</trim>
-	order by crop_code*1;
+	<!--정렬안됌 수정요망  -->
+	order by c.crop_code*1;
 	</select>
 	
 	<select id="getCropWorkStage" parameterType="String" resultMap="CropWorkStageResultMap">
 	SELECT 
 		cp.crop_phase_info_code, 
 		cp.crop_code, 
+		c.crop_name,
 		cp.workphase, 
 		cp.workphase_name, 
 		cp.use_status, 
 		cp.reg_member_id, 
-		cp.reg_date, 
-		cp.mod_member_id, 
-		cp.mod_date
+		cp.reg_date 
 	FROM 
 		tb_crop_phase_info	as cp
-	order by crop_phase_info_code*1
+	inner join 
+		tb_crop as c
+	on
+	 cp.crop_code = c.crop_code 
+	order by cp.crop_code*1
 	</select>
 	
 	<select id="getCropDetailCategory" parameterType="String" resultMap="CropDetailCategoryResultMap">
@@ -101,58 +89,87 @@
 		cwc.common_workphase_cate_code, 
 		cwc.common_workphase_cate_name, 
 		cwc.reg_member_id, 
-		cwc.reg_date, 
-		cwc.mod_member_id, 
-		cwc.mod_date
+		cwc.reg_date 
 	FROM 
 		tb_common_workphase_cate	as cwc
 	order by common_workphase_cate_code*1
 	</select>
 	
+	
+	
+	
+	
+	
 	<insert id="addCrop" parameterType="map">
 	INSERT INTO 
 		tb_crop
-		(crop_code, crop_cate, crop_name, use_status, reg_member_id, reg_date, mod_member_id, mod_date)
+		(crop_code ,crop_cate, crop_name, use_status, reg_member_id, reg_date )
 	VALUES (
 	sf_crop_max_code()
-	, #{crop.cropCate}
+	,#{crop.cropCate}
 	, #{crop.cropName}
 	, 'O'
-	, #{memberId}
-	, NOW()
 	, #{memberId}
 	, NOW()
 	)
 	</insert>
 	
+	<insert id="addCropWorkStage" parameterType="map">
+		INSERT INTO
+	 tb_crop_phase_info
+	(crop_phase_info_code,crop_code, workphase, workphase_name, use_status, reg_member_id, reg_date)
+	VALUES (
+	sf_cropWorkPhase_max_code()
+	,#{crop.cropCode}
+	<if test="crop.workphase != null">
+	, #{crop.workphase}
+	</if>
+	, #{crop.workphaseName}
+	, 'O'
+	, #{memberId}
+	, NOW()
+	)
+	
+	</insert>
+	
 	<insert id="addCropDetailCategory" parameterType="map">
 	INSERT INTO 
 		tb_common_workphase_cate
-		(common_workphase_cate_code, common_workphase_cate_name, reg_member_id, reg_date, mod_member_id, mod_date)
+		( common_workphase_cate_code,common_workphase_cate_name, reg_member_id, reg_date )
 	VALUES (
 		sf_commonWorkphaseCateCode_max_code()
 		, #{crop.commonWorkphaseCateName}
 		, #{memberId}
 		, NOW()
-		, #{memberId}
-		, NOW()
 	)
 	</insert>
+
+
+
+
+
 
 	<update id="modifyCrop" parameterType="map">
 	UPDATE tb_crop
 		<trim prefix="SET" suffixOverrides=",">
-			<if test="cropCode != null and cropCode != ''.toString()">
-				crop_code 	= #{cropCode},
-			</if>
+			<if test="crop.cropCate != null and crop.cropCate != ''.toString()">
 			crop_cate	=#{crop.cropCate},
+			</if>
+			<if test="crop.cropName != null and crop.cropName != ''.toString()">
 			crop_name	=#{crop.cropName},
-			use_status	=#{crop.useStatus},
-			mod_member_id	=#{memberId},
-			mod_date=NOW()
+			</if>
+			<if test="crop.useStatus != null and crop.useStatus != ''.toString()">
+			use_status	=#{crop.useStatus}
+			</if>
 		</trim>
 	WHERE crop_code=#{crop.cropCode}
 	</update>
+	
+	
+	
+	
+	
+	
 	
 	<select id="getcropCodeInfo" parameterType="String" resultMap="CropResultMap">
 		SELECT 
@@ -161,12 +178,29 @@
 			c.crop_name,
 			c.use_status,
 			c.reg_member_id,
-			c.reg_date,
-			c.mod_member_id,
-			c.mod_date
+			c.reg_date
 		FROM
 			tb_crop	as c
 		WHERE
 		 	c.crop_code = #{cropCode};
+	</select>
+	<select id="getcropPhaseInfo" parameterType="String" resultMap="CropWorkStageResultMap">
+	SELECT 
+		cp.crop_phase_info_code
+		, cp.crop_code
+		, c.crop_name
+		, cp.workphase
+		, cp.workphase_name
+		, cp.use_status
+		, cp.reg_member_id
+		, cp.reg_date
+	FROM
+	 tb_crop_phase_info as cp
+	 inner join
+	 tb_crop as c
+	 on
+	  cp.crop_code = c.crop_code
+	 where
+	 crop_phase_info_code= #{cropPhaseInfoCode};
 	</select>
 </mapper>

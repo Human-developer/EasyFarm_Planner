@@ -7,8 +7,6 @@
 		
 		<result property="regMemberId"	column="reg_member_id"/>
 		<result property="regDate"		column="reg_date"/>
-		<result property="modMemberId" 	column="mod_member_id"/>
-		<result property="modDate" 		column="mod_date"/>
 		<!-- <association property="" javaType="" >
 			<id property=""		column=""/>
 			<result property=""	column=""/>
@@ -21,9 +19,7 @@
 		common_machine_code, 
 		common_machine_name, 
 		reg_member_id, 
-		reg_date, 
-		mod_member_id,
- 		mod_date
+		reg_date 
 	FROM 
 		tb_common_machine
 	ORDER BY common_machine_code*1

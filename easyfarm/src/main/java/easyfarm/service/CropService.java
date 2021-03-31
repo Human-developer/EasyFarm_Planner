@@ -26,22 +26,14 @@ public class CropService {
  * @param searchKey **********************************************/
 	
 	//작물 리스트
-	public List<Crop> getCropCode(String searchKey, String searchValue){
-		if(searchKey != null) {
-			if("cropCate".equals(searchKey)){
-				searchKey = "c.crop_cate";
-			}else if("cropName".equals(searchKey)) {
-				searchKey = "c.crop_name";
-			}
-		}
-		List<Crop> cropList = cropMapper.getCropCode(searchKey,searchValue);
+	public List<Crop> getCropCode(Map<String, Object> map){
+		List<Crop> cropList = cropMapper.getCropCode(map);
 		return cropList;
 		
 	}
 	
 	//작업단계 리스트
 	public List<CropWorkStage> getCropWorkStage(){
-		
 		List<CropWorkStage> cropWorkStage = cropMapper.getCropWorkStage();
 		return cropWorkStage;
 		
@@ -49,7 +41,6 @@ public class CropService {
 	
 	//작업상세항목 리스트
 	public List<CropDetailCategory> getCropDetailCategory(){
-		
 		List<CropDetailCategory> cropDetailCategory = cropMapper.getCropDetailCategory();
 		return cropDetailCategory;
 		
@@ -63,7 +54,6 @@ public class CropService {
 		int result = cropMapper.addCrop(test);
 		return result;
 	}
-	
 	 public int addCropDetailCategory(CropDetailCategory crop, String memberId) { 
 		 Map<String, Object> test = new HashMap<>();
 		 test.put("crop", crop); 
@@ -71,10 +61,8 @@ public class CropService {
 		 int result = cropMapper.addCropDetailCategory(test); 
 		 return result; 
 	 }
+	 
 	//작물 수정
-	/*
-	 * public int modifyCrop(Crop crop) { return cropMapper.modifyCrop(crop); }
-	 */
 	public int modifyCrop(Crop crop, String memberId) {
 		Map<String, Object> test = new HashMap<>();
 		test.put("crop", crop);
@@ -83,7 +71,7 @@ public class CropService {
 		return result;
 	}
 	//작물정보조회
-	public Crop getcropCodeInfo(String cropCode) {
+	public Crop getcropCateInfo(String cropCode) {
 		Crop crop = cropMapper.getcropCodeInfo(cropCode);
 		String cropCate = "";
 		if(crop != null && crop.getCropCate() != "") {
@@ -126,4 +114,27 @@ public class CropService {
 		}
 		return crop;
 	}
+	//작업단계 추가등록
+	public int addCropWorkStage(CropWorkStage crop, String memberId) {
+		Map<String, Object> test = new HashMap<>();
+		test.put("crop", crop);
+		test.put("memberId", memberId);
+		int result = cropMapper.addCropWorkStage(test);
+		return result;
+		
+	}
+	public CropWorkStage getcropPhaseInfo(String cropPhaseInfoCode) {
+		CropWorkStage cropWorkStage = cropMapper.getcropPhaseInfo(cropPhaseInfoCode);
+		return cropWorkStage;
+	
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

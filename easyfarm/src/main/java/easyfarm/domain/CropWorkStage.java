@@ -19,11 +19,6 @@ public class CropWorkStage {
     private String regMemberId;
     // 작성일
     private Timestamp regDate;
-    // 수정자아이디
-    private String modMemberId;
-    // 수정일
-    private Timestamp modDate;
-    
     private CropDetailCategory cropDetailCategory;
     private Crop crop;
     
@@ -100,21 +95,6 @@ public class CropWorkStage {
         this.regDate = regDate;
     }
 
-    public String getModMemberId() {
-        return modMemberId;
-    }
-
-    public void setModMemberId(String modMemberId) {
-        this.modMemberId = modMemberId;
-    }
-
-    public Timestamp getModDate() {
-        return modDate;
-    }
-
-    public void setModDate(Timestamp modDate) {
-        this.modDate = modDate;
-    }
 
     // CropCate 모델 복사
     public void CopyData(CropWorkStage param)
@@ -126,8 +106,7 @@ public class CropWorkStage {
         this.useStatus = param.getUseStatus();
         this.regMemberId = param.getRegMemberId();
         this.regDate = param.getRegDate();
-        this.modMemberId = param.getModMemberId();
-		this.modDate = param.getModDate();
+
 	}
 
 	@Override
@@ -147,10 +126,6 @@ public class CropWorkStage {
 		builder.append(regMemberId);
 		builder.append(", regDate=");
 		builder.append(regDate);
-		builder.append(", modMemberId=");
-		builder.append(modMemberId);
-		builder.append(", modDate=");
-		builder.append(modDate);
 		builder.append("]");
 		return builder.toString();
 	}

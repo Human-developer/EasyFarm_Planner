@@ -18,19 +18,19 @@
 	</th:block>
 	
 	<th:block layout:fragment="customContents">
-	<div th:include="views/code/CropSearch :: searchFragment"></div>
+	<div class="box-content" >
 		<h4 class="box-title">공통농기계 리스트</h4>
 		<div class="dropdown js__drop_down">
-						<a href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
-						<ul class="sub-menu">
-							<li><a href="#">Action</a></li>
-							<li><a href="#">Another action</a></li>
-							<li><a href="#">Something else there</a></li>
-							<li class="split"></li>
-							<li><a href="#">Separated link</a></li>
-						</ul>
-						<!-- /.sub-menu -->
-					</div>
+			<a href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
+			<ul class="sub-menu">
+				<li><a href="#">Action</a></li>
+				<li><a href="#">Another action</a></li>
+				<li><a href="#">Something else there</a></li>
+				<li class="split"></li>
+				<li><a href="#">Separated link</a></li>
+			</ul>
+			<!-- /.sub-menu -->
+		</div>
 		<table id="example" class="table table-striped table-bordered display" style="width:100%">
 			<thead>
 				<tr>
@@ -38,8 +38,6 @@
 					<th>농기계명 </th>
 					<th>작성자아이디 </th>
 					<th>작성일자</th>
-					<th>수정자아이디</th>
-					<th>수정일자</th>
 					<th th:if = "${session.SLEVEL == '관리자'}">수정</th>
 					<th th:if = "${session.SLEVEL == '관리자'}">삭제</th>
 				</tr>			
@@ -51,8 +49,6 @@
 					<td th:text="${l.commonMachineName}"></td>
 					<td th:text="${l.regMemberId}"></td>
 					<td th:text="${l.regDate}"></td>
-					<td th:text="${l.modMemberId}"></td>
-					<td th:text="${l.modDate}"></td>
 					<td th:if = "${session.SLEVEL == '관리자'}">
 						<a th:href="@{/#(commonMachineCode=${l.commonMachineCode})}">수정</a>
 					</td>
@@ -65,6 +61,7 @@
 				</tr>
 			</tbody>
 		</table>
+		
 		</div>
 		<div th:include="views/code/back :: back"></div>
 	</th:block>

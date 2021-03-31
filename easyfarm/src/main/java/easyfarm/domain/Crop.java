@@ -7,8 +7,6 @@ public class Crop {
 	private String useStatus    ;//사용상태
 	private String regMemberId  ;//등록자 아이디
 	private String regDate      ;//등록일자
-	private String modMemberId  ;//수정자 아이디
-	private String modDate      ;//수정일자
 	private Member member;
 	private String memberId;
 	
@@ -60,18 +58,6 @@ public class Crop {
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
-	public String getModMemberId() {
-		return modMemberId;
-	}
-	public void setModMemberId(String modMemberId) {
-		this.modMemberId = modMemberId;
-	}
-	public String getModDate() {
-		return modDate;
-	}
-	public void setModDate(String modDate) {
-		this.modDate = modDate;
-	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -87,10 +73,6 @@ public class Crop {
 		builder.append(regMemberId);
 		builder.append(", regDate=");
 		builder.append(regDate);
-		builder.append(", modMemberId=");
-		builder.append(modMemberId);
-		builder.append(", modDate=");
-		builder.append(modDate);
 		builder.append("]");
 		return builder.toString();
 	}

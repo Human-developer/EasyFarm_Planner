@@ -1,7 +1,9 @@
 package easyfarm.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -37,18 +39,15 @@ public class CodeController {
 	}
 	
 	@GetMapping("/code/getCropCode")
-	public String getCropList(@RequestParam(value="searchKey", required = false) String searchKey
-							 ,@RequestParam(value="searchValue", required = false) String searchValue
-							 ,Model model) {
-		List<Crop> cropList = new ArrayList<Crop>();
-		cropList = cropService.getCropCode(searchKey,searchValue);
+	public String getCropList(Model model) {
+		Map<String, Object> map=  new HashMap<String, Object>();
+		List<Crop> cropList = cropService.getCropCode(map);
 		model.addAttribute("cropList" , cropList );
 		return "views/code/getCropCode";
 	}
 	
 	@GetMapping("/code/getCropWorkStage")
 	public String getCropWorkStage(Model model) {
-		
 		List<CropWorkStage> cropWorkStage = new ArrayList<CropWorkStage>();
 		cropWorkStage = cropService.getCropWorkStage();
 		System.out.println(cropWorkStage);
@@ -58,7 +57,6 @@ public class CodeController {
 	
 	@GetMapping("/code/getCropDetailCategory")
 	public String getCropDetailCategory(Model model) {
-		
 		List<CropDetailCategory> cropDetailCategory = new ArrayList<CropDetailCategory>();
 		cropDetailCategory = cropService.getCropDetailCategory();
 		System.out.println(cropDetailCategory);
@@ -74,7 +72,7 @@ public class CodeController {
 		model.addAttribute("commonMachineList",commonMachineList);
 		return "views/code/getCommonMachineCode";
 	}
-	
+/*===========================================================*/	
 	@PostMapping("/code/addCrop")
 	public String addCrop(Crop crop,HttpSession session) {
 		if(crop != null && !"".equals(crop.getCropCode())){
@@ -88,8 +86,27 @@ public class CodeController {
 	public String addCrop() {
 		return "views/code/addCrop";
 	}
+/*===========================================================*/
 	
+	@PostMapping("/code/addCropWorkStage")
+	public String addCropWorkStage(CropWorkStage crop,HttpSession session) {
+		if(crop != null && !"".equals(crop.getCropPhaseInfoCode())){
+			String memberId = (String)session.getAttribute("SID");
+			if(memberId != null) System.out.println(memberId+" =test");
+			cropService.addCropWorkStage(crop,memberId);
+		}
+		return "redirect:/code/getCropWorkStage"; 
+	}
 	
+	@GetMapping("/code/addCropWorkStage")
+	public String addCropWorkStage(Model model) {
+		Map<String, Object> map=  new HashMap<String, Object>();
+		List<Crop> crop = cropService.getCropCode(map);
+		model.addAttribute("crop", crop);
+		return "views/code/addCropWorkStage";		
+	}	
+	
+/*===========================================================*/
 	@PostMapping("/code/addCropDetailCategory")
 	public String addCropDetailCategory(CropDetailCategory crop,HttpSession session) {
 		if(crop != null && !"".equals(crop.getCommonWorkphaseCateCode())){
@@ -105,7 +122,7 @@ public class CodeController {
 	}
 /*===========================================================*/
 	
-	@PostMapping("/code/modifyCrop") 
+	@PostMapping("/code/modifyCrop")
 	public String modifyCrop(Crop crop,HttpSession session) {
 		if(crop != null && !"".equals(crop.getCropCode())){
 			String memberId = (String)session.getAttribute("SID");
@@ -118,9 +135,26 @@ public class CodeController {
 	@GetMapping("/code/modifyCrop")
 	public String getmodifycrop(Model model,
 								@RequestParam(name = "cropCode", required = false) String cropCode) {
-		Crop crop = cropService.getcropCodeInfo(cropCode);
+		Crop crop = cropService.getcropCateInfo(cropCode);
 		model.addAttribute("crop", crop);
 		return "views/code/modifyCrop";		
+	}	
+/*===========================================================*/
+	/*@PostMapping("/code/modifyCropWorkStage") 
+	public String qweqwe(Crop crop,HttpSession session) {
+		if(crop != null && !"".equals(crop.getCropCode())){
+			String memberId = (String)session.getAttribute("SID");
+			if(memberId != null) System.out.println(memberId+" =test");
+			cropService.modifyCrop(crop,memberId);
+		}
+		return "redirect:/code/getCropWorkStage";
+	}*/
+	@GetMapping("/code/modifyCropWorkStage")
+	public String qweqwe(Model model,
+			@RequestParam(name = "cropPhaseInfoCode", required = false) String cropPhaseInfoCode) {
+		CropWorkStage cropWorkStage = cropService.getcropPhaseInfo(cropPhaseInfoCode);
+		model.addAttribute("cropWorkStage", cropWorkStage);
+		return "views/code/modifyCropWorkStage";		
 	}	
 /*===========================================================*/
 }

@@ -38,8 +38,6 @@
 					<th>공통상세작업항목명 </th>
 					<th>작성자아이디 </th>
 					<th>작성일자</th>
-					<th>수정자아이디</th>
-					<th>수정일자</th>
 					<th th:if = "${session.SLEVEL == '관리자'}">수정</th>
 					<th th:if = "${session.SLEVEL == '관리자'}">삭제</th>
 				</tr>			
@@ -50,8 +48,6 @@
 					<td th:text="${l.commonWorkphaseCateName}"></td>
 					<td th:text="${l.regMemberId}"></td>
 					<td th:text="${l.regDate}"></td>
-					<td th:text="${l.modMemberId}"></td>
-					<td th:text="${l.modDate}"></td>
 					<td th:if = "${session.SLEVEL == '관리자'}">
 						<a th:href="@{/getCropDetailCategory(commonWorkphaseCateCode=${l.commonWorkphaseCateCode})}">수정</a>
 					</td>

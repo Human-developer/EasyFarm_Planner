@@ -143,53 +143,58 @@
 	<th:block layout:fragment="customContents">
 	
 	
-		<form th:action="@{/code/addCrop}" method="post">
+		<form th:action="@{/code/addCropWorkStage}" method="post">
 			<div class="container-fluid">
 				<div class="row" >
 					<div class="col-lg-offset-2 col-lg-8">
 						<div class="panel panel-default">
 							<div class="panel-heading t-center important-col ">
-								<h3><strong>작물등록</strong></h3>
+								<h3><strong>작업단계등록</strong></h3>
 							</div>
 							<div class="panel-body">
 								<div class="form-horizontal">
 									<div class="form-group margin-bottom-20">
-										<label for="cropcate" class="col-sm-3 control-label"><strong>작물 카테고리</strong></label>
-										<div class="col-sm-9">
+										<label for="cropcode" class="col-sm-3 control-label"><strong>작물, 작업단계</strong></label>
+										<div class="col-sm-4">
 											<div class="card-content">
-											<select class="form-control" name="cropCate" id="cropcate" >
-												  <option value="" >:::: 작물 카테고리 선택 ::::</option>
-												  <option th:value="기타" >기타</option>
-												  <option th:value="과수" >과수</option>
-												  <option th:value="채소" >채소</option>
-												  <option th:value="축산" >축산</option>
-												  <option th:value="특용" >특용</option>
-												  <option th:value="화훼" >화훼</option>
-												  <option th:value="과채" >과채</option>
-												  <option th:value="버섯" >버섯</option>
-												  <option th:value="식량" >식량</option>
-												  <option th:value="약용" >약용</option>
+											<select class="form-control" name="cropCode" th:if="${session.SLEVEL == '관리자'}"  id="cropcode" >
+												<option value="" >:::: 작물 선택 ::::</option>
+												<th:block th:if="${#lists.size(crop)} > 0"  th:each="l : ${crop}">
+													<option th:if="${l.useStatus == 'O'}" th:value="${l.cropCode}" >[[${l.cropName}]]</option>
+												</th:block>
+											</select>
+											</div>
+										</div>	
+										<div class="col-sm-4">
+											<div class="card-content">
+											<select class="form-control" th:if="${session.SLEVEL == '관리자'}" name="workphase" id="" >
+												  <option value="" >:::: 작업단계 선택 ::::</option>
+												  <option th:value="1단계" >1단계</option>
+												  <option th:value="2단계" >2단계</option>
+												  <option th:value="3단계" >3단계</option>
+												  <option th:value="4단계" >4단계</option>
+												  <option th:value="5단계" >5단계</option>
+												  <option th:value="6단계" >6단계</option>
+												  <option th:value="7단계" >7단계</option>
+												  <option th:value="8단계" >8단계</option>
+												  <option th:value="9단계" >9단계</option>
+												  <option th:value="10단계" >10단계</option>
 											</select>
 											</div>
 										</div>
 									</div>
 									<div class="form-group margin-bottom-20">
-										<label for="cropname" class="col-sm-3 control-label"><strong>작물명</strong></label>
-										<div class="col-sm-6">
-											<input type="text" size="15" class="green-input" name="cropName" id="cropname" placeholder="작물명 입력">
-											<!-- <input type="hidden" name="memberId" id="" value=""> -->
+										<label for="workphasename" class="col-sm-3 control-label"><strong>작업단계명</strong></label>
+										<div class="col-sm-8">
+											<input type="text" size="15" class="green-input" name="workphaseName" id="workphasename" placeholder="작업단계명 입력">
 										</div>
-										<div class="col-sm-1">
-											<button id="checkBtn" type="button" class="btn" value="no">중복확인</button>
-										</div>
-	
 									</div>
 	
 	
 									<hr style="border-color : #ccd1d9;">
 									<div class="form-group">
 										<div class="col-sm-10 col-sm-offset-1">
-											<button type="submit" class="btn btn-success btn-rounded waves-effect waves-light" style="width: 100%">작물등록</button>
+											<button type="submit" class="btn btn-success btn-rounded waves-effect waves-light" style="width: 100%">작업단계 등록</button>
 										</div>
 									</div>
 								</div>
