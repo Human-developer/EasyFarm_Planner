@@ -80,6 +80,11 @@ public class PgsPlanService {
 		return pgsPlanMapper.getStockItemInfo(stockItemCode);
 	}
 	
+	//공과금항목조회
+	public List<Map<String, Object>> getTaxPayCateCode() {
+		return pgsPlanMapper.getTaxPayCateCode();
+	}
+	
 	public List<EtcPay> getEtcPayPlan(){
 		List<EtcPay> etcPayPlan = null;
 		System.out.println("getEtcPayPlan !@@@@@@@@@@@@@@@@@@@@@@@@");

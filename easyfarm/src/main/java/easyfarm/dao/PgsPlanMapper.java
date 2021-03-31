@@ -55,5 +55,8 @@ public interface PgsPlanMapper {
 	//품목정보조회
 	public Map<String, Object> getStockItemInfo(String stockItemCode);
 	
+	//공과금항목조회
+	public List<Map<String, Object>> getTaxPayCateCode();
+	
 
 }

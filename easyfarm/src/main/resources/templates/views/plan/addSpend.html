@@ -55,6 +55,7 @@
 			.switch{margin-bottom: 0px;}
 			.box-content.card.white .box-title{background-color: #F5F5F5;}
 			hr{border-bottom: 1px solid grey;}
+			.ui-datepicker-calendar {display: none;}​
 		</style>
 	</th:block>
 	
@@ -198,7 +199,7 @@
 												<div class="form-group">
 													<label class="col-sm-2 control-label"><strong>거래처</strong></label>
 												    <div class="col-md-4">
-														<select class="form-control" name="clientCode" id="machineClientCode" readonly="readonly">
+														<select class="form-control" name="machineClientCode" id="machineClientCode" readonly="readonly">
 															<option value=""> :: 거래처선택 :: </option>
 															<th:block th:if="${#lists.size(clientNameList) > 0}" th:each="c : ${clientNameList}">
 																<option th:value="${c.clientCode}" th:text="${c.clientName}" disabled="disabled"></option>
@@ -276,7 +277,7 @@
 												<div class="form-group">
 													<label class="col-sm-2 control-label"><strong>품목</strong></label>
 												    <div class="col-md-4">
-														<select class="form-control" name="stockItemCode" id="stockItemCode">
+														<select class="form-control" name="resourceStockItemCode" id="resourceStockItemCode">
 															<option value=""> :: 품목선택 :: </option>
 															<th:block th:if="${#lists.size(stockItemList) > 0}" th:each="s : ${stockItemList}">
 																<option th:value="${s.resourceUsecapacityCode}" th:text="|${s.stockCateName} : ${s.stockItemName}|"></option>
@@ -356,43 +357,43 @@
 								<div class="tab-pane fade" role="tabpanel" id="taxPay-justified" aria-labelledby="taxPay-tab-justified">
 									<div class="form-horizontal">
 										<div class="form-group">
-											<label for="workPhase" class="col-sm-2 control-label"><strong>공과금종류</strong></label>
+											<label for="taxPayCateCode" class="col-sm-2 control-label"><strong>공과금종류</strong></label>
 										    <div class="col-md-4">
-												<select class="form-control" name="workPhase" id="workPhase">
+												<select class="form-control" name="taxPayCateCode" id="taxPayCateCode">
 													<option value=""> :: 종류선택 :: </option>
-													<option value="1">Dropdown 1</option>
-													<option value="2">Dropdown 1</option>
-													<option value="3">Dropdown 1</option>
+													<th:block th:if="${#lists.size(taxPayCateCodeList) > 0}" th:each="t : ${taxPayCateCodeList}">
+														<option th:value="${t.taxPayCateCode}" th:text="${t.taxPayCateName}"></option>
+													</th:block>
 												</select>
 										    </div>
 										</div>
 										<div class="form-group">
-											<label for="workPhase" class="col-sm-2 control-label"><strong>거래처</strong></label>
+											<label for="taxPayClientCode" class="col-sm-2 control-label"><strong>거래처</strong></label>
 										    <div class="col-md-4">
-												<select class="form-control" name="workPhase" id="workPhase">
+												<select class="form-control" name="taxPayClientCode" id="taxPayClientCode">
 													<option value=""> :: 거래처선택 :: </option>
-													<option value="1">Dropdown 1</option>
-													<option value="2">Dropdown 1</option>
-													<option value="3">Dropdown 1</option>
+													<th:block th:if="${#lists.size(clientNameList) > 0}" th:each="c : ${clientNameList}">
+														<option th:value="${c.clientCode}" th:text="${c.clientName}"></option>
+													</th:block>
 												</select>
 										    </div>
 										</div>
 										<div class="form-group">
-											<label for="workforcePayTotal" class="col-sm-2 control-label"><strong>납부월</strong></label>
+											<label for="taxPayWhatmonth" class="col-sm-2 control-label"><strong>납부월</strong></label>
 										    <div class="col-md-4">
-										      <input id="workforcePayTotal" type="text" value="0" name="workforcePayTotal" class="form-control">
+										      <input id="taxPayWhatmonth" type="text" value="0" name="taxPayWhatmonth" class="form-control">
 										    </div>
 										</div>
 										<div class="form-group">
-											<label for="workforcePayTotal" class="col-sm-2 control-label"><strong>납부금액</strong></label>
+											<label for="taxPay" class="col-sm-2 control-label"><strong>납부금액</strong></label>
 										    <div class="col-md-4">
-										      <input id="workforcePayTotal" type="text" value="0" name="workforcePayTotal" class="form-control">
+										      <input id="taxPay" type="text" value="0" name="taxPay" class="form-control">
 										    </div>
 										</div>
 										<div class="form-group">
-											<label for="message" class="col-sm-2 control-label"><strong>추가메모</strong></label>
+											<label for="taxPayDetail" class="col-sm-2 control-label"><strong>추가메모</strong></label>
 											<div class="col-md-4">
-												<textarea class="form-control" id="message" rows="3" placeholder="메모를 작성해주세요" style="resize: none;"></textarea>
+												<textarea class="form-control" id="taxPayDetail" name="taxPayDetail" rows="3" placeholder="메모를 작성해주세요" style="resize: none;"></textarea>
 											</div>
 										</div>
 									</div>
@@ -400,32 +401,32 @@
 								<div class="tab-pane fade" role="tabpanel" id="productGain-justified" aria-labelledby="productGain-tab-justified">
 									<div class="form-horizontal">
 										<div class="form-group">
-											<label for="workPhase" class="col-sm-2 control-label"><strong>품목</strong></label>
+											<label for="productGainStockItemCode" class="col-sm-2 control-label"><strong>품목</strong></label>
 										    <div class="col-md-4">
-												<select class="form-control" name="workPhase" id="workPhase">
+												<select class="form-control" name="productGainStockItemCode" id="productGainStockItemCode">
 													<option value=""> :: 품목선택 :: </option>
-													<option value="1">Dropdown 1</option>
-													<option value="2">Dropdown 1</option>
-													<option value="3">Dropdown 1</option>
+													<th:block th:if="${#lists.size(stockItemList) > 0}" th:each="s : ${stockItemList}">
+														<option th:value="${s.resourceUsecapacityCode}" th:text="|${s.stockCateName} : ${s.stockItemName}|"></option>
+													</th:block>
 												</select>
 										    </div>
 										</div>
 										<div class="form-group">
 											<label for="gainQuantity" class="col-sm-2 control-label"><strong>수확수량</strong></label>
 										    <div class="col-md-4">
-										      <input id="gainQuantity" type="text" value="0" name="workforcePayTotal" class="form-control">
+										      <input id="gainQuantity" type="text" value="0" name="gainQuantity" class="form-control">
 										    </div>
 										</div>
 										<div class="form-group">
 											<label for="gainQuantityCapacity" class="col-sm-2 control-label"><strong>총수확량계산</strong></label>
 										    <div class="col-md-4">
-										      <input id="gainQuantityCapacity" type="text" value="0" name="workforcePayTotal" class="form-control" readonly="readonly">
+										      <input id="gainQuantityCapacity" type="text" value="0" name="gainQuantityCapacity" class="form-control" readonly="readonly">
 										    </div>
 										</div>
 										<div class="form-group">
-											<label for="message" class="col-sm-2 control-label"><strong>추가메모</strong></label>
+											<label for="productGainDetail" class="col-sm-2 control-label"><strong>추가메모</strong></label>
 											<div class="col-md-4">
-												<textarea class="form-control" id="message" rows="3" placeholder="메모를 작성해주세요" style="resize: none;"></textarea>
+												<textarea class="form-control" id="productGainDetail" name="productGainDetail" rows="3" placeholder="메모를 작성해주세요" style="resize: none;"></textarea>
 											</div>
 										</div>
 									</div>
@@ -433,26 +434,26 @@
 								<div class="tab-pane fade" role="tabpanel" id="etcPay-justified" aria-labelledby="etcPay-tab-justified">
 									<div class="form-horizontal">
 										<div class="form-group">
-											<label for="workPhase" class="col-sm-2 control-label"><strong>거래처</strong></label>
+											<label for="etcPayClientCode" class="col-sm-2 control-label"><strong>거래처</strong></label>
 										    <div class="col-md-4">
-												<select class="form-control" name="workPhase" id="workPhase">
+												<select class="form-control" name="etcPayClientCode" id="etcPayClientCode">
 													<option value=""> :: 거래처선택 :: </option>
-													<option value="1">Dropdown 1</option>
-													<option value="2">Dropdown 1</option>
-													<option value="3">Dropdown 1</option>
+													<th:block th:if="${#lists.size(clientNameList) > 0}" th:each="c : ${clientNameList}">
+														<option th:value="${c.clientCode}" th:text="${c.clientName}"></option>
+													</th:block>
 												</select>
 										    </div>
 										</div>
 										<div class="form-group">
-											<label for="workforcePayTotal" class="col-sm-2 control-label"><strong>지출금액</strong></label>
+											<label for="etcPay" class="col-sm-2 control-label"><strong>지출금액</strong></label>
 										    <div class="col-md-4">
-										      <input id="workforcePayTotal" type="text" value="0" name="workforcePayTotal" class="form-control">
+										      <input id="etcPay" type="text" value="" name="etcPay" class="form-control" placeholder="1000">
 										    </div>
 										</div>
 										<div class="form-group">
-											<label for="message" class="col-sm-2 control-label"><strong>추가메모</strong></label>
+											<label for="etcPayDetail" class="col-sm-2 control-label"><strong>추가메모</strong></label>
 											<div class="col-md-4">
-												<textarea class="form-control" id="message" rows="3" placeholder="메모를 작성해주세요" style="resize: none;"></textarea>
+												<textarea class="form-control" id="etcPayDetail" rows="3" name="etcPayDetail" placeholder="메모를 작성해주세요" style="resize: none;"></textarea>
 											</div>
 										</div>
 									</div>
