@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+
+	<th:block layout:fragment="customTitle">
+		<title>프로젝트 등록</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		프로젝트 등록
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+		<!-- 데이트피커 플러그인 css, js파일 연결 -->
+		<link rel="stylesheet" href="/assets/plugin/air-datepicker/css/datepicker.min.css">
+	</th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss">
+		<style>
+			.panelhead-small{ color:red;}
+			.p-star{ display:inline; color:red; }
+			.btn-crop { margin:10px;	width: 170px; }
+		</style>
+	</th:block>
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+		<!-- 작물 조회 연결해서 작물 리스트 보여주고 선택하게 -->
+		<div class="box-content">
+			<!-- 폼 경로 작업해야함 -->
+			<h3>프로젝트 등록</h3>
+			<hr>
+			<form id="projectAddForm" action="/projectAddByProjectObject" method="post">
+				<!-- 프로젝트 등록 폼 시작 -->
+				<!-- 작물 선택 탭 -->
+				<div role="tabpanel">
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active"><a class="cropCate" id="fruitTree" aria-controls="fruitTree" role="tab" data-toggle="tab">과수</a></li>
+						<li role="presentation"><a class="cropCate"  id="vegetable" aria-controls="vegetable" role="tab" data-toggle="tab">채소</a></li>
+						<li role="presentation"><a class="cropCate"  id="animalHusbandry" aria-controls="animalHusbandry" role="tab" data-toggle="tab">축산</a></li>
+						<li role="presentation"><a class="cropCate"  id="inderstrialCrop" aria-controls="inderstrialCrop" role="tab" data-toggle="tab">특용작물</a></li>
+						<li role="presentation"><a class="cropCate"  id="floristCrop" aria-controls="floristCrop" role="tab" data-toggle="tab">화훼</a></li>
+						<li role="presentation"><a class="cropCate"  id="fruitVegetable" aria-controls="fruitVegetable" role="tab" data-toggle="tab">과채</a></li>
+						<li role="presentation"><a class="cropCate"  id="mushroom" aria-controls="mushroom" role="tab" data-toggle="tab">버섯</a></li>
+						<li role="presentation"><a class="cropCate"  id="foodCrops" aria-controls="foodCrops" role="tab" data-toggle="tab">식량</a></li>
+						<li role="presentation"><a class="cropCate"  id="medicinalPlant" aria-controls="medicinalPlant" role="tab" data-toggle="tab">약용</a></li>
+					</ul>
+					
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane active" id="fruitTree"></div>
+						<div role="tabpanel" class="tab-pane" id="vegetable"></div>
+						<div role="tabpanel" class="tab-pane" id="animalHusbandry"></div>
+						<div role="tabpanel" class="tab-pane" id="inderstrialCrop"></div>
+						<div role="tabpanel" class="tab-pane" id="floristCrop"></div>
+						<div role="tabpanel" class="tab-pane" id="fruitVegetable"></div>
+						<div role="tabpanel" class="tab-pane" id="mushroom"></div>
+						<div role="tabpanel" class="tab-pane" id="foodCrops"></div>
+						<div role="tabpanel" class="tab-pane" id="medicinalPlant"></div>
+					</div>
+				</div>
+				<input type="hidden" name="farmCode" th:value="${farmCode}">
+				<div class="form-group">
+					<label for="cropName">작물 선택<p class="p-star"> *</p></label>
+					<input type="hidden" class="form-control" id="cropCode" name="cropCode" readonly="readonly">
+					<input type="text" class="form-control" id="cropName" name="cropName" readonly="readonly">
+				</div>
+				<div class="form-group">
+					<label for="projectName">프로젝트 이름<p class="p-star"> *</p></label>
+					<input type="text" class="form-control" id="projectName" name="projectName" placeholder="프로젝트의 이름을 입력해주세요.">
+				</div>
+				<div class="form-group">
+					<label for="projectArea">프로젝트 면적</label>
+					<input type="text" class="form-control" id="projectArea" name="projectArea" placeholder="프로젝트를 진행할 농지의 넓이를 입력해주세요.">
+				</div>
+				<div class="form-group">
+					<label for="projectBeginDate">프로젝트 시작일<p class="p-star"> *</p></label>
+					<input type="text" class=" form-control" id="projectBeginDate" name="projectBegin" data-language='kr' placeholder="프로젝트 시작일을 입력해주세요." readonly="readonly">
+				</div>
+				<div class="form-group">
+					<label for="projectEndDate">프로젝트 종료일<p class="p-star"> *</p></label>
+					<input type="text" class=" form-control" id="projectEndDate" name="projectEnd" data-language='kr' placeholder="프로젝트 종료일을 입력해주세요." readonly="readonly">
+				</div>
+				<div class="form-group">
+					<label for="projectEstimateIncome">프로젝트 총수입예산</label>
+					<input type="text" class="form-control" id="projectEstimateIncome" name="projectEstimateIncome" placeholder="프로젝트 총수입예산을 입력해주세요.">
+				</div>
+				<div class="form-group">
+					<label for="projectEstimateSpending">프로젝트 총지출예산</label>
+					<input type="text" class="form-control" id="projectEstimateSpending" name="projectEstimateSpending" placeholder="프로젝트 총지출예산을 입력해주세요.">
+				</div>
+				<!-- 작업단계 선택  패널-->
+				<div class="panel panel-success">
+					<div class="panel-heading">프로젝트 안에서 사용할 작업단계를 선택해주세요<small class="panelhead-small">  * 특별한 이유가 없다면 전체 체크를 추천합니다</small></div>
+					<div class="panel-body panel-workphase"></div>
+				</div>				
+				<button type="button" id="projectAddBtn" class="btn btn-default">프로젝트 등록</button>
+			</form>
+		</div>
+
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+		<script src="/assets/plugin/air-datepicker/js/datepicker.min.js"></script>
+		<script src="/assets/plugin/air-datepicker/js/i18n/datepicker.kr.js"></script>
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+	
+			/* 작물 탭 선택시 ajax로 리스트 불러와서 뿌려줌 */
+			$('a').filter('.cropCate').on('click', function(){
+				var cropCate = $(this).text();
+				var request = $.ajax({
+					url:"getCropListByCropCategory", // 컨트롤러
+					method:"post", 
+					data : {"cropCategory":cropCate},
+					dataType: "json"
+				});
+				request.done(function( d ){
+					var tabContentsActive = $('.tab-pane').filter('.active');
+					tabContentsActive.empty();
+					$.each(d, function(index, value){
+						tabContentsActive.append(
+							/* 버튼 생성 */
+							$("<a class=\"hidden\">"+value.cropCode+"</a><button type=\"button\" class=\"btn btn-success btn-crop\">"+ value.cropName +"</button>")
+					)})
+				});
+				request.fail(function( jqXHR, textStatus ){
+					alert( "Request failed : " + textStatus );
+				});
+			});
+			
+			/* 작물리스트에서 특정 작물 선택 이벤트  */
+			$(document).on('click','.btn-success', function(){
+				$('#cropCode').attr('value', $(this).prev().text());
+				$('#cropName').attr('value', $(this).text());
+				
+				/* ajax로 작물별작업단계 호출 */
+				var cropCode = $('#cropCode').val();
+				var request = $.ajax({
+					url:"getCropPhaseByCropCode", // 컨트롤러
+					method:"post", 
+					data : {"cropCode":cropCode},
+					dataType: "json"
+				});
+				request.done(function( d ){
+					var pannelWorkphase = $('.panel-workphase');
+					pannelWorkphase.empty();
+					$.each(d, function(index, value){
+						pannelWorkphase.append(
+							/* 체크박스 생성 */
+							$("<td><input type=\"checkbox\" checked=\"checked\" class=\"check-workphase\" name=\"checkWorkphase\" value="+value.cropPhaseInfoCode+"> "+value.workphaseName+"</td>")
+					)})
+				});
+				request.fail(function( jqXHR, textStatus ){
+					alert( "Request failed : " + textStatus );
+				});
+			});
+
+			/* 최초 로드시 작물리스트 뿌려주기 */
+			$(document).ready(function(){
+				$('#fruitTree').trigger("click");
+			});
+			
+			/* datepicker */
+			var date = new Date();
+			var beginDate = $('#projectBeginDate').datepicker({
+			  //년-월-일
+			  startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+			  language: 'kr',
+			  autoClose: true,
+			  //선택한 날짜를 가져옴
+			  onSelect: function (date) {
+			      var endNum = date;
+			      //종료일 datepicker에 최소날짜를 방금 클릭한 날짜로 설정
+			      $('#date_end').datepicker({
+			          minDate: new Date(endNum),
+			      });
+			  }
+			}).data('datepicker');
+			var endDate = $('#projectEndDate').datepicker({
+			  startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),  // 시간, 분은 00으로 초기 설정
+			  language: 'kr',
+			  autoClose: true,
+			  //선택한 날짜를 가져옴
+			  onSelect: function (date) {
+			      var startNum = date;
+			      $('#date_start').datepicker({
+			          //시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
+			          maxDate: new Date(startNum),
+			      });
+			  }
+			}).data('datepicker');
+
+			/* 유효성검사 */
+			$("#projectAddBtn").on("click", function(){
+				var beginDate = $('#projectBeginDate').val();
+				var endDate = $('#projectEndDate').val();
+				/* 프로젝트 이름, 작물 선택 널 체크 */
+				if(!$("#projectName").val()){
+					alert("프로젝트 이름을 입력해주세요.");
+					$("#projectName").focus();
+					return;
+				}
+				if(!$("#cropCode").val()){
+					alert("프로젝트 작물을 선택해주세요.");
+					$("#cropName").focus();
+					return;
+				}
+				/* 시작일 종료일 체크 */
+				if(!beginDate || !endDate){
+					alert("프로젝트 시작일 또는 종료일이 선택되지않았습니다.");
+					$('#projectBeginDate').focus();
+					return;
+				}
+				if(beginDate > endDate){
+					alert("종료일이 시작일보다 먼저 시작됩니다. 종료일을 다시 입력해주세요.");
+					$('#projectEndDate').focus();
+					return;
+				}
+				$("#projectAddBtn").attr("type",'submit');
+			})
+
+		</script>
+	</th:block>
+
+</html>

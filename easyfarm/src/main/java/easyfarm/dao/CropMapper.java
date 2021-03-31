@@ -37,7 +37,8 @@ public interface CropMapper {
 	//상세작업항목 추가등록 
 	public int addCropDetailCategory(Map<String, Object> map);
 	
-	
+	//작물 조회
+	public List<Crop> getCropListByCropCategory(String cropCategory);
 	
 
 	 
