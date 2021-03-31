@@ -137,6 +137,16 @@
 			pw.project_code = #{projectCode}
   	</select>
   	
+  	<select id="getProjectPlanNList" resultType="map" parameterType="String">
+  		SELECT
+			 pp.project_plan_code	AS projectPlanCode
+			,pp.project_plan_n		AS projectPlanN
+		FROM
+			tb_project_plan AS pp
+		WHERE
+			pp.project_code = #{projectCode}
+  	</select>
+  	
   	<select id="getProjectPlanInfo" resultType="map" parameterType="String">
   		SELECT
 			 pp.project_plan_code 			AS projectPlanCode
@@ -172,6 +182,20 @@
 		WHERE
 			fwc.project_code = #{projectCode}
   	</select>
+	
+	<select id="getFarmProjectInfo" resultType="map" parameterType="String">
+		SELECT
+			 fp.project_name 				AS projectName
+			,fp.project_area 				AS projectArea
+			,fp.project_begin 				AS projectBegin
+			,fp.project_end 				AS projectEnd
+			,fp.project_estimate_income 	AS projectEstimateIncome
+			,fp.project_estimate_spending 	AS projectEstimateSpending
+		FROM
+			tb_farm_project AS fp
+		WHERE
+			fp.project_code = #{projectCode}
+	</select>
 	
 	<select id="getEtcPayPlan" resultType="EtcPay" >
 		SELECT 					

@@ -37,7 +37,7 @@
       max: 100, // If null, there is no maximum enforced
       initval: '',
       replacementval: '',
-      firstclickvalueifempty: null,
+      firstclickvalueifempty: 1,
       step: 1,
       decimals: 0,
       stepinterval: 100,

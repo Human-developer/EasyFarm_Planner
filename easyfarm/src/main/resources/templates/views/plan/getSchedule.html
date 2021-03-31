@@ -45,14 +45,29 @@
 		    <div class="row">
 				<div class="col-md-12">
 					<div class="box-content">
+						<div class="row">
+							<div class="form-group col-sm-2">
+								<select class="form-control" name="projectPlanNList" id="projectPlanNList">
+									<option value=""> :: 계획차수선택 :: </option>
+									<th:block th:if="${#lists.size(projectPlanNList) > 0}" th:each="p : ${projectPlanNList}">
+										<option th:value="${p.projectPlanCode}" th:text="${p.projectPlanN}"></option>
+									</th:block>
+								</select>
+							</div>
+						</div>
 						<div class="pull-left">
-							<div style="font-size: 24px;" th:text="|${projectPlanN} 월간 계획 간편보기|"></div>
+							<th:block th:if="${projectPlanN != null}">
+									<div style="font-size: 24px;" th:text="|${projectPlanN} 월간 계획 간편보기|"></div>
+							</th:block>
+							<th:block th:unless="${projectPlanN != null}">
+								<div style="font-size: 24px;">월간 계획 간편보기</div>
+							</th:block>
 						</div>
 						<div class="pull-right">
 							<button type="button" id="planAddBtn" class="btn btn-primary btn-sm waves-effect waves-light btn-rounded">
 								<a th:href="@{/plan/addSpend(projectPlanCode=${projectPlanCode})}">계획서 등록</a>
 							</button>
-							<button type="button" id="planAciveBtn" class="btn btn-success btn-sm waves-effect waves-light btn-rounded">계획서 실행</button>
+							<button type="button" id="planAciveBtn" class="btn btn-success btn-sm waves-effect waves-light btn-rounded">계획 실행</button>
 						</div>
 						<div style="margin-top: 6px;">
 							<small style="color: red; margin-left: 6px;"><i class="fa fa-lightbulb-o"> 일정을 클릭하면 상세보기가 가능합니다.</i></small>

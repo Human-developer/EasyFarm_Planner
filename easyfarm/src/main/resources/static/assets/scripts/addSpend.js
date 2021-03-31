@@ -125,6 +125,7 @@ $(function(){
 		min: 0,
 		max: 1000000000,
 		maxboostedstep: 10000000,
+		decimals: 0,
 		buttondown_class: 'hidden',
 		buttonup_class: 'hidden',
 		postfix: '원'
@@ -260,8 +261,10 @@ $(function(){
 								postfix: dataQuantityCapacityUnit
 							}).on('touchspin.on.startspin keyup', function(){
 								var inputStockItemUseQuantity = (dataQuantity * $('#stockItemUseQuantityTotal').val())/dataQuantityCapacity;
+								var conversionPay =  Math.round($('#stockItemUseQuantityTotal').val()*dataIncomeQuantityPerPay);
+								console.log(conversionPay);
 								$('#stockItemUseQuantity').val(inputStockItemUseQuantity);
-								$('#stockItemUseQuantityConversionPay').val($('#stockItemUseQuantityTotal').val()*dataIncomeQuantityPerPay);
+								$('#stockItemUseQuantityConversionPay').val(conversionPay);
 							})
 							
 						}else{
@@ -314,6 +317,8 @@ $(function(){
 	$('#taxPayWhatmonth').TouchSpin({
 		min: 0,
 		max: 1000000000,
+		step: 1,
+		firstclickvalueifempty: 1,
 		maxboostedstep: 10000000,
 		buttondown_class: 'btn btn-default',
 		buttonup_class: 'btn btn-default',
@@ -340,17 +345,35 @@ $(function(){
 		}); 
 	});
 
-	
-	/*기타비용탭*/
-	$('#etcPay').TouchSpin({
+	$('#taxPay').TouchSpin({
 		min: 0,
 		max: 1000000000,
-		step: 1000,
+		step: 100,
+		firstclickvalueifempty: 100,
 		maxboostedstep: 10000000,
 		buttondown_class: 'btn btn-default',
 		buttonup_class: 'btn btn-default',
 		postfix: '원'
 	});
+	
+	/*기타비용탭*/
+	$('#etcPay').TouchSpin({
+		min: 0,
+		max: 1000000000,
+		step: 100,
+		firstclickvalueifempty: 100,
+		maxboostedstep: 10000000,
+		buttondown_class: 'btn btn-default',
+		buttonup_class: 'btn btn-default',
+		postfix: '원'
+	});
+	
+	/*간편등록*/
+	$('#planAddClient').modal({
+		keyboard: true,
+		backdrop: 'static',
+		show: false
+	})
 	
 	
 });

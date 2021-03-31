@@ -36,7 +36,25 @@ public class PgsPlanService {
 		this.pgsPlanMapper = pgsPlanMapper;
 	}
 	
-	//프로젝트 계획차수 조회
+	//농가별 프로젝트 정보조회
+	public Map<String, Object> getFarmProjectInfo(String projectCode) {
+		Map<String, Object> result = null;
+		if(projectCode != null && !"".equals(projectCode.trim())) {
+			result = pgsPlanMapper.getFarmProjectInfo(projectCode);
+		}
+		return result;
+	}
+	
+	//프로젝트별 계획차수 리스트 조회
+	public List<Map<String, Object>> getProjectPlanNList(String projectCode) {
+		List<Map<String, Object>> result = null;
+		if(projectCode != null && !"".equals(projectCode.trim())) {
+			result = pgsPlanMapper.getProjectPlanNList(projectCode);
+		}
+		return result;
+	}
+	
+	//프로젝트 계획정보조회
 	public Map<String, Object> getProjectPlanInfo(String projectPlanCode) {
 		Map<String, Object> result = null;
 		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {

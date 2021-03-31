@@ -20,6 +20,24 @@ public class PlanController {
 	@Autowired
 	private PgsPlanService pgsPlanService;
 	
+	/* 계획차수관리 */
+	@GetMapping("/plan")
+	public String planMain(Model model
+						  ,@RequestParam(value = "projectCode", required = false) String projectCode
+						  ,@RequestParam(value = "farmCode", required = false) String farmCode) {
+		if(projectCode == null) {
+			projectCode = "project_1";
+		}
+		//프로젝트정보조회
+		if(projectCode != null && !"".equals(projectCode.trim())) {
+			Map<String, Object> farmProjectInfo = pgsPlanService.getFarmProjectInfo(projectCode);
+			String projectName = (String) farmProjectInfo.get("projectName");
+			model.addAttribute("projectName", projectName);
+		}
+		
+		return "views/plan/planMain";
+	}
+	
 	/* 월켈린더조회 */
 	@GetMapping("/plan/getSchedule")
 	public String getSchedule(Model model
@@ -33,9 +51,13 @@ public class PlanController {
 			String projectPlanN = (String)projectPlanInfo.get("projectPlanN");
 			String projectCode =  (String)projectPlanInfo.get("projectCode");
 			
+			/* 계획차수 리스트 조회 */
+			List<Map<String, Object>> projectPlanNList = pgsPlanService.getProjectPlanNList(projectCode);
+			
 			model.addAttribute("projectPlanCode", projectPlanCode);
 			model.addAttribute("projectPlanN", projectPlanN);
 			model.addAttribute("projectCode", projectCode);
+			model.addAttribute("projectPlanNList", projectPlanNList);
 		}
 		
 		return "views/plan/getSchedule";
@@ -72,6 +94,7 @@ public class PlanController {
 			}
 			
 			model.addAttribute("projectPlanN", projectPlanN);
+			model.addAttribute("projectPlanCode", projectPlanCode);
 			
 			/* 작업단계 */
 			List<Map<String, Object>> workphaseNameList = pgsPlanService.getWorkphaseName(projectData);
@@ -108,6 +131,12 @@ public class PlanController {
 		return "views/plan/addSpend";
 	}
 	
+	@GetMapping("/plan/resultPlan")
+	public String resultPlan() {
+		return "views/plan/resultPlan";
+	}
+	
+	
 	@PostMapping("/ajax/getStockItemInfo")
 	@ResponseBody
 	public Map<String, Object> getStockItemInfo(@RequestParam(value = "resourceStockItemCode", required = false) String resourceStockItemCode) {
@@ -118,7 +147,6 @@ public class PlanController {
 		}
 		return stockItemInfo;
 	}
-	
 	
 	
 }

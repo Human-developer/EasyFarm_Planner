@@ -55,7 +55,27 @@
 			.switch{margin-bottom: 0px;}
 			.box-content.card.white .box-title{background-color: #F5F5F5;}
 			hr{border-bottom: 1px solid grey;}
-			.ui-datepicker-calendar {display: none;}​
+			.ui-datepicker-calendar {display: none;}
+			textarea.form-control {height : 140px;}
+			
+			/* 모달css */
+			.modal {text-align: center;}
+			.modal:before {
+	            display: inline-block;
+	            vertical-align: middle;
+	            content: " ";
+	            height: 100%;
+			}
+			.modal-dialog {
+		        display: inline-block;
+		        text-align: left;
+		        vertical-align: middle;
+			}
+			#btnSize{margin-right: 40px;}
+			button a{color: white;}
+			button a:link { color: white; text-decoration: none;}
+			button a:visited { color: white; text-decoration: none;}
+			button a:hover { color: white; text-decoration: none;}​
 		</style>
 	</th:block>
 	
@@ -121,10 +141,11 @@
 								<ul class="list-inline">
 									<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">간편등록</button></li>
 									<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
-									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light">거래처등록</button></li>
-									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light">품목등록</button></li>
-									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light">공통농기계등록</button></li>
-									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light">농자재매입등록</button></li>
+									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddClient">거래처등록</button></li>
+									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddStock">품목등록</button></li>
+									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddBookmarkMachine">농기계즐겨찾기등록</button></li>
+									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddRetainMachine">보유농기계등록</button></li>
+									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddResourcePay">농자재매입등록</button></li>
 								</ul>
 								<ul class="list-inline">
 									<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">관리화면</button></li>
@@ -132,7 +153,11 @@
 									<li class="margin-bottom-10"><button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">거래처관리</button></li>
 									<li class="margin-bottom-10"><button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">품목관리</button></li>
 									<li class="margin-bottom-10"><button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">농기계관리</button></li>
-									<li class="margin-bottom-10"><button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">농자재소모현황 상세보기</button></li>
+								</ul>
+								<ul class="list-inline">
+									<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">상세보기</button></li>
+									<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
+									<li class="margin-bottom-10"><button type="button" class="btn btn-warning btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddResourceUsecapacity">농자재소모현황 상세보기</button></li>
 								</ul>
 							</div>
 								
@@ -173,7 +198,7 @@
 										<div class="form-group">
 											<label for="workforcePayTotal" class="col-sm-2 control-label"><strong>인건비합계</strong></label>
 										    <div class="col-md-4">
-										      <input id="workforcePayTotal" type="text" value="0" name="workforcePayTotal" class="form-control" readonly="readonly">
+										      <input id="workforcePayTotal" type="text" name="workforcePayTotal" class="form-control" readonly="readonly">
 										    </div>
 										</div>
 									</div>
@@ -188,9 +213,9 @@
 														<button type="button" id="test1" class="hidden"></button>
 														<button type="button" id="test2" class="hidden"></button>
 													</div>
-													<div class="pull-right">
+													<!-- <div class="pull-right">
 														<button type="button" id="planAddBtn" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded">대여농기계등록</button>
-													</div>
+													</div> -->
 												</div>
 											</div>
 										</div>
@@ -246,9 +271,9 @@
 													<div class="pull-left">
 														<div class="switch primary"><input type="checkbox" checked id="useSwitch"><label for="useSwitch">보유 농기계 작업시</label></div>
 													</div>
-													<div class="pull-right">
+													<!-- <div class="pull-right">
 														<button type="button" id="planAddBtn" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded">보유농기계등록</button>
-													</div>
+													</div> -->
 												</div>
 											</div>
 										</div>
@@ -381,13 +406,13 @@
 										<div class="form-group">
 											<label for="taxPayWhatmonth" class="col-sm-2 control-label"><strong>납부월</strong></label>
 										    <div class="col-md-4">
-										      <input id="taxPayWhatmonth" type="text" value="0" name="taxPayWhatmonth" class="form-control">
+										      <input id="taxPayWhatmonth" type="text" name="taxPayWhatmonth" class="form-control" placeholder="2021-1">
 										    </div>
 										</div>
 										<div class="form-group">
 											<label for="taxPay" class="col-sm-2 control-label"><strong>납부금액</strong></label>
 										    <div class="col-md-4">
-										      <input id="taxPay" type="text" value="0" name="taxPay" class="form-control">
+										      <input id="taxPay" type="text" name="taxPay" class="form-control" placeholder="100">
 										    </div>
 										</div>
 										<div class="form-group">
@@ -414,13 +439,13 @@
 										<div class="form-group">
 											<label for="gainQuantity" class="col-sm-2 control-label"><strong>수확수량</strong></label>
 										    <div class="col-md-4">
-										      <input id="gainQuantity" type="text" value="0" name="gainQuantity" class="form-control">
+										      <input id="gainQuantity" type="text" name="gainQuantity" class="form-control">
 										    </div>
 										</div>
 										<div class="form-group">
 											<label for="gainQuantityCapacity" class="col-sm-2 control-label"><strong>총수확량계산</strong></label>
 										    <div class="col-md-4">
-										      <input id="gainQuantityCapacity" type="text" value="0" name="gainQuantityCapacity" class="form-control" readonly="readonly">
+										      <input id="gainQuantityCapacity" type="text" name="gainQuantityCapacity" class="form-control" readonly="readonly">
 										    </div>
 										</div>
 										<div class="form-group">
@@ -447,7 +472,7 @@
 										<div class="form-group">
 											<label for="etcPay" class="col-sm-2 control-label"><strong>지출금액</strong></label>
 										    <div class="col-md-4">
-										      <input id="etcPay" type="text" value="" name="etcPay" class="form-control" placeholder="1000">
+										      <input id="etcPay" type="text" value="" name="etcPay" class="form-control" placeholder="100">
 										    </div>
 										</div>
 										<div class="form-group">
@@ -462,10 +487,11 @@
 							<!-- 탭항목별컨텐츠 끝-->
 								
 							<hr>
-							<div class="form-group">
-								<div class="col-sm-6 col-sm-offset-3">
-									<button type="submit" class="btn btn-primary btn-sm waves-effect waves-light btn-block">계획서등록</button>
-								</div>
+							<div class="form-group t-center">
+								<button type="submit" id="btnSize" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btnSize">계획서등록</button>
+								<button type="button" class="btn btn-success btn-md waves-effect waves-light btn-rounded btnSize">
+									<a th:href="@{/plan/getSchedule(projectPlanCode=${projectPlanCode})}">켈린더 돌아가기</a>
+								</button>
 							</div>
 						</div>
 					</div>
@@ -473,6 +499,17 @@
 			</div>
 		</form>
 	</th:block>
+	
+	<!-- 모달 시작 -->
+	<th:block layout:fragment="customModals">
+	
+		<!-- planModals.html start -->
+		<div th:replace="fragments/planModals :: planModalsFragment" th:remove="tag"></div>
+		<!-- planModals.html end -->
+	
+	
+	</th:block>
+	<!-- 모달 끝 -->
 	
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
