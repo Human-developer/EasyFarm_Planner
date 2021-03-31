@@ -1,8 +1,13 @@
-package easyfarm.domain.plan;
+package easyfarm.domain.result;
 
-public class ResourcePay {
-	 // 농가별농자재매입지출계획코드
-    private String resourcePayCode;
+import easyfarm.domain.plan.ResourcePay;
+
+public class ResourcePayResult {
+	// 농가별농자재매입지출계획대비실행코드
+    private String farmResourcePayRunCode;
+
+    // 농가별농자재매입지출계획코드
+    private String farmResourcePayCode;
 
     // 농가코드
     private String farmCode;
@@ -28,20 +33,32 @@ public class ResourcePay {
     // 입고일
     private String stockItemIncomeDate;
 
-    // 작성자농가회원코드
+    // 실행완료여부
+    private String completeStatus;
 
+    // 작성자농가회원코드
     private String regMemberId;
 
     // 작성일
     private String regDate;
 
+    //계획
+    private ResourcePay resourcePayPlan;
 
-    public String getResourcePayCode() {
-        return resourcePayCode;
+    public String getFarmResourcePayRunCode() {
+        return farmResourcePayRunCode;
     }
 
-    public void setResourcePayCode(String resourcePayCode) {
-        this.resourcePayCode = resourcePayCode;
+    public void setFarmResourcePayRunCode(String farmResourcePayRunCode) {
+        this.farmResourcePayRunCode = farmResourcePayRunCode;
+    }
+
+    public String getFarmResourcePayCode() {
+        return farmResourcePayCode;
+    }
+
+    public void setFarmResourcePayCode(String farmResourcePayCode) {
+        this.farmResourcePayCode = farmResourcePayCode;
     }
 
     public String getFarmCode() {
@@ -108,6 +125,14 @@ public class ResourcePay {
         this.stockItemIncomeDate = stockItemIncomeDate;
     }
 
+    public String getCompleteStatus() {
+        return completeStatus;
+    }
+
+    public void setCompleteStatus(String completeStatus) {
+        this.completeStatus = completeStatus;
+    }
+
     public String getregMemberId() {
         return regMemberId;
     }
@@ -125,4 +150,28 @@ public class ResourcePay {
     }
 
 
+	public ResourcePay getResourcePay() {
+		return resourcePayPlan;
+	}
+
+	public void setResourcePay(ResourcePay resourcePay) {
+		this.resourcePayPlan = resourcePay;
+	}
+
+	public String getRegMemberId() {
+		return regMemberId;
+	}
+
+	public void setRegMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
+	}
+
+	public ResourcePay getResourcePayPlan() {
+		return resourcePayPlan;
+	}
+
+	public void setResourcePayPlan(ResourcePay resourcePayPlan) {
+		this.resourcePayPlan = resourcePayPlan;
+	}
+	
 }
