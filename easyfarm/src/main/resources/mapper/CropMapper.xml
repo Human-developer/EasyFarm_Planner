@@ -216,4 +216,11 @@
 	 where
 	 crop_phase_info_code= #{cropPhaseInfoCode};
 	</select>
+	<select id="getCropListByCropCategory" resultMap="cropResultMap" resultType="map" parameterType="String">
+		select
+			*
+		from tb_crop
+		where
+			use_status = 'O' and crop_cate = #{cropCategory}
+	</select>
 </mapper>

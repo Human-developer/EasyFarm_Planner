@@ -136,7 +136,11 @@ public class CropService {
 		return cropMapper.getcropNameInfo(cropName);
 	}
 	
-	
+	//프로젝트 등록 - 작물 리스트 조회
+	public List<Crop> getCropListByCropCategory(String cropCategory){
+		List<Crop> cropList = cropMapper.getCropListByCropCategory(cropCategory);
+		return cropList;
+	}
 	
 	
 	
