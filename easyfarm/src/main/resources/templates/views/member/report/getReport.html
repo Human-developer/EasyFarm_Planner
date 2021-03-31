@@ -22,7 +22,8 @@
 	
 				
 			<div class="box-content">
-					<table  class="table table-hover table-striped">
+	
+					<table id="example" class="table table-striped table-bordered display" style="width:100%">
 						<thead>
 							<tr>
 								<th>신고 코드</th>
@@ -30,40 +31,125 @@
 								<th>대상 아이디</th>
 								<th>작성자 아이디</th>
 								<th>내용</th>			
-								<th>등록일</th>
-								<th th:if = "${session.SLEVEL == '관리자'}">상세보기</th>
+								<th>등록일</th>							
+								
 								<th th:if = "${session.SLEVEL == '관리자'}">승인</th>
 								<th th:if = "${session.SLEVEL == '관리자'}">반려</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="r : ${reportList}">
-								<td th:text="${r.reportCode}"></td>							
-								<td th:text="${r.reportReason}"></td>				
+							<tr  th:each="r : ${reportList}" >
+								<td th:text="${r.reportHistoryCode}"></td>							
+								<td th:text="${r.reportReason}"></td>		
 								<td th:text="${r.reportedMemberId}"></td>				
 								<td th:text="${r.reportMemberId}"></td>			
-								<td th:text="${r.reportDetailReason}"></td>
-								<td th:text="${r.regDate}"></td>									
-								<td th:if = "${session.SLEVEL == '관리자'}">
-									<a th:href ="@{/member/modifReasonReport(reportCode=${r.reportCode})}">승인</a>
+								
+								<td ><a th:text="내용" th:data-val="${r.reportDetailReason}" href="#" class="contents"></a></td>								
+								<td th:text="${r.reportDate}"></td>									
+								<td  th:if = "${session.SLEVEL == '관리자' and r.reportApproval == '진행중' }">
+									<a class="okey" th:data-val="${r.reportHistoryCode}" th:data-val2="승인" href="#">승인</a>
 								</td>
-								<td th:if = "${session.SLEVEL == '관리자'}">
-									<a th:href ="@{/member/modifReasonReport(reportCode=${r.reportCode})}">반려</a>
+								  <!-- <td th:if = "${session.SLEVEL == '관리자' and r.reportApproval != '진행중'}" >
+											<p  th:text="완료"></p>
+										</td>  -->
+								<td  th:if = "${session.SLEVEL == '관리자' and r.reportApproval == '진행중' }">
+									<a class="no" th:data-val="${r.reportHistoryCode}" th:data-val2="반려" href="#">반려</a>
 								</td>
+								
+							</tr>
 							
-							</tr>
-							<tr th:if="${reportList.size() == 0}"> 
-								<td colspan="9" style ="text-align: center;">
-								조회된 내용이 없습니다
-								</td>
-							</tr>
 						</tbody>		
 	
 					</table>
-				
-			</div>
+				<div class="modal-content"  style = "display: none">
+					<div class="modal-header">
+						<button type="button" class="close" ><span class="close" style="color: black;">X</span></button>
+						<h4 class="modal-title">신고내용</h4>
+					</div>
+					<div class="modal-body">
+						<p class="text" style="color: black;"></p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn  close" ><span style="color: black;">Close</span> </button>
+					</div>
+				</div>
+		</div>
 			
+	
+	
 	</th:block>
 	
+	<th:block layout:fragment="customScriptLib">
+		<script src="/assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+		<script src="/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+		<script src="/assets/scripts/datatables.demo.min.js"></script>
+		
+	</th:block>
+	
+	<th:block layout:fragment="customJavaScript">
+		<script>
+		 $('.contents').click(function(){
+			  
+	    	  var contents = $(this).attr("data-val");
+			  $('.modal-content').attr('style','display: block');
+			  $('.text').text(contents);
+				   
+		  })
+		 
+		 	
+		 $('.close').click(function(){
+		  		  
+		 	 $('.modal-content').attr('style','display: none');
+		 })
+		 
+		 $('.okey').click(function(){
+		  	  var removeCode = $(this).attr("data-val");
+		  	  var result = $(this).attr("data-val2");
+		 
+			swal({   
+				title: "정말 승인하시겠습니까?",   
+				text: "승인시 복구불가",   
+				type: "warning",   
+				showCancelButton: true,   
+				confirmButtonColor: "#DD6B55",   
+				confirmButtonText: "확인!", 
+				cancelButtonText: "취소!", 
+				closeOnConfirm: false,
+				closeOnCancel: true,
+				confirmButtonColor: '#f60e0e',
+			},function(isConfirm){   
+				if (isConfirm) {     
+					location.href = "/member/resultReport?reportHistoryCode="+removeCode+"?reportApproval="+result;
+				}
+			});
+		 })
+		 
+		 $('.no').click(function(){
+		  	  var removeCode = $(this).attr("data-val");
+		  	  var result = $(this).attr("data-val2");
+		 
+			swal({   
+				title: "정말 반려하시겠습니까?",   
+				text: "반려시 복구불가",   
+				type: "warning",   
+				showCancelButton: true,   
+				confirmButtonColor: "#DD6B55",   
+				confirmButtonText: "확인!", 
+				cancelButtonText: "취소!", 
+				closeOnConfirm: false,
+				closeOnCancel: true,
+				confirmButtonColor: '#f60e0e',
+			},function(isConfirm){   
+				if (isConfirm) {     
+					location.href = "/member/modifReasonReport?reportHistoryCode="+removeCode+"?reportApproval="+result;
+				}
+			});
+		 })
+ 
+		
+		</script>
+	</th:block>
 
 </html>

@@ -17,25 +17,7 @@
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
 	<th:block layout:fragment="customContents">
 	
-			<div class="card">
-				<div class ="card-body">
-					<form th:action="@{/member/getMember}"  method="get">
-						<div class ="row col-12">
-							<div class ="col-lg-2">
-								<select name="searchKey" class="form-control">
-									<option value="banMemberId">정지 아이디</option>
-								</select>
-							</div>
-							<div class ="col-lg-4">
-								<input type="search" name="searchValue" class ="form-control" placeholder="검색창">
-							</div>
-							<div class ="col-lg-4">
-								<button type="submit" class ="btn btn-info">검색버튼  <i class="align-middle" data-feather="search"></i></button>
-							</div>
-						</div>	
-					</form>
-				</div>
-			</div>
+			
 			<div class="box-content">
 					<table  class="table table-hover table-striped">
 						<thead>
@@ -60,11 +42,7 @@
 							
 							
 							</tr>
-							<tr th:if="${banList.size() == 0}"> 
-								<td colspan="5" style ="text-align: center;">
-									조회된 내용이 없습니다
-								</td>
-							</tr>
+							
 						</tbody>		
 	
 					</table>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+
+	<th:block layout:fragment="customTitle">
+		<title>로그인기록 조회</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		로그인기록 조회
+	</th:block>
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib"></th:block>
+	
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+			.row{
+					padding :0;
+				}
+		</style>
+	</th:block>
+		
+	
+	<th:block layout:fragment="customContents">
+	
+	
+			
+			
+			
+			<div class="box-content">
+					<table id="example" class="table table-striped table-bordered display" style="width:100%">
+						<thead>
+							<tr>
+								<th>기록 코드</th>
+								<th>로그인 아이디</th>
+								<th>로그인 날짜</th>			
+								<th>로그아웃 날짜</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="l : ${loginList}">
+								<td th:text="${l.loginCode}"></td>							
+								<td th:text="${l.loginMemberId}"></td>				
+								<td th:text="${l.loginDate}"></td>			
+								<td th:text="${l.logoutDate}"></td>			
+														
+							</tr>
+							<tr th:if="${loginList.size() == 0}"> 
+								<td colspan="4" style ="text-align: center;">
+								조회된 내용이 없습니다
+								</td>
+							</tr>
+						</tbody>		
+						
+					</table>
+				
+			</div>
+			
+			
+	</th:block>
+	
+	
+	
+		<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+	<script src="/assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+	<script src="/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+	<script src="/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+	<script src="/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+	<script src="/assets/scripts/datatables.demo.min.js"></script>
+
+	</th:block>
+	
+
+	
+	

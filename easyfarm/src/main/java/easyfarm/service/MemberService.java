@@ -1,14 +1,15 @@
 package easyfarm.service;
 
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import easyfarm.dao.MemberMapper;
 import easyfarm.domain.Member;
+import easyfarm.domain.Report;
 
 @Service
 @Transactional
@@ -34,88 +35,30 @@ public class MemberService {
 		 
 	 }
 	 
-	 public Map<String, Object> getMemberList(String searchKey, String searchValue, int currentPage){
-		// 페이지에 보여줄 행의 갯수
-		int rowPerPage = 5;
-		
-		// table 행의 시작점
-		int startNum = 0;
-		
-		// 마지막 페이지
-		int lastPage = 0;
-		
-		// 페이지 시작
-		int startPageNum = 1;
-		
-		// 페이지 끝
-		int endPageNum = 10;	
-		
-		// 페이지 알고리즘 -> (현재페이지-1) * 페이지에 보여줄 행의 갯수 => Limit ? , 5 (?부분을 구하는 과정)
-		startNum = (currentPage - 1) * rowPerPage;
-		if(startNum < 0) {
-			startNum = 0;
-		}
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("startNum", startNum);
-		paramMap.put("rowPerPage", rowPerPage);
-		
-		List<Map<String, Object>> memberList = null;
-				
-		
-		 double countMember = memberMapper.countMember();
-		 double countSearchMember = memberMapper.countSearchMember(searchKey, searchValue);
-		 
-		 System.out.println(countMember +"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		 if(searchValue != null & !"".equals(searchValue)) {
-			 paramMap.put("searchKey", searchKey);
-			 paramMap.put("searchValue", searchValue);
-			 
-			 memberList = memberMapper.getMemberList(paramMap);
-			 lastPage = (int) Math.ceil(countSearchMember/rowPerPage);
-		 }
-		 else{
-			 memberList = memberMapper.getMemberList(paramMap);
-			 lastPage = (int) Math.ceil(countMember/rowPerPage);
-		 }
-		 
-		 // 마지막 페이지
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("memberList", memberList);
-		resultMap.put("lastPage", lastPage);
-		
-		if(lastPage <= endPageNum) {
-			endPageNum = lastPage;
-		}
-		
-		// 7페이지인 경우 동적 페이지 번호 구성
-		if(currentPage > 6) {
-			startPageNum	= currentPage - 5;
-			endPageNum		= currentPage + 4;
-			
-						
-		  if(endPageNum <= lastPage){ 
-			  startPageNum = lastPage - 9;
-			  endPageNum = lastPage; 
-			  
-			  }
-			 			 
-		}
-				
-		
-		resultMap.put("startPageNum", startPageNum);
-		resultMap.put("endPageNum", endPageNum);
-			
-		return resultMap;
+	 public List<Member> getMemberList(){
+		 List<Member> memberList = memberMapper.getMemberList();
+		return memberList;
 	 }
 	 //로그인기록
 	 public void updateLogin(String memberId) {		 
 		 if(memberId != null) memberMapper.updateLogin(memberId);		 
 		
 	 }
+	 //최근로그인기록
+	 public Member getLoginCode(String memberId) {
+		 
+		 Member member = memberMapper.getLoginCode(memberId);
+		 return member;
+	 }
+	 //로그인기록 조회
+	 public  List<Member> getLogin(){
+		 List<Member> loginList = memberMapper.getLogin();
+				
+			return loginList;
+	 }
 	 //로그아웃기록
-	 public void updateLogout(String memberId) {
-		 if(memberId != null)  memberMapper.updateLogout(memberId);
+	 public void updateLogout(String levelCode) {
+		  memberMapper.updateLogout(levelCode);
 		 
 	 }
 	 
@@ -153,15 +96,101 @@ public class MemberService {
 	 public void modifyAuthority(Member member) {
 		 if(member != null) memberMapper.modifyAuthority(member);
 	 }
+	 //권한 삭제전 fk 확인
+	 public List<Member> getCode(String levelCode) {
+		 List<Member> member = memberMapper.getCode(levelCode);
+		 return member;
+	 }
 	 //권한삭제
-	 public int removeAuthority(String levelCode) {
-		 int a = 0;
-		 if(levelCode != null)  a = memberMapper.removeAuthority(levelCode);
-		 System.out.println(a +"===1111111111111111111111111111111");
-		 return a;
+	 public void removeAuthority(String levelCode) {
+		
+		 memberMapper.removeAuthority(levelCode);
+		
 	 }
 	 
+	 //탈퇴회원 조회
 	
+	 public List<Member> getCancelMember(){
+		 List<Member> cancelList = memberMapper.getCancelMember();
+	  return cancelList;
+	 }
+	 //휴면|탈퇴 예정일조회
+	 public List<Report> getExpectedDate(){
+		 List<Report> expectedList = memberMapper.getExpectedDate();
+			 return expectedList;
+	 }
+	 //휴면|탈퇴 기준일 조회
+	 public List<Report> getBaseDate() {
+		 List<Report> baseDateList = null;
+		 
+		 baseDateList = memberMapper.getBaseDate();
+		 
+		 return baseDateList;
+	 }
+	 //휴면|탈퇴 기준일 수정용 조회
+	 public Report getBaseDate(String statusCriteriaCode) {
+		 Report baseDate = null;
+		 
+		 baseDate = memberMapper.getBaseDate(statusCriteriaCode);
+		 
+		 return baseDate;
+	 }
+	 // 휴면|탈퇴 기준일 수정
+	 public void modifyBaseDate(Report report) {
+		 memberMapper.modifyBaseDate(report);
+	 }
+	 // 휴면|탈퇴 기준일 리스트조회
+	 public List<Report> getstatusCriteriaName(){
+		 List<Report> nameList = memberMapper.getstatusCriteriaName();
+		 
+		 return nameList;
+	 }
+	 // 휴면|탈퇴 기준일 수정
+	 public void removeBaseDate(String statusCriteriaCode) {
+		 memberMapper.removeBaseDate(statusCriteriaCode);
+	 }
 	 
-
+	 // 휴면|탈퇴 등록
+	 public void addBaseDate(Report report) {
+		 memberMapper.addBaseDate(report);
+	 }
+	 
+	 // 신고사유 조회
+	 public List<Report> getReasonReport(){
+		 List<Report> reportReasonList = memberMapper.getReasonReport();
+		 return reportReasonList;
+	 }
+	 // 신고사유 수정을위한 조회
+	 public Report getReasonReport(String reportCode){
+		 Report reportReasonList = memberMapper.getReasonReport(reportCode);
+		 
+		 return reportReasonList;
+	 }
+	 // 신고사유 등록
+	 public void addReasonReport(Report report) {
+		 memberMapper.addReasonReport(report);	 
+	 }
+	 // 신고사유 수정
+	 public void modifyReasonReport(Report report) {
+		 memberMapper.modifyReasonReport(report);
+	 }
+	 // 신고사유 삭제
+	 public void removeReasonReport(String report) {
+		 memberMapper.removeReasonReport(report);
+	 }
+	 // 신고목록 조회
+	 public List<Report> getReport(String memberId){
+		 List<Report> reportList = memberMapper.getReport(memberId);
+		 return reportList;
+	 }
+	 // 신고목록 삭제
+	 public void removeReport(String reportHistoryCode) {
+		 memberMapper.removeReport(reportHistoryCode);
+	 }
+	 
+	 // 신고승인|반려
+	 public void resultReport(String reportHistoryCode,String reportApproval) {
+		 memberMapper.resultReport(reportHistoryCode,reportApproval);
+	 }
+	
 }

@@ -20,61 +20,75 @@
       <result property="memberStatus" 	column="member_status"/>
       <result property="levelName" 		column="level_name"/>
       <result property="useStatus" 		column="use_status"/>
-      <result property="memberRegDate" 		column="reg_date"/>
+      <result property="memberRegDate" 	column="reg_date"/>
+      
+      <result property="loginCode" 		column="login_code"/>
+      <result property="loginMemberId" 	column="login_member_id"/>
+      <result property="loginDate" 		column="login_date"/>
+      <result property="logoutDate" 	column="logout_date"/>
 
+   </resultMap>
+   <resultMap type="Member" id="cancel">
+      <result property="memberId" 				column="cancel_member_code"/>
+      <result property="memberId" 				column="cancel_member_id"/>
+      <result property="memberPw"				column="cancel_member_pw"/>
+      <result property="memberName" 			column="cancel_member_name"/>
+      <result property="levelCode"	 			column="level_num"/>
+      <result property="memberGender" 			column="cancel_member_gender"/>
+      <result property="memberAddress" 			column="cancel_member_address"/>
+      <result property="memberEmail" 			column="cancel_member_email"/>
+      <result property="memberPhone" 			column="cancel_member_phone"/>
+      <result property="memberIdenNum" 			column="cancel_member_iden_num"/>
+      <result property="memberRegDate"			column="cancel_member_reg_date"/>
+      <result property="cancelDate" 			column="cancel_member_cancel_date"/>
+      <result property="cancelMemberReason" 	column="cancel_member_reason"/>
+      <result property="cancelMemberCode" 		column="cancel_member_code"/>
    </resultMap>
    
 
    
-	<select id="countMember" resultType="int">
-		SELECT COUNT(*) FROM tb_member
-	</select>
 	
-	<select id="countSearchMember" resultType="int">
-		SELECT 
-			 COUNT(*)
-		FROM 
-			tb_member AS m
-		JOIN
-			tb_member_level AS l
-		on
-			m.level_code = l.level_code
-			
-		<if test="searchValue != null and searchValue != ''">
-			WHERE
-			<if test="searchKey != null and searchKey != ''">
-				<if test="searchKey == 'memberId'">		m.member_id 	like concat('%',#{searchValue},'%')</if>
-				<if test="searchKey == 'memberName'"> 	m.member_name 	like concat('%',#{searchValue},'%')</if>
-				<if test="searchKey == 'memberEmail'">	m.member_email 	like concat('%',#{searchValue},'%')</if>
-				<if test="searchKey == 'memberStatus'">	m.member_status like concat('%',#{searchValue},'%')</if>
-						
-			</if>
-		
-		</if>
-	</select>
 	
-	<select id="getLogin" resultType="String">
+	
+	<select id="getLoginCode" resultMap="memberResultMap" >
 		SELECT 
 			login_code
+			, login_member_id
+			, login_date
+			, logout_date
 		FROM 
-			tb_login	
+			tb_login
 		WHERE 
-			login_member_id = #{memberId};
+			login_member_id = #{memberId}
+		ORDER BY login_date DESC 
+			LIMIT 1
+	</select>
+	<select id="getLogin" resultMap="memberResultMap">
+		SELECT 
+			login_code
+			, login_member_id
+			, login_date
+			, logout_date
+		FROM 
+			tb_login
 	</select>
 	
-	<update id="updateLogin">
-		UPDATE tb_login
-			SET
-				login_date=NOW(),
-				logout_date=NOW()
-			WHERE login_member_id = #{memberId};
-	</update>
+	<insert id="updateLogin">
+	INSERT INTO tb_login
+	(
 	
-	<update id="updateLogout">
+	 login_member_id
+	, login_date
+	, logout_date
+	)
+	VALUES (#{memberId}, NOW(), NOW())
+	</insert>
+	
+	<update id="updateLogout" parameterType="Member">
 		UPDATE tb_login
 			SET
 				logout_date=NOW()
-			WHERE login_member_id = #{memberId};
+			WHERE login_code = #{loginCode};
 	</update>
 	
 	<select	id="getMemberInfoById" resultMap="memberResultMap" parameterType="String">
@@ -149,19 +163,7 @@
 			tb_member_level AS l
 		on
 			m.level_code = l.level_code
-		<if test="searchValue != null and searchValue != ''">
-			WHERE
-			<if test="searchKey != null and searchKey != ''">
-				<if test="searchKey == 'memberId'">		m.member_id 	like concat('%',#{searchValue},'%')</if>
-				<if test="searchKey == 'memberName'"> 	m.member_name 	like concat('%',#{searchValue},'%')</if>
-				<if test="searchKey == 'memberEmail'">	m.member_email 	like concat('%',#{searchValue},'%')</if>
-				<if test="searchKey == 'memberStatus'">	m.member_status like concat('%',#{searchValue},'%')</if>
-						
-			</if>
-		
-		</if>
 	
-		LIMIT #{startNum}, #{rowPerPage}
 	</select>
 	
 	<update id="modifyMember" parameterType="Member">
@@ -218,7 +220,15 @@
 		
 	</select>
 	
-	<select id="getAuthorityByCode" resultMap="memberResultMap" resultType="String">
+	<select id="getCode" resultMap="memberResultMap" >
+		SELECT 
+			level_code		
+		FROM 
+			tb_member
+		WHERE level_code = #{levelCode}
+	</select>
+	
+	<select id="getAuthorityByCode" resultMap="memberResultMap" >
 		SELECT 
 			  level_code
 			, level_name
@@ -244,8 +254,8 @@
 	<insert id="addAuthority" parameterType="String">
 		INSERT INTO tb_member_level
 			(
-			level_code
-			, level_name
+			  level_code
+			  level_name
 			, member_id
 			, reg_date
 			, use_status)
@@ -258,12 +268,13 @@
 			
 	</insert>
 	
-	<delete id="removeAuthority" parameterType="String">
+	<delete id="removeAuthority" >
 		DELETE FROM tb_member_level WHERE level_code = #{levelCode}
 	</delete>
+	
 	<insert id="addCancelMember" parameterType="Member">
 	 INSERT INTO tb_cancel_member
-		(cancel_member_code
+		( cancel_member_code
 		, cancel_member_id
 		, cancel_member_pw
 		, cancel_member_name
@@ -277,7 +288,7 @@
 		, cancel_member_cancel_date
 		, cancel_member_reason)
 		VALUES (
-		sf_cancel_member_max_code()	
+		sf_cancel_member_max_code()
 		, #{memberId}
 		, #{memberPw}
 		, #{memberName}
@@ -291,5 +302,23 @@
 		, NOW()
 		, #{cancelMemberReason})
 	</insert>
+	<select id="getCancelMember" resultMap="cancel" resultType="Member">
+		SELECT
+			 cancel_member_code
+			,cancel_member_id
+			,cancel_member_pw
+			,cancel_member_name
+			,level_num
+			,cancel_member_gender
+			,cancel_member_address
+			,cancel_member_email
+			,cancel_member_phone
+			,cancel_member_iden_num
+			,cancel_member_reg_date
+			,cancel_member_cancel_date
+			,cancel_member_reason
+		FROM
+			tb_cancel_member
+	</select>
 	
 </mapper>
