@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>신고목록 조회</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		신고목록 조회
+	</th:block>
+
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+	
+	
+		
+	
+				
+			<div class="box-content">
+					<table  class="table table-hover table-striped">
+						<thead>
+							<tr>
+								<th>신고 코드</th>
+								<th>신고사유</th>
+								<th>대상 아이디</th>
+								<th>작성자 아이디</th>
+								<th>내용</th>			
+								<th>등록일</th>
+								<th th:if = "${session.SLEVEL == '관리자'}">상세보기</th>
+								<th th:if = "${session.SLEVEL == '관리자'}">승인</th>
+								<th th:if = "${session.SLEVEL == '관리자'}">반려</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="r : ${reportList}">
+								<td th:text="${r.reportCode}"></td>							
+								<td th:text="${r.reportReason}"></td>				
+								<td th:text="${r.reportedMemberId}"></td>				
+								<td th:text="${r.reportMemberId}"></td>			
+								<td th:text="${r.reportDetailReason}"></td>
+								<td th:text="${r.regDate}"></td>									
+								<td th:if = "${session.SLEVEL == '관리자'}">
+									<a th:href ="@{/member/modifReasonReport(reportCode=${r.reportCode})}">승인</a>
+								</td>
+								<td th:if = "${session.SLEVEL == '관리자'}">
+									<a th:href ="@{/member/modifReasonReport(reportCode=${r.reportCode})}">반려</a>
+								</td>
+							
+							</tr>
+							<tr th:if="${reportList.size() == 0}"> 
+								<td colspan="9" style ="text-align: center;">
+								조회된 내용이 없습니다
+								</td>
+							</tr>
+						</tbody>		
+	
+					</table>
+				
+			</div>
+			
+	</th:block>
+	
+
+</html>

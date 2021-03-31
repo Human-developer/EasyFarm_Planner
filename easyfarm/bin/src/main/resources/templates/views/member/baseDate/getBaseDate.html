@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>휴면|탈퇴 기준일조회</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		휴면|탈퇴 기준일조회
+	</th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+	
+	
+			<div th:include="views/member/memberList/search :: searchFragment"></div>
+	
+				
+			<div class="box-content">
+					<table  class="table table-hover table-striped">
+						<thead>
+							<tr>
+								<th>분류 코드</th>
+								<th>분류 명</th>
+								<th>기준일</th>
+								<th>등록 아이디</th>			
+								<th>등록일</th>
+								<th>사용유무</th>
+								<th th:if = "${session.SLEVEL == '관리자'}">수정</th>
+								<th th:if = "${session.SLEVEL == '관리자'}">삭제</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="b : ${baseList}">
+								<td th:text="${b.statusCriteriaCode}"></td>							
+								<td th:text="${b.statusCriteriaName}"></td>				
+								<td th:text="${b.statusCriteriaDays}"></td>			
+								<td th:text="${b.memberId}"></td>
+								<td th:text="${b.regDate}"></td>
+								<td th:text="${r.useStatus}"></td>					
+								
+								
+								<td th:if = "${session.SLEVEL == '관리자'}">
+									<a th:href ="@{/member/modifyBaseDate(statusCriteriaCode=${b.statusCriteriaCode})}">수정</a>
+								</td>
+								<td th:if = "${session.SLEVEL == '관리자'}">
+									<a th:href ="@{/member/removeBaseDate(statusCriteriaCode=${b.statusCriteriaCode})}">삭제</a>
+								</td>
+							
+							</tr>
+							<tr th:if="${baseList.size() == 0}"> 
+								<td colspan="8" style ="text-align: center;">
+								조회된 내용이 없습니다
+								</td>
+							</tr>
+						</tbody>		
+	
+					</table>
+				
+			</div>
+			
+	</th:block>
+	
+	
+	
+
+</html>

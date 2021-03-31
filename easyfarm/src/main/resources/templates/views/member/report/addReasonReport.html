@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+
+	<th:block layout:fragment="customTitle">
+		<title>신고사유 등록</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		신고관리 - 신고사유 등록
+	</th:block>
+	
+	<th:block layout:fragment="customCss">
+	<style>
+			button {
+		    border: 0;
+		    border-radius: 0;
+		    padding: 0;
+		    outline: none;
+		    cursor: pointer;
+		    background-color: transparent;
+		    font-family: 'Noto Sans KR', sans-serif;
+		    
+		}
+		.lc-round-btn {
+		    display: block;
+		    width: 100%;
+		    height: 60px;
+		    line-height: 58px;
+		    font-weight: 700;
+		    font-size: 20px;
+		    border-radius: 60px;
+		    background-color: #3BBD5A;
+		    color: #fff;
+		    transition: box-shadow .2s;
+		    margin-top: 30px;
+		    
+		}
+		.btn{ border-radius: 60px;
+		  background-color: #3BBD5A;
+		  width: auto;
+		   color: #fff;
+		    font-weight: 700;
+		    
+		   }
+		   
+		 .green-input {
+		    display: block;
+		    width: 100%;
+		    border: 2px solid #3BBD5A;
+		    height: 50px;
+		    padding: 0 10px;
+		    line-height: 46px;
+		    font-size: 16px;
+		}	
+	
+	</style>
+	</th:block>
+	<th:block layout:fragment="customJavaScript">
+		
+	
+		<script type="text/javascript">
+		
+			
+				
+			
+
+		
+
+			
+
+
+			
+			$('#addCheck').click(function(){
+							
+				
+				
+				if($('#reportReason').val() == ""){
+					swal({
+						title: "신고사유명을 입력 해주세요.",
+						confirmButtonColor: '#304ffe'
+					});
+					$('#reportReason').val("");
+					$('#reportReason').focus();
+					return false;
+				}
+				if($('#reportBanDays').val() == "no"){
+					swal({
+						title: "정지일수를 입력 해주세요.",
+						confirmButtonColor: '#304ffe'
+					});
+					return false;
+				}
+				
+			
+				
+				
+				return true;
+			})
+
+			
+	
+
+		
+		
+		
+		
+		</script>
+	</th:block>
+	
+	<th:block layout:fragment="customContents">
+	
+	
+		<form th:action="@{/member/addReasonReport}" method="post">
+		
+			<div class="container-fluid">
+				<div class="row" >
+					<div class="
+					col-lg-offset-3 col-lg-6
+					
+					">
+					
+						<div class="box-content" style="border : 2px solid #3BBD5A">
+							<div class="box-content  t-center important-col" style="border-bottom : 2px solid #3BBD5A">
+							
+								<h3>신고사유등록</h3>
+							</div>
+							<div class="panel-body" >
+								<div class="form-horizontal">
+									
+									<div class="form-group">
+										<label for="reportReason" class="col-sm-2 control-label"><strong>신고사유 명</strong></label>
+									    <div class="col-sm-10">
+									      <input type="text"  class="green-input" name="reportReason" maxlength="14"   id="reportReason" placeholder="신고사유 명 입력">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="reportBanDays" class="col-sm-2 control-label"><strong>정지일수</strong></label>
+									    <div class="col-sm-10">
+									      <input type="text"  class="green-input" name="reportBanDays" maxlength="14"  id="reportBanDays" placeholder="정지일수">
+									    </div>
+									</div>
+								
+									<div class="form-group">
+										
+									    <div class="col-sm-10">
+									      <input type="text" class="" name="memberId" hidden="" readonly="readonly" id="memberId" th:value="${session.SID}">
+									    </div>
+									</div>
+									
+									<div class="form-group ">
+										<div class="">
+											<label class="col-sm-2 control-label"><strong>사용유무</strong></label>
+										</div>
+										<div class="radio success col-sm-2">
+											<input type="radio" name="useStatus radio-1" id="Y" checked="checked" value="Y">
+											<label for="Y">Y</label>
+										</div>
+									    <div class="radio success col-sm-2">
+											<input type="radio" name="useStatus radio-1" id="N" value="N">
+											<label for="N">N</label>
+										</div>
+									</div>
+								
+								
+								
+									<hr>
+									<div class="form-group">
+										<div class="col-sm-10 col-sm-offset-1">
+											<button type="submit" id="addCheck" class="lc-round-btn" style="margin-top: 10px;">신고사유 등록</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</th:block>
+	
+	
+
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+
+	<th:block layout:fragment="customTitle">
+		<title>회원등록</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		회원관리 - 회원등록
+	</th:block>
+	
+	<th:block layout:fragment="customCss">
+	<style>
+	
+		button {
+	    border: 0;
+	    border-radius: 0;
+	    padding: 0;
+	    outline: none;
+	    cursor: pointer;
+	    background-color: transparent;
+	    font-family: 'Noto Sans KR', sans-serif;
+		    
+		}
+		.lc-round-btn {
+		    display: block;
+		    width: 100%;
+		    height: 60px;
+		    line-height: 58px;
+		    font-weight: 700;
+		    font-size: 20px;
+		    border-radius: 60px;
+		    background-color: #3BBD5A;
+		    color: #fff;
+		    transition: box-shadow .2s;
+		    margin-top: 30px;
+		    
+		}
+		.btn{ border-radius: 60px;
+		  background-color: #3BBD5A;
+		  width: auto;
+		   color: #fff;
+		    font-weight: 700;
+		    
+		   }
+		   
+		
+	
+	</style>
+	</th:block>
+	<th:block layout:fragment="customJavaScript">
+		
+	
+		<script type="text/javascript">
+		
+			
+				$('#checkBtn').click(function(){
+					var memberId = $('#memberId').val();
+					if(memberId != ""){
+						
+						$.ajax({
+							url: "/ajax/idCheck",
+							method: "POST",
+							data: { memberId : memberId },
+							success : function(data) {
+								if(data == "사용가능") {
+	
+									swal({
+										title: "사용 가능한 아이디 입니다.",
+										confirmButtonColor: '#304ffe'
+									});
+									$('#checkBtn').attr('value','yes');
+								}
+	
+								 else {
+									 swal({
+											title: "사용 불가능한 아이디 입니다.",
+											confirmButtonColor: '#304ffe'
+										});
+									
+									//중복된 아이디면 중복체크가 다시 필요하기 때문에 check의 값을 no로 다시 지정
+									$('#checkBtn').attr('value','no');
+										return;
+								}
+								
+							},
+							error : function(xhr, status, error) {
+								console.log('xhr : ' + xhr);
+								console.log('status : ' + status);
+								console.log('error : ' + error);
+							}
+							
+						});
+					}else{
+						
+						swal({
+							title: "아이디를 입력해주세요.",
+							confirmButtonColor: '#304ffe'
+						});
+						$('#memberId').focus();
+						return false; 
+					}
+				}); 
+			
+
+		
+
+				$('#memberId').keyup(function(){
+					$('#checkBtn').attr('value','no');
+				});
+
+		
+		
+
+
+			
+			$('#addCheck').click(function(){
+							
+				
+				var getMail = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
+				var getCheck= RegExp(/^[a-zA-Z0-9]{4,12}$/);
+				var getName= RegExp(/^[가-힣]+$/);
+				var phoneNumberRegex = /^[0-9]{3}-[0-9]{4}-[0-9]{4}$/;
+				
+				
+				if(!getCheck.test($('#memberId').val())){
+					 swal({
+							title: "아이디를 형식에 맞게 써주세요.",
+							confirmButtonColor: '#304ffe'
+						});
+					$('#memberId').val("");
+					$('#memberId').focus();
+					return false;
+				}
+				if($('#checkBtn').val() == "no"){
+					 swal({
+							title: "아이디 중복검사를 해주세요.",
+							confirmButtonColor: '#304ffe'
+						});
+					return false;
+				}
+				
+				if($('#memberPw').val() == ""){
+					 swal({
+							title: "비밀번호를 입력 해주세요.",
+							confirmButtonColor: '#304ffe'
+						});
+					$('#memberPw').focus();
+					return false;
+				}
+				if(!getCheck.test($('#memberPw').val())){
+					
+					 swal({
+							title: "비밀번호를 형식에 맞게 입력 해주세요.",
+							confirmButtonColor: '#304ffe'
+						});
+					$('#memberPw').val("");
+					$('#memberPw').focus();
+					return false;
+				}
+				if($('#memberPw').val() == $('#memberId').val()){
+					 swal({
+							title: "아이디와 비밀번호가 같습니다.",
+							confirmButtonColor: '#304ffe'
+						});
+					$("#password").val("");
+					$('#memberPw').focus();
+					return false;
+				}
+				if($('#memberPw').val() != $('#memberPwCheck').val()){
+					 swal({
+							title: "비밀번호가 다릅니다.",
+							confirmButtonColor: '#304ffe'
+						});
+					$('#memberPwCheck').focus();
+					return false;
+				}
+				if($('#memberName').val() == ""){
+					 swal({
+							title: "이름을 입력 해주세요.",
+							confirmButtonColor: '#304ffe'
+						});
+					$('#memberName').focus();
+					return false;
+				}
+				if(!getName.test($('#memberName').val())){
+					 swal({
+							title: "이름을 형식에 맞게 입력 해주세요.",
+							confirmButtonColor: '#304ffe'
+						});
+					
+					$('#memberName').val("");
+					$('#memberName').focus();
+					return false;
+				}
+				if($('#memberPhone').val() == ""){
+					 swal({
+							title: "휴대폰번호를입력 해주세요.",
+							confirmButtonColor: '#304ffe'
+						});
+					$('#memberPhone').focus();
+					return false;
+				}
+				if(!phoneNumberRegex.test($('#memberPhone').val())){
+					 swal({
+							title: "휴대폰번호를 형식에 맞게 입력 해주세요.",
+							confirmButtonColor: '#304ffe'
+						});
+					$('#memberPhone').focus();
+					return false;
+				}
+				if($('#memberIdenNum').val() == "" || $('#memberIdenNum2').val() == ""){
+					 swal({
+							title: "주민번호를 입력 해주세요.",
+							confirmButtonColor: '#304ffe'
+						});
+					$('#memberIdenNum').focus();
+					return false;
+				}
+				
+				if(check_jumin() == false){
+					return false;
+				}
+				
+				if($('#memberEmail').val() == ""){
+					 swal({
+							title: "이메일을 입력 해주세요.",
+							confirmButtonColor: '#304ffe'
+						});
+					$('#memberEmail').focus();
+					return false;
+				}
+				if(!getMail.test($('#memberEmail').val())){
+					 swal({
+							title: "이메일을 형식에 맞게 입력 해주세요.",
+							confirmButtonColor: '#304ffe'
+						});
+					$('#memberEmail').val("");
+					$('#memberEmail').focus();
+					return false;
+				}
+				if($('#memberAddress').val() == ""){
+					 swal({
+							title: "주소를 입력 해주세요.",
+							confirmButtonColor: '#304ffe'
+						});
+					$('#memberAddress').focus();
+					return false;
+				}
+				
+				return true;
+			})
+
+			
+		function check_jumin()
+		{
+			var jumins3 = $("#memberIdenNum").val() + $("#memberIdenNum2").val();
+			//주민등록번호 생년월일 전달 
+			
+			var fmt = RegExp(/^\d{6}[1234]\d{6}$/) 			
+			//포멧 설정
+			
+			var buf = new Array(13);
+			//주민번호 유효성 검사 
+			
+			if (!fmt.test(jumins3)) {
+				 swal({
+						title: "주민번호를 형식에 맞게 입력 해주세요.",
+						confirmButtonColor: '#304ffe'
+					});
+				$("#memberIdenNum").focus();
+				return false;
+			}
+				//주민번호 존재 검사
+				
+			for (var i = 0; i < buf.length; i++){
+				buf[i] = parseInt(jumins3.charAt(i));
+			}
+				
+				var multipliers = [2,3,4,5,6,7,8,9,2,3,4,5];
+				// 밑에 더해주는 12자리 숫자들 
+				var sum = 0;
+				
+			for (var i = 0; i < 12; i++){
+				sum += (buf[i] *= multipliers[i]);
+				// 배열끼리12번 돌면서 
+			} 
+			
+			if ((11 - (sum % 11)) % 10 != buf[12]) {
+				 swal({
+						title: "잘못된 주민등록번호 입니다.",
+						confirmButtonColor: '#304ffe'
+					});
+				$("#memberIdenNum").focus();
+				return false;
+			} 
+			return true;
+		}
+
+		
+		
+		
+		
+		</script>
+	</th:block>
+	
+	<th:block layout:fragment="customContents">
+	
+	
+		<form th:action="@{/member/addMember}" method="post">
+		
+			<div class="container-fluid">
+				<div class="row" >
+					<div class="
+					col-lg-offset-3 col-lg-6
+					
+					">
+					
+						<div class="box-content" style="border : 2px solid #3BBD5A">
+							<div class="box-content  t-center important-col" style="border-bottom : 2px solid grey">
+							
+								<h3>회원등록</h3>
+							</div>
+							<div class="panel-body" >
+								<div class="form-horizontal">
+									<div class="form-group">
+										<label for="memberId" class="col-sm-2 control-label" ><strong>아이디</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text"  class="form-control" name="memberId" maxlength="14"    id="memberId" placeholder="4~12자의 영문 대소문자와 숫자로만 입력">
+									    </div>
+									    <div class="col-sm-1">
+											<button id="checkBtn" type="button" class="btn" value="no">중복확인</button>
+									    </div>
+									   
+									</div>
+									<div class="form-group">
+										<label for="memberPw" class="col-sm-2 control-label"><strong>비밀번호</strong></label>
+									    <div class="col-sm-10">
+									      <input type="password"  class="form-control" name="memberPw" maxlength="14"   id="memberPw" placeholder="4~12자의 영문 대소문자와 숫자로만 입력">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="memberPwCheck" class="col-sm-2 control-label"><strong>비밀번호확인</strong></label>
+									    <div class="col-sm-10">
+									      <input type="password"  class="form-control" name="memberPwCheck" maxlength="14"  id="memberPwCheck" placeholder="비밀번호확인">
+									    </div>
+									</div>
+								
+									<div class="form-group">
+										<label for="memberName" class="col-sm-2 control-label"><strong>이름</strong></label>
+									    <div class="col-sm-10">
+									      <input type="text" class="form-control" name="memberName" id="memberName" placeholder="이름">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="memberphone" class="col-sm-2 control-label"><strong>휴대폰번호</strong></label>
+									    <div class="col-sm-10">
+									      <input type="tel" maxlength="14" class="form-control" name="memberPhone" id="memberPhone" placeholder="000-0000-0000">
+									    </div>
+									</div> 
+								
+									<div class="form-group">
+										<div class="">
+											<label class="col-sm-2 control-label"><strong>성별</strong></label>
+										</div>
+										<div class="radio success col-sm-2">
+											<input type="radio" name="memberGender radio-1" id="M" checked="checked" value="남">
+											<label for="M">남성</label>
+										</div>
+									    <div class="radio success col-sm-2">
+											<input type="radio" name="memberGender radio-1" id="G" value="여">
+											<label for="G">여성</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="memberIdenNum" class="col-sm-2 control-label"><strong>주민번호</strong></label>
+									    <div class="col-sm-4">
+									      <input type="number" maxlength="6"  class="form-control" name="memberIdenNum" id="memberIdenNum" placeholder="주민번호앞자리">
+									    </div>
+						
+									    <div class="col-sm-4">
+									      <input type="password" maxlength="7"   class="form-control" name="memberIdenNum2" id="memberIdenNum2" placeholder="주민번호뒷자리">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="memberEmail" class="col-sm-2 control-label"><strong>이메일</strong></label>
+									    <div class="col-sm-10">
+									      <input type="email" class="form-control" name="memberEmail" id="memberEmail" placeholder="test@email.com">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="memberAddress" class="col-sm-2 control-label"><strong>주소</strong></label>
+									    <div class="col-sm-10">
+									      <input type="text" class="form-control" name="memberAddress" id="memberAddress" placeholder="Address">
+									    </div>
+									</div>
+									<hr>
+									<div class="form-group">
+										<div class="col-sm-10 col-sm-offset-1">
+											<button type="submit" id="addCheck" class="lc-round-btn" style="margin-top: 10px;">회원가입버튼</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</th:block>
+	
+	
+
+</html>

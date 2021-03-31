@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="assets/script/html5shiv.min.js"></script>
+		<script src="assets/script/respond.min.js"></script>
+	<![endif]-->
+	<!-- 
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<div th:fragment="boottomFragment">
+	
+		<!-- 최신 jquery 스크립트 -->
+		<script th:src="@{/assets/scripts/jquery-3.5.1.min.js}"></script>
+		
+		<!-- 부트스트랩템플릿 스크립트들 ↓ -->
+		<script th:src="@{/assets/scripts/jquery.min.js}"></script>
+		<script th:src="@{/assets/scripts/modernizr.min.js}"></script>
+		<script th:src="@{/assets/plugin/bootstrap/js/bootstrap.min.js}"></script>
+		<script th:src="@{/assets/plugin/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js}"></script>
+		<script th:src="@{/assets/plugin/nprogress/nprogress.js}"></script>
+		<script th:src="@{/assets/plugin/sweet-alert/sweetalert.min.js}"></script>
+		<script th:src="@{/assets/plugin/waves/waves.min.js}"></script>
+		
+		<!-- Jquery UI -->
+		<script th:src="@{/assets/plugin/jquery-ui/jquery-ui.min.js}"></script>
+		<script th:src="@{/assets/plugin/jquery-ui/jquery.ui.touch-punch.min.js}"></script>
+		
+		<!-- Jquery main -->
+		<script th:src="@{/assets/scripts/main.js}"></script>
+		
+		
+		<!-- 사용자 정의 자바스크립트 라이브러리 -->
+		<th:block layout:fragment="customScriptLib"></th:block>
+		
+		<!-- 사용자 정의 자바스크립트 -->
+		<th:block layout:fragment="customJavaScript"></th:block>
+		
+	</div>
+
+</html>
