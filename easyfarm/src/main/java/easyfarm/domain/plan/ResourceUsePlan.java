@@ -23,6 +23,7 @@ public class ResourceUsePlan {
     // 사용량금액환산
     private String stockItemUseQuantityConversionPay;
 
+
     // 작성자농가회원코드
     private String regMemberId;
 
@@ -102,6 +103,7 @@ public class ResourceUsePlan {
     public void setRegDate(String regDate) {
         this.regDate = regDate;
     }
+
 
 	
 }

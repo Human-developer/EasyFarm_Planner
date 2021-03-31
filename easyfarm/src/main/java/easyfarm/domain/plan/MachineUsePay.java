@@ -14,6 +14,7 @@ public class MachineUsePay {
     private String farmRetainMachineCode;
 
     // 작성자농가회원코드
+
     private String regMemberId;
 
     // 작성일
@@ -67,5 +68,5 @@ public class MachineUsePay {
         this.regDate = regDate;
     }
 
-	
+
 }

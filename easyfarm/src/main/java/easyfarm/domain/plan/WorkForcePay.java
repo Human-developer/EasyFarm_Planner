@@ -27,6 +27,7 @@ public class WorkForcePay {
     private String workforcePayTotal;
 
     // 작성자농가회원코드
+
     private String regMemberId;
 
     // 작성일
@@ -111,7 +112,6 @@ public class WorkForcePay {
 
     public void setRegDate(String regDate) {
         this.regDate = regDate;
-    }
 
-	
+    }
 }

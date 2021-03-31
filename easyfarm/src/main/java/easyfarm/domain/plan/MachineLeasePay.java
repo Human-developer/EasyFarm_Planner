@@ -14,6 +14,7 @@ public class MachineLeasePay {
     private String clientCode;
 
     // 공통농기계코드
+
     private String farmBookmarkMachineCode;
 
     // 대여일수
@@ -113,5 +114,6 @@ public class MachineLeasePay {
 	public void setFarmBookmarkMachineCode(String farmBookmarkMachineCode) {
 		this.farmBookmarkMachineCode = farmBookmarkMachineCode;
 	}
+
 	
 }

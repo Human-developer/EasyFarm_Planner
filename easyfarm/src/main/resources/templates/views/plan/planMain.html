@@ -2,17 +2,50 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="@{layout/default}">
-
+	  
+	<!-- 화면 title 설정 -->
 	<th:block layout:fragment="customTitle">
-		<title>계획 메인</title>
+		<title>프로젝트계획 차수관리</title>
 	</th:block>
 	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
 	<th:block layout:fragment="pageTitle">
-		계획 메인
+		프로젝트계획 차수관리
 	</th:block>
 	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib"></th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss"></th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
 	<th:block layout:fragment="customContents">
-		메인화면
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="box-content">
+						<div th:if="${projectName != null}">
+							<h3 th:text="|${projectName} 프로젝트계획 차수관리|"></h3>
+						</div>
+						<div th:unless="${projectName != null}">
+							<h3>프로젝트 계획 차수 관리</h3>
+						</div>
+						<hr/>
+			
+					</div>
+				</div>
+			</div>
+		</div>
+		
 	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib"></th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript"></th:block>
 
 </html>

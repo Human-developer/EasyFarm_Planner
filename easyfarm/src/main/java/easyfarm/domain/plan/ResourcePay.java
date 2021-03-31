@@ -29,6 +29,7 @@ public class ResourcePay {
     private String stockItemIncomeDate;
 
     // 작성자농가회원코드
+
     private String regMemberId;
 
     // 작성일
@@ -122,5 +123,6 @@ public class ResourcePay {
     public void setRegDate(String regDate) {
         this.regDate = regDate;
     }
+
 
 }

@@ -27,6 +27,7 @@ public class TaxPay {
     private String taxPayDetail;
 
     // 작성자농가회원코드
+
     private String regMemberId;
 
     // 작성일
@@ -113,5 +114,5 @@ public class TaxPay {
         this.regDate = regDate;
     }
 
-	
+
 }

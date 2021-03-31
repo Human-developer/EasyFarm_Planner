@@ -23,6 +23,7 @@ public class EtcPay {
     private String etcPayDetail;
 
     // 작성자농가회원코드
+
     private String regMemberId;
 
     // 작성일
@@ -101,4 +102,6 @@ public class EtcPay {
         this.regDate = regDate;
     }
 
+
+  
 }
