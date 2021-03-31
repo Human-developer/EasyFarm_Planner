@@ -15,8 +15,20 @@ public class Machine {
     // 등록일
     private Timestamp regDate;
 
+    private Member member;
+    
+    
+    
 
-    public String getCommonMachineCode() {
+    public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+	public String getCommonMachineCode() {
         return commonMachineCode;
     }
 

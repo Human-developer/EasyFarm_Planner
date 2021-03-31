@@ -62,81 +62,83 @@
 		 background-size: 100% 100%;}
 	</style>
 	</th:block>
-	<th:block layout:fragment="customScript">
-		
-	
+	<th:block layout:fragment="customJavaScript">
 		<script type="text/javascript">
-		/* 
 			$(function(){
-				
+				//중복검사
 				$('#checkBtn').click(function(){
-					var ***Id = $('#***Id').val();
-					
-					$.ajax({
-						url: "/ajax/idCheck",
-						method: "POST",
-						data: { ***Id : ***Id },
-						success : function(data) {
-							if(data == "사용가능") {
-
-								alert("사용가능한 아이디 입니다.");
-								$('#checkBtn').attr('value','yes');
-							}
-
-							 else {
-								alert("중복된 아이디입니다.");
-								
-								//중복된 아이디면 중복체크가 다시 필요하기 때문에 check의 값을 no로 다시 지정
-								$('#checkBtn').attr('value','no');
-									return;
-							}
-							
-						},
-						error : function(xhr, status, error) {
-							console.log('xhr : ' + xhr);
-							console.log('status : ' + status);
-							console.log('error : ' + error);
-						}
+					var cropname = $('#cropname').val();
+					if(cropname != ""){
 						
-					});
+						$.ajax({
+							url: "/ajax/cropCheck",
+							method: "POST",
+							data: { cropname : cropname },
+							success : function(data) {
+								if(data == "사용가능") {
+									swal({
+										title: "사용가능한 작물명입니다."
+									});
+									$('#checkBtn').attr('value','yes');
+								}
+								 else {
+									 swal({
+											title: "이미 등록된 작물입니다.",
+										});
+									//중복된 작물명이면 중복체크가 다시 필요하기 때문에 check의 값을 no로 다시 지정
+									$('#checkBtn').attr('value','no');
+										return;
+								}
+							},
+							error : function(xhr, status, error) {
+								console.log('xhr : ' + xhr);
+								console.log('status : ' + status);
+								console.log('error : ' + error);
+							}
+						});
+					}else{
+						swal({
+							title: "작물명을 입력해주세요."
+						});
+						$('#cropname').focus();
+						return false; 
+					}
 				}); 
-			
-			})
-		
+			});
 			$(function(){
-				$('#***Id').keyup(function(){
+				$('#cropname').keyup(function(){
 					$('#checkBtn').attr('value','no');
 				});
 			});
 		
-		
+		//공백검사
 		$(function(){
 			$('#addCheck').click(function(){
-				var getMail = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
-				var getCheck= RegExp(/^[a-zA-Z0-9]{4,12}$/);
-				var getName= RegExp(/^[가-힣]+$/);
-				var phoneNumberRegex = /^[0-9]{3}-[0-9]{4}-[0-9]{4}$/;
 				
-				if($('#***Id').val() == ""){
-					alert("아이디를 입력해주세요");
-					$('#***Id').focus();
+				if($('#cropcate').val() == ""){
+					swal({
+						title: "카테고리를 선택해주세요."
+					});
+					$('#cropname').focus();
 					return false; 
 				}
-				if(!getCheck.test($('#***Id').val())){
-					alert("아이디를 형식에맞게 써주세요")
-					$('#***Id').val("");
-					$('#***Id').focus();
-					return false;
+				if($('#cropname').val() == ""){
+					swal({
+						title: "작물명을 입력해주세요."
+					});
+					$('#cropname').focus();
+					return false; 
 				}
 				if($('#checkBtn').val() == "no"){
-					alert("중복검사를 해주세요")
+					swal({
+						title: "중복검사를 해주세요."
+					});
 					return false;
 				}
 				
 				return true;
 			})
 		});
-		 */
 		</script>
 	</th:block>
 	
@@ -155,10 +157,10 @@
 								<div class="form-horizontal">
 									<div class="form-group margin-bottom-20">
 										<label for="cropcate" class="col-sm-3 control-label"><strong>작물 카테고리</strong></label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<div class="card-content">
 											<select class="form-control" name="cropCate" id="cropcate" >
-												  <option value="" >:::: 작물 카테고리 선택 ::::</option>
+												  <option value="">:::: 작물 카테고리 선택 ::::</option>
 												  <option th:value="기타" >기타</option>
 												  <option th:value="과수" >과수</option>
 												  <option th:value="채소" >채소</option>
@@ -189,7 +191,7 @@
 									<hr style="border-color : #ccd1d9;">
 									<div class="form-group">
 										<div class="col-sm-10 col-sm-offset-1">
-											<button type="submit" class="btn btn-success btn-rounded waves-effect waves-light" style="width: 100%">작물등록</button>
+											<button type="submit" id="addCheck" class="btn btn-success btn-rounded waves-effect waves-light" style="width: 100%">작물등록</button>
 										</div>
 									</div>
 								</div>

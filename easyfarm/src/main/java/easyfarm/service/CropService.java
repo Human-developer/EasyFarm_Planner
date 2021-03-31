@@ -12,6 +12,7 @@ import easyfarm.dao.CropMapper;
 import easyfarm.domain.Crop;
 import easyfarm.domain.CropDetailCategory;
 import easyfarm.domain.CropWorkStage;
+import easyfarm.domain.Machine;
 
 @Service
 @Transactional
@@ -123,12 +124,18 @@ public class CropService {
 		return result;
 		
 	}
+	//작업단계 정보조회
 	public CropWorkStage getcropPhaseInfo(String cropPhaseInfoCode) {
 		CropWorkStage cropWorkStage = cropMapper.getcropPhaseInfo(cropPhaseInfoCode);
 		return cropWorkStage;
 	
 		
 	}
+	//작물정보-작물명 조회
+	public Crop getCropNameinfo(String cropName) {
+		return cropMapper.getcropNameInfo(cropName);
+	}
+	
 	
 	
 	

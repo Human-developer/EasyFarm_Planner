@@ -1,7 +1,9 @@
 package easyfarm.service;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,5 +24,15 @@ public class MachineService {
 		return commonMachineList;
 		
 	}
+
+
+	//공통농기계 추가등록
+	public int addCommonMachineCode(Machine machine, String memberId) {
+		Map<String, Object> test = new HashMap<>();
+		test.put("machine", machine);
+		test.put("memberId", memberId);
+		int result = machineMapper.addCommonMachineCode(test);
+		return result;
 	
+	}
 }

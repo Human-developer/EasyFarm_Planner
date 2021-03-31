@@ -7,10 +7,10 @@
 		
 		<result property="regMemberId"	column="reg_member_id"/>
 		<result property="regDate"		column="reg_date"/>
-		<!-- <association property="" javaType="" >
-			<id property=""		column=""/>
-			<result property=""	column=""/>
-		</association> -->
+		<association property="member" javaType="Member" >
+			<id property="memberId"		column="member_id"/>
+			<result property="memberId"	column="member_id"/>
+		</association>
 	</resultMap> 
 	            
 	
@@ -24,5 +24,22 @@
 		tb_common_machine
 	ORDER BY common_machine_code*1
 	</select>
+	
+	<insert id="addCommonMachineCode" parameterType="map">
+	INSERT INTO tb_common_machine
+	(
+	common_machine_code
+	, common_machine_name
+	, reg_member_id
+	, reg_date
+	)
+	VALUES (
+	sf_commonMachine_max_code()
+	, #{machine.commonMachineName}
+	, #{memberId}
+	, NOW()
+	)
+	
+	</insert>
 	
 </mapper>

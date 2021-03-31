@@ -21,6 +21,7 @@ public interface CropMapper {
 
 	//작물정보 조회
 	public Crop getcropCodeInfo(String cropCode);
+	public Crop getcropNameInfo(String cropName);
 
 	
 	//작업단계 리스트

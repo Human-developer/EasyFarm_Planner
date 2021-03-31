@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import easyfarm.dao.CropMapper;
 import easyfarm.domain.Crop;
 import easyfarm.domain.CropDetailCategory;
 import easyfarm.domain.CropWorkStage;
@@ -122,6 +122,22 @@ public class CodeController {
 	}
 /*===========================================================*/
 	
+	@PostMapping("/code/addCommonMachineCode")
+	public String addCommonMachineCode(Machine machine,HttpSession session) {
+		if(machine != null && !"".equals(machine.getCommonMachineCode())){
+			String memberId = (String)session.getAttribute("SID");
+			if(memberId != null) System.out.println(memberId+" =test");
+			machineService.addCommonMachineCode(machine,memberId);
+		}
+		return "redirect:/code/getCommonMachineCode"; 
+	}
+	@RequestMapping(value = "/code/addCommonMachineCode" , method = RequestMethod.GET)
+	public String addCommonMachineCode() {
+		return "views/code/addCommonMachineCode";
+	}
+	
+/*===========================================================*/
+	
 	@PostMapping("/code/modifyCrop")
 	public String modifyCrop(Crop crop,HttpSession session) {
 		if(crop != null && !"".equals(crop.getCropCode())){
@@ -156,5 +172,25 @@ public class CodeController {
 		model.addAttribute("cropWorkStage", cropWorkStage);
 		return "views/code/modifyCropWorkStage";		
 	}	
-/*===========================================================*/
+	/*===========================================================*/
+	//중복체크
+	@PostMapping("/ajax/cropCheck")
+	public @ResponseBody String idChdck(@RequestParam(value = "cropname", required = false) String cropName) {
+		String result = "사용불가능";
+		System.out.println(cropName);
+		if (cropName != null && !"".equals(cropName) && !"".equals(cropName.trim())) {
+			Crop crop =cropService.getCropNameinfo(cropName);
+
+			if (crop != null && crop.getCropName().equals(cropName)) {
+				result = "사용불가능";
+			} else {
+				result = "사용가능";
+			}
+		}
+
+		return result;
+	}
+	
+	/*===========================================================*/
+	/*===========================================================*/
 }
