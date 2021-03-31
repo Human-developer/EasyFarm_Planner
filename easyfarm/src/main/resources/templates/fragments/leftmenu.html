@@ -5,8 +5,8 @@
 	<header class="header">
 		<a href="/" class="logo"><i class="ico glyphicon glyphicon-grain"></i>EasyFarm</a>
 		<button type="button" class="button-close fa fa-times js__menu_close"></button>
-		<div class="user">
-			<a th:href="@{#}" class="avatar"><img th:src="@{/assets/images/avatar-sm-5.jpg}" alt=""><span class="status online"></span></a>
+		<div class="user" th:if="${session.SID != null}">
+			<a href="" class="avatar"><img th:src="@{/assets/images/avatar-sm-5.jpg}" alt=""><span class="status online"></span></a>
 			<h5 class="name"><a th:text="${session.SID}"></a></h5> 	<!-- <a>테그안쪽에 th:text="${세션이름}" 넣으면됨 -->
 			<h5 class="position" th:text="${session.SNAME}"></h5>		<!-- <h5>테그안쪽에 th:text="${세션권한}" 넣으면됨 -->
 			<h5 class="position" th:text="${session.SLEVEL}"></h5>		<!-- <h5>테그안쪽에 th:text="${세션권한}" 넣으면됨 -->
@@ -22,9 +22,9 @@
 			</div>
 			<!-- /.control-wrap -->
 		</div>
-		<div class="user">
-			<a th:href="@{#}" class="avatar"><img th:src="@{/assets/images/none-profile.jpg}" alt=""><span class="status online"></span></a>
-			<h2 class="name" style = "text-align: center; margin-top: 10px; font-size: 19px"><a  th:if="${session.SID == null}" th:href="@{/member/login}" >로그인</a></h2>
+		<div class="user" th:unless="${session.SID != null}">
+			<a href="" class="avatar"><img th:src="@{/assets/images/none-profile.jpg}" alt=""><span class="status logout"></span></a>
+			<h2 class="name" style = "text-align: center; margin-top: 10px; font-size: 19px"><a th:href="@{/member/login}" >로그인</a></h2>
 			<!-- /.control-wrap -->
 		</div>
 		
