@@ -42,9 +42,7 @@
 								<th>회원 성별</th>					
 								<th>회원 등록일자</th>
 								<th>회원 상태</th>
-								<th th:if = "${session.SLEVEL == '관리자'}">상세정보</th>
-								<th th:if = "${session.SLEVEL == '관리자'}">수정</th>
-								<th th:if = "${session.SLEVEL == '관리자'}">탈퇴</th>
+								<th>설정</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -55,22 +53,16 @@
 								<td th:text="${l.memberGender}"></td>				
 								<td th:text="${l.memberRegDate}"></td>
 								<td th:text="${l.memberStatus}"></td>
+								
 								<td th:if = "${session.SLEVEL == '관리자'}">
-									<a th:href ="@{/member/detailMember(memberId=${l.memberId})}">상세정보</a>
-								</td>
-								<td th:if = "${session.SLEVEL == '관리자' && l.memberStatus != '탈퇴'}">
-									<a th:href ="@{/member/modifyMember(memberId=${l.memberId})}">수정</a>
-								</td>
-								<td th:if = "${session.SLEVEL == '관리자' && l.memberStatus == '탈퇴'}">
-									<p></p>
-									
-								</td>
-								<td th:if = "${session.SLEVEL == '관리자' && l.memberStatus != '탈퇴'}">
-									<a th:href ="@{/member/removeMember(memberId=${l.memberId})}">탈퇴</a>								
-								</td>
-								<td th:if = "${session.SLEVEL == '관리자' && l.memberStatus == '탈퇴'}">
-									<p></p>
-									
+									<div class="btn-group">
+										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button> 
+										<ul class="dropdown-menu">
+											<li><a th:href ="@{/member/detailMember(memberId=${l.memberId})}">상세보기</a></li>
+											<li th:if = "${session.SLEVEL == '관리자' && l.memberStatus != '탈퇴'}"><a th:href ="@{/member/modifyMember(memberId=${l.memberId})}">수정</a></li>
+											<li th:if = "${session.SLEVEL == '관리자' && l.memberStatus != '탈퇴'}"><a th:href ="@{/member/removeMember(memberId=${l.memberId})}">탈퇴</a></li>
+										</ul>
+									</div>
 								</td>
 							</tr>
 							

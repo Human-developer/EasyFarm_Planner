@@ -47,7 +47,7 @@
 								<div class="form-horizontal">
 								
 									<div class="form-group">
-										<input type="number" th:value="${r.statusCriteriaCode} " name="statusCriteriaCode" hidden="" readonly="readonly">
+										<input type="hidden" th:value="${r.statusCriteriaCode}" name="statusCriteriaCode" id="statusCriteriaCode" readonly="readonly">
 										<label for="statusCriteriaName" class="col-sm-2 control-label" ><strong>기준</strong></label>
 									    <div class="col-sm-10">
 									      <input name="statusCriteriaName" th:value="${r.statusCriteriaName}" readonly="readonly" class="form-control" id="statusCriteriaName">

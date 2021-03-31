@@ -35,8 +35,8 @@
 								<th>등록 아이디</th>			
 								<th>등록일</th>
 								<th>사용유무</th>
-								<th th:if = "${session.SLEVEL == '관리자'}">수정</th>
-								<th th:if = "${session.SLEVEL == '관리자'}">삭제</th>
+								<th th:if = "${session.SLEVEL == '관리자'}">설정</th>
+								
 							</tr>
 						</thead>
 						<tbody>
@@ -48,12 +48,14 @@
 								<td th:text="${b.regDate}"></td>
 								<td th:text="${b.useStatus}"></td>					
 								
-								
 								<td th:if = "${session.SLEVEL == '관리자'}">
-									<a th:href ="@{/member/modifyBaseDate(statusCriteriaCode=${b.statusCriteriaCode})}">수정</a>
-								</td>
-								<td th:if = "${session.SLEVEL == '관리자'}">
-									<a  th:data-val ="${b.statusCriteriaCode}" class="remove"  th:href="@{#}">삭제</a>
+									<div class="btn-group">
+										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button> 
+										<ul class="dropdown-menu">
+											<li><a th:href ="@{/member/modifyBaseDate(statusCriteriaCode=${b.statusCriteriaCode})}">수정</a></li>
+											<li><a th:data-val ="${b.statusCriteriaCode}" class="remove"  th:href="@{#}">삭제</a></li>
+										</ul> 
+									</div>
 								</td>
 								
 							</tr>

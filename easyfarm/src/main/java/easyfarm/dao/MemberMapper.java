@@ -61,33 +61,40 @@ public interface MemberMapper {
 	
 	//휴면|탈퇴 예정일 조회
 	public List<Report> getExpectedDate();
-	//휴묜|탈퇴 기준일 조회
+	//휴면|탈퇴 기준일 조회
 	public List<Report> getBaseDate();
-	//휴묜|탈퇴 기준이름 리스트
+	//휴면|탈퇴 기준이름 리스트
 	public List<Report> getstatusCriteriaName();
-	//휴묜|탈퇴 기준일 등록
-	public void addBaseDate(Report report);
-	//휴묜|탈퇴 기준일 수정을위한 데이터가져오기
+	//휴면|탈퇴 기준일 등록
+	public int addBaseDate(Report report);
+	//휴면|탈퇴 기준일 수정을위한 데이터가져오기
 	public Report getBaseDate(String statusCriteriaCode);
-	//휴묜|탈퇴 기준일 수정
+	//휴면|탈퇴 기준일 수정
 	public int modifyBaseDate(Report report);
-	//휴묜|탈퇴 기준일 삭제
-	public void removeBaseDate(String statusCriteriaCode);
+	//휴면|탈퇴 기준일 삭제
+	public int removeBaseDate(String statusCriteriaCode);
 	
 	//신고사유 조회
 	public List<Report> getReasonReport();
 	//신고사유 수정을위한 조회
 	public Report getReasonReport(String reportCode);
 	//신고사유 등록
-	public void addReasonReport(Report report);
+	public int addReasonReport(Report report);
 	//신고사유 수정
-	public void modifyReasonReport(Report report);
+	public int modifyReasonReport(Report report);
 	//신고사유 삭제
-	public void removeReasonReport(String report);
+	public int removeReasonReport(String report);
+	//신고
+	public int addReport(Report report);
 	//신고 목록 조회
 	public List<Report> getReport(String memberId);
-	//신고 삭제
-	public void removeReport(String reportHistoryCode);
+	//신고신청 목록 삭제(회원);
+	public int removeReport(String reportHistoryCode);
+	//신고신청 목록 삭제(관리자);
+	public int removeReportHistory(String reportHistoryCode);
 	//신고 승인|반려
-	public void resultReport(String reportHistoryCode, String reportApproval);
+	public int resultReport(String reportHistoryCode, String reportApproval,String reportApprovalReason);
+	
+	//정지회원조회
+	public List<Report> getSuspend();
 }

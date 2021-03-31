@@ -23,6 +23,10 @@ public class MemberController {
 	 @Autowired
 	 MemberService memberService;
 	
+	 @GetMapping("/member")
+	 public String member() {
+		 return "views/member/member";
+	 }
 	 //로그인
 	 @GetMapping("/member/login")
 	 public String login(Model model,HttpSession session) {
@@ -356,7 +360,9 @@ public class MemberController {
 	  public String addBaseDate(Report report) {
 		 // System.out.prStringln(report.getUseStatus()+ "11111111111111111111111");
 		  
+		  
 		  memberService.addBaseDate(report);
+		  
 		  return "redirect:/member/getBaseDate";
 	  }
 	  
@@ -376,6 +382,7 @@ public class MemberController {
 	  
 	  @PostMapping("/member/modifyBaseDate")
 	  public String modifyBaseDate(Report report) {
+		 
 		  memberService.modifyBaseDate(report);
 		  return "redirect:/member/getBaseDate";
 	  }
@@ -404,11 +411,13 @@ public class MemberController {
 	  //신고사유등록
 	  @GetMapping("/member/addReasonReport")
 	  public String addReasonReport() {
+		  
 		  return "views/member/report/addReasonReport";
 	  }
 	  
 	  @PostMapping("/member/addReasonReport")
 	  public String addReasonReport(Report report) {
+		  
 		  memberService.addReasonReport(report);
 		  return "redirect:/member/getReasonReport";
 	  }
@@ -416,8 +425,8 @@ public class MemberController {
 	  //신고사유수정
 	  
 	  @GetMapping("/member/modifyReasonReport")
-	  public String modifyReasonReport(Model model
-			  ,@RequestParam(value = "reportCode",required = false,defaultValue = "")String reportCode) {
+	  public String modifyReasonReport(Model model,
+			   @RequestParam(value = "reportCode",required = false,defaultValue = "")String reportCode) {
 		  
 		  Report reasonReport = memberService.getReasonReport(reportCode);
 		  model.addAttribute("reasonReport",reasonReport);
@@ -425,8 +434,8 @@ public class MemberController {
 		  return "views/member/report/modifyReasonReport";
 	  }
 	  @PostMapping("/member/modifyReasonReport")
-	  public String modifyReasonReport(Report report
-			  ,@RequestParam(value = "reportCode",required = false,defaultValue = "")String reportCode) {
+	  public String modifyReasonReport(Report report,
+			   @RequestParam(value = "reportCode",required = false,defaultValue = "")String reportCode) {
 		  report.setReportCode(reportCode);
 		  memberService.modifyReasonReport(report);
 		  return "redirect:/member/getReasonReport";
@@ -435,7 +444,7 @@ public class MemberController {
 	  //신고사유삭제
 	  @GetMapping("/member/removeReasonReport")
 	  public String removeReasonReport(
-			  @RequestParam(value = "reportCode",required = false,defaultValue = "")String reportCode) {
+			  	@RequestParam(value = "reportCode",required = false,defaultValue = "")String reportCode) {
 		  
 		  memberService.removeReasonReport(reportCode);
 		  
@@ -444,23 +453,33 @@ public class MemberController {
 	 
 	  //신고
 	  @GetMapping("/member/addReport")
-	  public String addReport(Model model) {
+	  public String addReport(Model model, 
+			  	@RequestParam(value = "memberId", required = false) String memberId) {
 		  List<Report> reportReason = memberService.getReasonReport();
 		  
 		  model.addAttribute("reportReason",reportReason);
+		  model.addAttribute("memberId",memberId);
 		  return "views/member/report/addReport";
 	  }
 	  @PostMapping("/member/addReport")
 	  public String addReport(Report report) {
+		 
+		 memberService.addReport(report);
+		  
 		  return "redirect:/member/getReport";
 	  }
 	  //신고 승인|반려
 	  @GetMapping("/member/resultReport")
 	  public String resultReport(
-			  @RequestParam(value = "reportHistoryCode",required = false,defaultValue = "")String reportHistoryCode,
-			  @RequestParam(value = "reportApproval",required = false,defaultValue = "")String reportApproval) {
-		  
-		  memberService.resultReport(reportHistoryCode,reportApproval);
+			  	@RequestParam(value = "reportHistoryCode",required = false,defaultValue = "")String reportHistoryCode,
+			  	@RequestParam(value = "reportApprovalReason",required = false,defaultValue = "")String reportApprovalReason,
+			  	@RequestParam(value = "reportApproval",required = false,defaultValue = "")String reportApproval) {
+		  if("승인".equals(reportApproval)) {
+			  memberService.resultReport(reportHistoryCode,reportApproval,reportApprovalReason);			  
+			  //정지회원 등록 
+		  }else {			  
+			  memberService.resultReport(reportHistoryCode,reportApproval,reportApprovalReason);			  
+		  }
 		  return "redirect:/member/getReport";
 	  }
 	  //신고목록
@@ -484,16 +503,30 @@ public class MemberController {
 		  
 		  return "views/member/report/getReportMember";
 	  }
+	  //신고목록 안보이게하기
+	  @GetMapping("/member/removeReportHistoryCode")
+	  public String removeReportHistory(
+			  	@RequestParam(value = "reportHistoryCode",required = false, defaultValue = "")String reportHistoryCode) {
+		  if(reportHistoryCode != null && !"".equals(reportHistoryCode.trim())){
+			  memberService.removeReportHistory(reportHistoryCode);	  
+		  }
+		  return "redirect:/member/getReport";
+	  }
+	  //신고기록삭제
 	  @GetMapping("/member/removeReport")
-	  public String removeReport(@RequestParam(value = "reportHistoryCode",required = false,defaultValue = "")String reportHistoryCode) {
+	  public String removeReport(
+			  	@RequestParam(value = "reportHistoryCode",required = false, defaultValue = "")String reportHistoryCode) {
 		  if(reportHistoryCode != null) {
 			  memberService.removeReport(reportHistoryCode);
 		  }
-		  return "rediract:/member/getReport";
+		 return "redirect:/member/getReport";
 	  }
 	  //==========정지회원관리==========
 	  @GetMapping("/member/getSuspend")
-	  public String getSuspend() {
+	  public String getSuspend(Model model) {
+		  
+		  List<Report> banList = memberService.getSuspend();
+		  model.addAttribute("banList",banList);
 		  
 		  return "views/member/memberList/getSuspend";
 	  }

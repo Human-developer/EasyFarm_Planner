@@ -178,19 +178,33 @@ public class MemberService {
 	 public void removeReasonReport(String report) {
 		 memberMapper.removeReasonReport(report);
 	 }
+	 // 신고
+	 public void addReport(Report report) {
+		 memberMapper.addReport(report);
+	 }
 	 // 신고목록 조회
 	 public List<Report> getReport(String memberId){
 		 List<Report> reportList = memberMapper.getReport(memberId);
 		 return reportList;
 	 }
-	 // 신고목록 삭제
+	 // 신고신청 목록 삭제(회원)
 	 public void removeReport(String reportHistoryCode) {
 		 memberMapper.removeReport(reportHistoryCode);
 	 }
+	 // 신고신청 목록 삭제(관리자)
+	 public int removeReportHistory(String reportHistoryCode) {
+		 int result = memberMapper.removeReportHistory(reportHistoryCode);
+		 return result;
+	 }
 	 
 	 // 신고승인|반려
-	 public void resultReport(String reportHistoryCode,String reportApproval) {
-		 memberMapper.resultReport(reportHistoryCode,reportApproval);
+	 public void resultReport(String reportHistoryCode,String reportApproval,String reportApprovalReason) {
+		 memberMapper.resultReport(reportHistoryCode,reportApproval,reportApprovalReason);
+	 }
+	 // 정지회원조회
+	 public List<Report> getSuspend() {
+		 List<Report> banList = memberMapper.getSuspend();
+		 return banList;
 	 }
 	
 }

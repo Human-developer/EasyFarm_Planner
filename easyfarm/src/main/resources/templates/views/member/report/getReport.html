@@ -31,30 +31,42 @@
 								<th>대상 아이디</th>
 								<th>작성자 아이디</th>
 								<th>내용</th>			
-								<th>등록일</th>							
+								<th>등록일</th>																						
+								<th>상태</th>																						
+								<th th:if = "${session.SLEVEL == '관리자'}">승인&반려</th>
 								
-								<th th:if = "${session.SLEVEL == '관리자'}">승인</th>
-								<th th:if = "${session.SLEVEL == '관리자'}">반려</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr  th:each="r : ${reportList}" >
+							<tr  th:each="r : ${reportList}" th:if = "${r.useStatus != 'N'}">
 								<td th:text="${r.reportHistoryCode}"></td>							
 								<td th:text="${r.reportReason}"></td>		
 								<td th:text="${r.reportedMemberId}"></td>				
 								<td th:text="${r.reportMemberId}"></td>			
 								
 								<td ><a th:text="내용" th:data-val="${r.reportDetailReason}" href="#" class="contents"></a></td>								
-								<td th:text="${r.reportDate}"></td>									
-								<td  th:if = "${session.SLEVEL == '관리자' and r.reportApproval == '진행중' }">
-									<a class="okey" th:data-val="${r.reportHistoryCode}" th:data-val2="승인" href="#">승인</a>
+								<td th:text="${r.reportDate}"></td>
+								<td th:if = "${session.SLEVEL == '관리자' && r.reportApproval == '진행중'}" th:text="진행중"></td>
+								<td th:if = "${session.SLEVEL == '관리자' && r.reportApproval != '진행중'}" th:text="완료"></td>
+																	
+								<td th:if = "${session.SLEVEL == '관리자' && r.reportApproval == '진행중'}">
+									<div class="btn-group" >
+										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="fa fa-balance-scale" ></span></button> 
+										<ul class="dropdown-menu">
+											<li ><a class="okey" th:data-val="${r.reportHistoryCode}" th:data-val2="승인" href="#">승인</a></li>
+											<li ><a class="no" th:data-val="${r.reportHistoryCode}" th:data-val2="반려"   href="#">반려</a></li>
+										
+										</ul> 
+									</div>
 								</td>
-								  <!-- <td th:if = "${session.SLEVEL == '관리자' and r.reportApproval != '진행중'}" >
-											<p  th:text="완료"></p>
-										</td>  -->
-								<td  th:if = "${session.SLEVEL == '관리자' and r.reportApproval == '진행중' }">
-									<a class="no" th:data-val="${r.reportHistoryCode}" th:data-val2="반려" href="#">반려</a>
-								</td>
+								 <td th:if = "${session.SLEVEL == '관리자' && r.reportApproval != '진행중'}">
+									<div class="btn-group" >
+										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="fa fa-balance-scale" ></span></button> 
+										<ul class="dropdown-menu">
+										  	<li th:if="${session.SLEVEL == '관리자'}"><a class="remove" th:data-val="${r.reportHistoryCode}" href="#">삭제</a></li>
+										</ul> 
+									</div>
+								</td> 
 								
 							</tr>
 							
@@ -104,50 +116,80 @@
 		 	 $('.modal-content').attr('style','display: none');
 		 })
 		 
-		 $('.okey').click(function(){
-		  	  var removeCode = $(this).attr("data-val");
-		  	  var result = $(this).attr("data-val2");
-		 
-			swal({   
-				title: "정말 승인하시겠습니까?",   
-				text: "승인시 복구불가",   
-				type: "warning",   
-				showCancelButton: true,   
-				confirmButtonColor: "#DD6B55",   
-				confirmButtonText: "확인!", 
-				cancelButtonText: "취소!", 
-				closeOnConfirm: false,
-				closeOnCancel: true,
-				confirmButtonColor: '#f60e0e',
-			},function(isConfirm){   
-				if (isConfirm) {     
-					location.href = "/member/resultReport?reportHistoryCode="+removeCode+"?reportApproval="+result;
-				}
-			});
+		 $('.remove').click(function(){
+			 var result = $(this).attr("data-val");
+			 location.href = "/member/removeReportHistoryCode?reportHistoryCode="+result;
 		 })
 		 
-		 $('.no').click(function(){
-		  	  var removeCode = $(this).attr("data-val");
-		  	  var result = $(this).attr("data-val2");
+		
 		 
-			swal({   
-				title: "정말 반려하시겠습니까?",   
-				text: "반려시 복구불가",   
-				type: "warning",   
-				showCancelButton: true,   
-				confirmButtonColor: "#DD6B55",   
-				confirmButtonText: "확인!", 
-				cancelButtonText: "취소!", 
-				closeOnConfirm: false,
-				closeOnCancel: true,
-				confirmButtonColor: '#f60e0e',
-			},function(isConfirm){   
-				if (isConfirm) {     
-					location.href = "/member/modifReasonReport?reportHistoryCode="+removeCode+"?reportApproval="+result;
-				}
+		 
+		$('.okey').click(function(){	
+			 var removeCode = $(this).attr("data-val");
+		  	 var result = $(this).attr("data-val2");
+			 swal({
+						title: "승인 사유입력",
+						type: "input",   showCancelButton: true,
+						closeOnConfirm: false,
+						animation: "slide-from-top",
+						inputPlaceholder: "사유 입력",
+						confirmButtonColor: '#304ffe',
+					}, function(inputValue){
+						if (inputValue === false) return false;
+						if (inputValue === "") {
+							swal({   
+								title: "승인 사유를 입력해주세요",
+								type: 'error' ,
+								confirmButtonColor: '#f60e0e',
+							});
+							return false
+						}
+						swal({   
+								title: "완료!",
+								text: "You wrote: " + inputValue,
+								type: 'success' ,
+								confirmButtonColor: '#304ffe',
+								
+						});
+						
+							
+				location.href = "/member/resultReport?reportHistoryCode="+removeCode+"&&reportApproval="+result+"&&reportApprovalReason="+inputValue
+						
 			});
-		 })
- 
+		});
+		$('.no').click(function(){	
+			 var removeCode = $(this).attr("data-val");
+		  	 var result = $(this).attr("data-val2");
+			 swal({
+						title: "반려 사유입력",
+						type: "input",   showCancelButton: true,
+						closeOnConfirm: false,
+						animation: "slide-from-top",
+						inputPlaceholder: "사유 입력",
+						confirmButtonColor: '#304ffe',
+					}, function(inputValue){
+						if (inputValue === false) return false;
+						if (inputValue === "") {
+							swal({   
+								title: "반려 사유를 입력해주세요",
+								type: 'error' ,
+								confirmButtonColor: '#f60e0e',
+							});
+							return false
+						}
+						swal({   
+								title: "완료!",
+								text: "You wrote: " + inputValue,
+								type: 'success' ,
+								confirmButtonColor: '#304ffe',
+								
+						});
+						
+							
+				location.href = "/member/resultReport?reportHistoryCode="+removeCode+"&&reportApproval="+result+"&&reportApprovalReason="+inputValue
+						
+			});
+		});
 		
 		</script>
 	</th:block>

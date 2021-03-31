@@ -56,7 +56,7 @@
 		FROM 
 			tb_member_status_criteria_set
 		
-			<if test="statusCriteriaCode != ''.toString() and statusCriteriaCode > 0">
+			<if test="statusCriteriaCode != ''.toString() and statusCriteriaCode != null">
 				WHERE status_criteria_code = #{statusCriteriaCode}
 			</if>
 		
@@ -65,20 +65,22 @@
 	<insert id="addBaseDate" parameterType="Report">
 	INSERT INTO 
 		tb_member_status_criteria_set
-	(	  status_criteria_code
+	(	  
+		  status_criteria_code
 		, status_criteria_name
 		, status_criteria_days
 		, member_id
 		, reg_date
-		, use_status
+		
 	)
 	VALUES 
-	(	sf_cancel_member_max_code()
+	(	
+		  sf_member_status_criteria_max_code()
 		, #{statusCriteriaName}
 		, #{statusCriteriaDays}
 		, #{memberId}
 		, NOW()
-		, #{useStatus}
+		
 	)
 	</insert>
 	
@@ -100,14 +102,14 @@
 	
 	<select id="getReasonReport" resultMap="reportResultMap">
 		SELECT 
-			report_code
+			  report_code
 			, report_reason
 			, report_ban_days
 			, report_reg_date
 			, member_id
 			, use_status
 		FROM tb_report_reason
-		<if test="reportCode != ''.toString() and reportCode > 0">
+		<if test="reportCode != ''.toString() and reportCode != null">
 				WHERE report_code = #{reportCode}
 		</if>
 		
@@ -163,6 +165,7 @@
 			, l.report_approval_reason
 			, l.report_approval_date
 			, r.report_reason
+			, l.use_status
 		FROM 
 			tb_report_history as l
 			join
@@ -176,13 +179,56 @@
 	<delete id="removeReport">
 		DELETE FROM tb_report_history WHERE report_history_code=#{reportHistoryCode}
 	</delete>
+	<update id="removeReportHistory">
+		UPDATE tb_report_history
+		SET
+		use_status='N'
+		WHERE report_history_code=#{reportHistoryCode}
+	</update>
 	
 	<update id="resultReport">
 		UPDATE 
 			tb_report_history
 		SET
+			report_approval_reason=#{reportApprovalReason},
 			report_approval=#{reportApproval},
 			report_approval_date=NOW()
 		WHERE report_history_code=#{reportHistoryCode};
 	</update>
+	
+	<insert id="addReport">
+		INSERT INTO tb_report_history
+		(
+		  reported_member_id
+		, report_member_id
+		, report_code
+		, report_detail_reason
+		, report_date
+		)
+		VALUES
+		(
+		  #{reportedMemberId}
+		, #{reportMemberId}
+		, #{reportCode}
+		, #{reportDetailReason}
+		, NOW()
+		)	
+	</insert>
+	
+	<select id="getSuspend" resultMap="reportResultMap">
+		SELECT 
+		      b.ban_current_code
+			, b.ban_member_id
+			, b.report_code
+			, b.ban_begin_date
+			, b.ban_end_date
+			, r.report_reason
+			, r.report_ban_days
+		FROM 
+			tb_ban_current_situation AS b
+		join
+			tb_report_reason AS r
+		on
+			b.report_code = r.report_code
+	</select>
 </mapper>

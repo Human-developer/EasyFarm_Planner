@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>정지회원 조회</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		정지회원 조회
+	</th:block>
+
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+	
+			<div class="card">
+				<div class ="card-body">
+					<form th:action="@{/member/getMember}"  method="get">
+						<div class ="row col-12">
+							<div class ="col-lg-2">
+								<select name="searchKey" class="form-control">
+									<option value="banMemberId">정지 아이디</option>
+								</select>
+							</div>
+							<div class ="col-lg-4">
+								<input type="search" name="searchValue" class ="form-control" placeholder="검색창">
+							</div>
+							<div class ="col-lg-4">
+								<button type="submit" class ="btn btn-info">검색버튼  <i class="align-middle" data-feather="search"></i></button>
+							</div>
+						</div>	
+					</form>
+				</div>
+			</div>
+			<div class="box-content">
+					<table  class="table table-hover table-striped">
+						<thead>
+							<tr>
+								<th>정지회원 관리코드</th>
+								<th>정지 아이디</th>
+								<th>신고사유 코드</th>
+								<th>정지 시작일</th>			
+								<th>정지 종료일</th>
+							
+								
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="b : ${banList}">
+								<td th:text="${b.banCurrentCode}"></td>							
+								<td th:text="${b.banMemberId}"></td>				
+								<td th:text="${b.reportCode}"></td>											
+								<td th:text="${b.banBeginDate}"></td>				
+								<td th:text="${b.banEndDate}"></td>				
+								
+							
+							
+							</tr>
+							<tr th:if="${banList.size() == 0}"> 
+								<td colspan="5" style ="text-align: center;">
+									조회된 내용이 없습니다
+								</td>
+							</tr>
+						</tbody>		
+	
+					</table>
+				
+			</div>
+			
+	</th:block>
+	
+
+</html>

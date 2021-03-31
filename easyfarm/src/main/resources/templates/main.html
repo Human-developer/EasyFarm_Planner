@@ -22,8 +22,29 @@
 	
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
 	<th:block layout:fragment="customContents">
-		메인화면
-		
+		<div class ="box-content">
+			메인화면
+			<hr>
+			<div class ="t-center">
+				<a th:href ="@{/member}" class ="btn">한강희</a>
+				<a th:href ="@{/farm}" class ="btn">송영석</a>
+				<a th:href ="@{/project}" class ="btn">박영환</a>
+				<a th:href ="@{/plan}" class ="btn">박금성</a>
+				<a th:href ="@{/result}" class ="btn">서동훈</a>
+				<a th:href ="@{/code}" class ="btn">유승범</a>
+			</div>
+		</div>
+			<form th:action="@{/member/login}" method="post">
+				<input type="hidden" name="memberId" th:value="${'id001'}">
+				<input type="hidden" name="memberPw" th:value="${'pw001'}">
+				<button class="btn" type="submit">관리자</button> 
+			</form>
+			
+			<form th:action="@{/member/login}" method="post">
+				<input type="hidden" name="memberId" th:value="${'id006'}">
+				<input type="hidden" name="memberPw" th:value="${'pw006'}">
+				<button class="btn" type="submit">회원</button> 
+			</form>
 	</th:block>
 	
 	

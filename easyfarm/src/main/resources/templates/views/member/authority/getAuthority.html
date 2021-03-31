@@ -37,8 +37,8 @@
 								<th>사용 상태</th>
 								<th>등록 아이디</th>			
 								<th>권한 등록일자</th>
-								<th th:if = "${session.SLEVEL == '관리자'}">수정</th>
-								<th th:if = "${session.SLEVEL == '관리자'}">삭제</th>
+								<th th:if = "${session.SLEVEL == '관리자'}">설정</th>
+								
 							</tr>
 						</thead>
 						<tbody>
@@ -48,22 +48,18 @@
 								<td th:text="${l.useStatus}"></td>			
 								<td th:text="${l.memberId}"></td>
 								<td th:text="${l.memberRegDate}"></td>				
-								
-								
 								<td th:if = "${session.SLEVEL == '관리자'}">
-									<a th:href ="@{/member/modifyAuthority(levelCode=${l.levelCode})}">수정</a>
-								</td>
-								<td th:if = "${session.SLEVEL == '관리자'}">
-								<a class="remove" th:data-val="${l.levelCode}" href="#">삭제</a>
-									
+									<div class="btn-group">
+										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button> 
+										<ul class="dropdown-menu">
+											<li><a th:href ="@{/member/modifyAuthority(levelCode=${l.levelCode})}">수정</a></li>
+											<li><a th:data-val="${l.levelCode}" class="remove" th:href="@{#}">삭제</a></li>
+										</ul> 
+									</div>
 								</td>
 							
 							</tr>
-							<tr th:if="${levelList.size() == 0}"> 
-								<td colspan="10" style ="text-align: center;">
-								조회된 내용이 없습니다
-								</td>
-							</tr>
+							
 						</tbody>		
 	
 					</table>
