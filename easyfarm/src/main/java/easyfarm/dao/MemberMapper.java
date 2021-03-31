@@ -1,32 +1,37 @@
 package easyfarm.dao;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import easyfarm.domain.Member;
+import easyfarm.domain.Report;
 
 @Mapper
 public interface MemberMapper {
 	
 	// 로그인 
 	public Member getMemberInfoById(String memberId);
+		
+	// 로그인 기록
+	public int updateLogin(String memberId);
+	public int updateLogout(String levelCode);
+	
+	// 최근로그인조회
+	public Member getLoginCode(String memberId);
+	
+	// 로그인 기록 전체 조회 & 검색
+	public List<Member> getLogin();
 	
 	// 회원가입
 	public int addMember(Member member);
 	
 	// 회원조회 & 검색
 	
-	public List<Map<String, Object>> getMemberList(Map<String, Object> paramMap);
+	public List<Member> getMemberList();
 	
-	// 회원 count 조회
-	public int countMember();
-	public int countSearchMember(String searchKey,String searchValue);
 	
-	// 로그인 기록
-	public int updateLogin(String memberId);
-	public int updateLogout(String memberId);
+	
 	
 	//회원 수정
 	public int modifyMember(Member member);
@@ -46,6 +51,50 @@ public interface MemberMapper {
 	public Member getAuthorityByCode(String levelCode);
 	//권한 수정
 	public int modifyAuthority(Member member);
+	//권한 fk 확인
+	public List<Member> getCode(String levelCode);
 	//권한 삭제
 	public int removeAuthority(String levelCode);
+	
+	//탈퇴회원 조회
+	public List<Member> getCancelMember();
+	
+	//휴면|탈퇴 예정일 조회
+	public List<Report> getExpectedDate();
+	//휴면|탈퇴 기준일 조회
+	public List<Report> getBaseDate();
+	//휴면|탈퇴 기준이름 리스트
+	public List<Report> getstatusCriteriaName();
+	//휴면|탈퇴 기준일 등록
+	public int addBaseDate(Report report);
+	//휴면|탈퇴 기준일 수정을위한 데이터가져오기
+	public Report getBaseDate(String statusCriteriaCode);
+	//휴면|탈퇴 기준일 수정
+	public int modifyBaseDate(Report report);
+	//휴면|탈퇴 기준일 삭제
+	public int removeBaseDate(String statusCriteriaCode);
+	
+	//신고사유 조회
+	public List<Report> getReasonReport();
+	//신고사유 수정을위한 조회
+	public Report getReasonReport(String reportCode);
+	//신고사유 등록
+	public int addReasonReport(Report report);
+	//신고사유 수정
+	public int modifyReasonReport(Report report);
+	//신고사유 삭제
+	public int removeReasonReport(String report);
+	//신고
+	public int addReport(Report report);
+	//신고 목록 조회
+	public List<Report> getReport(String memberId);
+	//신고신청 목록 삭제(회원);
+	public int removeReport(String reportHistoryCode);
+	//신고신청 목록 삭제(관리자);
+	public int removeReportHistory(String reportHistoryCode);
+	//신고 승인|반려
+	public int resultReport(String reportHistoryCode, String reportApproval,String reportApprovalReason);
+	
+	//정지회원조회
+	public List<Report> getSuspend();
 }

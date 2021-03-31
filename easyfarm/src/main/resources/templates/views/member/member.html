@@ -26,25 +26,19 @@
 			메인화면
 			<hr>
 			<div class ="t-center">
-				<a th:href ="@{/member}" class ="btn">한강희</a>
-				<a th:href ="@{/farm}" class ="btn">송영석</a>
-				<a th:href ="@{/project}" class ="btn">박영환</a>
-				<a th:href ="@{/plan}" class ="btn">박금성</a>
-				<a th:href ="@{/result}" class ="btn">서동훈</a>
-				<a th:href ="@{/code}" class ="btn">유승범</a>
+				<a th:href ="@{/member/getMember}" class ="btn">회원조회</a>
+				<a th:href ="@{/member/getLoginHistory}" class ="btn">로그인기록</a>
+				<a th:href ="@{/member/getAuthority}" class ="btn">권한조회</a>
+				<a th:href ="@{/member/getCancelMember}" class ="btn">탈퇴회원조회</a>
+				<a th:href ="@{/member/getExpectedDate}" class ="btn">휴면|탈퇴 예정일조회</a>
+				<a th:href ="@{/member/getBaseDate}" class ="btn">휴면탈퇴|기준일조회</a>
+				<a th:href ="@{/member/getReasonReport}" class ="btn">탈퇴사유조회</a>
+				<a th:href ="@{/member/getReport}" class ="btn">신고목록</a>
+				<a th:href ="@{/member/getSuspend}" class ="btn">정지회원목록</a>
+				
 			</div>
 		</div>
-			<form th:action="@{/member/login}" method="post">
-				<input type="hidden" name="memberId" th:value="${'id001'}">
-				<input type="hidden" name="memberPw" th:value="${'pw001'}">
-				<button class="btn" type="submit">관리자</button> 
-			</form>
-			
-			<form th:action="@{/member/login}" method="post">
-				<input type="hidden" name="memberId" th:value="${'id006'}">
-				<input type="hidden" name="memberPw" th:value="${'pw006'}">
-				<button class="btn" type="submit">회원</button> 
-			</form>
+		
 	</th:block>
 	
 	

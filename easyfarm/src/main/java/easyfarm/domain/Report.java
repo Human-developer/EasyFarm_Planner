@@ -41,7 +41,8 @@ public class Report {
 	    //휴면
 	    // 휴면탈퇴코드
 	    private String statusCriteriaCode;
-
+	    // 로그인 아이디
+	    private String loginMemberId;
 	    // 휴면탈퇴명
 	    private String statusCriteriaName;
 
@@ -77,7 +78,16 @@ public class Report {
 
 	    // 최종정지종료일
 	    private String banEndDate;
+
 	    
+	    
+		public String getLoginMemberId() {
+			return loginMemberId;
+		}
+
+		public void setLoginMemberId(String loginMemberId) {
+			this.loginMemberId = loginMemberId;
+		}
 
 		public String getReportHistoryCode() {
 			return reportHistoryCode;
@@ -278,6 +288,7 @@ public class Report {
 		public void setBanEndDate(String banEndDate) {
 			this.banEndDate = banEndDate;
 		}
+		
 
 		@Override
 		public String toString() {
@@ -332,9 +343,68 @@ public class Report {
 			builder.append(banBeginDate);
 			builder.append(", banEndDate=");
 			builder.append(banEndDate);
+			builder.append(", getReportHistoryCode()=");
+			builder.append(getReportHistoryCode());
+			builder.append(", getReportedMemberId()=");
+			builder.append(getReportedMemberId());
+			builder.append(", getReportMemberId()=");
+			builder.append(getReportMemberId());
+			builder.append(", getReportCode()=");
+			builder.append(getReportCode());
+			builder.append(", getReportDetailReason()=");
+			builder.append(getReportDetailReason());
+			builder.append(", getReportDate()=");
+			builder.append(getReportDate());
+			builder.append(", getReportApproval()=");
+			builder.append(getReportApproval());
+			builder.append(", getReportApprovalReason()=");
+			builder.append(getReportApprovalReason());
+			builder.append(", getReportApprovalDate()=");
+			builder.append(getReportApprovalDate());
+			builder.append(", getReportReason()=");
+			builder.append(getReportReason());
+			builder.append(", getReportBanDays()=");
+			builder.append(getReportBanDays());
+			builder.append(", getReportRegDate()=");
+			builder.append(getReportRegDate());
+			builder.append(", getStatusCriteriaCode()=");
+			builder.append(getStatusCriteriaCode());
+			builder.append(", getStatusCriteriaName()=");
+			builder.append(getStatusCriteriaName());
+			builder.append(", getStatusCriteriaDays()=");
+			builder.append(getStatusCriteriaDays());
+			builder.append(", getMemberId()=");
+			builder.append(getMemberId());
+			builder.append(", getRegDate()=");
+			builder.append(getRegDate());
+			builder.append(", getUseStatus()=");
+			builder.append(getUseStatus());
+			builder.append(", getAutoRestNum()=");
+			builder.append(getAutoRestNum());
+			builder.append(", getAutoRestDate()=");
+			builder.append(getAutoRestDate());
+			builder.append(", getAutoWithdrawalDate()=");
+			builder.append(getAutoWithdrawalDate());
+			builder.append(", getBanCurrentCode()=");
+			builder.append(getBanCurrentCode());
+			builder.append(", getBanMemberId()=");
+			builder.append(getBanMemberId());
+			builder.append(", getBanBeginDate()=");
+			builder.append(getBanBeginDate());
+			builder.append(", getBanEndDate()=");
+			builder.append(getBanEndDate());
+			builder.append(", getClass()=");
+			builder.append(getClass());
+			builder.append(", hashCode()=");
+			builder.append(hashCode());
+			builder.append(", toString()=");
+			builder.append(super.toString());
 			builder.append("]");
 			return builder.toString();
 		}
 		
+		
+	    
+	    
 		
 }

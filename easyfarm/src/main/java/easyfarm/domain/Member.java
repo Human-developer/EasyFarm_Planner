@@ -18,37 +18,20 @@ public class Member {
 	private String memberStatus;		//회원 상태
 	private String levelName;			//권한 이름
 	private String useStatus;			//권한 사용 상태
+	private String cancelMemberCode;	//탈퇴코드
 	private String cancelMemberReason;	//탈퇴사유
-	
-	
-	public String getCancelMemberReason() {
-		return cancelMemberReason;
-	}
-	public void setCancelMemberReason(String cancelMemberReason) {
-		this.cancelMemberReason = cancelMemberReason;
-	}
-	public String getUseStatus() {
-		return useStatus;
-	}
-	public void setUseStatus(String useStatus) {
-		this.useStatus = useStatus;
-	}
-	public String getLevelName() {
-		return levelName;
-	}
-	public void setLevelName(String levelName) {
-		this.levelName = levelName;
-	}
-	
+	private String cancelDate;			//탈퇴날짜
+	private String loginMemberId;		//로그인아이디
+	private String loginCode;			//로그인코드
+	private String loginDate;			//로그인 날짜
+	private String logoutDate;			//로그아웃 날짜
 	public String getMemberId() {
 		return memberId;
 	}
 	public void setMemberId(String memberId) {
-	
 		this.memberId = memberId;
 	}
-	public String getMemberPw() {	
-		
+	public String getMemberPw() {
 		return memberPw;
 	}
 	public void setMemberPw(String memberPw) {
@@ -114,6 +97,62 @@ public class Member {
 	public void setMemberStatus(String memberStatus) {
 		this.memberStatus = memberStatus;
 	}
+	public String getLevelName() {
+		return levelName;
+	}
+	public void setLevelName(String levelName) {
+		this.levelName = levelName;
+	}
+	public String getUseStatus() {
+		return useStatus;
+	}
+	public void setUseStatus(String useStatus) {
+		this.useStatus = useStatus;
+	}
+	public String getCancelMemberCode() {
+		return cancelMemberCode;
+	}
+	public void setCancelMemberCode(String cancelMemberCode) {
+		this.cancelMemberCode = cancelMemberCode;
+	}
+	public String getCancelMemberReason() {
+		return cancelMemberReason;
+	}
+	public void setCancelMemberReason(String cancelMemberReason) {
+		this.cancelMemberReason = cancelMemberReason;
+	}
+	public String getCancelDate() {
+		return cancelDate;
+	}
+	public void setCancelDate(String cancelDate) {
+		this.cancelDate = cancelDate;
+	}
+	public String getLoginMemberId() {
+		return loginMemberId;
+	}
+	public void setLoginMemberId(String loginMemberId) {
+		this.loginMemberId = loginMemberId;
+	}
+	public String getLoginCode() {
+		return loginCode;
+	}
+	public void setLoginCode(String loginCode) {
+		this.loginCode = loginCode;
+	}
+	public String getLoginDate() {
+		return loginDate;
+	}
+	public void setLoginDate(String loginDate) {
+		this.loginDate = loginDate;
+	}
+	public String getLogoutDate() {
+		return logoutDate;
+	}
+	public void setLogoutDate(String logoutDate) {
+		this.logoutDate = logoutDate;
+	}
+	
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -145,11 +184,77 @@ public class Member {
 		builder.append(levelName);
 		builder.append(", useStatus=");
 		builder.append(useStatus);
+		builder.append(", cancelMemberCode=");
+		builder.append(cancelMemberCode);
 		builder.append(", cancelMemberReason=");
 		builder.append(cancelMemberReason);
+		builder.append(", cancelDate=");
+		builder.append(cancelDate);
+		builder.append(", loginMemberId=");
+		builder.append(loginMemberId);
+		builder.append(", loginCode=");
+		builder.append(loginCode);
+		builder.append(", loginDate=");
+		builder.append(loginDate);
+		builder.append(", logoutDate=");
+		builder.append(logoutDate);
+		builder.append(", getMemberId()=");
+		builder.append(getMemberId());
+		builder.append(", getMemberPw()=");
+		builder.append(getMemberPw());
+		builder.append(", getMemberName()=");
+		builder.append(getMemberName());
+		builder.append(", getLevelCode()=");
+		builder.append(getLevelCode());
+		builder.append(", getMemberGender()=");
+		builder.append(getMemberGender());
+		builder.append(", getMemberAddress()=");
+		builder.append(getMemberAddress());
+		builder.append(", getMemberEmail()=");
+		builder.append(getMemberEmail());
+		builder.append(", getMemberPhone()=");
+		builder.append(getMemberPhone());
+		builder.append(", getMemberIdenNum()=");
+		builder.append(getMemberIdenNum());
+		builder.append(", getMemberIdenNum2()=");
+		builder.append(getMemberIdenNum2());
+		builder.append(", getMemberRegDate()=");
+		builder.append(getMemberRegDate());
+		builder.append(", getMemberStatus()=");
+		builder.append(getMemberStatus());
+		builder.append(", getLevelName()=");
+		builder.append(getLevelName());
+		builder.append(", getUseStatus()=");
+		builder.append(getUseStatus());
+		builder.append(", getCancelMemberCode()=");
+		builder.append(getCancelMemberCode());
+		builder.append(", getCancelMemberReason()=");
+		builder.append(getCancelMemberReason());
+		builder.append(", getCancelDate()=");
+		builder.append(getCancelDate());
+		builder.append(", getLoginMemberId()=");
+		builder.append(getLoginMemberId());
+		builder.append(", getLoginCode()=");
+		builder.append(getLoginCode());
+		builder.append(", getLoginDate()=");
+		builder.append(getLoginDate());
+		builder.append(", getLogoutDate()=");
+		builder.append(getLogoutDate());
+		builder.append(", getClass()=");
+		builder.append(getClass());
+		builder.append(", hashCode()=");
+		builder.append(hashCode());
+		builder.append(", toString()=");
+		builder.append(super.toString());
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	
+	
+	
+	
+	
 	
 	
 	
