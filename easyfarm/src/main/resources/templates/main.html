@@ -17,34 +17,49 @@
 	<th:block layout:fragment="customCssLib"></th:block>
 	
 	<!-- 사용자 정의 css -->
-	<th:block layout:fragment="customCss"></th:block>
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+			button a:link { color: white; text-decoration: none;}
+			button a:visited { color: white; text-decoration: none;}
+			button a:hover { color: white; text-decoration: none;}
+		</style>
+	</th:block>
 	
 	
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
 	<th:block layout:fragment="customContents">
 		<div class ="box-content">
-			메인화면
+			<h3>메인화면</h3>
 			<hr>
-			<div class ="t-center">
-				<a th:href ="@{/member}" class ="btn">한강희</a>
-				<a th:href ="@{/farm}" class ="btn">송영석</a>
-				<a th:href ="@{/project}" class ="btn">박영환</a>
-				<a th:href ="@{/plan}" class ="btn">박금성</a>
-				<a th:href ="@{/result}" class ="btn">서동훈</a>
-				<a th:href ="@{/code}" class ="btn">유승범</a>
-			</div>
+			<ul class="list-inline">
+				<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">접속</button></li>
+				<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
+				<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" onClick="location.href='/member'">한강희</button></li>
+				<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" onClick="location.href='/farm'">송영석</button></li>
+				<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" onClick="location.href='/project'">박영환</button></li>
+				<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" onClick="location.href='/plan'">박금성</button></li>
+				<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" onClick="location.href='/result'">서동훈</button></li>
+				<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" onClick="location.href='/code'">유승범</button></li>
+			</ul>
+			<ul class="list-inline">
+				<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">로그인</button></li>
+				<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
+				<li class="margin-bottom-10">
+					<form th:action="@{/member/login}" method="post">
+						<input type="hidden" name="memberId" th:value="${'id001'}">
+						<input type="hidden" name="memberPw" th:value="${'pw001'}">
+						<button class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" type="submit">관리자 자동 로그인</button> 
+					</form>
+				</li>
+				<li class="margin-bottom-10">
+					<form th:action="@{/member/login}" method="post">
+						<input type="hidden" name="memberId" th:value="${'id006'}">
+						<input type="hidden" name="memberPw" th:value="${'pw006'}">
+						<button class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" type="submit">회원 자동 로그인</button>
+					</form>
+				</li>
+			</ul>
 		</div>
-			<form th:action="@{/member/login}" method="post">
-				<input type="hidden" name="memberId" th:value="${'id001'}">
-				<input type="hidden" name="memberPw" th:value="${'pw001'}">
-				<button class="btn" type="submit">관리자</button> 
-			</form>
-			
-			<form th:action="@{/member/login}" method="post">
-				<input type="hidden" name="memberId" th:value="${'id006'}">
-				<input type="hidden" name="memberPw" th:value="${'pw006'}">
-				<button class="btn" type="submit">회원</button> 
-			</form>
 	</th:block>
 	
 	
