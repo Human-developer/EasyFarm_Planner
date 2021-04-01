@@ -61,7 +61,6 @@
 			${searchKey} LIKE CONCAT('%',#{searchValue},'%')					
 		</if>
 	</trim>
-	<!--정렬안됌 수정요망  -->
 	order by c.crop_cate asc;
 	</select>
 	
@@ -81,7 +80,9 @@
 		tb_crop as c
 	on
 	 cp.crop_code = c.crop_code 
-	order by cp.crop_code*1
+		order by cp.crop_code asc, cp.workphase asc
+		
+	
 	</select>
 	
 	<select id="getCropDetailCategory" parameterType="String" resultMap="CropDetailCategoryResultMap">
@@ -92,6 +93,13 @@
 		cwc.reg_date 
 	FROM 
 		tb_common_workphase_cate	as cwc
+	 	<trim prefix="WHERE" prefixOverrides="AND|OR ">
+			<if test="commonWorkphaseCateCode != null and commonWorkphaseCateCode != ''.toString()">
+				cwc.common_workphase_cate_code = #{commonWorkphaseCateCode}
+			</if>
+		</trim>
+	 
+		
 	order by common_workphase_cate_code*1
 	</select>
 	
@@ -164,9 +172,30 @@
 		</trim>
 	WHERE crop_code=#{crop.cropCode}
 	</update>
-	
-	
-	
+	<update id="modifyCropWorkStage" parameterType="CropWorkStage">
+	UPDATE tb_crop_phase_info
+		<trim prefix="SET" suffixOverrides=",">
+			workphase=#{workphase},
+			<if test="workphaseName != null and workphaseName != ''.toString()">
+			workphase_name=#{workphaseName},
+			</if>
+			<if test="useStatus != null and useStatus != ''.toString()">
+			use_status=#{useStatus}
+			</if>
+		</trim>
+	WHERE 
+	crop_phase_info_code=#{cropPhaseInfoCode}
+	</update>
+	<update id="modifyCropDetailCategory" parameterType="CropDetailCategory">
+	UPDATE tb_common_workphase_cate
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="commonWorkphaseCateName != null and commonWorkphaseCateName != ''.toString()">
+			common_workphase_cate_name=#{commonWorkphaseCateName}
+			</if>
+		</trim>
+	WHERE 
+	common_workphase_cate_code=#{commonWorkphaseCateCode}
+	</update>
 	
 	
 	
@@ -181,6 +210,8 @@
 			c.reg_date
 		FROM
 			tb_crop	as c
+			
+			
 		WHERE
 		 	c.crop_code = #{cropCode};
 	</select>
@@ -194,6 +225,8 @@
 			c.reg_date
 		FROM
 			tb_crop	as c
+			
+			
 		WHERE
 		 	c.crop_name = #{cropName};
 	</select>
@@ -213,9 +246,33 @@
 	 tb_crop as c
 	 on
 	  cp.crop_code = c.crop_code
+	  
+	  
 	 where
 	 crop_phase_info_code= #{cropPhaseInfoCode};
 	</select>
+	<select id="getcropPhaseInfo2" parameterType="String" resultMap="CropWorkStageResultMap">
+	SELECT 
+		cp.crop_phase_info_code
+		, cp.crop_code
+		, c.crop_name
+		, cp.workphase
+		, cp.workphase_name
+		, cp.use_status
+		, cp.reg_member_id
+		, cp.reg_date
+	FROM
+	 tb_crop_phase_info as cp
+	 inner join
+	 tb_crop as c
+	 on
+	  cp.crop_code = c.crop_code
+	  
+	  
+	 where
+	 cp.workphase= #{workphase} and cp.crop_code = #{cropCode}
+	</select>
+	
 	<select id="getCropListByCropCategory" resultMap="CropResultMap" resultType="map" parameterType="String">
 		select
 			*

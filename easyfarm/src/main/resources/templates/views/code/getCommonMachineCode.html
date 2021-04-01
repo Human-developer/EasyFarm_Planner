@@ -63,7 +63,11 @@
 		</table>
 		
 		</div>
-		<div th:include="views/code/back :: back"></div>
+		<div class="box-content">
+			<div class="row-inline-block">
+				<div th:include="views/code/back :: back"></div>
+			</div>
+		</div>
 	</th:block>
 <!-- 사용자 정의 자바스크립트 라이브러리 -->
 	<th:block layout:fragment="customScriptLib">

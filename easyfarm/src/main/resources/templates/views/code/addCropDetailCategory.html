@@ -62,120 +62,59 @@
 		 background-size: 100% 100%;}
 	</style>
 	</th:block>
-	<th:block layout:fragment="customScript">
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
 		
-	
-		<!-- <script type="text/javascript">
 		
+		
+			//공백검사
 			$(function(){
-				
-				$('#checkBtn').click(function(){
-					var ***Id = $('#***Id').val();
+				$('#addCheck').click(function(){
 					
-					$.ajax({
-						url: "/ajax/idCheck",
-						method: "POST",
-						data: { ***Id : ***Id },
-						success : function(data) {
-							if(data == "사용가능") {
-
-								alert("사용가능한 아이디 입니다.");
-								$('#checkBtn').attr('value','yes');
-							}
-
-							 else {
-								alert("중복된 아이디입니다.");
-								
-								//중복된 아이디면 중복체크가 다시 필요하기 때문에 check의 값을 no로 다시 지정
-								$('#checkBtn').attr('value','no');
-									return;
-							}
-							
-						},
-						error : function(xhr, status, error) {
-							console.log('xhr : ' + xhr);
-							console.log('status : ' + status);
-							console.log('error : ' + error);
-						}
-						
-					});
-				}); 
-			
-			})
-		
-			$(function(){
-				$('#***Id').keyup(function(){
-					$('#checkBtn').attr('value','no');
-				});
+					if($('#cropdetcate').val() == ""){
+						swal({
+							title: "상세작업명을 입력해주세요."
+						});
+						$('#cropname').focus();
+						return false; 
+					}
+					
+					return true;
+				})
 			});
-		
-		
-		$(function(){
-			$('#addCheck').click(function(){
-				var getMail = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
-				var getCheck= RegExp(/^[a-zA-Z0-9]{4,12}$/);
-				var getName= RegExp(/^[가-힣]+$/);
-				var phoneNumberRegex = /^[0-9]{3}-[0-9]{4}-[0-9]{4}$/;
-				
-				if($('#***Id').val() == ""){
-					alert("아이디를 입력해주세요");
-					$('#***Id').focus();
-					return false; 
-				}
-				if(!getCheck.test($('#***Id').val())){
-					alert("아이디를 형식에맞게 써주세요")
-					$('#***Id').val("");
-					$('#***Id').focus();
-					return false;
-				}
-				if($('#checkBtn').val() == "no"){
-					alert("중복검사를 해주세요")
-					return false;
-				}
-				
-				return true;
-			})
-		}); -->
-		
 		</script>
 	</th:block>
 	
 	<th:block layout:fragment="customContents">
-	
+	<div class ="container-fluid">
+			<div class ="row">
+				<div class ="col-sm-offset-2 col-sm-8">
+					<div class ="box-content">
+					<h3><strong>상세작업항목 등록</strong></h3>
+						<hr>
 	
 		<form th:action="@{/code/addCropDetailCategory}" method="post">
-			<div class="container-fluid">
+			<!-- <div class="container-fluid">
 				<div class="row" >
 					<div class="col-lg-offset-2 col-lg-8">
 						<div class="panel panel-default">
 							<div class="panel-heading t-center important-col ">
 								<h3><strong>상세작업항목 등록</strong></h3>
-							</div>
-							<div class="panel-body">
+							</div> -->
+							<div class="panel-body" style="padding-top: 0">
 								<div class="form-horizontal">
-									
-									
 									<div class="form-group margin-bottom-20">
-										<!-- <div class="col-sm-9">
-											<div class="card-content">
-											</div>
-										</div> -->
-									</div>
-									
-									<div class="form-group margin-bottom-20">
-										<label for="cropdetcat" class="col-sm-3 control-label"><strong>상세작업항목명</strong></label>
+										<label for="cropdetcate" class="col-sm-3 control-label"><strong>상세작업명</strong></label>
 										<div class="col-sm-8">
 											<!-- 제한조건넣기 -->
-											<input type="text" size="20" class="green-input" name="commonWorkphaseCateName" id="cropdetcat" placeholder="상세작업항목명 입력">
+											<input type="text" size="20" class="green-input" name="commonWorkphaseCateName" id="cropdetcate" placeholder="상세작업명 입력">
 										</div>
 	
 									</div>
-	
-	
-									<hr style="border-color : #ccd1d9;">
+									<hr>
 									<div class="form-group">
 										<div class="col-sm-10 col-sm-offset-1">
-											<button type="submit" class="btn btn-success btn-rounded waves-effect waves-light" style="width: 100%">상세작업항목 등록</button>
+											<button type="submit" id="addCheck" class="btn btn-success btn-rounded waves-effect waves-light" style="width: 100%">상세작업항목 등록</button>
 										</div>
 									</div>
 								</div>
@@ -185,6 +124,8 @@
 				</div>
 			</div>
 		</form>
+		<div th:include="views/code/back :: back"></div>
+		</div></div></div></div>
 	</th:block>
 	
 	

@@ -64,7 +64,55 @@
 	</th:block>
 	<th:block layout:fragment="customJavaScript">
 		<script type="text/javascript">
+			//중복검사
+			$('#checkBtn').click(function(){
+				var workphase = $('#workphase').val();
+				var cropcode = $('#cropcode').val();
+				if(cropcode != ""){
+					
+					$.ajax({
+						url: "/ajax/cropWorkphaseCheck",
+						method: "POST",
+						data: { workphase : workphase , cropcode : cropcode},
+						success : function(data) {
+							if(data == "사용가능") {
+								swal({
+									title: "등록가능. "
+								});
+								$('#checkBtn').attr('value','yes');
+							}
+							 else {
+								 swal({
+										title: "해당작물의 작업단계가 이미 존재합니다."
+									});
+								//중복된 작물명이면 중복체크가 다시 필요하기 때문에 check의 값을 no로 다시 지정
+								$('#checkBtn').attr('value','no');
+									return;
+							}
+						},
+						error : function(xhr, status, error) {
+							console.log('xhr : ' + xhr);
+							console.log('status : ' + status);
+							console.log('error : ' + error);
+						}
+					});
+				}else{
+					swal({
+						title: "작물을 선택해주세요."
+					});
+					$('#cropcode').focus();
+					return false; 
+				}
+			}); 
+			
+		$(function(){
+			$('#cropname').keyup(function(){
+				$('#checkBtn').attr('value','no');
+			});
+		});
+	
 		
+		//공백검사
 		$(function(){
 			$('#addCheck').click(function(){
 				
@@ -82,14 +130,6 @@
 					$('#workphase').focus();
 					return false; 
 				}
-				/*작물과 작업단계가 동시에 일치하는 데이터가 있으면 등록이 안되도록한다. ajax */
-				if($('#cropcode').val() == "" && $('#workphase').val() == ""){
-					swal({
-						title: "해당작물의 작업단계가 이미 존재합니다."
-					});
-					$('#workphase').focus();
-					return false; 
-				}
 				
 				if($('#workphasename').val() == ""){
 					swal({
@@ -98,6 +138,13 @@
 					$('#workphase').focus();
 					return false; 
 				}
+				if($('#checkBtn').val() == "no"){
+					swal({
+						title: "중복검사를 해주세요."
+					});
+					return false;
+				}
+				/*전단계가 없으면 등록안되게 조건걸기 추가  */
 				return true;
 			})
 		});
@@ -105,21 +152,26 @@
 	</th:block>
 	
 	<th:block layout:fragment="customContents">
-	
+	<div class ="container-fluid">
+			<div class ="row">
+				<div class ="col-sm-offset-2 col-sm-8">
+					<div class ="box-content">
+						<h3><strong>작업단계등록</strong></h3>	
+						<hr>
 	
 		<form th:action="@{/code/addCropWorkStage}" method="post">
-			<div class="container-fluid">
+			<!-- <div class="container-fluid">
 				<div class="row" >
 					<div class="col-lg-offset-2 col-lg-8">
 						<div class="panel panel-default">
 							<div class="panel-heading t-center important-col ">
 								<h3><strong>작업단계등록</strong></h3>
-							</div>
-							<div class="panel-body">
+							</div> -->
+							<div class="panel-body" style="padding-top: 0">
 								<div class="form-horizontal">
 									<div class="form-group margin-bottom-20">
 										<label for="cropcode" class="col-sm-3 control-label"><strong>작물, 작업단계</strong></label>
-										<div class="col-sm-4">
+										<div class="col-sm-3">
 											<div class="card-content">
 											<select class="form-control" name="cropCode" th:if="${session.SLEVEL == '관리자'}"  id="cropcode" >
 												<option value="" >:::: 작물 선택 ::::</option>
@@ -131,34 +183,41 @@
 										</div>	
 										<div class="col-sm-4">
 											<div class="card-content">
-											<select class="form-control" th:if="${session.SLEVEL == '관리자'}" name="workphase" id="workphase" >
-												  <option value="" >:::: 작업단계 선택 ::::</option>
-												  <option th:value="1단계" >1단계</option>
-												  <option th:value="2단계" >2단계</option>
-												  <option th:value="3단계" >3단계</option>
-												  <option th:value="4단계" >4단계</option>
-												  <option th:value="5단계" >5단계</option>
-												  <option th:value="6단계" >6단계</option>
-												  <option th:value="7단계" >7단계</option>
-												  <option th:value="8단계" >8단계</option>
-												  <option th:value="9단계" >9단계</option>
-												  <option th:value="10단계" >10단계</option>
-											</select>
+												<select class="form-control" th:if="${session.SLEVEL == '관리자'}" name="workphase" id="workphase" >
+													  <option value="" >:::: 작업단계 선택 ::::</option>
+													  <option th:value="1단계" >1단계</option>
+													  <option th:value="2단계" >2단계</option>
+													  <option th:value="3단계" >3단계</option>
+													  <option th:value="4단계" >4단계</option>
+													  <option th:value="5단계" >5단계</option>
+													  <option th:value="6단계" >6단계</option>
+													  <option th:value="7단계" >7단계</option>
+													  <option th:value="8단계" >8단계</option>
+													  <option th:value="9단계" >9단계</option>
+													  <option th:value="10단계" >10단계</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-sm-1">
+											<div class="card-content">
+												<button id="checkBtn" type="button" class="btn form-control" value="no">중복확인</button>
 											</div>
 										</div>
 									</div>
+								
 									<div class="form-group margin-bottom-20">
 										<label for="workphasename" class="col-sm-3 control-label"><strong>작업단계명</strong></label>
-										<div class="col-sm-8">
+										<div class="col-sm-7">
 											<input type="text" size="15" class="green-input" name="workphaseName" id="workphasename" placeholder="작업단계명 입력">
 										</div>
+										
 									</div>
+									
 	
-	
-									<hr style="border-color : #ccd1d9;">
+									<hr>
 									<div class="form-group">
 										<div class="col-sm-10 col-sm-offset-1">
-											<button type="submit" id="addCheck" class="btn btn-success btn-rounded waves-effect waves-light" style="width: 100%">작업단계 등록</button>
+											<button type="submit" id="addCheck" class="btn btn-success btn-rounded waves-effect waves-light form-control" style="width: 100%">작업단계 등록</button>
 										</div>
 									</div>
 								</div>
@@ -168,6 +227,8 @@
 				</div>
 			</div>
 		</form>
+		<div th:include="views/code/back :: back"></div>
+		</div></div></div></div>
 	</th:block>
 	
 	

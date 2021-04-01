@@ -143,21 +143,26 @@
 	</th:block>
 	
 	<th:block layout:fragment="customContents">
-	
+		<div class ="container-fluid">
+			<div class ="row">
+				<div class ="col-sm-offset-2 col-sm-8">
+					<div class ="box-content">
+						<h3><strong>작물등록</strong></h3>	
+						<hr>
 	
 		<form th:action="@{/code/addCrop}" method="post">
-			<div class="container-fluid">
+			<!-- <div class="container-fluid">
 				<div class="row" >
 					<div class="col-lg-offset-2 col-lg-8">
 						<div class="panel panel-default">
 							<div class="panel-heading t-center important-col ">
 								<h3><strong>작물등록</strong></h3>
-							</div>
-							<div class="panel-body">
+							</div> -->
+							<div class="panel-body"style="padding-top: 0">
 								<div class="form-horizontal">
 									<div class="form-group margin-bottom-20">
 										<label for="cropcate" class="col-sm-3 control-label"><strong>작물 카테고리</strong></label>
-										<div class="col-sm-8">
+										<div class="col-sm-6">
 											<div class="card-content">
 											<select class="form-control" name="cropCate" id="cropcate" >
 												  <option value="">:::: 작물 카테고리 선택 ::::</option>
@@ -179,28 +184,29 @@
 										<label for="cropname" class="col-sm-3 control-label"><strong>작물명</strong></label>
 										<div class="col-sm-6">
 											<input type="text" size="15" class="green-input" name="cropName" id="cropname" placeholder="작물명 입력">
-											<!-- <input type="hidden" name="memberId" id="" value=""> -->
 										</div>
 										<div class="col-sm-1">
-											<button id="checkBtn" type="button" class="btn" value="no">중복확인</button>
+											<button id="checkBtn" type="button" class="btn form-control" value="no">중복확인</button>
 										</div>
 	
 									</div>
 	
 	
-									<hr style="border-color : #ccd1d9;">
+										<hr>
 									<div class="form-group">
 										<div class="col-sm-10 col-sm-offset-1">
-											<button type="submit" id="addCheck" class="btn btn-success btn-rounded waves-effect waves-light" style="width: 100%">작물등록</button>
+											<button type="submit" id="addCheck" class="btn btn-success btn-rounded waves-effect waves-light form-control" style="width: 100%">작물등록</button>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
+				<!-- 		</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</form>
+		</div></div></div></div>
+		<div th:include="views/code/back :: back"></div>
 	</th:block>
 	
 	

@@ -141,17 +141,22 @@
 	</th:block>
 	
 	<th:block layout:fragment="customContents">
-	
+	<div class ="container-fluid">
+			<div class ="row">
+				<div class ="col-sm-offset-2 col-sm-8">
+					<div class ="box-content">
+						<h3><strong>농기계 등록</strong></h3>
+						<hr>
 	
 		<form th:action="@{/code/addCommonMachineCode}" method="post">
-			<div class="container-fluid">
+			<!-- <div class="container-fluid">
 				<div class="row" >
 					<div class="col-lg-offset-2 col-lg-8">
 						<div class="panel panel-default">
 							<div class="panel-heading t-center important-col ">
 								<h3><strong>농기계 등록</strong></h3>
-							</div>
-							<div class="panel-body">
+							</div> -->
+							<div class="panel-body"style="padding-top: 0">
 								<div class="form-horizontal">
 									<div class="form-group margin-bottom-20">
 										<label for="commonmachineName" class="col-sm-3 control-label"><strong>농기계명</strong></label>
@@ -162,7 +167,7 @@
 											<button id="checkBtn" type="button" class="btn" value="no">중복확인</button>
 										</div>
 									</div>
-									<hr style="border-color : #ccd1d9;">
+									<hr>
 									<div class="form-group">
 										<div class="col-sm-10 col-sm-offset-1">
 											<button type="submit" class="btn btn-success btn-rounded waves-effect waves-light" style="width: 100%">농기계 등록</button>
@@ -175,6 +180,8 @@
 				</div>
 			</div>
 		</form>
+			<div th:include="views/code/back :: back"></div>
+		</div></div></div></div>
 	</th:block>
 	
 	
