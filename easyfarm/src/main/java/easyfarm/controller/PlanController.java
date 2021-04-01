@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import easyfarm.domain.plan.ProjectPlan;
 import easyfarm.service.PgsPlanService;
 
 @Controller
@@ -20,7 +24,7 @@ public class PlanController {
 	@Autowired
 	private PgsPlanService pgsPlanService;
 	
-	/* 계획차수관리 */
+	/* 프로젝트별 통합계획 차수조회 */
 	@GetMapping("/plan")
 	public String planMain(Model model
 						  ,@RequestParam(value = "projectCode", required = false) String projectCode
@@ -32,10 +36,42 @@ public class PlanController {
 		if(projectCode != null && !"".equals(projectCode.trim())) {
 			Map<String, Object> farmProjectInfo = pgsPlanService.getFarmProjectInfo(projectCode);
 			String projectName = (String) farmProjectInfo.get("projectName");
+			model.addAttribute("projectCode", projectCode);
 			model.addAttribute("projectName", projectName);
+			
+			List<Map<String, Object>> projectPlanNList = pgsPlanService.getProjectPlanNList(projectCode);
+			System.out.println(projectPlanNList);
+			model.addAttribute("projectPlanNList", projectPlanNList);
 		}
 		
 		return "views/plan/planMain";
+	}
+	
+	/* 프로젝트별 통합계획생성 */
+	@PostMapping("/plan/addProjectPlan")
+	@ResponseBody
+	public int addProjectPlan(HttpSession session
+							 ,@RequestParam(value = "projectCode", required = false) String projectCode) {
+		
+		Map<String, Object> projectPlanData = null;
+		int result = 0;
+		if(projectCode != null && !"".equals(projectCode.trim())) {
+			Map<String, Object> maxPlanNum = pgsPlanService.getMaxProjectPlanNum(projectCode);
+			
+			String maxProjectPlanNum = (String) maxPlanNum.get("maxProjectPlanNum");
+			String memberId = (String) session.getAttribute("SID");
+			
+			projectPlanData = new HashMap<String, Object>();
+			projectPlanData.put("maxProjectPlanNum", maxProjectPlanNum);
+			projectPlanData.put("projectCode", projectCode);
+			projectPlanData.put("memberId", memberId);
+			
+			int count = pgsPlanService.addProjectPlan(projectPlanData);
+			if(count > 0) {
+				result = count;
+			}
+		}
+		return result;
 	}
 	
 	/* 월켈린더조회 */
@@ -148,5 +184,9 @@ public class PlanController {
 		return stockItemInfo;
 	}
 	
+	@GetMapping("/plan/test")
+	public String test() {
+		return "views/plan/test";
+	}
 	
 }
