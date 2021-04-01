@@ -4,6 +4,8 @@ public class FarmMemberJoin {
 	private String farmJoinCode;
 	private String farmCode;
 	private String farmJoinRequestMemberId;
+	private String memberName;
+	private String memberAge;
 	private String farmJoinRequestDate;
 	private String farmJoinPurpose;
 	private String farmJoinApproval;
@@ -26,6 +28,19 @@ public class FarmMemberJoin {
 	}
 	public void setFarmJoinRequestMemberId(String farmJoinRequestMemberId) {
 		this.farmJoinRequestMemberId = farmJoinRequestMemberId;
+	}
+	
+	public String getMemberName() {
+		return memberName;
+	}
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+	public String getMemberAge() {
+		return memberAge;
+	}
+	public void setMemberAge(String memberAge) {
+		this.memberAge = memberAge;
 	}
 	public String getFarmJoinRequestDate() {
 		return farmJoinRequestDate;
@@ -60,6 +75,10 @@ public class FarmMemberJoin {
 		builder.append(farmCode);
 		builder.append(", farmJoinRequestMemberId=");
 		builder.append(farmJoinRequestMemberId);
+		builder.append(", memberName=");
+		builder.append(memberName);
+		builder.append(", memberAge=");
+		builder.append(memberAge);
 		builder.append(", farmJoinRequestDate=");
 		builder.append(farmJoinRequestDate);
 		builder.append(", farmJoinPurpose=");
@@ -76,4 +95,6 @@ public class FarmMemberJoin {
 	
 	
 	
+	
 }
+
