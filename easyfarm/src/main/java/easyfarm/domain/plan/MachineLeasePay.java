@@ -90,13 +90,6 @@ public class MachineLeasePay {
         this.machineLeasePayTotal = machineLeasePayTotal;
     }
 
-    public String getregMemberId() {
-        return regMemberId;
-    }
-
-    public void setregMemberId(String regMemberId) {
-        this.regMemberId = regMemberId;
-    }
 
     public String getRegDate() {
         return regDate;
@@ -113,6 +106,14 @@ public class MachineLeasePay {
 
 	public void setFarmBookmarkMachineCode(String farmBookmarkMachineCode) {
 		this.farmBookmarkMachineCode = farmBookmarkMachineCode;
+	}
+
+	public String getRegMemberId() {
+		return regMemberId;
+	}
+
+	public void setRegMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
 	}
 
 	

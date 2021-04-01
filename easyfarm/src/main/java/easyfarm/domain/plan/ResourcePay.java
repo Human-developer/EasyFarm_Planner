@@ -108,13 +108,6 @@ public class ResourcePay {
         this.stockItemIncomeDate = stockItemIncomeDate;
     }
 
-    public String getregMemberId() {
-        return regMemberId;
-    }
-
-    public void setregMemberId(String regMemberId) {
-        this.regMemberId = regMemberId;
-    }
 
     public String getRegDate() {
         return regDate;
@@ -123,6 +116,14 @@ public class ResourcePay {
     public void setRegDate(String regDate) {
         this.regDate = regDate;
     }
+
+	public String getRegMemberId() {
+		return regMemberId;
+	}
+
+	public void setRegMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
+	}
 
 
 }

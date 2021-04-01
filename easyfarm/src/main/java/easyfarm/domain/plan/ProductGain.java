@@ -75,13 +75,6 @@ public class ProductGain {
         this.gainDate = gainDate;
     }
 
-    public String getregMemberId() {
-        return regMemberId;
-    }
-
-    public void setregMemberId(String regMemberId) {
-        this.regMemberId = regMemberId;
-    }
 
     public String getRegDate() {
         return regDate;
@@ -90,6 +83,14 @@ public class ProductGain {
     public void setRegDate(String regDate) {
         this.regDate = regDate;
     }
+
+	public String getRegMemberId() {
+		return regMemberId;
+	}
+
+	public void setRegMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
+	}
 
 
 }
