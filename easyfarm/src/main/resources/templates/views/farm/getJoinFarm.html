@@ -14,7 +14,9 @@
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
-	<th:block layout:fragment="customCssLib"></th:block>
+	<th:block layout:fragment="customCssLib">
+		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
+	</th:block>
 	
 	<!-- 사용자 정의 css -->
 	<th:block layout:fragment="customCss"></th:block>
@@ -27,11 +29,13 @@
 				<div class ="box-content">
 					<h3>농가가입신청목록</h3>
 					<hr>
-					<table class ="table">
+					<table id ="joinFarmMemberTable">
 						<thead>
 							<tr>
-								<th>신청자아이디</th>
-								<th>신청자명</th>
+								<th>가입신청코드</th>
+								<th>신청자 아이디</th>
+								<th>신청자 이름</th>
+								<th>신청자 나이</th>
 								<th>가입목적</th>
 								<th>가입신청일</th>
 								<th>승인</th>
@@ -39,19 +43,19 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>아이디</td>
-								<td>이름</td>
-								<td>목적</td>
-								<td>신청일</td>
-								<td><a th:href="@{#}">승인</a></td>
-								<td><a th:href="@{#}">거부</a></td>
+							<tr th:each="farmMemberJoin : ${farmMemberJoinList}">
+								<td th:text="${farmMemberJoin.farmJoinCode}">가입신청코드</td>
+								<td th:text="${farmMemberJoin.farmJoinRequestMemberId}">아이디</td>
+								<td th:text="${farmMemberJoin.memberName}">이름</td>
+								<td th:text="${farmMemberJoin.memberAge + '세'}">나이</td>
+								<td th:text="${farmMemberJoin.farmJoinPurpose}">목적</td>
+								<td th:text="${farmMemberJoin.farmJoinRequestDate}">신청일</td>
+								<td><button type="button" class ="btn btn-xs btn-success joinBtn" th:value="${farmMemberJoin.farmJoinCode}">승인</button></td>
+								<td><button type="button" class ="btn btn-xs btn-danger joinBtn" th:value="${farmMemberJoin.farmJoinCode}">거부</button></td>
 							</tr>
 						</tbody>
 					</table>
-					<div>
-						<a th:href="@{/farm/getMemberFarm}">!농가회원관리</a>
-					</div>
+					<a class ="btn btn-xs btn-info"th:href="@{/farm/getMemberFarm(farmCode=${farmCode})}">농가 회원관리 이동</a>
 				</div>
 			</div>
 		</div>
@@ -60,9 +64,88 @@
 	
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
-	<th:block layout:fragment="customScriptLib"></th:block>
+	<th:block layout:fragment="customScriptLib">
+		<div th:replace="fragments/dataTable :: dataTable" th:remove="tag"></div>
+	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 -->
-	<th:block layout:fragment="customJavaScript"></th:block>
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+			var lang_kor = {
+			        "decimal" : "",
+			        "emptyTable" : "해당 농가에 신청한 회원이 없습니다",
+			        "info" : "_START_ - _END_ (총 _TOTAL_ 명)",
+			        "infoEmpty" : "0명",
+			        "infoFiltered" : "(전체 _MAX_ 신청회원 중 검색결과)",
+			        "infoPostFix" : "",
+			        "thousands" : ",",
+			        "lengthMenu" : "_MENU_ 개씩 보기",
+			        "loadingRecords" : "로딩중...",
+			        "processing" : "처리중...",
+			        "search" : "검색 : ",
+			        "zeroRecords" : "검색된 회원이 없습니다.",
+			        "paginate" : {
+			            "first" : "첫 페이지",
+			            "last" : "마지막 페이지",
+			            "next" : "다음",
+			            "previous" : "이전"
+			        },
+			        "aria" : {
+			            "sortAscending" : " :  오름차순 정렬",
+			            "sortDescending" : " :  내림차순 정렬"
+			        }
+			}
+			
+			$('#joinFarmMemberTable').sysDataTable(lang_kor,[0]);
+			
+			
+			$('.joinBtn').click(function(){
+				var approval = $(this).text();
+				var farmMemberJoinCode = $(this).val();
+				var memberJoinTableTr = $(this).parent().parent();
+				
+				var request = $.ajax({
+		               url:"/json/farmJoinMember",
+		               method:"post", 
+		               data : {
+		            	   farmMemberJoinCode,farmMemberJoinCode,
+		            	   approval, approval
+		            	   },
+		            });
+		            request.done(function(data){
+						console.log(data);
+		            });
+		            request.fail(function( jqXHR, textStatus ){
+		               alert( "Request failed : " + textStatus );
+		            });
+		            
+		            
+				if(approval == '승인'){
+					swal({
+						title: "가입 승인",
+						type:'success',
+						confirmButtonColor: '#304ffe'
+					});
+					
+					/* UPDATE tb_farm_member_join
+					SET
+						farm_join_approval='승인',
+						farm_join_approval_member_id='id006'
+					WHERE 
+						farm_join_code='farm_join_6' */
+				}
+				else if(approval == '거부'){
+					swal({
+						title: "가입 거부",
+						type:'error',
+						confirmButtonColor: '#304ffe'
+					});
+				}
+			})
+			
+			
+		</script>
+	
+	</th:block>
 
 </html>

@@ -3,6 +3,7 @@ $.fn.sysDataTable = function(langKor, tagets,displayLen){
 	
 	
 	if(displayLen == null) displayLen =10;
+	$(this).css('width','100%')
 	$(this).addClass('table table-striped table-bordered display dataTable');
 	$(this).dataTable({
 		"paginate": false,
