@@ -5,12 +5,12 @@
 	  
 	<!-- 화면 title 설정 -->
 	<th:block layout:fragment="customTitle">
-		<title>프로젝트계획 차수관리</title>
+		<title>프로젝트 통합계획조회</title>
 	</th:block>
 	
 	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
 	<th:block layout:fragment="pageTitle">
-		프로젝트계획 차수관리
+		프로젝트계획 통합계획조회
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
@@ -36,11 +36,11 @@
 					<div class="box-content">
 						<div class="pull-left">
 							<th:block th:if="${projectName != null} and ${projectCode != null}">
-									<div class="hidden" th:text="${projectCode}" id="projectCode"></div>
+									<input class="hidden" th:value="${projectCode}" id="projectCode"/>
 									<div style="font-size: 24px;" th:text="|${projectName} 프로젝트계획 차수관리|"></div>
 							</th:block>
 							<th:block th:unless="${projectName != null}">
-								<div style="font-size: 24px;">프로젝트 계획 차수 관리</div>
+								<div style="font-size: 24px;">프로젝트 통합계획조회</div>
 							</th:block>
 						</div>
 						<div class="pull-right">
@@ -102,8 +102,8 @@
 	<!-- 사용자 정의 자바스크립트 -->
 	<th:block layout:fragment="customJavaScript">
 		<script type="text/javascript">
-		
-			$('#example tr').click(function(){
+			
+			$('#example tbody tr').click(function(){
 				var tr = $(this);
 				var tdText = tr.children().first().text();
 				location.href = '/plan/getSchedule?projectPlanCode=' + tdText;
@@ -137,8 +137,52 @@
 			$('#projectPlanNTable').sysDataTable(lang_kor);
 			
 			$('#addProjectPlanBtn').click(function(){
-				var projectCode = $('#projectCode').text();
-				location.href = '/plan/addProjectPlan?projectCode=' + projectCode;
+				var projectCode = $('#projectCode').val();
+				console.log(projectCode);
+				
+				var request = $.ajax({
+					  url: "/plan/addProjectPlan",
+					  method: "POST",
+					  data: { projectCode : projectCode },
+					  dataType: "json"
+					});
+					 
+					request.done(function( data ) {
+						if(data > 0){
+							swal({   
+								title: "프로젝트 통합계획 생성이\n완료되었습니다",   
+								type: "success",   
+								confirmButtonColor: "#304ffe",   
+								confirmButtonText: "확인", 
+								closeOnConfirm: false,
+								confirmButtonColor: '#304ffe',
+							}, function(isConfirm){   
+								if (isConfirm) { 
+									location.href = '/plan?projectCode=' + projectCode;
+								} 
+							});
+						}else{
+							
+						}
+					});
+					 
+					request.fail(function( jqXHR, textStatus ) {
+						swal({   
+							title: "통합계획을 다시 생성 해주세요",   
+							type: "warning",   
+							showCancelButton: true,
+							confirmButtonColor: "#DD6B55",   
+							confirmButtonText: "확인", 
+							closeOnConfirm: false,
+							confirmButtonColor: '#f60e0e',
+						}, function(isConfirm){   
+							if (isConfirm) { 
+								location.href = '/plan?projectCode=' + projectCode;
+							} 
+						});
+					});
+				
+				
 			});
 			
 		</script>		

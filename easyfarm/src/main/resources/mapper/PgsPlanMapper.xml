@@ -10,19 +10,23 @@
 		<result column="" property="" />
 	</resultMap>
   	
-  	<insert id="">
+  	<insert id="addProjectPlan" parameterType="map">
   		INSERT INTO tb_project_plan
-			(project_plan_code
+		(
+			project_plan_code
 			,project_code
 			,project_plan_n
 			,reg_member_id
-			,reg_date)
+			,reg_date
+						)
 		VALUES
-			(#{}
-			,#{}
-			,#{}
-			,#{}
-			,NOW())
+		(	
+			 sf_project_plan_max_code()
+			,#{projectCode}
+			,#{maxProjectPlanNum}
+			,#{memberId}
+			,NOW()
+						)
   	</insert>
   	
   	<select id="getTaxPayCateCode" resultType="map">
@@ -171,15 +175,16 @@
 			pp.project_code = fp.project_code
 		WHERE
 			fp.project_code = #{projectCode}
+		ORDER BY projectPlanN*1 ASC;
   	</select>
   	
-  	<select id="">
+  	<select id="getMaxProjectPlanNum" resultType="map" parameterType="String">
   		SELECT
-			concat(Max(CAST(REPLACE(pp.project_plan_n,'차','') AS UNSIGNED))+1,'차') AS maxProjectPlanNum
+			IFNULL(concat(Max(CAST(REPLACE(pp.project_plan_n,'차','') AS UNSIGNED))+1,'차'),'1차') AS maxProjectPlanNum
 		FROM
 			tb_project_plan AS pp
 		WHERE
-			pp.project_code = 'project_1'
+			pp.project_code = #{projectCode}
   	</select>
   	
   	<select id="getProjectPlanInfo" resultType="map" parameterType="String">

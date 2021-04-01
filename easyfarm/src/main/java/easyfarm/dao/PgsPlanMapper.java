@@ -40,8 +40,11 @@ public interface PgsPlanMapper {
 	//프로젝트별 계획차수 리스트 조회
 	public List<Map<String, Object>> getProjectPlanNList(String projectCode);
 	
+	//프로젝트별 max계획차수 조회
+	public Map<String, Object> getMaxProjectPlanNum(String projectCode);
+	
 	//프로젝트 통합계획 등록
-	public int addProjectPlan();
+	public int addProjectPlan(Map<String, Object> projectPlanData);
 	
 	//프로젝트별 작업단계
 	public List<Map<String, Object>> getWorkphaseName(Map<String, Object> projectData);

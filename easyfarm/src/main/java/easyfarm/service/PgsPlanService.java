@@ -63,9 +63,21 @@ public class PgsPlanService {
 		return result;
 	}
 	
-	public int addProjectPlan() {
-		
-		return 0;
+	//프로젝트별 max계획차수 조회
+	public Map<String, Object> getMaxProjectPlanNum(String projectCode) {
+		Map<String, Object> result = null;
+		if(projectCode != null && !"".equals(projectCode.trim())) {
+			result = pgsPlanMapper.getMaxProjectPlanNum(projectCode);
+		}
+		return result;
+	}
+	
+	public int addProjectPlan(Map<String, Object> projectPlanData) {
+		int result = 0;
+		if(projectPlanData != null && !"".equals(projectPlanData)) {
+			result = pgsPlanMapper.addProjectPlan(projectPlanData);
+		}
+		return result;
 	}
 	
 	//프로젝트별 작업단계

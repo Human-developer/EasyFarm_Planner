@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import easyfarm.domain.plan.ProjectPlan;
 import easyfarm.service.PgsPlanService;
@@ -37,6 +40,7 @@ public class PlanController {
 			model.addAttribute("projectName", projectName);
 			
 			List<Map<String, Object>> projectPlanNList = pgsPlanService.getProjectPlanNList(projectCode);
+			System.out.println(projectPlanNList);
 			model.addAttribute("projectPlanNList", projectPlanNList);
 		}
 		
@@ -44,15 +48,30 @@ public class PlanController {
 	}
 	
 	/* 프로젝트별 통합계획생성 */
-	@GetMapping("/plan/addProjectPlan")
-	public String addProjectPlan(Model model
-								,ProjectPlan projectPlan
-								,@RequestParam(value = "projectCode", required = false) String projectCode) {
+	@PostMapping("/plan/addProjectPlan")
+	@ResponseBody
+	public int addProjectPlan(HttpSession session
+							 ,@RequestParam(value = "projectCode", required = false) String projectCode) {
+		
+		Map<String, Object> projectPlanData = null;
+		int result = 0;
 		if(projectCode != null && !"".equals(projectCode.trim())) {
+			Map<String, Object> maxPlanNum = pgsPlanService.getMaxProjectPlanNum(projectCode);
 			
-			//pgsPlanService.addProjectPlan();
+			String maxProjectPlanNum = (String) maxPlanNum.get("maxProjectPlanNum");
+			String memberId = (String) session.getAttribute("SID");
+			
+			projectPlanData = new HashMap<String, Object>();
+			projectPlanData.put("maxProjectPlanNum", maxProjectPlanNum);
+			projectPlanData.put("projectCode", projectCode);
+			projectPlanData.put("memberId", memberId);
+			
+			int count = pgsPlanService.addProjectPlan(projectPlanData);
+			if(count > 0) {
+				result = count;
+			}
 		}
-		return "";
+		return result;
 	}
 	
 	/* 월켈린더조회 */
