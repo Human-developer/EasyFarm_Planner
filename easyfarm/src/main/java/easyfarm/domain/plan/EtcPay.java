@@ -86,14 +86,6 @@ public class EtcPay {
         this.etcPayDetail = etcPayDetail;
     }
 
-    public String getregMemberId() {
-        return regMemberId;
-    }
-
-    public void setregMemberId(String regMemberId) {
-        this.regMemberId = regMemberId;
-    }
-
     public String getRegDate() {
         return regDate;
     }
@@ -101,6 +93,14 @@ public class EtcPay {
     public void setRegDate(String regDate) {
         this.regDate = regDate;
     }
+
+	public String getRegMemberId() {
+		return regMemberId;
+	}
+
+	public void setRegMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
+	}
 
 
   

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import easyfarm.domain.Farm;
 import easyfarm.domain.FarmMember;
+import easyfarm.domain.FarmMemberJoin;
 import easyfarm.service.FarmService;
 
 
@@ -24,9 +25,31 @@ import easyfarm.service.FarmService;
 
 @Controller
 public class FarmController {
-
+	
 	@Autowired
 	private FarmService farmService;
+	
+	@PostMapping("/json/farmJoinMember")
+	public @ResponseBody String farmJoinMember(HttpSession session,
+			@RequestParam(value = "farmMemberJoinCode",required = false) String farmMemberJoinCode,
+			@RequestParam(value = "approval",required = false) String approval) {
+		String result = "처리 실패";
+		String memberId = (String)session.getAttribute("SID");
+		
+		if(farmMemberJoinCode != null && approval != null && memberId != null) {
+			int checkResult =0;
+			checkResult = farmService.farmJoinMember(farmMemberJoinCode,approval,memberId);
+			
+			if(checkResult > 0) {				
+				result ="처리 완료";
+			}
+
+			
+		}
+		
+		
+		return result;
+	}
 	
 	@PostMapping("/json/addfarmMemberJoin")
 	public @ResponseBody String addFarmMemberJoin(
@@ -241,7 +264,7 @@ public class FarmController {
 			@RequestParam(value = "farmCode", required = false) String farmCode,
 			@RequestParam(value = "farmMemberLevel", required = false) String farmMemberLevel) {
 		
-		if(farmCode != null && farmMemberLevel != null) {
+		if(farmCode != null) {
 			List<FarmMember> farmMemberList = farmService.getMemberFarm(farmCode);
 			if(farmMemberList != null) {
 				model.addAttribute("farmMemberList", farmMemberList);
@@ -259,7 +282,21 @@ public class FarmController {
 	
 	/* 농가가입신청리스트 */
 	@GetMapping("/farm/getJoinFarm")
-	public String getJoinFarm(Model model) {
+	public String getJoinFarm(Model model,
+			@RequestParam(value = "farmCode", required = false) String farmCode) {
+		if(farmCode != null) {
+			List<FarmMemberJoin> farmMemberJoinList = farmService.getJoinFarm(farmCode);
+			System.out.println(farmMemberJoinList + "ttttttttttttttttttttttttttt");
+			if(farmMemberJoinList != null) {
+				model.addAttribute("farmMemberJoinList", farmMemberJoinList);
+				model.addAttribute("farmCode", farmCode);
+			}
+			
+		}
+		else {
+			return "redirect:/farm/farmMain";
+		}
+		
 		return "views/farm/getJoinFarm";
 	}
 	/* 농가가입신청리스트 */
