@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import easyfarm.domain.plan.ProjectPlan;
-import easyfarm.service.PgsPlanService;
+import easyfarm.service.PlanService;
 
 @Controller
 public class PlanController {
 	
 	@Autowired
-	private PgsPlanService pgsPlanService;
+	private PlanService planService;
 	
 	/* 프로젝트별 통합계획 차수조회 */
 	@GetMapping("/plan")
@@ -34,12 +34,12 @@ public class PlanController {
 		}
 		//프로젝트정보조회
 		if(projectCode != null && !"".equals(projectCode.trim())) {
-			Map<String, Object> farmProjectInfo = pgsPlanService.getFarmProjectInfo(projectCode);
+			Map<String, Object> farmProjectInfo = planService.getFarmProjectInfo(projectCode);
 			String projectName = (String) farmProjectInfo.get("projectName");
 			model.addAttribute("projectCode", projectCode);
 			model.addAttribute("projectName", projectName);
 			
-			List<Map<String, Object>> projectPlanNList = pgsPlanService.getProjectPlanNList(projectCode);
+			List<Map<String, Object>> projectPlanNList = planService.getProjectPlanNList(projectCode);
 			System.out.println(projectPlanNList);
 			model.addAttribute("projectPlanNList", projectPlanNList);
 		}
@@ -56,7 +56,7 @@ public class PlanController {
 		Map<String, Object> projectPlanData = null;
 		int result = 0;
 		if(projectCode != null && !"".equals(projectCode.trim())) {
-			Map<String, Object> maxPlanNum = pgsPlanService.getMaxProjectPlanNum(projectCode);
+			Map<String, Object> maxPlanNum = planService.getMaxProjectPlanNum(projectCode);
 			
 			String maxProjectPlanNum = (String) maxPlanNum.get("maxProjectPlanNum");
 			String memberId = (String) session.getAttribute("SID");
@@ -66,7 +66,7 @@ public class PlanController {
 			projectPlanData.put("projectCode", projectCode);
 			projectPlanData.put("memberId", memberId);
 			
-			int count = pgsPlanService.addProjectPlan(projectPlanData);
+			int count = planService.addProjectPlan(projectPlanData);
 			if(count > 0) {
 				result = count;
 			}
@@ -83,12 +83,12 @@ public class PlanController {
 		}
 		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
 			/* 계획정보조회 */
-			Map<String, Object> projectPlanInfo = pgsPlanService.getProjectPlanInfo(projectPlanCode);
+			Map<String, Object> projectPlanInfo = planService.getProjectPlanInfo(projectPlanCode);
 			String projectPlanN = (String)projectPlanInfo.get("projectPlanN");
 			String projectCode =  (String)projectPlanInfo.get("projectCode");
 			
 			/* 계획차수 리스트 조회 */
-			List<Map<String, Object>> projectPlanNList = pgsPlanService.getProjectPlanNList(projectCode);
+			List<Map<String, Object>> projectPlanNList = planService.getProjectPlanNList(projectCode);
 			
 			model.addAttribute("projectPlanCode", projectPlanCode);
 			model.addAttribute("projectPlanN", projectPlanN);
@@ -111,7 +111,7 @@ public class PlanController {
 		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
 			
 			/* 계획정보조회 */
-			Map<String, Object> projectPlanInfo = pgsPlanService.getProjectPlanInfo(projectPlanCode);
+			Map<String, Object> projectPlanInfo = planService.getProjectPlanInfo(projectPlanCode);
 			String projectPlanN = (String) projectPlanInfo.get("projectPlanN");
 			String projectName = (String) projectPlanInfo.get("projectName");
 			String projectCode = (String) projectPlanInfo.get("projectCode");
@@ -133,32 +133,32 @@ public class PlanController {
 			model.addAttribute("projectPlanCode", projectPlanCode);
 			
 			/* 작업단계 */
-			List<Map<String, Object>> workphaseNameList = pgsPlanService.getWorkphaseName(projectData);
+			List<Map<String, Object>> workphaseNameList = planService.getWorkphaseName(projectData);
 			System.out.println(workphaseNameList);
 			model.addAttribute("workphaseNameList", workphaseNameList);
 			
 			/* 상세작업항목조회 */
-			List<Map<String, Object>> workphaseCateNameList = pgsPlanService.getWorkphaseCateName(projectData);
+			List<Map<String, Object>> workphaseCateNameList = planService.getWorkphaseCateName(projectData);
 			model.addAttribute("workphaseCateNameList", workphaseCateNameList);
 			
 			/* 거래처항목조회 */
-			List<Map<String, Object>> clientNameList = pgsPlanService.getClientName(projectData);
+			List<Map<String, Object>> clientNameList = planService.getClientName(projectData);
 			model.addAttribute("clientNameList", clientNameList);
 			
 			/* 농기계즐겨찾기조회 */
-			List<Map<String, Object>> farmBookmarkMachineList = pgsPlanService.getFarmBookmarkMachine(projectData);
+			List<Map<String, Object>> farmBookmarkMachineList = planService.getFarmBookmarkMachine(projectData);
 			model.addAttribute("farmBookmarkMachineList", farmBookmarkMachineList);
 			
 			/* 보유농기계조회 */
-			List<Map<String, Object>> farmRetainMachineList = pgsPlanService.getFarmRetainMachine(projectData);
+			List<Map<String, Object>> farmRetainMachineList = planService.getFarmRetainMachine(projectData);
 			model.addAttribute("farmRetainMachineList", farmRetainMachineList);
 			
 			/* 품목조회 */
-			List<Map<String, Object>> stockItemList = pgsPlanService.getStockItem(projectData);
+			List<Map<String, Object>> stockItemList = planService.getStockItem(projectData);
 			model.addAttribute("stockItemList", stockItemList);
 			
 			/* 공과금항목조회 */
-			List<Map<String, Object>> taxPayCateCodeList = pgsPlanService.getTaxPayCateCode();
+			List<Map<String, Object>> taxPayCateCodeList = planService.getTaxPayCateCode();
 			System.out.println(taxPayCateCodeList);
 			model.addAttribute("taxPayCateCodeList", taxPayCateCodeList);
 			
@@ -179,7 +179,7 @@ public class PlanController {
 		
 		Map<String, Object> stockItemInfo = null;
 		if(resourceStockItemCode != null && !"".equals(resourceStockItemCode.trim())) {
-			stockItemInfo = pgsPlanService.getStockItemInfo(resourceStockItemCode);
+			stockItemInfo = planService.getStockItemInfo(resourceStockItemCode);
 		}
 		return stockItemInfo;
 	}
