@@ -88,14 +88,6 @@ public class ResourceUsePlan {
     }
 
 
-    public String getregMemberId() {
-        return regMemberId;
-    }
-
-    public void setregMemberId(String regMemberId) {
-        this.regMemberId = regMemberId;
-    }
-
     public String getRegDate() {
         return regDate;
     }
@@ -103,6 +95,14 @@ public class ResourceUsePlan {
     public void setRegDate(String regDate) {
         this.regDate = regDate;
     }
+
+	public String getRegMemberId() {
+		return regMemberId;
+	}
+
+	public void setRegMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
+	}
 
 
 	

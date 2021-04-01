@@ -112,14 +112,6 @@ public class WorkForcePayResult {
         this.workforcePayRunTotal = workforcePayRunTotal;
     }
 
-    public String getregMemberId() {
-        return regMemberId;
-    }
-
-    public void setregMemberId(String regMemberId) {
-        this.regMemberId = regMemberId;
-    }
-
     public String getRegDate() {
         return regDate;
     }
@@ -128,13 +120,20 @@ public class WorkForcePayResult {
         this.regDate = regDate;
     }
 
-
 	public WorkForcePay getWorkforcePayPlan() {
 		return workforcePayPlan;
 	}
 
 	public void setWorkforcePayPlan(WorkForcePay workforcePayPlan) {
 		this.workforcePayPlan = workforcePayPlan;
+	}
+
+	public String getRegMemberId() {
+		return regMemberId;
+	}
+
+	public void setRegMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
 	}
 
 	
