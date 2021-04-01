@@ -14,23 +14,12 @@
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
-	<th:block layout:fragment="customCssLib"></th:block>
-	
+	<th:block layout:fragment="customCssLib">
+		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
+	</th:block>
+		
 	<!-- 사용자 정의 css -->
 	<th:block layout:fragment="customCss">
-		<style type="text/css">
-			div.dataTables_filter {
-				width: 50%;
-				float: right;
-				text-align: right;
-			}
-			.dataFarmTable tbody tr:hover{
-				background-color: rgba(0,0,0,0.1);
-			}
-			.dropdown-menu li:hover{
-				background-color: rgba(0,0,0,0.3);
-			}
-		</style>
 	</th:block>
 	
 	
@@ -41,7 +30,7 @@
 				<div class ="box-content">
 					<h3>농가 회원 조회</h3>
 					<hr>
-					<table class="table table-striped table-bordered display dataTable dataFarmTable" style ="width: 100%;">
+					<table id="dataFarmTable">
 						<thead>
 							<tr>
 								<th th:text = "${'농가회원코드'}"/>
@@ -85,11 +74,7 @@
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
 	<th:block layout:fragment="customScriptLib">
-		<script src="/assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
-		<script src="/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
-		<script src="/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
-		<script src="/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
-		<script src="/assets/scripts/datatables.demo.min.js"></script>
+		<div th:replace="fragments/dataTable :: dataTable" th:remove="tag"></div>
 	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 -->
@@ -121,31 +106,7 @@
 			}
 			
 			        
-			$('.dataFarmTable').dataTable( {
-				"paginate": false,
-				"sort": false,
-				//기본 표시건수
-				displayLength: 10,
-				//표시건수바
-				lengthChange: false,
-				// 검색 기능 숨기기
-				searching: true,
-				// 정렬 기능 숨기기
-				ordering: true,
-				// 정보 표시 숨기기
-				info: false,
-				// 페이징 기능 숨기기
-				paging: true,
-				//언어설정
-				language :lang_kor,
-				"columnDefs": [
-		            {
-		                "targets": [ 0 , 1, 3],
-		                "visible": false,
-		                "searchable": false
-		            }
-		        ]
-				});
+			$('#dataFarmTable').sysDataTable(lang_kor,[0,1,3]);
 			
 		</script>
 	</th:block>
