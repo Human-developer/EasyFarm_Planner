@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import easyfarm.domain.plan.ProjectPlan;
 import easyfarm.service.PgsPlanService;
 
 @Controller
@@ -20,7 +21,7 @@ public class PlanController {
 	@Autowired
 	private PgsPlanService pgsPlanService;
 	
-	/* 계획차수관리 */
+	/* 프로젝트별 통합계획 차수조회 */
 	@GetMapping("/plan")
 	public String planMain(Model model
 						  ,@RequestParam(value = "projectCode", required = false) String projectCode
@@ -32,10 +33,26 @@ public class PlanController {
 		if(projectCode != null && !"".equals(projectCode.trim())) {
 			Map<String, Object> farmProjectInfo = pgsPlanService.getFarmProjectInfo(projectCode);
 			String projectName = (String) farmProjectInfo.get("projectName");
+			model.addAttribute("projectCode", projectCode);
 			model.addAttribute("projectName", projectName);
+			
+			List<Map<String, Object>> projectPlanNList = pgsPlanService.getProjectPlanNList(projectCode);
+			model.addAttribute("projectPlanNList", projectPlanNList);
 		}
 		
 		return "views/plan/planMain";
+	}
+	
+	/* 프로젝트별 통합계획생성 */
+	@GetMapping("/plan/addProjectPlan")
+	public String addProjectPlan(Model model
+								,ProjectPlan projectPlan
+								,@RequestParam(value = "projectCode", required = false) String projectCode) {
+		if(projectCode != null && !"".equals(projectCode.trim())) {
+			
+			//pgsPlanService.addProjectPlan();
+		}
+		return "";
 	}
 	
 	/* 월켈린더조회 */
@@ -148,5 +165,9 @@ public class PlanController {
 		return stockItemInfo;
 	}
 	
+	@GetMapping("/plan/test")
+	public String test() {
+		return "views/plan/test";
+	}
 	
 }

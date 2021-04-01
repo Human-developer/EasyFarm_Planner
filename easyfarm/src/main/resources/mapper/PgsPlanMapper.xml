@@ -10,6 +10,21 @@
 		<result column="" property="" />
 	</resultMap>
   	
+  	<insert id="">
+  		INSERT INTO tb_project_plan
+			(project_plan_code
+			,project_code
+			,project_plan_n
+			,reg_member_id
+			,reg_date)
+		VALUES
+			(#{}
+			,#{}
+			,#{}
+			,#{}
+			,NOW())
+  	</insert>
+  	
   	<select id="getTaxPayCateCode" resultType="map">
   		SELECT
 			 tpc.tax_pay_cate_code	AS taxPayCateCode
@@ -139,12 +154,32 @@
   	
   	<select id="getProjectPlanNList" resultType="map" parameterType="String">
   		SELECT
-			 pp.project_plan_code	AS projectPlanCode
-			,pp.project_plan_n		AS projectPlanN
+			 fp.project_code 				AS projectCode
+			,fp.project_name 				AS projectName
+			,fp.project_area 				AS projectArea
+			,fp.project_begin 				AS projectBegin
+			,fp.project_end 				AS projectEnd
+			,fp.project_estimate_income 	AS projectEstimateIncome
+			,fp.project_estimate_spending 	AS projectEstimateSpending
+			,pp.project_plan_code 			AS projectPlanCode
+			,pp.project_plan_n 				AS projectPlanN
+		FROM
+			tb_project_plan AS pp
+			INNER join
+			tb_farm_project AS fp
+			on
+			pp.project_code = fp.project_code
+		WHERE
+			fp.project_code = #{projectCode}
+  	</select>
+  	
+  	<select id="">
+  		SELECT
+			concat(Max(CAST(REPLACE(pp.project_plan_n,'차','') AS UNSIGNED))+1,'차') AS maxProjectPlanNum
 		FROM
 			tb_project_plan AS pp
 		WHERE
-			pp.project_code = #{projectCode}
+			pp.project_code = 'project_1'
   	</select>
   	
   	<select id="getProjectPlanInfo" resultType="map" parameterType="String">

@@ -63,6 +63,11 @@ public class PgsPlanService {
 		return result;
 	}
 	
+	public int addProjectPlan() {
+		
+		return 0;
+	}
+	
 	//프로젝트별 작업단계
 	public List<Map<String, Object>> getWorkphaseName(Map<String, Object> projectData) {
 		return pgsPlanMapper.getWorkphaseName(projectData);
