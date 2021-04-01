@@ -30,33 +30,95 @@ import easyfarm.domain.plan.WorkForcePay;
 @Transactional
 public class PlanService {
 	
-	
-	//연관 맺어주기 =  DI 필드 주입방식
-	/*@Autowired
-	private MemberMapper memberMapper;
-	
-	private MemberMapper memberMapper2;
-	// 2. DI SETTER 메서드 주입방식
-	@Autowired
-	public void setMemberMapper(MemberMapper memberMapper2) {
-		this.memberMapper2 = memberMapper;
-	}
-	*/
-	// 3. DI 생성자 메서드 주입방식 (spring권장)
 	private final PlanMapper planMapper;
 	
-	//3-1 spring framework 4.3 이후부터는 @Autowired 쓰지 않아도 주입 가능
-	@Autowired
-	public PlanService(PlanMapper planMapper) {
-		this.planMapper = planMapper;
+	public PlanService(PlanMapper pgsPlanMapper) {
+		this.planMapper = pgsPlanMapper;
 	}
-	@PostConstruct
-	public void initialize() {
-		System.out.println("======================================");
-		System.out.println("PlanService bean 등록");
-		System.out.println("======================================");
-	}	
 	
+	//농가별 프로젝트 정보조회
+	public Map<String, Object> getFarmProjectInfo(String projectCode) {
+		Map<String, Object> result = null;
+		if(projectCode != null && !"".equals(projectCode.trim())) {
+			result = planMapper.getFarmProjectInfo(projectCode);
+		}
+		return result;
+	}
+	
+	//프로젝트별 계획차수 리스트 조회
+	public List<Map<String, Object>> getProjectPlanNList(String projectCode) {
+		List<Map<String, Object>> result = null;
+		if(projectCode != null && !"".equals(projectCode.trim())) {
+			result = planMapper.getProjectPlanNList(projectCode);
+		}
+		return result;
+	}
+	
+	//프로젝트 계획정보조회
+	public Map<String, Object> getProjectPlanInfo(String projectPlanCode) {
+		Map<String, Object> result = null;
+		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
+			result = planMapper.getProjectPlanInfo(projectPlanCode);
+		}
+		return result;
+	}
+	
+	//프로젝트별 max계획차수 조회
+	public Map<String, Object> getMaxProjectPlanNum(String projectCode) {
+		Map<String, Object> result = null;
+		if(projectCode != null && !"".equals(projectCode.trim())) {
+			result = planMapper.getMaxProjectPlanNum(projectCode);
+		}
+		return result;
+	}
+	
+	public int addProjectPlan(Map<String, Object> projectPlanData) {
+		int result = 0;
+		if(projectPlanData != null && !"".equals(projectPlanData)) {
+			result = planMapper.addProjectPlan(projectPlanData);
+		}
+		return result;
+	}
+	
+	//프로젝트별 작업단계
+	public List<Map<String, Object>> getWorkphaseName(Map<String, Object> projectData) {
+		return planMapper.getWorkphaseName(projectData);
+	}
+	
+	//프로젝트별 상세작업항목
+	public List<Map<String, Object>> getWorkphaseCateName(Map<String, Object> projectData) {
+		return planMapper.getWorkphaseCateName(projectData);
+	}
+	
+	//농가별 거래처
+	public List<Map<String, Object>> getClientName(Map<String, Object> projectData) {
+		return planMapper.getClientName(projectData);
+	}
+	
+	//농가별 농기계즐겨찾기
+	public List<Map<String, Object>> getFarmBookmarkMachine(Map<String, Object> projectData) {
+		return planMapper.getFarmBookmarkMachine(projectData);
+	}
+	
+	//농가별 보유농기계
+	public List<Map<String, Object>> getFarmRetainMachine(Map<String, Object> projectData) {
+		return planMapper.getFarmRetainMachine(projectData);
+	}
+	
+	//농가별 품목조회
+	public List<Map<String, Object>> getStockItem(Map<String, Object> projectData) {
+		return planMapper.getStockItem(projectData);
+	}
+	
+	//품목정보조회
+	public Map<String, Object> getStockItemInfo(String stockItemCode) {
+		return planMapper.getStockItemInfo(stockItemCode);
+	}
+	
+	//공과금항목조회
+	public List<Map<String, Object>> getTaxPayCateCode() {
+		return planMapper.getTaxPayCateCode();
+	}
 	
 	public List<EtcPay> getEtcPayPlan(){
 		List<EtcPay> etcPayPlan = null;
@@ -64,47 +126,55 @@ public class PlanService {
 		etcPayPlan =planMapper.getEtcPayPlan();
 		return etcPayPlan;
 	}
+	
 	public List<ResourcePay> getResourcePayPlan(){
 		List<ResourcePay> resourcePayPlan = null;
 		resourcePayPlan =planMapper.getResourcePayPlan();
 		
 		return resourcePayPlan;
 	}
+	
 	public List<InsurancePay> getInsurancePayPlan(){
 		List<InsurancePay> insurancePayPlan = null;
 		insurancePayPlan =planMapper.getInsurancePayPlan();
 		
 		return insurancePayPlan;
 	}
+	
 	public List<MachineLeasePay> getMachineLeasePayPlan(){
 		List<MachineLeasePay> machineLeasePayPlan = null;
 		machineLeasePayPlan =planMapper.getMachineLeasePayPlan();
 		
 		return machineLeasePayPlan;
 	}
+	
 	public List<MachineUsePay> getMachineUsePayPlan(){
 		List<MachineUsePay> machineUsePayPlan = null;
 		machineUsePayPlan =planMapper.getMachineUsePayPlan();
 		
 		return machineUsePayPlan;
 	}
+	
 	public List<ProductGain> getProductGainPlan(){
 		List<ProductGain> productGainPlan = null;
 		productGainPlan =planMapper.getProductGainPlan();
 		
 		return productGainPlan;
 	}
+	
 	public List<ResourceUsePlan> getResourceUsePlanPlan(){
 		List<ResourceUsePlan> resourceUsePlan = null;
 		resourceUsePlan =planMapper.getResourceUsePlan();
 		return resourceUsePlan;
 	}
+	
 	public List<TaxPay> getTaxPayPlan(){
 		List<TaxPay> taxPayPlan = null;
 		taxPayPlan =planMapper.getTaxPayPlan();
 		
 		return taxPayPlan;
 	}
+	
 	public List<WorkForcePay> getWorkForcePayPlan(){
 		List<WorkForcePay> workForcePayPlan = null;
 		workForcePayPlan =planMapper.getWorkForcePayPlan();
