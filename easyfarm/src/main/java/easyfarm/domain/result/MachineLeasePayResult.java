@@ -13,7 +13,7 @@ public class MachineLeasePayResult {
     private String clientCode;
 
     // 공통농기계코드
-    private String commonMachineCode;
+    private String farmBookmarkMachineCode;
 
     // 대여일
     private String machineLeaseRunDate;
@@ -56,13 +56,7 @@ public class MachineLeasePayResult {
         this.clientCode = clientCode;
     }
 
-    public String getCommonMachineCode() {
-        return commonMachineCode;
-    }
-
-    public void setCommonMachineCode(String commonMachineCode) {
-        this.commonMachineCode = commonMachineCode;
-    }
+   
 
     public String getMachineLeaseRunDate() {
         return machineLeaseRunDate;
@@ -118,6 +112,14 @@ public class MachineLeasePayResult {
 
 	public void setMachineLeasePayPlan(MachineLeasePay machineLeasePayPlan) {
 		this.machineLeasePayPlan = machineLeasePayPlan;
+	}
+
+	public String getFarmBookmarkMachineCode() {
+		return farmBookmarkMachineCode;
+	}
+
+	public void setFarmBookmarkMachineCode(String farmBookmarkMachineCode) {
+		this.farmBookmarkMachineCode = farmBookmarkMachineCode;
 	}
 
 	

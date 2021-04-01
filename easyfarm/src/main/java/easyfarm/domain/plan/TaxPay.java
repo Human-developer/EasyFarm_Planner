@@ -98,13 +98,6 @@ public class TaxPay {
         this.taxPayDetail = taxPayDetail;
     }
 
-    public String getregMemberId() {
-        return regMemberId;
-    }
-
-    public void setregMemberId(String regMemberId) {
-        this.regMemberId = regMemberId;
-    }
 
     public String getRegDate() {
         return regDate;
@@ -113,6 +106,14 @@ public class TaxPay {
     public void setRegDate(String regDate) {
         this.regDate = regDate;
     }
+
+	public String getRegMemberId() {
+		return regMemberId;
+	}
+
+	public void setRegMemberId(String regMemberId) {
+		this.regMemberId = regMemberId;
+	}
 
 
 }
