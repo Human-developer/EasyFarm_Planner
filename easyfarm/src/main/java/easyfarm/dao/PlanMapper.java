@@ -46,19 +46,24 @@ public interface PlanMapper {
 	//프로젝트 통합계획 등록
 	public int addProjectPlan(Map<String, Object> projectPlanData);
 	
-	//프로젝트별 작업단계
+	//프로젝트별 보험료지출계획 조회
+	public List<InsurancePay> getInsurePayList(String projectCode);
+	
+	
+	
+	//프로젝트별 작업단계 조회
 	public List<Map<String, Object>> getWorkphaseName(Map<String, Object> projectData);
 	
-	//프로젝트별 상세작업항목
+	//프로젝트별 상세작업항목 조회
 	public List<Map<String, Object>> getWorkphaseCateName(Map<String, Object> projectData);
 	
-	//농가별 거래처
+	//농가별 거래처 조회
 	public List<Map<String, Object>> getClientName(Map<String, Object> projectData);
 	
-	//농가별 농기계즐겨찾기
+	//농가별 농기계즐겨찾기 조회
 	public List<Map<String, Object>> getFarmBookmarkMachine(Map<String, Object> projectData);
 	
-	//농가별 보유농기계
+	//농가별 보유농기계 조회
 	public List<Map<String, Object>> getFarmRetainMachine(Map<String, Object> projectData);
 	
 	//농가별 품목조회

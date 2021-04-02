@@ -120,6 +120,20 @@ public class PlanService {
 		return planMapper.getTaxPayCateCode();
 	}
 	
+	//프로젝트별 보험료지출계획 조회
+	public List<InsurancePay> getInsurePayList(String projectCode){
+		List<InsurancePay> insurancePayList = null;
+		System.out.println(projectCode + "projectCode PlanService 실행");
+		if(projectCode != null && !"".equals(projectCode)) {
+			insurancePayList = planMapper.getInsurePayList(projectCode);
+			System.out.println(insurancePayList + "insurancePayList PlanService 실행 ");
+		}
+		
+		return insurancePayList;
+	}
+	
+	
+	
 	public List<EtcPay> getEtcPayPlan(){
 		List<EtcPay> etcPayPlan = null;
 		System.out.println("getEtcPayPlan !@@@@@@@@@@@@@@@@@@@@@@@@");
@@ -134,12 +148,7 @@ public class PlanService {
 		return resourcePayPlan;
 	}
 	
-	public List<InsurancePay> getInsurancePayPlan(){
-		List<InsurancePay> insurancePayPlan = null;
-		insurancePayPlan =planMapper.getInsurancePayPlan();
-		
-		return insurancePayPlan;
-	}
+	
 	
 	public List<MachineLeasePay> getMachineLeasePayPlan(){
 		List<MachineLeasePay> machineLeasePayPlan = null;

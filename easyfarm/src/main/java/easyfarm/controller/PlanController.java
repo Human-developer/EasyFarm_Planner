@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import easyfarm.domain.plan.InsurancePay;
 import easyfarm.domain.plan.ProjectPlan;
 import easyfarm.service.PlanService;
 
@@ -97,6 +98,24 @@ public class PlanController {
 		}
 		
 		return "views/plan/getSchedule";
+	}
+	
+	/*프로젝트별 보험료지출계획 조회 */
+	@GetMapping("/plan/insurePayList")
+	public String getInsurePayList(Model model
+			  					  ,@RequestParam(value = "projectCode", required = false) String projectCode) {
+		List<InsurancePay> insurancePayList = null;
+		if(projectCode != null && !"".equals(projectCode.trim())) {
+			
+			Map<String, Object> farmProjectInfo = planService.getFarmProjectInfo(projectCode);
+			insurancePayList = planService.getInsurePayList(projectCode);
+			
+			String projectName = (String) farmProjectInfo.get("projectName");
+			System.out.println(insurancePayList);
+			model.addAttribute("projectName", projectName);
+			model.addAttribute("insurancePayList", insurancePayList);
+		}
+		return "views/plan/insurePayList";
 	}
 	
 	/* 계획등록 */

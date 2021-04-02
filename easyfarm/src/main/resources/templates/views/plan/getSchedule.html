@@ -32,7 +32,8 @@
 			}
 			hr{border-bottom: 1px solid grey;};
 			.pl-0{padding-right: 0px;}
-			button a{color: white;}
+			button a{color: #1d84df !important;}
+			button:hover a{color: white !important;}
 			button a:link { color: white; text-decoration: none;}
 			button a:visited { color: white; text-decoration: none;}
 			button a:hover { color: white; text-decoration: none;}
@@ -69,23 +70,47 @@
 								</select>
 							</div>
 						</div>
-						<div class="pull-left">
-							<th:block th:if="${projectPlanN != null}">
-									<div style="font-size: 24px;" th:text="|${projectPlanN} 월간 계획 간편보기|"></div>
-							</th:block>
-							<th:block th:unless="${projectPlanN != null}">
-								<div style="font-size: 24px;">월간 계획 간편보기</div>
-							</th:block>
+						<div class="row">
+							<div class="box-content">
+								<ul class="list-inline" style="margin-bottom: 30px;">
+									<li>
+										<th:block th:if="${projectPlanN != null}">
+												<div style="font-size: 24px;" th:text="|${projectPlanN} 월간 계획 간편보기|"></div>
+										</th:block>
+										<th:block th:unless="${projectPlanN != null}">
+											<div style="font-size: 24px;">월간 계획 간편보기</div>
+										</th:block>
+									</li>
+									<li>
+										<small style="color: red; margin-left: 6px;"><i class="fa fa-lightbulb-o"> 일정을 클릭하면 상세보기가 가능합니다.</i></small>
+									</li>
+								</ul>
+								<ul class="list-inline">
+									<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">계획서</button></li>
+									<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
+									<li class="margin-bottom-10">
+										<button type="button" th:value="|/plan/addSpend?projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" id="planAddBtn" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light">
+											계획서 등록
+										</button>
+									</li>
+									<li class="margin-bottom-10">
+										<button type="button" id="planAciveBtn" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">
+											계획서 실행
+										</button>
+									</li>
+								</ul>
+								<ul class="list-inline">
+									<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">관리화면</button></li>
+									<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
+									<li class="margin-bottom-10">
+										<button type="button" th:value="|/plan/insurePayList?projectCode=${projectCode}|" onclick="moveAddSpend(this)" class="btn btn-warning btn-rounded btn-bordered waves-effect waves-light">
+											프로젝트 보험료지출계획 관리
+										</button>
+									</li>
+								</ul>
+							</div>
 						</div>
-						<div class="pull-right">
-							<button type="button" id="planAddBtn" class="btn btn-primary btn-sm waves-effect waves-light btn-rounded">
-								<a th:href="@{/plan/addSpend(projectPlanCode=${projectPlanCode})}">계획서 등록</a>
-							</button>
-							<button type="button" id="planAciveBtn" class="btn btn-success btn-sm waves-effect waves-light btn-rounded">계획 실행</button>
-						</div>
-						<div style="margin-top: 6px;">
-							<small style="color: red; margin-left: 6px;"><i class="fa fa-lightbulb-o"> 일정을 클릭하면 상세보기가 가능합니다.</i></small>
-						</div>
+						
 						<hr/>
 						<div id="calendar"></div>
 						<!-- /#calendar -->
@@ -207,6 +232,12 @@
 			/* $('#planAddBtn').click(function(){
 				location.href = '/plan/addSpend';
 			}) */
+			
+			function moveAddSpend(btn){
+				location.href = btn.value;
+			}
+			
+			
 		</script>
 	</th:block>
 	
