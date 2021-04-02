@@ -1,214 +1,218 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="@{layout/default}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layout/default}">
 
-	<th:block layout:fragment="customTitle">
-		<title>작물등록</title>
-	</th:block>
-	
-	<th:block layout:fragment="pageTitle">
+<th:block layout:fragment="customTitle">
+	<title>작물등록</title>
+</th:block>
+
+<th:block layout:fragment="pageTitle">
 		작물코드 - 작물등록
 	</th:block>
-	
-	<th:block layout:fragment="customCss">
+
+<th:block layout:fragment="customCss">
 	<style>
-			button {
-		    border: 0;
-		    border-radius: 0;
-		    padding: 0;
-		    outline: none;
-		    cursor: pointer;
-		    background-color: transparent;
-		    font-family: 'Noto Sans KR', sans-serif;
-		    
-		}
-		.lc-round-btn {
-		    display: block;
-		    width: 100%;
-		    height: 60px;
-		    line-height: 58px;
-		    font-weight: 700;
-		    font-size: 20px;
-		    border-radius: 60px;
-		    background-color: #3BBD5A;
-		    color: #fff;
-		    transition: box-shadow .2s;
-		    margin-top: 30px;
-		    
-		}
-		.btn{ border-radius: 60px;
-		  background-color: #3BBD5A;
-		  width: auto;
-		   color: #fff;
-		    font-weight: 700;
-		    
-		   }
-		   
-		 .green-input {
-		    display: block;
-		    width: 100%;
-		    border: 1px solid #ccd1d9;
-		    height: 50px;
-		    padding: 0 10px;
-		    line-height: 46px;
-		    font-size: 16px;
-		}	
-		 .important-col{  background-image:url("/assets/images/2222.jpg") !important;
-		 	  color: #3bbd5a	 !important;
-		 	  
-		 }
-		 #wrapper{ background-image:url("/assets/images/") !important;
-		 background-size: 100% 100%;}
-	</style>
-	</th:block>
-	<th:block layout:fragment="customJavaScript">
-		<script type="text/javascript">
-			$(function(){
-				//중복검사
-				$('#checkBtn').click(function(){
-					var cropname = $('#cropname').val();
-					if(cropname != ""){
-						
-						$.ajax({
-							url: "/ajax/cropCheck",
-							method: "POST",
-							data: { cropname : cropname },
-							success : function(data) {
-								if(data == "사용가능") {
-									swal({
-										title: "사용가능한 작물명입니다."
-									});
-									$('#checkBtn').attr('value','yes');
-								}
-								 else {
-									 swal({
-											title: "이미 등록된 작물입니다.",
-										});
-									//중복된 작물명이면 중복체크가 다시 필요하기 때문에 check의 값을 no로 다시 지정
-									$('#checkBtn').attr('value','no');
-										return;
-								}
-							},
-							error : function(xhr, status, error) {
-								console.log('xhr : ' + xhr);
-								console.log('status : ' + status);
-								console.log('error : ' + error);
+button {
+	border: 0;
+	border-radius: 0;
+	padding: 0;
+	outline: none;
+	cursor: pointer;
+	background-color: transparent;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+.lc-round-btn {
+	display: block;
+	width: 100%;
+	height: 60px;
+	line-height: 58px;
+	font-weight: 700;
+	font-size: 20px;
+	border-radius: 60px;
+	background-color: #3BBD5A;
+	color: #fff;
+	transition: box-shadow .2s;
+	margin-top: 30px;
+}
+
+.btn {
+	border-radius: 60px;
+	background-color: #3BBD5A;
+	width: auto;
+	color: #fff;
+	font-weight: 700;
+}
+
+.green-input {
+	display: block;
+	width: 100%;
+	border: 1px solid #ccd1d9;
+	height: 50px;
+	padding: 0 10px;
+	line-height: 46px;
+	font-size: 16px;
+}
+
+.important-col {
+	background-image: url("/assets/images/2222.jpg") !important;
+	color: #3bbd5a !important;
+}
+
+#wrapper {
+	background-image: url("/assets/images/") !important;
+	background-size: 100% 100%;
+}
+</style>
+</th:block>
+<th:block layout:fragment="customJavaScript">
+	<script type="text/javascript">
+		$(function() {
+			//중복검사
+			$('#checkBtn').click(function() {
+				var cropname = $('#cropname').val();
+				if (cropname != "") {
+
+					$.ajax({
+						url : "/ajax/cropCheck",
+						method : "POST",
+						data : {
+							cropname : cropname
+						},
+						success : function(data) {
+							if (data == "사용가능") {
+								swal({
+									title : "사용가능한 작물명입니다."
+								});
+								$('#checkBtn').attr('value', 'yes');
+							} else {
+								swal({
+									title : "이미 등록된 작물입니다.",
+								});
+								//중복된 작물명이면 중복체크가 다시 필요하기 때문에 check의 값을 no로 다시 지정
+								$('#checkBtn').attr('value', 'no');
+								return;
 							}
-						});
-					}else{
-						swal({
-							title: "작물명을 입력해주세요."
-						});
-						$('#cropname').focus();
-						return false; 
-					}
-				}); 
+						},
+						error : function(xhr, status, error) {
+							console.log('xhr : ' + xhr);
+							console.log('status : ' + status);
+							console.log('error : ' + error);
+						}
+					});
+				} else {
+					swal({
+						title : "작물명을 입력해주세요."
+					});
+					$('#cropname').focus();
+					return false;
+				}
 			});
-			$(function(){
-				$('#cropname').keyup(function(){
-					$('#checkBtn').attr('value','no');
-				});
+		});
+		$(function() {
+			$('#cropname').keyup(function() {
+				$('#checkBtn').attr('value', 'no');
 			});
-		
+		});
+
 		//공백검사
-		$(function(){
-			$('#addCheck').click(function(){
-				
-				if($('#cropcate').val() == ""){
+		$(function() {
+			$('#addCheck').click(function() {
+
+				if ($('#cropcate').val() == "") {
 					swal({
-						title: "카테고리를 선택해주세요."
+						title : "카테고리를 선택해주세요."
 					});
 					$('#cropname').focus();
-					return false; 
+					return false;
 				}
-				if($('#cropname').val() == ""){
+				if ($('#cropname').val() == "") {
 					swal({
-						title: "작물명을 입력해주세요."
+						title : "작물명을 입력해주세요."
 					});
 					$('#cropname').focus();
-					return false; 
+					return false;
 				}
-				if($('#checkBtn').val() == "no"){
+				if ($('#checkBtn').val() == "no") {
 					swal({
-						title: "중복검사를 해주세요."
+						title : "중복검사를 해주세요."
 					});
 					return false;
 				}
-				
+
 				return true;
 			})
 		});
-		</script>
-	</th:block>
-	
-	<th:block layout:fragment="customContents">
-		<div class ="container-fluid">
-			<div class ="row">
-				<div class ="col-sm-offset-2 col-sm-8">
-					<div class ="box-content">
-						<h3><strong>작물등록</strong></h3>	
-						<hr>
-	
-		<form th:action="@{/code/addCrop}" method="post">
-			<!-- <div class="container-fluid">
-				<div class="row" >
-					<div class="col-lg-offset-2 col-lg-8">
-						<div class="panel panel-default">
-							<div class="panel-heading t-center important-col ">
-								<h3><strong>작물등록</strong></h3>
-							</div> -->
-							<div class="panel-body"style="padding-top: 0">
-								<div class="form-horizontal">
-									<div class="form-group margin-bottom-20">
-										<label for="cropcate" class="col-sm-3 control-label"><strong>작물 카테고리</strong></label>
-										<div class="col-sm-6">
-											<div class="card-content">
-											<select class="form-control" name="cropCate" id="cropcate" >
-												  <option value="">:::: 작물 카테고리 선택 ::::</option>
-												  <option th:value="기타" >기타</option>
-												  <option th:value="과수" >과수</option>
-												  <option th:value="채소" >채소</option>
-												  <option th:value="축산" >축산</option>
-												  <option th:value="특용" >특용</option>
-												  <option th:value="화훼" >화훼</option>
-												  <option th:value="과채" >과채</option>
-												  <option th:value="버섯" >버섯</option>
-												  <option th:value="식량" >식량</option>
-												  <option th:value="약용" >약용</option>
+	</script>
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-offset-2 col-sm-8">
+				<div class="box-content">
+					<h3>
+						<strong>작물등록</strong>
+					</h3>
+					<hr>
+
+					<form th:action="@{/code/addCrop}" method="post">
+						<div class="panel-body" style="padding-top: 0">
+							<div class="form-horizontal">
+								<div class="form-group margin-bottom-20">
+									<label for="cropcate" class="col-sm-3 control-label"><strong>작물
+											카테고리</strong></label>
+									<div class="col-sm-6">
+										<div class="card-content">
+											<select class="form-control" name="cropCate" id="cropcate">
+												<option value="">:::: 작물 카테고리 선택 ::::</option>
+												<option th:value="기타">기타</option>
+												<option th:value="과수">과수</option>
+												<option th:value="채소">채소</option>
+												<option th:value="축산">축산</option>
+												<option th:value="특용">특용</option>
+												<option th:value="화훼">화훼</option>
+												<option th:value="과채">과채</option>
+												<option th:value="버섯">버섯</option>
+												<option th:value="식량">식량</option>
+												<option th:value="약용">약용</option>
 											</select>
-											</div>
-										</div>
-									</div>
-									<div class="form-group margin-bottom-20">
-										<label for="cropname" class="col-sm-3 control-label"><strong>작물명</strong></label>
-										<div class="col-sm-6">
-											<input type="text" size="15" class="green-input" name="cropName" id="cropname" placeholder="작물명 입력">
-										</div>
-										<div class="col-sm-1">
-											<button id="checkBtn" type="button" class="btn form-control" value="no">중복확인</button>
-										</div>
-	
-									</div>
-	
-	
-										<hr>
-									<div class="form-group">
-										<div class="col-sm-10 col-sm-offset-1">
-											<button type="submit" id="addCheck" class="btn btn-success btn-rounded waves-effect waves-light form-control" style="width: 100%">작물등록</button>
 										</div>
 									</div>
 								</div>
+								<div class="form-group margin-bottom-20">
+									<label for="cropname" class="col-sm-3 control-label"><strong>작물명</strong></label>
+									<div class="col-sm-6">
+										<input type="text" size="15" class="green-input"
+											name="cropName" id="cropname" placeholder="작물명 입력">
+									</div>
+									<div class="col-sm-1">
+										<button id="checkBtn" type="button" class="btn form-control"
+											value="no">중복확인</button>
+									</div>
+
+								</div>
+
+
+								<hr>
+								<div class="form-group">
+									<div class="col-sm-10 col-sm-offset-1">
+										<button type="submit" id="addCheck"
+											class="btn btn-success btn-rounded waves-effect waves-light form-control"
+											style="width: 100%">작물등록</button>
+									</div>
+								</div>
 							</div>
-				<!-- 		</div>
-					</div>
+						</div>
+					</form>
 				</div>
-			</div> -->
-		</form>
-		</div></div></div></div>
-		<div th:include="views/code/back :: back"></div>
-	</th:block>
-	
-	
+			</div>
+		</div>
+	</div>
+	<div th:include="views/code/back :: back"></div>
+</th:block>
+
+
 
 </html>

@@ -4,11 +4,11 @@
 	layout:decorate="@{layout/default}">
 
 <th:block layout:fragment="customTitle">
-	<title>작물 수정</title>
+	<title>농기계정보 수정</title>
 </th:block>
 
 <th:block layout:fragment="pageTitle">
-		작물코드 - 작물수정
+		농기계정보 수정
 	</th:block>
 
 <th:block layout:fragment="customContents">
@@ -17,26 +17,24 @@
 			<div class="col-sm-offset-2 col-sm-8">
 				<div class="box-content">
 					<h3>
-						<strong>상세작업 정보수정</strong>
+						<strong>농기계정보 수정</strong>
 					</h3>
 					<hr>
 
-					<form th:action="@{/code/modifyCropDetailCategory}" method="post">
+					<form th:action="@{/code/modifyCommonMachine}" method="post">
 						<div class="panel-body" style="padding-top: 0">
 							<div class="form-horizontal">
 
-								<input name="commonWorkphaseCateCode" type="hidden"
+								<input name="commonMachineCode" type="hidden"
 									class="form-control"
-									th:value="${cropDetailCategory.commonWorkphaseCateCode}" />
-								<!--공백 예외처리 해야함  스크립트쓰기-->
+									th:value="${machine.commonMachineCode}" />
 								<div class="form-group margin-bottom-20">
-									<label for="commonWorkphaseCateName"
-										class="col-sm-3 control-label"><strong>상세작업명</strong></label>
+									<label for="commonWorkphaseCateName" class="col-sm-3 control-label"><strong>상세작업명</strong></label>
 									<div class="col-sm-6">
-										<input id="commonWorkphaseCateName"
-											name="commonWorkphaseCateName" type="text"
+										<input id="commonMachineName"
+											name="commonMachineName" type="text"
 											class="form-control"
-											th:value="${cropDetailCategory.commonWorkphaseCateName}" />
+											th:value="${machine.commonMachineName}" />
 									</div>
 								</div>
 								<hr>
@@ -44,7 +42,7 @@
 									<div class="col-sm-10 col-sm-offset-1">
 										<button type="submit"
 											class="btn btn-success btn-rounded waves-effect waves-light"
-											style="width: 100%">작물정보 수정</button>
+											style="width: 100%">농기계정보 수정</button>
 										</li>
 									</div>
 								</div>

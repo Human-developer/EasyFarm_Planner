@@ -189,6 +189,23 @@ public class CodeController {
 	}	
 	
 	/*===========================================================*/
+	@PostMapping("/code/modifyCommonMachine") 
+	public String modifyCommonMachine(Machine machine) {
+		if(machine != null && !"".equals(machine.getCommonMachineName())){
+			machineService.modifyCommonMachine(machine);
+		}
+		return "redirect:/code/getCommonMachineCode";
+	}
+	
+	@GetMapping("/code/modifyCommonMachine")
+	public String modifyCommonMachine(Model model,
+			@RequestParam(name = "commonMachineCode", required = false) String commonMachineCode) {
+		Machine machine = machineService.getCommonMachineInfo(commonMachineCode);
+		model.addAttribute("machine", machine);
+		return "views/code/modifyCommonMachine";		
+	}	
+	
+	/*===========================================================*/
 	/*===========================================================*/
 	//작물 중복체크
 	@PostMapping("/ajax/cropCheck")
@@ -225,13 +242,13 @@ public class CodeController {
 					System.out.println("작물 일치 -> 작업단계");
 					if(crop != null && crop.getWorkphase().equals(workphase)) {
 						result = "";
-						System.out.println("작업단계 일치 - 사용불가능");
+						System.out.println("작업단계 이미 등록되어있음 - 사용불가능");
 					} else {
 						result = "사용가능";
-						System.out.println("작업단계 불일치 - 사용가능");
+						System.out.println("작업단계 없음 - 사용가능");
 					}
 				}else {
-					System.out.println("작물 불일치 사용가능");
+					System.out.println("목록에 등록된 작물이없다. 1단계부터등록");
 					result = "사용가능";
 				}
 			}

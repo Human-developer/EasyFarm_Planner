@@ -50,7 +50,7 @@
 					<td th:text="${l.regMemberId}"></td>
 					<td th:text="${l.regDate}"></td>
 					<td th:if = "${session.SLEVEL == '관리자'}">
-						<a th:href="@{/#(commonMachineCode=${l.commonMachineCode})}">수정</a>
+						<a th:href="@{/code/modifyCommonMachine(commonMachineCode=${l.commonMachineCode})}">수정</a>
 					</td>
 					<td th:if = "${session.SLEVEL == '관리자'}">
 						<a th:href="@{/#(commonMachineCode=${l.commonMachineCode})}">삭제</a>		
