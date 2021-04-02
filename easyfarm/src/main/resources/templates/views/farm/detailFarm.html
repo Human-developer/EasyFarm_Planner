@@ -50,7 +50,8 @@
 								</tr>
 								<tr>
 									<th>공개유무</th>
-									<td th:text = "${farm.farmPublicStatus}"/>
+									<td th:if = "${farm.farmPublicStatus == 'Y'}">공개</td>
+									<td th:if = "${farm.farmPublicStatus == 'N'}">비공개</td>
 								</tr>
 							</tbody>
 							
@@ -61,7 +62,7 @@
 						<a class="btn btn-xs" th:href="@{#}">농가삭제(대표)</a>
 						<a class="btn btn-xs" th:href="@{/farm/getMemberFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">!회원조회(간부)</a>
 						<a class="btn btn-xs" th:href="@{#}">농가탈퇴(전부)</a>
-						<a class="btn btn-xs" th:href="@{/farm/getJoinFarm}">!가입신청리스트(간부)</a>
+						<a class="btn btn-xs" th:href="@{/farm/getJoinFarm(farmCode=${farm.farmCode})}">!가입신청리스트(간부)</a>
 						<a class="btn btn-xs" th:href="@{#}">탈퇴신청리스트(대표)</a>
 						
 						<br><br>

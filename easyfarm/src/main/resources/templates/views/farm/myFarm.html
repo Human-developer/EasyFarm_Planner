@@ -27,10 +27,9 @@
 		<div class ="container-fluid">
 			<div class ="row">
 				<div class ="box-content">
-					<h3 style = "display: none; visibility: visible;">내농가</h3>
+					<h3>내농가</h3>
 					<hr>
-						<div class ="table-responsive">
-						<table id="myFarmTable" style ="width: 100%;">
+						<table id="myFarmTable">
 							<thead>
 								<tr>
 									<th th:text = "${'농가코드'}"/>
@@ -54,13 +53,16 @@
 									<td th:text = "${farm.farmArea}"/>
 									<td th:text = "${farm.farmAddress}"/>
 									<td th:text = "${farm.farmRegDate}"/>
-									<td th:text = "${farm.farmPublicStatus}"/>
+									<td th:if = "${farm.farmPublicStatus == 'Y'}">공개</td>
+									<td th:if = "${farm.farmPublicStatus == 'N'}">비공개</td>
 									<td>
 										<div class="btn-group">
 											<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button> 
 											<ul class="dropdown-menu">
 												<li><a th:href="@{/farm/detailFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">상세보기</a></li>
+												<li><a th:href="@{/farm/getJoinFarm(farmCode=${farm.farmCode})}">가입신청 목록</a></li>
 												<li><a th:href="@{/farm/modifyFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">수정</a></li>
+												
 											</ul>
 										</div>
 									</td>
@@ -69,7 +71,6 @@
 								
 							</tbody>
 						</table>
-					</div>
 					</div>
 					
 				</div>
@@ -83,13 +84,7 @@
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
 	<th:block layout:fragment="customScriptLib">
-		<script src="/assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
-		<script src="/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
-		<script src="/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
-		<script src="/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
-		<script src="/assets/scripts/datatables.demo.min.js"></script>
-	
-		<script th:src = @{/assets/sys/myDataTable.js}></script>
+		<div th:replace="fragments/dataTable :: dataTable" th:remove="tag"></div>	
 	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 -->

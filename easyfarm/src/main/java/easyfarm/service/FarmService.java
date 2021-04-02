@@ -153,4 +153,42 @@ public class FarmService {
 		return result;
 	}
 	/* 농가가입신청 */
+	
+	public List<FarmMemberJoin> getJoinFarm(String farmCode){
+		List<FarmMemberJoin> resultFarmMemberJoin =null;
+		if(farmCode != null) {
+			resultFarmMemberJoin = farmMapper.getJoinFarm(farmCode);
+		}
+		
+		return resultFarmMemberJoin; 
+	}
+	
+	public int farmJoinMember(String farmMemberJoinCode,String approval,String memberId) {
+		int result = 0;
+		if(farmMemberJoinCode != null && approval != null && memberId != null) {
+			
+			if("승인".equals(approval)) {
+				FarmMemberJoin resultFarmMemberJoin = farmMapper.getJoinMember(farmMemberJoinCode);
+				
+				FarmMember addFarmMember = new FarmMember();
+				addFarmMember.setFarmCode(resultFarmMemberJoin.getFarmCode());
+				addFarmMember.setFarmMemberId(resultFarmMemberJoin.getFarmJoinRequestMemberId());
+				addFarmMember.setFarmLevelName("대표");
+				addFarmMember.setFarmLevelCode("farm_level_3");
+				addFarmMember.setFarmMemberStatus("정상");
+				
+				result += farmMapper.joinAddFarmMember(addFarmMember);
+				
+				result += farmMapper.farmJoinMember(farmMemberJoinCode,approval,memberId);
+				
+				
+			}
+			else if("거부".equals(approval)) {
+				result += farmMapper.farmJoinMember(farmMemberJoinCode,approval,memberId);
+			}
+			
+		}
+		
+		return result;
+	}
 }
