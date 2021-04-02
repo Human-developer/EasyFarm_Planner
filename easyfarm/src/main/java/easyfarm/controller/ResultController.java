@@ -62,17 +62,6 @@ public class ResultController {
 		List<TaxPayResult> taxPayResult = resultService.getTaxPayResult();
 		List<WorkForcePayResult> workForcePayResult = resultService.getWorkForcePayResult();
 		
-		
-		List<EtcPay> etcPayPlan = planService.getEtcPayPlan();
-		List<ResourcePay> resourcePayPlan = planService.getResourcePayPlan();
-		List<InsurancePay> insurancePayPlan = planService.getInsurancePayPlan();
-		List<MachineLeasePay> machineLeasePayPlan = planService.getMachineLeasePayPlan();
-		List<MachineUsePay> machineUsePlan = planService.getMachineUsePayPlan();
-		List<ProductGain> productGainPlan = planService.getProductGainPlan();
-		List<ResourceUsePlan> resourceUsePlan = planService.getResourceUsePlanPlan();
-		List<TaxPay> taxPayPlan = planService.getTaxPayPlan();
-		List<WorkForcePay> workForcePayPlan = planService.getWorkForcePayPlan();
-		
 
 		model.addAttribute("etcpayResult", etcpayResult);
 		model.addAttribute("resourcePayResult", resourcePayResult);
@@ -84,6 +73,16 @@ public class ResultController {
 		model.addAttribute("taxPayResult", taxPayResult);
 		model.addAttribute("workForcePayResult", workForcePayResult);
 		
+		/*
+		List<EtcPay> etcPayPlan = planService.getEtcPayPlan();
+		List<ResourcePay> resourcePayPlan = planService.getResourcePayPlan();
+		List<InsurancePay> insurancePayPlan = planService.getInsurancePayPlan();
+		List<MachineLeasePay> machineLeasePayPlan = planService.getMachineLeasePayPlan();
+		List<MachineUsePay> machineUsePlan = planService.getMachineUsePayPlan();
+		List<ProductGain> productGainPlan = planService.getProductGainPlan();
+		List<ResourceUsePlan> resourceUsePlan = planService.getResourceUsePlanPlan();
+		List<TaxPay> taxPayPlan = planService.getTaxPayPlan();
+		List<WorkForcePay> workForcePayPlan = planService.getWorkForcePayPlan();
 		
 		model.addAttribute("etcPayPlan", etcPayPlan);
 		model.addAttribute("resourcePayPlan", resourcePayPlan);
@@ -94,6 +93,7 @@ public class ResultController {
 		model.addAttribute("resourceUsePlan", resourceUsePlan);
 		model.addAttribute("taxPayPlan", taxPayPlan);
 		model.addAttribute("workForcePayPlan", workForcePayPlan);
+		*/
 		
 		return "views/result/resultMain";
 	}
