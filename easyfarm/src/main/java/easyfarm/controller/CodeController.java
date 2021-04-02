@@ -72,7 +72,8 @@ public class CodeController {
 		model.addAttribute("commonMachineList",commonMachineList);
 		return "views/code/getCommonMachineCode";
 	}
-/*===========================================================*/	
+	/*===========================================================*/	
+	/*===========================================================*/	
 	@PostMapping("/code/addCrop")
 	public String addCrop(Crop crop,HttpSession session) {
 		if(crop != null && !"".equals(crop.getCropCode())){
@@ -86,7 +87,7 @@ public class CodeController {
 	public String addCrop() {
 		return "views/code/addCrop";
 	}
-/*===========================================================*/
+	/*===========================================================*/
 	
 	@PostMapping("/code/addCropWorkStage")
 	public String addCropWorkStage(CropWorkStage crop,HttpSession session) {
@@ -106,7 +107,7 @@ public class CodeController {
 		return "views/code/addCropWorkStage";		
 	}	
 	
-/*===========================================================*/
+	/*===========================================================*/
 	@PostMapping("/code/addCropDetailCategory")
 	public String addCropDetailCategory(CropDetailCategory crop,HttpSession session) {
 		if(crop != null && !"".equals(crop.getCommonWorkphaseCateCode())){
@@ -120,7 +121,7 @@ public class CodeController {
 	public String addCropDetailCategory() {
 		return "views/code/addCropDetailCategory";
 	}
-/*===========================================================*/
+	/*===========================================================*/
 	
 	@PostMapping("/code/addCommonMachineCode")
 	public String addCommonMachineCode(Machine machine,HttpSession session) {
@@ -136,7 +137,8 @@ public class CodeController {
 		return "views/code/addCommonMachineCode";
 	}
 	
-/*===========================================================*/
+	/*===========================================================*/
+	/*===========================================================*/
 	
 	@PostMapping("/code/modifyCrop")
 	public String modifyCrop(Crop crop,HttpSession session) {
@@ -147,7 +149,6 @@ public class CodeController {
 		}
 		return "redirect:/code/getCropCode";
 	}
-	 
 	@GetMapping("/code/modifyCrop")
 	public String getmodifycrop(Model model,
 								@RequestParam(name = "cropCode", required = false) String cropCode) {
@@ -155,29 +156,62 @@ public class CodeController {
 		model.addAttribute("crop", crop);
 		return "views/code/modifyCrop";		
 	}	
-/*===========================================================*/
-	/*@PostMapping("/code/modifyCropWorkStage") 
-	public String qweqwe(Crop crop,HttpSession session) {
-		if(crop != null && !"".equals(crop.getCropCode())){
-			String memberId = (String)session.getAttribute("SID");
-			if(memberId != null) System.out.println(memberId+" =test");
-			cropService.modifyCrop(crop,memberId);
+	/*===========================================================*/
+	@PostMapping("/code/modifyCropWorkStage") 
+	public String modifyCropWorkStage(CropWorkStage cropWorkStage) {
+		if(cropWorkStage != null && !"".equals(cropWorkStage.getCropPhaseInfoCode())){
+			cropService.modifyCropWorkStage(cropWorkStage);
 		}
 		return "redirect:/code/getCropWorkStage";
-	}*/
+	}
 	@GetMapping("/code/modifyCropWorkStage")
-	public String qweqwe(Model model,
+	public String modifyCropWorkStage(Model model,
 			@RequestParam(name = "cropPhaseInfoCode", required = false) String cropPhaseInfoCode) {
 		CropWorkStage cropWorkStage = cropService.getcropPhaseInfo(cropPhaseInfoCode);
 		model.addAttribute("cropWorkStage", cropWorkStage);
 		return "views/code/modifyCropWorkStage";		
 	}	
 	/*===========================================================*/
-	//중복체크
+	@PostMapping("/code/modifyCropDetailCategory") 
+	public String modifyCropDetailCategory(CropDetailCategory cropDetailCategory) {
+		if(cropDetailCategory != null && !"".equals(cropDetailCategory.getCommonWorkphaseCateCode())){
+			cropService.modifyCropDetailCategory(cropDetailCategory);
+		}
+		return "redirect:/code/getCropDetailCategory";
+	}
+	
+	@GetMapping("/code/modifyCropDetailCategory")
+	public String modifyCropDetailCategory(Model model,
+			@RequestParam(name = "commonWorkphaseCateCode", required = false) String commonWorkphaseCateCode) {
+		CropDetailCategory cropDetailCategory = cropService.getCropDetailCategory(commonWorkphaseCateCode);
+		model.addAttribute("cropDetailCategory", cropDetailCategory);
+		return "views/code/modifyCropDetailCategory";		
+	}	
+	
+	/*===========================================================*/
+	@PostMapping("/code/modifyCommonMachine") 
+	public String modifyCommonMachine(Machine machine) {
+		if(machine != null && !"".equals(machine.getCommonMachineName())){
+			machineService.modifyCommonMachine(machine);
+		}
+		return "redirect:/code/getCommonMachineCode";
+	}
+	
+	@GetMapping("/code/modifyCommonMachine")
+	public String modifyCommonMachine(Model model,
+			@RequestParam(name = "commonMachineCode", required = false) String commonMachineCode) {
+		Machine machine = machineService.getCommonMachineInfo(commonMachineCode);
+		model.addAttribute("machine", machine);
+		return "views/code/modifyCommonMachine";		
+	}	
+	
+	/*===========================================================*/
+	/*===========================================================*/
+	//작물 중복체크
 	@PostMapping("/ajax/cropCheck")
-	public @ResponseBody String idChdck(@RequestParam(value = "cropname", required = false) String cropName) {
+	public @ResponseBody String cropCheck(@RequestParam(value = "cropname", required = false) String cropName) {
 		String result = "사용불가능";
-		System.out.println(cropName);
+		System.out.println("입력값: "+cropName);
 		if (cropName != null && !"".equals(cropName) && !"".equals(cropName.trim())) {
 			Crop crop =cropService.getCropNameinfo(cropName);
 
@@ -192,5 +226,35 @@ public class CodeController {
 	}
 	
 	/*===========================================================*/
+	//작업단계 중복체크
+	@PostMapping("/ajax/cropWorkphaseCheck")
+	public @ResponseBody String cropWorkphaseCheck(@RequestParam(value = "workphase", required = false) String workphase,
+													@RequestParam(value = "cropcode", required = false) String cropCode) {
+		String result = "";
+		System.out.println("작물코드 "+cropCode);
+		System.out.println("작업단계 "+workphase);
+		if (workphase != null && !"".equals(workphase) && !"".equals(workphase.trim())) {
+			if (cropCode != null && !"".equals(cropCode) && !"".equals(cropCode.trim())) {
+				
+				CropWorkStage crop =cropService.getcropPhaseInfo2(workphase,cropCode);
+				System.out.println("조회");
+				if (crop != null && crop.getCropCode().equals(cropCode) ) {
+					System.out.println("작물 일치 -> 작업단계");
+					if(crop != null && crop.getWorkphase().equals(workphase)) {
+						result = "";
+						System.out.println("작업단계 이미 등록되어있음 - 사용불가능");
+					} else {
+						result = "사용가능";
+						System.out.println("작업단계 없음 - 사용가능");
+					}
+				}else {
+					System.out.println("목록에 등록된 작물이없다. 1단계부터등록");
+					result = "사용가능";
+				}
+			}
+		}
+
+		return result;
+	}
 	/*===========================================================*/
 }

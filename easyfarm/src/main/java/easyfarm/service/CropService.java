@@ -71,7 +71,7 @@ public class CropService {
 		int result = cropMapper.modifyCrop(test);
 		return result;
 	}
-	//작물정보조회
+	//작물정보조회 - 카테고리 목록 가져오기
 	public Crop getcropCateInfo(String cropCode) {
 		Crop crop = cropMapper.getcropCodeInfo(cropCode);
 		String cropCate = "";
@@ -124,24 +124,43 @@ public class CropService {
 		return result;
 		
 	}
+	
 	//작업단계 정보조회
 	public CropWorkStage getcropPhaseInfo(String cropPhaseInfoCode) {
 		CropWorkStage cropWorkStage = cropMapper.getcropPhaseInfo(cropPhaseInfoCode);
 		return cropWorkStage;
-	
+	}
+	public CropWorkStage getcropPhaseInfo2(String workphase, String cropCode) {
+		CropWorkStage cropWorkStage = cropMapper.getcropPhaseInfo2(workphase, cropCode);
+		return cropWorkStage;
 		
 	}
 	//작물정보-작물명 조회
 	public Crop getCropNameinfo(String cropName) {
 		return cropMapper.getcropNameInfo(cropName);
 	}
+	//작업단계 정보수정
+	public int modifyCropWorkStage(CropWorkStage cropPhaseInfoCode) {
+		int result = cropMapper.modifyCropWorkStage(cropPhaseInfoCode);
+		return result;
+	}
+	
+	//상세작업항목 조회
+	public CropDetailCategory getCropDetailCategory(String commonWorkphaseCateCode) {
+		return cropMapper.getCropDetailCategory(commonWorkphaseCateCode);
+	}
+	//상세작업 정보수정
+	public int modifyCropDetailCategory(CropDetailCategory commonWorkphaseCateCode) {
+		return cropMapper.modifyCropDetailCategory(commonWorkphaseCateCode);
+		
+	}
+	
 	
 	//프로젝트 등록 - 작물 리스트 조회
 	public List<Crop> getCropListByCropCategory(String cropCategory){
 		List<Crop> cropList = cropMapper.getCropListByCropCategory(cropCategory);
 		return cropList;
 	}
-	
 	
 	
 	

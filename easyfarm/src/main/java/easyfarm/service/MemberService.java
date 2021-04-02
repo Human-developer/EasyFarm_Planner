@@ -56,11 +56,17 @@ public class MemberService {
 				
 			return loginList;
 	 }
+	 //최근 로그인 기록조회
+	 public List<Member> getLoginMaxDate(){
+		 List<Member> loginMaxDate = memberMapper.getLoginMaxDate();
+		 return loginMaxDate;
+	 }
 	 //로그아웃기록
 	 public void updateLogout(String levelCode) {
 		  memberMapper.updateLogout(levelCode);
 		 
 	 }
+	 
 	 
 	 //관리자가 회원수정
 	 public void modifyMember(Member member) {
@@ -77,7 +83,7 @@ public class MemberService {
 	 }
 	 //관리자가 level 권한등록
 	 public void addAuthority(Member member) {
-		 if(member != null) memberMapper.addAuthority(member);
+		 if(member != null)  memberMapper.addAuthority(member);
 		
 	 }
 	 //권한 목록조회
@@ -114,10 +120,18 @@ public class MemberService {
 		 List<Member> cancelList = memberMapper.getCancelMember();
 	  return cancelList;
 	 }
+	 //휴면|탈퇴 예정일등록
+	 public void addStatusSchedule(String loginId,String autoRestDate,String autoWithdrawalDate) {
+		 memberMapper.addStatusSchedule(loginId,autoRestDate,autoWithdrawalDate);
+	 }
 	 //휴면|탈퇴 예정일조회
 	 public List<Report> getExpectedDate(){
 		 List<Report> expectedList = memberMapper.getExpectedDate();
 			 return expectedList;
+	 }
+	 //휴면|탈퇴 예정일 업데이트
+	 public void updateStatusSchedule(String loginId,String autoRestDate,String autoWithdrawalDate) {
+		 memberMapper.updateStatusSchedule(loginId,autoRestDate,autoWithdrawalDate);
 	 }
 	 //휴면|탈퇴 기준일 조회
 	 public List<Report> getBaseDate() {
@@ -138,6 +152,26 @@ public class MemberService {
 	 // 휴면|탈퇴 기준일 수정
 	 public void modifyBaseDate(Report report) {
 		 memberMapper.modifyBaseDate(report);
+	 }
+	 public void modifyBaseDateStatus(String statusCode,String statusName) {
+		 memberMapper.modifyBaseDateStatus(statusCode,statusName);
+	 }
+	 // 상태 Y로 변경
+	 public void cancelBaseDateStatus(String statusCode,String statusName) {
+		 memberMapper.cancelBaseDateStatus(statusCode,statusName);
+	 }
+	 // 기준일 가져오기
+	 public int getStatusDays(String statusName) {
+		 Report report = memberMapper.getStatusDays(statusName);
+		 int statusDays = report.getStatusCriteriaDays();
+		 return statusDays;
+	 }
+	 //휴면|탈퇴중 가장최근에 등록된 코드 리턴
+	 public String getStatus(String statusName) {
+		Report name = memberMapper.getStatus(statusName);
+		
+		String StatusCode = name.getStatusCriteriaCode();
+		 return StatusCode;
 	 }
 	 // 휴면|탈퇴 기준일 리스트조회
 	 public List<Report> getstatusCriteriaName(){
@@ -206,5 +240,19 @@ public class MemberService {
 		 List<Report> banList = memberMapper.getSuspend();
 		 return banList;
 	 }
-	
+	 // 정지회원조회
+	 public Report getSuspend(String reportedId) {
+		 Report banList = memberMapper.getSuspend(reportedId);
+		 return banList;
+	 }
+	 //정지 등록
+	 public void addBanCurrentSituation(String reportedId, String reportCode,String banEndDate) {
+		 memberMapper.addBanCurrentSituation(reportedId,reportCode,banEndDate);
+		 memberMapper.updateMember(reportedId);
+	 }
+	 //정지 해제
+	 public void removeBan(String banCode,String banId) {
+		 memberMapper.removeBan(banCode);
+		 memberMapper.updateMemberCancel(banId);
+	 }
 }

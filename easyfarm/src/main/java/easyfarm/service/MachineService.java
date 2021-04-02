@@ -35,4 +35,14 @@ public class MachineService {
 		return result;
 	
 	}
+
+
+	public Machine getCommonMachineInfo(String commonMachineCode) {
+		return machineMapper.getCommonMachineInfo(commonMachineCode);
+	}
+
+
+	public int modifyCommonMachine(Machine machine) {
+		return machineMapper.modifyCommonMachine(machine);
+	}
 }

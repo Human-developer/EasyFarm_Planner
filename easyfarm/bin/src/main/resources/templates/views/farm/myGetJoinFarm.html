@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>내가입신청목록</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		<a th:href="@{/farm}">농가관리</a>>내가입신청목록
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib"></th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss"></th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+		<div class ="container-fluid">
+			<div class ="row">
+				<div class ="box-content">
+					<h3>내가입신청목록</h3>
+					<hr>
+					<div>
+						<form th:action="@{#}" method="get">							
+							<select name="sk">
+								<option>조건1</option>
+								<option>조건2</option>
+								<option>조건3</option>
+								<option>조건4</option>
+							</select>
+							<input type="text" placeholder="검색 가능하게할까?">
+							<button type="submit">검색</button>
+						</form>
+					</div>
+					<table class ="table">
+						<thead>
+							<tr>
+								<th>농가명</th>
+								<th>대표자아이디</th>
+								<th>토지면적</th>
+								<th>주소</th>
+								<th>가입목적</th>
+								<th>처리상태</th>										
+								<th>가입취소</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>농가가입신청코드(숨김)</td>
+								<td>농가코드(숨김)</td>
+								<td>농가명</td>
+								<td>아이디</td>
+								<td>토지면적</td>
+								<td>주소</td>
+								<td>목적</td>
+								<td>처리상태</td>
+								<td><a th:href="@{#}">가입취소</a> </td>
+							</tr>
+						</tbody>
+					</table> 
+				</div>
+			</div>
+		</div>
+		
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib"></th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript"></th:block>
+
+</html>

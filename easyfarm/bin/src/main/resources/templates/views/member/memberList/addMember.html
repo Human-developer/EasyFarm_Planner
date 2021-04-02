@@ -24,27 +24,19 @@
 	    font-family: 'Noto Sans KR', sans-serif;
 		    
 		}
-		.lc-round-btn {
-		    display: block;
-		    width: 100%;
-		    height: 60px;
-		    line-height: 58px;
-		    font-weight: 700;
-		    font-size: 20px;
-		    border-radius: 60px;
-		    background-color: #3BBD5A;
-		    color: #fff;
-		    transition: box-shadow .2s;
-		    margin-top: 30px;
-		    
-		}
+		
+		
 		.btn{ border-radius: 60px;
-		  background-color: #3BBD5A;
-		  width: auto;
-		   color: #fff;
-		    font-weight: 700;
+		 	  background-color: #3BBD5A;
+		 	  width: auto;
+		   	  color: #fff;
+		      font-weight: 700;
 		    
-		   }
+		 }
+		 .btnd{
+		 	 width: 100%;
+		 }
+	
 		   
 		
 	
@@ -331,7 +323,7 @@
 									      <input type="text"  class="form-control" name="memberId" maxlength="14"    id="memberId" placeholder="4~12자의 영문 대소문자와 숫자로만 입력">
 									    </div>
 									    <div class="col-sm-1">
-											<button id="checkBtn" type="button" class="btn" value="no">중복확인</button>
+											<button id="checkBtn" type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" value="no">중복확인</button>
 									    </div>
 									   
 									</div>
@@ -366,22 +358,22 @@
 											<label class="col-sm-2 control-label"><strong>성별</strong></label>
 										</div>
 										<div class="radio success col-sm-2">
-											<input type="radio" name="memberGender radio-1" id="M" checked="checked" value="남">
-											<label for="M">남성</label>
+											<input type="radio" name="memberGender" id="M" checked="checked" value="남">
+											<label for="M">남</label>
 										</div>
 									    <div class="radio success col-sm-2">
-											<input type="radio" name="memberGender radio-1" id="G" value="여">
-											<label for="G">여성</label>
+											<input type="radio" name="memberGender" id="G" value="여">
+											<label for="G">여</label>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="memberIdenNum" class="col-sm-2 control-label"><strong>주민번호</strong></label>
 									    <div class="col-sm-4">
-									      <input type="number" maxlength="6"  class="form-control" name="memberIdenNum" id="memberIdenNum" placeholder="주민번호앞자리">
+									      <input type="number" maxlength="6"  class="form-control" name="memberIdenNum" id="memberIdenNum" placeholder="앞자리">
 									    </div>
 						
 									    <div class="col-sm-4">
-									      <input type="password" maxlength="7"   class="form-control" name="memberIdenNum2" id="memberIdenNum2" placeholder="주민번호뒷자리">
+									      <input type="password" maxlength="7"   class="form-control" name="memberIdenNum2" id="memberIdenNum2" placeholder="뒷자리">
 									    </div>
 									</div>
 									<div class="form-group">
@@ -399,7 +391,7 @@
 									<hr>
 									<div class="form-group">
 										<div class="col-sm-10 col-sm-offset-1">
-											<button type="submit" id="addCheck" class="lc-round-btn" style="margin-top: 10px;">회원가입버튼</button>
+											<button type="submit" id="addCheck" class="btn btnd btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px;">회원가입버튼</button>
 										</div>
 									</div>
 								</div>

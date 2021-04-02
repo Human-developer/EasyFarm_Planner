@@ -1,10 +1,17 @@
 package easyfarm.controller;
 
 
+
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +27,114 @@ import easyfarm.service.MemberService;
 @Controller
 public class MemberController {
 	
-	 @Autowired
-	 MemberService memberService;
+	@Autowired
+	MemberService memberService;
+	 
+	// 매일 00시에 자동실행
+	@Scheduled(cron="0 0 00 * * ?")
+	public void scheduler(){
+	    
+		Date today = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar cal = Calendar.getInstance();
+		 
+		List<Report> reportMember = memberService.getSuspend();
+		 
+		//정지해제
+		for(Report report : reportMember) {
+				 
+		    Date banEndDate = report.getBanEndDate();
+		    String banCode = report.getBanCurrentCode();
+		    String banId = report.getBanMemberId();
+
+		    String toDay= simpleDate.format(today);
+		    String banEndDay = simpleDate.format(banEndDate);
+		    
+		    int compare = toDay.compareTo(banEndDay);
+
+		    if(compare < 0) {
+		      memberService.removeBan(banCode,banId);
+		    }
+		}
+		    
+	     
+	   
+		int restDate = memberService.getStatusDays("휴면");
+		int withdrawalDate = memberService.getStatusDays("탈퇴");
+		List<Member> loginMaxDateList = memberService.getLoginMaxDate();
+		List<Report> expectedList = memberService.getExpectedDate();
+		List<String> idList = new ArrayList<String>();
+		   
+		for(Report expected : expectedList ) {
+			   
+			idList.add(expected.getLoginMemberId());
+		}
+		   
+	  
+	   
+	   for(Member login : loginMaxDateList) {
+		   
+		   Date logoutDate = login.getLogoutDate();
+		   String loginId = login.getLoginMemberId();
+		   
+		   cal.setTime(logoutDate);
+		   cal.add(cal.DATE, restDate); // 셋팅된 날에 기준일을 더해준다
+		   Date restDay = cal.getTime();
+		   String autoRestDate = format.format(restDay);//자동휴면일
+		   
+		   cal.setTime(logoutDate);
+		   cal.add(cal.DATE, withdrawalDate); // 셋팅된 날에 기준일을 더해준다 
+		   Date withdrawalDay = cal.getTime();
+		   String autoWithdrawalDate = format.format(withdrawalDay); //자동탈퇴일
+		   
+		  //자동휴면|탈퇴 예정일조회 테이블에 아이디없을시 등록
+		  if(!idList.contains(loginId)) {
+			  memberService.addStatusSchedule(loginId,autoRestDate,autoWithdrawalDate);
+			  
+		  //아이디가 있을시 예쩡일 업데이트 
+		  }else if(idList.contains(loginId)) {
+				  
+				  memberService.updateStatusSchedule(loginId,autoRestDate,autoWithdrawalDate);
+		  }
+			 
+		  
+	   }
+	   
+	   for(Report expected : expectedList) {
+		 Date RestDay = expected.getAutoRestDate();
+		 Date WithdrawalDay = expected.getAutoWithdrawalDate();
+		 String memberId = expected.getLoginMemberId();
+		   
+		   int compare = today.compareTo(RestDay);
+		   int Comparison = today.compareTo(WithdrawalDay);
+		   if(compare < 0) {
+			   Member member = memberService.getMemberInfoById(memberId);
+			   member.setUseStatus("휴면");
+			   //상태 휴면으로 변경
+			   memberService.removeUpdateMember(member);
+		   }
+		   
+		   if(Comparison < 0) {
+			   Member member = memberService.getMemberInfoById(memberId);
+			   member.setUseStatus("탈퇴");
+			   //회원목록에서는 상태탈퇴로 변경
+			   memberService.removeUpdateMember(member);
+			   //탈퇴회원등록
+			   memberService.addCancelMember(member);
+		   }
+		   
+	   }
+	   
+	   
+	   
+	 }
 	
 	 @GetMapping("/member")
 	 public String member() {
 		 return "views/member/member";
 	 }
+
 	 //로그인
 	 @GetMapping("/member/login")
 	 public String login(Model model,HttpSession session) {
@@ -56,17 +164,17 @@ public class MemberController {
 				 if (member.getMemberPw().equals(memberPw))
 				 {
 					 if(member.getMemberStatus() != "탈퇴" && !"탈퇴".equals(member.getMemberStatus().trim()) && 
-					    member.getMemberStatus() != "정지" &&	!"정지".equals(member.getMemberStatus().trim())) {
+					    member.getMemberStatus() != "정지" &&	 !"정지".equals(member.getMemberStatus().trim())) {
 						 if(session.getAttribute("SID") == null) {
 							 //memberService.updateLogin(memberId);							
 						 }
 					
-					 // 아이디
-					 session.setAttribute("SID", memberId);
-					 // 권한
-					 session.setAttribute("SNAME", member.getMemberName());
-					 // 이름
-					 session.setAttribute("SLEVEL", member.getLevelName());
+						 // 아이디
+						 session.setAttribute("SID", memberId);
+						 // 권한
+						 session.setAttribute("SNAME", member.getMemberName());
+						 // 이름
+						 session.setAttribute("SLEVEL", member.getLevelName());
 					 
 									
 					 	return "main";
@@ -84,6 +192,12 @@ public class MemberController {
 						 session.setAttribute("Error", msg);
 						
 					 	 return "redirect:/member/login";
+					 }else if(member.getMemberStatus() == "휴면" || "휴면".equals(member.getMemberStatus().trim())) {
+						 
+						 msg = "휴면회원입니다";
+						 session.setAttribute("Error", msg);
+						 
+						 return "";				 
 					 }
 					
 				 }
@@ -146,23 +260,23 @@ public class MemberController {
 
 		 return "main";
 	 }
-	//아이디 중복체크
+	 //아이디 중복체크
 	 @PostMapping("/ajax/idCheck")
 	 public @ResponseBody String idChdck(@RequestParam(value = "memberId", required = false) String memberId) {
 	 	 String result = "사용불가능";
-
+	
 		 if (memberId != null && !"".equals(memberId) && !"".equals(memberId.trim())) {
 			 Member member = memberService.getMemberInfoById(memberId);
-
+	
 			 if (member != null && member.getMemberId().equals(memberId)) {
 				 result = "사용불가능";
 			 } else {
 				 result = "사용가능";
 			 }
 		 }
-
+	
 		 return result;
-	 }
+	  }
 
 	  //회원검색&조회
 	  @GetMapping("/member/getMember") 
@@ -321,7 +435,26 @@ public class MemberController {
 	  //조회
 	  @GetMapping("/member/getCancelMember")
 	  public String getCancelMember(Model model) {
+		  
 		  List<Member> cancelList = memberService.getCancelMember();
+		  
+		  for(int i=0; i < cancelList.size(); i++) {
+			  
+			  
+			  String address = cancelList.get(i).getMemberAddress().substring(0,4);
+			  String date = cancelList.get(i).getCancelDate().substring(0,8);
+			  String phone= cancelList.get(i).getMemberPhone().substring(0,5);
+			  String email = cancelList.get(i).getMemberEmail().substring(0,4);
+			  String reason = cancelList.get(i).getCancelMemberReason().substring(0,6);
+			  
+			  
+			  cancelList.get(i).setMemberAddress(address+"...");  
+			  cancelList.get(i).setCancelDate(date+"...");  
+			  cancelList.get(i).setMemberPhone(phone+"...");  
+			  cancelList.get(i).setMemberEmail(email+"...");  
+			  cancelList.get(i).setCancelMemberReason(reason+"...");  
+		  }
+		  
 		  model.addAttribute("cancelList",cancelList);
 		  
 		  return "views/member/memberList/getCancelMember";
@@ -349,19 +482,40 @@ public class MemberController {
 	  //기준일 등록
 	  @GetMapping("/member/addBaseDate")
 	  public String addBaseDate(Model model) {
-		
-		  List<Report> nameList = memberService.getBaseDate();			
-		  model.addAttribute("nameList",nameList);
-		 
+		  
 		  return "views/member/baseDate/addBaseDate";
 	  }
 	  
 	  @PostMapping("/member/addBaseDate")
 	  public String addBaseDate(Report report) {
-		 // System.out.prStringln(report.getUseStatus()+ "11111111111111111111111");
 		  
 		  
-		  memberService.addBaseDate(report);
+			  if("휴면".equals(report.getStatusCriteriaName())) {
+				  List<Report> reportList = memberService.getBaseDate();
+				  for(int i=0; i < reportList.size(); i++) {
+					  String status = reportList.get(i).getUseStatus();
+					  String statusCode = reportList.get(i).getStatusCriteriaCode();
+					  if("Y".equals(status)) {
+						  String statusName = "휴면"; 
+						  memberService.modifyBaseDateStatus(statusCode,statusName);
+					  }
+				  }
+				  
+			  }
+			  else if("탈퇴".equals(report.getStatusCriteriaName())) {
+				  List<Report> reportList = memberService.getBaseDate();
+				  
+				  for(int i=0; i < reportList.size(); i++) {
+					  String status = reportList.get(i).getUseStatus();
+					  String statusCode = reportList.get(i).getStatusCriteriaCode();
+					  if("Y".equals(status)) {
+						  String statusName = "탈퇴"; 
+						  memberService.modifyBaseDateStatus(statusCode,statusName);
+					  }
+				  }
+			  
+			  }
+			  memberService.addBaseDate(report);		  
 		  
 		  return "redirect:/member/getBaseDate";
 	  }
@@ -383,15 +537,55 @@ public class MemberController {
 	  @PostMapping("/member/modifyBaseDate")
 	  public String modifyBaseDate(Report report) {
 		 
+		  if("Y".equals(report.getUseStatus())) {
+			  
+			  List<Report> reportList = memberService.getBaseDate();
+			  
+			  if("휴면".equals(report.getStatusCriteriaName())) {
+				  for(int i=0; i < reportList.size(); i++) {
+					  String status = reportList.get(i).getUseStatus();
+					  String statusCode = reportList.get(i).getStatusCriteriaCode();
+					  if("Y".equals(status)) {
+						  String statusName = "휴면"; 
+						  memberService.modifyBaseDateStatus(statusCode,statusName);
+					  }
+				  }
+				  
+			  }
+			  else if("탈퇴".equals(report.getStatusCriteriaName())) {
+				  
+				  
+				  for(int i=0; i < reportList.size(); i++) {
+					  String status = reportList.get(i).getUseStatus();
+					  String statusCode = reportList.get(i).getStatusCriteriaCode();
+					  if("Y".equals(status)) {
+						  String statusName = "탈퇴"; 
+						  memberService.modifyBaseDateStatus(statusCode,statusName);
+					  }
+				  }
+			  
+			  }
+		  }
 		  memberService.modifyBaseDate(report);
+		  
 		  return "redirect:/member/getBaseDate";
 	  }
 	  //기준일 삭제
 	  @GetMapping("/member/removeBaseDate")
 	  public String removeBaseDate(@RequestParam(value = "statusCriteriaCode",required = false, defaultValue = "" )String statusCriteriaCode) {
 		  
+		  Report baseDate = memberService.getBaseDate(statusCriteriaCode);
 		  
+		  //비교를위해 휴면&탈퇴 이름을 변수가 닮아준다
+		  String statusName = baseDate.getStatusCriteriaName();
+		  //삭제
 		  memberService.removeBaseDate(statusCriteriaCode);
+			  
+		  //삭제후 가장최근에 등록한 기준일상태를 Y로 변경  
+		  statusCriteriaCode = memberService.getStatus(statusName);
+		  if(statusCriteriaCode != null && !"".equals(statusCriteriaCode.trim())) {
+			  memberService.cancelBaseDateStatus(statusCriteriaCode,statusName);		  
+		  }
 		  
 		  return "redirect:/member/getBaseDate";
 
@@ -473,10 +667,32 @@ public class MemberController {
 	  public String resultReport(
 			  	@RequestParam(value = "reportHistoryCode",required = false,defaultValue = "")String reportHistoryCode,
 			  	@RequestParam(value = "reportApprovalReason",required = false,defaultValue = "")String reportApprovalReason,
+			  	@RequestParam(value = "reportCode",required = false,defaultValue = "")String reportCode,
+			  	@RequestParam(value = "reportedId",required = false,defaultValue = "")String reportedId,
 			  	@RequestParam(value = "reportApproval",required = false,defaultValue = "")String reportApproval) {
 		  if("승인".equals(reportApproval)) {
-			  memberService.resultReport(reportHistoryCode,reportApproval,reportApprovalReason);			  
-			  //정지회원 등록 
+			  System.out.println("실행");
+			  // 신고상태변경
+			  memberService.resultReport(reportHistoryCode,reportApproval,reportApprovalReason);
+			  // 정지일수 측정
+			  Report report = memberService.getReasonReport(reportCode);
+			  int banDay = report.getReportBanDays();		  
+			  // 측정한일수를 데이터값으로 변경
+			  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			  Calendar cal = Calendar.getInstance();
+			  Date today = new Date();
+			  cal.setTime(today);
+			  cal.add(cal.DATE, banDay);
+			  Date date = cal.getTime();
+			  //정지 풀리는 날 측정
+			  String banEndDay = format.format(date);
+			  //이미 정지되있을땐 x 
+			  Report member = memberService.getSuspend(reportedId);
+			  String banId = member.getBanMemberId();
+			  if(banId != null) {
+				  memberService.addBanCurrentSituation(reportedId,reportCode,banEndDay);			  
+			  }			  
+		  
 		  }else {			  
 			  memberService.resultReport(reportHistoryCode,reportApproval,reportApprovalReason);			  
 		  }
@@ -487,14 +703,29 @@ public class MemberController {
 	  public String getReport(HttpSession session,Model model) {
 		  if(session.getAttribute("SLEVEL") != null) {			  
 			  if("관리자".equals(session.getAttribute("SLEVEL"))) {
-				 
+				  
 				  List<Report> reportList = memberService.getReport(null);
+				
+				  for(Report report : reportList) { 
+					  
+				   String date = report.getReportDate().substring(2,10); 
+				   report.setReportDate(date);
+				  }
+				 
 				  model.addAttribute("reportList",reportList);
 				  return "views/member/report/getReport";
 			  }
 			  if(!"관리자".equals(session.getAttribute("SLEVEL"))) {
 				  String memberId = (String) session.getAttribute("SID");
+				  
 				  List<Report> reportList = memberService.getReport(memberId);
+				  
+				  for(Report report : reportList) { 
+					  
+					   String date = report.getReportDate().substring(2,10); 
+					   report.setReportDate(date);
+					  }
+				  
 				  model.addAttribute("reportList",reportList);
 				  return "views/member/report/getReportMember";
 			  }
@@ -526,6 +757,12 @@ public class MemberController {
 	  public String getSuspend(Model model) {
 		  
 		  List<Report> banList = memberService.getSuspend();
+		  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		  for(Report ban : banList) {
+			  String banEndDate= format.format(ban.getBanEndDate());
+			  ban.setBanBeginDate(ban.getBanBeginDate().substring(2,10));
+			  ban.setRegDate(banEndDate.substring(2,10));
+		  }
 		  model.addAttribute("banList",banList);
 		  
 		  return "views/member/memberList/getSuspend";

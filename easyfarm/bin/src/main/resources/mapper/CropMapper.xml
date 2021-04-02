@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="easyfarm.dao.CropMapper">
+	<resultMap type="Crop" id="CropResultMap">
+		<result property="cropCode"	column="crop_code"/>
+		<result property="cropCate"	column="crop_cate"/>
+		<result property="cropName"	column="crop_name"/>
+		<result property="useStatus"	column="use_status"/>
+		<result property="regMemberId"	column="reg_member_id"/>
+		<result property="regDate"		column="reg_date"/>
+		<association property="member" javaType="Member">
+			<id property="memberId" 			column="member_id"/>
+		</association>
+	</resultMap> 
+	            
+	<resultMap type="CropWorkStage" id="CropWorkStageResultMap">
+		<result property="cropPhaseInfoCode"	column="crop_phase_info_code"/>
+		<result property="cropCode"				column="crop_code"/>
+		<result property="workphase"			column="workphase"/>
+		<result property="workphaseName"		column="workphase_name"/>
+		<result property="useStatus"			column="use_status"/>
+		<result property="regMemberId"			column="reg_member_id"/>
+		<result property="regDate"				column="reg_date"/>
+		<association property="cropDetailCategory" javaType="CropDetailCategory" >
+			<id property="commonWorkphaseCateCode"		column="common_workphase_cate_code"/>
+			<result property="commonWorkphaseCateCode"	column="common_workphase_cate_code"/>
+			<result property="commonWorkphaseCateName"	column="common_workphase_cate_name"/>
+			<result property="regMemberId"				column="reg_member_id"/>
+			<result property="regDate"					column="reg_date"/>
+		</association>
+		<association property="crop" javaType="Crop" >
+			<id property="cropCode"			column="crop_code"/>
+			<result property="cropCode"		column="crop_code"/>
+			<result property="cropCate"		column="crop_cate"/>
+			<result property="cropName"		column="crop_name"/>
+			<result property="useStatus"	column="use_status"/>
+			<result property="regMemberId"	column="reg_member_id"/>
+			<result property="regDate"		column="reg_date"/>
+		</association>
+	</resultMap>          
+	
+	<resultMap type="CropDetailCategory" id="CropDetailCategoryResultMap">
+		<result property="commonWorkphaseCateCode"	column="common_workphase_cate_code"/>
+		<result property="commonWorkphaseCateName"	column="common_workphase_cate_name"/>
+		<result property="regMemberId"			column="reg_member_id"/>
+		<result property="regDate"				column="reg_date"/>
+	</resultMap>          
+	
+	<select id="getCropCode" parameterType="map" resultMap="CropResultMap">
+	SELECT 
+		c.crop_code,
+		c.crop_cate,
+		c.crop_name,
+		c.use_status,
+		c.reg_member_id,
+		c.reg_date
+	FROM
+		tb_crop	as c
+	<trim prefix="WHERE" prefixOverrides="AND |OR ">
+		<if test="searchKey != null and searchKey != ''.toString()">
+			${searchKey} LIKE CONCAT('%',#{searchValue},'%')					
+		</if>
+	</trim>
+	<!--정렬안됌 수정요망  -->
+	order by c.crop_cate asc;
+	</select>
+	
+	<select id="getCropWorkStage" parameterType="String" resultMap="CropWorkStageResultMap">
+	SELECT 
+		cp.crop_phase_info_code, 
+		cp.crop_code, 
+		c.crop_name,
+		cp.workphase, 
+		cp.workphase_name, 
+		cp.use_status, 
+		cp.reg_member_id, 
+		cp.reg_date 
+	FROM 
+		tb_crop_phase_info	as cp
+	inner join 
+		tb_crop as c
+	on
+	 cp.crop_code = c.crop_code 
+	order by cp.crop_code*1
+	</select>
+	
+	<select id="getCropDetailCategory" parameterType="String" resultMap="CropDetailCategoryResultMap">
+	SELECT 
+		cwc.common_workphase_cate_code, 
+		cwc.common_workphase_cate_name, 
+		cwc.reg_member_id, 
+		cwc.reg_date 
+	FROM 
+		tb_common_workphase_cate	as cwc
+	order by common_workphase_cate_code*1
+	</select>
+	
+	
+	
+	
+	
+	
+	<insert id="addCrop" parameterType="map">
+	INSERT INTO 
+		tb_crop
+		(crop_code ,crop_cate, crop_name, use_status, reg_member_id, reg_date )
+	VALUES (
+	sf_crop_max_code()
+	<if test="crop.cropCate != null and crop.cropCate != ''.toString()">
+	,#{crop.cropCate}
+	</if>
+	, #{crop.cropName}
+	, 'O'
+	, #{memberId}
+	, NOW()
+	)
+	</insert>
+	
+	<insert id="addCropWorkStage" parameterType="map">
+		INSERT INTO
+	 tb_crop_phase_info
+	(crop_phase_info_code,crop_code, workphase, workphase_name, use_status, reg_member_id, reg_date)
+	VALUES (
+	sf_cropWorkPhase_max_code()
+	,#{crop.cropCode}
+	, #{crop.workphase}
+	, #{crop.workphaseName}
+	, 'O'
+	, #{memberId}
+	, NOW()
+	)
+	
+	</insert>
+	
+	<insert id="addCropDetailCategory" parameterType="map">
+	INSERT INTO 
+		tb_common_workphase_cate
+		( common_workphase_cate_code,common_workphase_cate_name, reg_member_id, reg_date )
+	VALUES (
+		sf_commonWorkphaseCateCode_max_code()
+		, #{crop.commonWorkphaseCateName}
+		, #{memberId}
+		, NOW()
+	)
+	</insert>
+
+
+
+
+
+
+	<update id="modifyCrop" parameterType="map">
+	UPDATE tb_crop
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="crop.cropCate != null and crop.cropCate != ''.toString()">
+			crop_cate	=#{crop.cropCate},
+			</if>
+			<if test="crop.cropName != null and crop.cropName != ''.toString()">
+			crop_name	=#{crop.cropName},
+			</if>
+			<if test="crop.useStatus != null and crop.useStatus != ''.toString()">
+			use_status	=#{crop.useStatus}
+			</if>
+		</trim>
+	WHERE crop_code=#{crop.cropCode}
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	<select id="getcropCodeInfo" parameterType="String" resultMap="CropResultMap">
+		SELECT 
+			c.crop_code,
+			c.crop_cate,
+			c.crop_name,
+			c.use_status,
+			c.reg_member_id,
+			c.reg_date
+		FROM
+			tb_crop	as c
+		WHERE
+		 	c.crop_code = #{cropCode};
+	</select>
+	<select id="getcropNameInfo" parameterType="String" resultMap="CropResultMap">
+		SELECT 
+			c.crop_code,
+			c.crop_cate,
+			c.crop_name,
+			c.use_status,
+			c.reg_member_id,
+			c.reg_date
+		FROM
+			tb_crop	as c
+		WHERE
+		 	c.crop_name = #{cropName};
+	</select>
+	<select id="getcropPhaseInfo" parameterType="String" resultMap="CropWorkStageResultMap">
+	SELECT 
+		cp.crop_phase_info_code
+		, cp.crop_code
+		, c.crop_name
+		, cp.workphase
+		, cp.workphase_name
+		, cp.use_status
+		, cp.reg_member_id
+		, cp.reg_date
+	FROM
+	 tb_crop_phase_info as cp
+	 inner join
+	 tb_crop as c
+	 on
+	  cp.crop_code = c.crop_code
+	 where
+	 crop_phase_info_code= #{cropPhaseInfoCode};
+	</select>
+	<select id="getCropListByCropCategory" resultMap="CropResultMap" resultType="map" parameterType="String">
+		select
+			*
+		from tb_crop
+		where
+			use_status = 'O' and crop_cate = #{cropCategory}
+	</select>
+</mapper>
