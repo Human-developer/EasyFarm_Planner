@@ -63,6 +63,16 @@
 		ORDER BY login_date DESC 
 			LIMIT 1
 	</select>
+	 <select id="getLoginMaxDate" resultMap="memberResultMap">
+		SELECT 
+			  login_code AS login_code
+			, login_member_id AS login_member_id
+			, MAX(login_date) AS login_date
+			, MAX(logout_date) AS logout_date
+		FROM 
+			tb_login
+			GROUP BY login_member_id
+	</select> 
 	<select id="getLogin" resultMap="memberResultMap">
 		SELECT 
 			login_code
@@ -74,14 +84,14 @@
 	</select>
 	
 	<insert id="updateLogin">
-	INSERT INTO tb_login
-	(
-	
-	 login_member_id
-	, login_date
-	, logout_date
-	)
-	VALUES (#{memberId}, NOW(), NOW())
+		INSERT INTO tb_login
+		(
+		
+		 login_member_id
+		, login_date
+		, logout_date
+		)
+		VALUES (#{memberId}, NOW(), NOW())
 	</insert>
 	
 	<update id="updateLogout" parameterType="Member">

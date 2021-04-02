@@ -1,5 +1,7 @@
 package easyfarm.domain;
 
+import java.util.Date;
+
 /*import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;*/
 
 public class Member {
@@ -23,8 +25,8 @@ public class Member {
 	private String cancelDate;			//탈퇴날짜
 	private String loginMemberId;		//로그인아이디
 	private String loginCode;			//로그인코드
-	private String loginDate;			//로그인 날짜
-	private String logoutDate;			//로그아웃 날짜
+	private Date loginDate;			//로그인 날짜
+	private Date logoutDate;			//로그아웃 날짜
 	public String getMemberId() {
 		return memberId;
 	}
@@ -139,16 +141,16 @@ public class Member {
 	public void setLoginCode(String loginCode) {
 		this.loginCode = loginCode;
 	}
-	public String getLoginDate() {
+	public Date getLoginDate() {
 		return loginDate;
 	}
-	public void setLoginDate(String loginDate) {
+	public void setLoginDate(Date loginDate) {
 		this.loginDate = loginDate;
 	}
-	public String getLogoutDate() {
+	public Date getLogoutDate() {
 		return logoutDate;
 	}
-	public void setLogoutDate(String logoutDate) {
+	public void setLogoutDate(Date logoutDate) {
 		this.logoutDate = logoutDate;
 	}
 	
