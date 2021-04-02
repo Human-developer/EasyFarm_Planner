@@ -5,12 +5,12 @@
 	  
 	<!-- 화면 title 설정 -->
 	<th:block layout:fragment="customTitle">
-		<title>프로젝트 통합계획관리</title>
+		<title>프로젝트계획 차수관리</title>
 	</th:block>
 	
 	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
 	<th:block layout:fragment="pageTitle">
-		프로젝트 통합계획관리
+		프로젝트계획 차수관리
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
@@ -35,50 +35,54 @@
 				<div class="col-md-12">
 					<div class="box-content">
 						<div class="pull-left">
-							<th:block th:if="${projectName != null} and ${projectCode != null}">
-									<input class="hidden" th:value="${projectCode}" id="projectCode"/>
-									<div style="font-size: 24px;" th:text="|${projectName} 프로젝트 통합계획관리|"></div>
+							<th:block th:if="${projectName != null}">
+									<div style="font-size: 24px;" th:text="|${projectName} 프로젝트계획 차수관리|"></div>
 							</th:block>
 							<th:block th:unless="${projectName != null}">
-								<div style="font-size: 24px;">프로젝트 통합계획관리</div>
+								<div style="font-size: 24px;">프로젝트 계획 차수 관리</div>
 							</th:block>
 						</div>
 						<div class="pull-right">
-							<button id="addProjectPlanBtn" type="button" class="btn btn-primary btn-sm waves-effect waves-light btn-rounded">프로젝트 n번째 통합계획생성</button>
+							<button type="button" class="btn btn-primary btn-sm waves-effect waves-light btn-rounded" onClick="location.href='/plan/addProjectPlan?projectCode'+${}">프로젝트 n번째 통합계획생성</button>
 						</div>
 						<div style="margin-top: 6px;">
 							<small style="color: red; margin-left: 6px;"><i class="fa fa-lightbulb-o"> 행을 클릭하시면 월간계획으로 이동 합니다.</i></small>
 						</div>
 						<hr/>
-						<div class="table-responsive">
-							<table id="example" class="table table-striped table-bordered display" style="width:100%">
-								<thead>
-									<tr>
-										<th class="hidden">프로젝트별계획관리코드</th>
-										<th>계획차수</th>
-										<th>프로젝트이름</th>
-										<th>사용토지면적</th>
-										<th>시작일자</th>
-										<th>종료일자</th>
-										<th>총수입예산</th>
-										<th>총지출예산</th>
-									</tr>
-								</thead>
-								<tbody>
-									<th:block th:if="${#lists.size(projectPlanNList) > 0}" th:each="pp : ${projectPlanNList}">
+						<div class="">
+							<div class="table-responsive">
+								<table id="example" class="table table-striped table-bordered display" style="width:60%; margin: 0 auto;">
+									<thead>
 										<tr>
-											<td class="hidden" th:text="${pp.projectPlanCode}"></td>
-											<td th:text="|${pp.projectPlanN} 계획|"></td>
-											<td th:text="${pp.projectName}"></td>
-											<td th:text="${pp.projectArea}"></td>
-											<td th:text="${pp.projectBegin}"></td>
-											<td th:text="${pp.projectEnd}"></td>
-											<td th:text="${pp.projectEstimateIncome}"></td>
-											<td th:text="${pp.projectEstimateSpending}"></td>
+											<th class="t-center">#</th>
+											<th class="t-center">계획 (예상)</th>
+											<th class="t-center">실행 (결과)</th>
 										</tr>
-									</th:block>
-								</tbody>
-							</table>
+									</thead>
+									<tbody class="t-center">
+										<tr>
+											<td>근무인원</td>
+											<td>2명</td>
+											<td>2명</td>
+										</tr>
+										<tr>
+											<td>근무일수</td>
+											<td>2일</td>
+											<td>2021-03-07<br/>2021-03-08</td>
+										</tr>
+										<tr>
+											<td>일일인건비</td>
+											<td>13,000원</td>
+											<td>13,000원</td>
+										</tr>
+										<tr>
+											<td>총인건비합</td>
+											<td>520,000원</td>
+											<td>260,000원</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 					<!-- /.box-content -->
@@ -102,8 +106,8 @@
 	<!-- 사용자 정의 자바스크립트 -->
 	<th:block layout:fragment="customJavaScript">
 		<script type="text/javascript">
-			
-			$('#example tbody tr').click(function(){
+		
+			$('#example tr').click(function(){
 				var tr = $(this);
 				var tdText = tr.children().first().text();
 				location.href = '/plan/getSchedule?projectPlanCode=' + tdText;
@@ -136,54 +140,7 @@
 			
 			$('#projectPlanNTable').sysDataTable(lang_kor);
 			
-			$('#addProjectPlanBtn').click(function(){
-				var projectCode = $('#projectCode').val();
-				console.log(projectCode);
-				
-				var request = $.ajax({
-					  url: "/plan/addProjectPlan",
-					  method: "POST",
-					  data: { projectCode : projectCode },
-					  dataType: "json"
-					});
-					 
-					request.done(function( data ) {
-						if(data > 0){
-							swal({   
-								title: "프로젝트 통합계획 생성이\n완료되었습니다",   
-								type: "success",   
-								confirmButtonColor: "#304ffe",   
-								confirmButtonText: "확인", 
-								closeOnConfirm: false,
-								confirmButtonColor: '#304ffe',
-							}, function(isConfirm){   
-								if (isConfirm) { 
-									location.href = '/plan?projectCode=' + projectCode;
-								} 
-							});
-						}else{
-							
-						}
-					});
-					 
-					request.fail(function( jqXHR, textStatus ) {
-						swal({   
-							title: "통합계획을 다시 생성 해주세요",   
-							type: "warning",   
-							showCancelButton: true,
-							confirmButtonColor: "#DD6B55",   
-							confirmButtonText: "확인", 
-							closeOnConfirm: false,
-							confirmButtonColor: '#f60e0e',
-						}, function(isConfirm){   
-							if (isConfirm) { 
-								location.href = '/plan?projectCode=' + projectCode;
-							} 
-						});
-					});
-				
-				
-			});
+			
 			
 		</script>		
 	</th:block>
