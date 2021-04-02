@@ -73,6 +73,7 @@ public class CodeController {
 		return "views/code/getCommonMachineCode";
 	}
 	/*===========================================================*/	
+	/*===========================================================*/	
 	@PostMapping("/code/addCrop")
 	public String addCrop(Crop crop,HttpSession session) {
 		if(crop != null && !"".equals(crop.getCropCode())){
@@ -137,6 +138,7 @@ public class CodeController {
 	}
 	
 	/*===========================================================*/
+	/*===========================================================*/
 	
 	@PostMapping("/code/modifyCrop")
 	public String modifyCrop(Crop crop,HttpSession session) {
@@ -186,6 +188,7 @@ public class CodeController {
 		return "views/code/modifyCropDetailCategory";		
 	}	
 	
+	/*===========================================================*/
 	/*===========================================================*/
 	//작물 중복체크
 	@PostMapping("/ajax/cropCheck")
