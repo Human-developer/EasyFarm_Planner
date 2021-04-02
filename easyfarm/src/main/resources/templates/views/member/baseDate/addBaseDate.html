@@ -48,7 +48,8 @@
 										<label for="statusCriteriaName" class="col-sm-2 control-label" ><strong>기준</strong></label>
 									    <div class="col-sm-10">
 									      <select name="statusCriteriaName" class="form-control" id="statusCriteriaName" >
-									      	<option th:each="n : ${nameList}" th:if="${n.useStatus == 'Y'}" th:value=${n.statusCriteriaName} th:text="${n.statusCriteriaName}"></option>
+									      	<option  value="휴면">휴면</option>
+									      	<option  value="탈퇴">탈퇴</option>
 									      	
 									      </select>
 									    </div>
@@ -65,10 +66,10 @@
 
 									
 										<div class="col-sm-offset-2 col-sm-4 ">
-											<button type="submit" id="Check" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px;">등록</button>
+											<button type="submit" id="addCheck" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px;">등록</button>
 										</div>
 										<div class="col-sm-offset-1 col-sm-4 ">
-											<a th:href="@{/member/getBaseDate}"><button type="button" id="addCheck" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px;">취소</button></a>
+											<a th:href="@{/member/getBaseDate}"><button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px;">취소</button></a>
 										</div>
 									
 								</div>
@@ -86,23 +87,27 @@
 	<!-- 사용자 정의 자바스크립트 -->
 	<th:block layout:fragment="customJavaScript">
 		<script>
-			$(function(){
+		
 				
-				$('#Check').on('click',function(){
-					if($('#statusCriteriaDays').vel() == ""){
+				$('#addCheck').click(function(){
+					
+				
+					if($("#statusCriteriaDays").val() == ""){
 						 swal({
 								title: "기준일을 입력 해주세요.",
-								confirmButtonColor: '#304ffe'
+								confirmButtonColor: '#304ffe',
 							});
-						$('#statusCriteriaDays').funce();
+						$("#statusCriteriaDays").focus();
 						return false;
+						
 					};
+						
 					
 				
 				});
 				
 				
-			});
+			
 		
 		
 		</script>
