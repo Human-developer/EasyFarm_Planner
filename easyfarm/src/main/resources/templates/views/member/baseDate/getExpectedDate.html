@@ -12,7 +12,10 @@
 	<th:block layout:fragment="pageTitle">
 		휴면|탈퇴 예정일조회
 	</th:block>
-	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
+	</th:block>
 	
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
 	<th:block layout:fragment="customContents">
@@ -20,7 +23,7 @@
 	
 			
 			<div class="box-content">
-					<table id="example" class="table table-striped table-bordered display" style="width:100%">
+					<table id="expectedTable">
 						<thead>
 							<tr>
 								<th>예정 코드</th>
@@ -49,14 +52,39 @@
 	</th:block>
 		<!-- 사용자 정의 자바스크립트 라이브러리 -->
 	<th:block layout:fragment="customScriptLib">
-		<script src="/assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
-		<script src="/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
-		<script src="/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
-		<script src="/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
-		<script src="/assets/scripts/datatables.demo.min.js"></script>
-		
+	<div th:replace="fragments/dataTable :: dataTable" th:remove="tag"></div>		
 	</th:block>
-	
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+		
+			var lang_kor = {
+			        "decimal" : "",
+			        "emptyTable" : "회원정보가 없습니다",
+			        "info" : "_START_ - _END_ (총 _TOTAL_ 명)",
+			        "infoEmpty" : "0명",
+			        "infoFiltered" : "(전체 _MAX_ 회원 중 검색결과)",
+			        "infoPostFix" : "",
+			        "thousands" : ",",
+			        "lengthMenu" : "_MENU_ 개씩 보기",
+			        "loadingRecords" : "로딩중...",
+			        "processing" : "처리중...",
+			        "search" : "검색 : ",
+			        "zeroRecords" : "검색된 예정일이 없습니다.",
+			        "paginate" : {
+			            "first" : "첫 페이지",
+			            "last" : "마지막 페이지",
+			            "next" : "다음",
+			            "previous" : "이전"
+			        },
+			        "aria" : {
+			            "sortAscending" : " :  오름차순 정렬",
+			            "sortDescending" : " :  내림차순 정렬"
+			        }
+			}
+			
+			$('#expectedTable').sysDataTable(lang_kor,[0]);
+		</script>
+		</th:block>
 	
 
 </html>
