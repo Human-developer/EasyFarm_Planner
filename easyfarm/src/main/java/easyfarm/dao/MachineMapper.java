@@ -11,6 +11,8 @@ import easyfarm.domain.Machine;
 public interface MachineMapper {
 
 	public List<Machine> getCommonMachineCode();
+	public Machine getCommonMachineInfo(String commonMachineCode);
 
 	public int addCommonMachineCode(Map<String, Object> map);
+	public int modifyCommonMachine(Machine machine);
 }

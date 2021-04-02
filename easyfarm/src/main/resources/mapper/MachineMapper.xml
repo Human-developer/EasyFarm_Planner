@@ -4,7 +4,6 @@
 	<resultMap type="Machine" id="machineResultMap">
 		<result property="commonMachineCode"	column="common_machine_code"/>
 		<result property="commonMachineName"	column="common_machine_name"/>
-		
 		<result property="regMemberId"	column="reg_member_id"/>
 		<result property="regDate"		column="reg_date"/>
 		<association property="member" javaType="Member" >
@@ -24,6 +23,17 @@
 		tb_common_machine
 	ORDER BY common_machine_code*1
 	</select>
+	<select id="getCommonMachineInfo" parameterType="String" resultMap="machineResultMap">
+	SELECT 
+		m.common_machine_code, 
+		m.common_machine_name, 
+		m.reg_member_id, 
+		m.reg_date 
+	FROM 
+		tb_common_machine as m
+		where
+		m.common_machine_code = #{commonMachineCode};
+	</select>
 	
 	<insert id="addCommonMachineCode" parameterType="map">
 	INSERT INTO tb_common_machine
@@ -42,4 +52,14 @@
 	
 	</insert>
 	
+	<update id="modifyCommonMachine" parameterType="Machine">
+	UPDATE 
+		tb_common_machine
+	SET
+		<if test="commonMachineName != null and commonMachineName != ''.toString()">
+		common_machine_name=#{commonMachineName}
+		</if>
+	WHERE 
+		common_machine_code=#{commonMachineCode};
+	</update>
 </mapper>
