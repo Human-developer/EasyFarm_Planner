@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>농가생성</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		<a th:href="@{/farm}">농가관리</a>>농가생성
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+		<link rel="stylesheet" th:href="@{/assets/plugin/touchspin/jquery.bootstrap-touchspin.min.css}">
+	</th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss"></th:block>
+	
+	
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+		<div class ="container-fluid">
+			<div class ="row">
+				<div class ="col-sm-offset-2 col-sm-8">
+				
+					<div class ="box-content">
+					
+						<h3>농가생성</h3>
+						<hr>
+						<form th:action="@{/farm/addFarm}" class ="form-group" method="post" id ="addForm">
+							<input type="hidden" name = "ceoId"  class ="form-control" th:value="${session.SID}" readonly="readonly">
+							<table class ="table">
+								<tbody>
+									<tr>
+										<td><label for="farmName"><strong>농가명</strong></label></td>
+										<td><input type="text" id="farmName" name ="farmName"class ="form-control" placeholder="한글,숫자 2글자 이상 입력해주세요"></td>
+										<td><button type="button" class ="btn btn-info btn-rounded waves-effect waves-light">중복확인</button></td>
+									</tr>
+									<tr>
+										<td><label for="farmArea"><strong>토지면적</strong></label></td>
+										<td><input type="text" id="farmArea" name ="farmArea" class ="form-control" value ="0"></td>
+									</tr>
+									<tr>
+										<td><label for="farmAddress"><strong>농가주소</strong></label></td>
+										<td><input type="text" id="farmAddress" name ="farmAddress" class ="form-control"></td>
+									</tr>
+									<tr>
+										<td><label><strong>공개유무</strong></label></td>
+										<td class ="t-center">
+											<input type="radio" name = "farmPublicStatus" class = "" value = "Y"> 공개
+											<input type="radio" name = "farmPublicStatus" class = "" value = "N" checked="checked"> 비공개
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class ="t-center">
+								<button type="button" class ="btn btn-success btn-rounded waves-effect waves-light">생성</button>
+								<button type="button" class ="btn btn-danger btn-rounded waves-effect waves-light">취소</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		
+		
+		
+		
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+		<script th:src="@{/assets/plugin/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+			var farmNameCheck = false;
+			//[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9] | [\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]
+			var nameCheck = /^[a-zA-Z0-9]|[a-zA-Z]|[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/;
+			
+			$('#farmName').keydown(function(){
+				farmNameCheck = false;
+			})
+			
+			
+			$('.btn').click(function(){
+				var text =	$(this).text();
+				if('취소' == text){
+					location.href="/farm";
+				}
+				else if('생성' == text){
+					if(farmNameCheck){
+						$('#addForm').submit();
+					}
+					else{
+						swal({
+							title: "농가명 중복체크 해주세요",
+							confirmButtonColor: '#304ffe'
+						});
+					}
+				}
+				else if('중복확인' == text){
+					var farmName = $('input[name="farmName"]').val();
+					nameCheck = /^[0-9\s]|[ㄱ-ㅎㅏ-ㅣa-zA-z]|[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]|[*\s$]/;
+					if(farmName != null && !farmName.trim() == ""){
+						
+						if(!nameCheck.test(farmName) && farmName.length >= 2){
+							
+							var request = $.ajax({
+					               url:"/json/farmNameCheck",
+					               method:"post", 
+					               data : {"farmName":farmName},
+					            });
+					            request.done(function(data){
+					            	var checkType = 'error';
+					            	
+					            	if('생성가능' == data){
+					            		farmNameCheck = true;
+					            		checkType ='success';
+					            	}
+					            	else
+					            	{
+					            		farmNameCheck = false;
+					            	}
+	
+					            	 swal({
+										title: "농가명 중복체크",
+										text: data,
+										type: checkType,
+										confirmButtonColor: '#304ffe'
+									});
+								
+									
+					            });
+					            request.fail(function( jqXHR, textStatus ){
+					               alert( "Request failed : " + textStatus );
+					            });
+						}	
+						else{
+							farmNameCheck = false;
+							swal({
+								title: "한글,숫자 2글자 이상 입력해주세요",
+								type:'error',
+								confirmButtonColor: '#304ffe'
+							});
+							$('input[name="farmName"]').focus();
+						}
+					}
+					else{
+						farmNameCheck = false;
+						swal({
+							title: "한글,숫자 2글자 이상 입력해주세요",
+							type:'error',
+							confirmButtonColor: '#304ffe'
+						});
+						$('input[name="farmName"]').focus();
+					}
+				}
+			});
+			
+			
+			
+		      $("#farmArea").TouchSpin({
+		         verticalbuttons: true,
+		         min : 0,
+		         max : 10000000000,
+		         postfix : '평'
+		      });
+		      
+			
+			
+			
+		</script>
+	
+	</th:block>
+
+</html>

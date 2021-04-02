@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layout/default}">
+
+	<th:block layout:fragment="customTitle">
+		<title>작물 수정</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		작물코드 - 작물수정
+	</th:block>
+	
+	<th:block layout:fragment="customContents">
+	
+	
+		<form th:action="@{/code/modifyCrop}" method="post">
+			<div class="container-fluid">
+				<div class="row" >
+					<div class="col-lg-offset-2 col-lg-8">
+						<div class="panel panel-default">
+							<div class="panel-heading t-center important-col ">
+								<h3><strong>작물정보 수정</strong></h3>
+							</div>
+							<div class="panel-body">
+								<div class="form-horizontal">
+									<div class="form-group margin-bottom-20">
+										<label for="cropcate" class="col-sm-3 control-label"><strong>작물 카테고리</strong></label>
+										<div class="col-sm-6">
+											<div class="card-content">
+											<select class="form-control" name="cropCate" id="cropcate" >
+												  <option th:value="기타" th:selected="${crop.cropCate == '기타'}">기타</option>
+												  <option th:value="과수" th:selected="${crop.cropCate == '과수'}">과수</option>
+												  <option th:value="채소" th:selected="${crop.cropCate == '채소'}">채소</option>
+												  <option th:value="축산" th:selected="${crop.cropCate == '축산'}">축산</option>
+												  <option th:value="특용" th:selected="${crop.cropCate == '특용'}">특용</option>
+												  <option th:value="화훼" th:selected="${crop.cropCate == '화훼'}">화훼</option>
+												  <option th:value="과채" th:selected="${crop.cropCate == '과채'}">과채</option>
+												  <option th:value="버섯" th:selected="${crop.cropCate == '버섯'}">버섯</option>
+												  <option th:value="식량" th:selected="${crop.cropCate == '식량'}">식량</option>
+												  <option th:value="약용" th:selected="${crop.cropCate == '약용'}">약용</option>
+											</select>
+											</div>
+										</div>
+									</div>
+									<input id="cropname" name="cropCode" type="hidden" class="form-control" th:value="${crop.cropCode}"/>
+									
+									<div  class="form-group margin-bottom-20">
+										<label for="cropname" class="col-sm-3 control-label"><strong>작물명</strong></label>
+										<div class="col-sm-6">
+											<input id="cropname" name="cropName" type="text" class="form-control" th:value="${crop.cropName}"/>
+										</div>
+									</div>
+									<div  class="form-group margin-bottom-20">
+										<label for="usestatus" class="col-sm-3 control-label"><strong>사용가능여부</strong></label>
+										<div class="col-sm-6">
+										<ul class="list-inline">
+											<li>
+												<div class="radio info">
+													<input type="radio"  name="useStatus" id="radio-10" th:value="O" >
+													<label for="radio-10">O</label>
+												</div>
+											</li>
+											<li>
+												<div class="radio pink">
+													<input type="radio" name="useStatus" id="radio-11" th:value="X" >
+													<label for="radio-11">X</label>
+												</div>
+											</li>
+										</ul>
+										</div>
+									</div>
+	
+									<hr style="border-color : #ccd1d9;">
+									
+									<div class="form-group">
+										<div class="col-sm-10 col-sm-offset-1">
+											<button type="submit" class="btn btn-success btn-rounded waves-effect waves-light" style="width: 100%">작물정보 수정</button></li>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</th:block>
+
+</html>

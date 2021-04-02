@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="easyfarm.dao.ProjectMapper">
+	<!-- ProjectWorkphase 도메인 리절트맵 -->
+	<resultMap type="ProjectWorkphase" id="projectWorkphaseResultMap">
+		<result property="projectWorkphaseCode" column="project_workphase_code"/>
+		<result property="projectCode" column="project_code"/>
+		<result property="cropCode" column="crop_code"/>
+		<result property="cropPhaseInfoCode" column="crop_phase_info_code"/>
+		<result property="regMemberId" column="reg_member_id"/>
+		<result property="regDate" column="reg_date"/>
+		<result property="useStatus" column="use_status"/>
+		<association property="cropPhaseInfo">
+			<id property="cropPhaseInfoCode" column="crop_phase_info_code"/>
+			<result property="workphaseName" column="workphase_name"/>
+		</association>
+	</resultMap>
+	
+	<!-- CropPhaseInfo 도메인 리절트맵 -->
+	<resultMap type="CropPhaseInfo" id="cropPhaseInfoResultMap">
+ 		<result property="cropPhaseInfoCode" 	column="crop_phase_info_code"/>
+ 		<result property="cropCode" 			column="crop_code"/>
+ 		<result property="workphase" 			column="workphase"/>
+ 		<result property="workphaseName" 		column="workphase_name"/>
+ 		<result property="useStatus" 			column="use_status"/>
+ 		<result property="regMemberId" 			column="reg_member_id"/>
+ 		<result property="regDate" 				column="reg_date"/>
+	</resultMap>
+	
+	<!-- Project 도메인 리절트맵 -->
+	<resultMap type="Project" id="ProjectResultMap">
+ 		<result property="projectCode" 				column="project_code"/>
+ 		<result property="farmCode" 				column="farm_code"/>
+ 		<result property="cropCode" 				column="crop_code"/>
+ 		<result property="projectName" 				column="project_name"/>
+ 		<result property="projectArea" 				column="project_area"/>
+ 		<result property="projectBegin" 			column="project_begin"/>
+ 		<result property="projectEnd" 				column="project_end"/>
+ 		<result property="projectEstimateIncome" 	column="project_estimate_income"/>
+ 		<result property="projectEstimateSpending" 	column="project_estimate_spending"/>
+ 		<result property="regMemberId" 				column="reg_member_id"/>
+ 		<result property="regDate" 					column="reg_date"/>
+ 		<association property="crop">
+ 			<id property="cropCode" column="crop_code"/>
+ 			<result property="cropName" column="crop_name"/>
+ 		</association>
+ 		<association property="farm">
+ 			<id property="farmCode" column="farm_code"/>
+ 			<result property="farmName" column="farm_name"/>
+ 		</association>
+	</resultMap>
+	
+	<!-- 프로젝트 등록 -->
+	<!-- 등록 1 - 작물별 작업단계 리스트 조회 -->
+	<select id="getCropPhaseByCropCode" resultMap="cropPhaseInfoResultMap" resultType="map" parameterType="String">
+		SELECT
+			*
+		FROM
+			tb_crop_phase_info
+		WHERE
+			use_status = 'O' AND crop_code = #{cropCode}
+	</select>
+	<!-- 등록 - 프로젝트 코드 최대값 가져오기 -->
+	<select id="getMaxProjectCode" resultType="String">
+		SELECT
+			MAX(project_code)
+		FROM
+			tb_farm_project
+	</select>
+	<!-- 등록 3 - 프로젝트 insert -->
+	<insert id="projectAddByProjectObject" parameterType="Project">
+		INSERT INTO
+			tb_farm_project
+		(
+			project_code,
+			farm_code,
+			crop_code,
+			project_name,
+			project_area,
+			project_begin,
+			project_end,
+			project_estimate_income,
+			project_estimate_spending,
+			reg_member_id,
+			reg_date
+		)
+		VALUES
+		(
+			#{projectCode},
+			#{farmCode},
+			#{cropCode},
+			#{projectName},
+			#{projectArea},
+			#{projectBegin},
+			#{projectEnd},
+			#{projectEstimateIncome},
+			#{projectEstimateSpending},
+			#{regMemberId},
+			now()
+		)
+	</insert>
+	<!-- 등록 - 프로젝트별 작업단계 코드 최대값 가져오기 -->
+	<select id="getMaxProjectWorkphaseCode" resultType="String">
+		SELECT
+			MAX(project_workphase_code)
+		FROM
+			tb_project_workphase
+	</select>
+	<!-- 등록 4 - 프로젝트별 작업단계 insert -->
+	<insert id="projectWorkphaseAddByProjectWorkphase" parameterType="ProjectWorkphase">
+		INSERT INTO
+			tb_project_workphase
+		(
+			project_workphase_code,
+			project_code,
+			crop_code,
+			crop_phase_info_code,
+			reg_member_id,
+			reg_date,
+			use_status
+		)
+		VALUES
+		(
+			#{projectWorkphaseCode},
+			#{projectCode},
+			#{cropCode},
+			(SELECT crop_phase_info_code FROM tb_crop_phase_info WHERE crop_code = #{cropCode} GROUP BY crop_phase_info),
+			#{regMemberId},
+			NOW(),
+			IF(crop_phase_info_code = #{cropPhaseInfoCode}, 'Y','N')
+		)
+	</insert>
+	
+	<!-- 프로젝트 리스트 조회 -->
+	<select id="getProjectListByFarmCode" resultMap="ProjectResultMap" parameterType="String">
+		SELECT
+			tfp.project_code
+			,tfp.farm_code
+			,tfp.crop_code		
+			,tfp.project_name
+			,tfp.project_area
+			,tfp.project_begin
+			,tfp.project_end
+			,tfp.project_estimate_income
+			,tfp.project_estimate_spending
+			,tfp.reg_member_id
+			,tfp.reg_date
+			,tf.farm_name
+			,tc.crop_name
+		FROM
+			tb_farm_project AS tfp
+			JOIN tb_crop AS tc ON tfp.crop_code = tc.crop_code
+			JOIN tb_farm AS tf ON tfp.farm_code = tf.farm_code
+		WHERE
+			tfp.farm_code = #{farmCode}
+		GROUP BY tfp.project_code
+	</select>
+	
+	<!-- 프로젝트 수정 -->
+	<!-- 수정 1 - 프로젝트 조회 -->
+	<select id="getProjectByProjectCode" resultMap="ProjectResultMap" parameterType="String">
+		SELECT
+			*
+		FROM
+			tb_farm_project AS tfp
+			JOIN tb_crop AS tc	ON tfp.crop_code = tc.crop_code
+		WHERE
+			project_code = #{projectCode}
+	</select>
+	<!-- 수정 2 - 프로젝트 update -->
+	<update id="projectModifyByProjectObject" parameterType="Project">
+		UPDATE
+			tb_farm_project
+		SET
+			project_name 				=	 #{projectName},
+			project_area 				=	 #{projectArea},
+			project_begin 				=	 #{projectBegin},
+			project_end					=	 #{projectEnd},
+			project_estimate_income 	=	 #{projectEstimateIncome},
+			project_estimate_spending 	=	 #{projectEstimateSpending}
+		WHERE
+			project_code = #{projectCode}
+	</update>
+	<!-- 수정 3 - 프로젝트별 작업단계 조회 -->
+	<select id="getProjectWorkphaseListByProjectCode" resultMap="projectWorkphaseResultMap" parameterType="String">
+		SELECT
+			*
+		FROM
+			tb_project_workphase as tpw
+			JOIN tb_crop_phase_info as tcp ON tpw.crop_phase_info_code = tcp.crop_phase_info_code
+		WHERE
+			tpw.project_code = #{projectCode}
+	</select>
+	<!-- 수정 4 - 프로젝트별 작업단계 수정 -->
+	<update id="projectWorkphaseModifyN" parameterType="String">
+		UPDATE
+			tb_project_workphase
+		SET
+			use_status = 'N'
+		WHERE
+			project_code = #{projectCode}
+	</update>
+	<!-- 수정 5 - 프로젝트별 작업단계 수정 -->
+	<update id="projectWorkphaseModify" parameterType="String">
+		UPDATE
+			tb_project_workphase
+		SET
+			use_status = 'Y'
+		WHERE
+			project_code = #{projectCode} and project_workphase_code = #{projectWorkphaseCode}
+	</update>
+	
+	<!-- 프로젝트 삭제 -->
+	<delete id="projectRemoveByProjectCode" parameterType="String">
+		DELETE
+		FROM
+			tb_farm_project
+		WHERE
+			project_code = #{projectCode}
+	</delete>
+
+</mapper>

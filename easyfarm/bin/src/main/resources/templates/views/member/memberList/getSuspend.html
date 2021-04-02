@@ -17,32 +17,15 @@
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
 	<th:block layout:fragment="customContents">
 	
-			<div class="card">
-				<div class ="card-body">
-					<form th:action="@{/member/getMember}"  method="get">
-						<div class ="row col-12">
-							<div class ="col-lg-2">
-								<select name="searchKey" class="form-control">
-									<option value="banMemberId">정지 아이디</option>
-								</select>
-							</div>
-							<div class ="col-lg-4">
-								<input type="search" name="searchValue" class ="form-control" placeholder="검색창">
-							</div>
-							<div class ="col-lg-4">
-								<button type="submit" class ="btn btn-info">검색버튼  <i class="align-middle" data-feather="search"></i></button>
-							</div>
-						</div>	
-					</form>
-				</div>
-			</div>
+			
 			<div class="box-content">
-					<table  class="table table-hover table-striped">
+					<table id="example" class="table table-striped table-bordered display" style="width:100%">
 						<thead>
 							<tr>
 								<th>정지회원 관리코드</th>
 								<th>정지 아이디</th>
 								<th>신고사유 코드</th>
+								<th>신고사유</th>
 								<th>정지 시작일</th>			
 								<th>정지 종료일</th>
 							
@@ -54,17 +37,11 @@
 								<td th:text="${b.banCurrentCode}"></td>							
 								<td th:text="${b.banMemberId}"></td>				
 								<td th:text="${b.reportCode}"></td>											
+								<td th:text="${b.reportReason}"></td>											
 								<td th:text="${b.banBeginDate}"></td>				
-								<td th:text="${b.banEndDate}"></td>				
-								
-							
-							
+								<td th:text="${b.banEndDate}"></td>										
 							</tr>
-							<tr th:if="${banList.size() == 0}"> 
-								<td colspan="5" style ="text-align: center;">
-									조회된 내용이 없습니다
-								</td>
-							</tr>
+							
 						</tbody>		
 	
 					</table>
@@ -73,5 +50,13 @@
 			
 	</th:block>
 	
+	<th:block layout:fragment="customScriptLib">
+		<script src="/assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+		<script src="/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+		<script src="/assets/scripts/datatables.demo.min.js"></script>
+		
+	</th:block>
 
 </html>

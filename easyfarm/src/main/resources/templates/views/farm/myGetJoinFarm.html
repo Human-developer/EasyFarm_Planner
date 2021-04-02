@@ -14,7 +14,9 @@
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
-	<th:block layout:fragment="customCssLib"></th:block>
+	<th:block layout:fragment="customCssLib">
+		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
+	</th:block>
 	
 	<!-- 사용자 정의 css -->
 	<th:block layout:fragment="customCss"></th:block>
@@ -27,41 +29,27 @@
 				<div class ="box-content">
 					<h3>내가입신청목록</h3>
 					<hr>
-					<div>
-						<form th:action="@{#}" method="get">							
-							<select name="sk">
-								<option>조건1</option>
-								<option>조건2</option>
-								<option>조건3</option>
-								<option>조건4</option>
-							</select>
-							<input type="text" placeholder="검색 가능하게할까?">
-							<button type="submit">검색</button>
-						</form>
-					</div>
-					<table class ="table">
+					<table id ="getJoinFarm">
 						<thead>
 							<tr>
+								<th>농가가입신청코드(숨김)</th>
 								<th>농가명</th>
 								<th>대표자아이디</th>
 								<th>토지면적</th>
 								<th>주소</th>
 								<th>가입목적</th>
-								<th>처리상태</th>										
 								<th>가입취소</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>농가가입신청코드(숨김)</td>
-								<td>농가코드(숨김)</td>
-								<td>농가명</td>
-								<td>아이디</td>
-								<td>토지면적</td>
-								<td>주소</td>
-								<td>목적</td>
-								<td>처리상태</td>
-								<td><a th:href="@{#}">가입취소</a> </td>
+							<tr th:each="getJoinFarm : ${myGetJoinFarmList}">
+								<td th:text ="${getJoinFarm.farmJoinCode}">농가가입신청코드(숨김)</td>
+								<td th:text ="${getJoinFarm.farm.farmName}">농가명</td>
+								<td th:text ="${getJoinFarm.farm.ceoId}">아이디</td>
+								<td th:text ="${getJoinFarm.farm.farmArea}">토지면적</td>
+								<td th:text ="${getJoinFarm.farm.farmAddress}">주소</td>
+								<td th:text ="${getJoinFarm.farmJoinPurpose}">목적</td>
+								<td><button class ="btn btn-xs btn-danger joinFarmCancelBtn" th:value="${getJoinFarm.farmJoinCode}">취소</button></td>
 							</tr>
 						</tbody>
 					</table> 
@@ -73,9 +61,75 @@
 	
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
-	<th:block layout:fragment="customScriptLib"></th:block>
+	<th:block layout:fragment="customScriptLib">
+		<div th:replace="fragments/dataTable :: dataTable" th:remove="tag"></div>	
+	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 -->
-	<th:block layout:fragment="customJavaScript"></th:block>
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+			var lang_kor = {
+			        "decimal" : "",
+			        "emptyTable" : "가입신청한 농가 없습니다",
+			        "info" : "_START_ - _END_ (총 _TOTAL_ 명)",
+			        "infoEmpty" : "0명",
+			        "infoFiltered" : "(전체 _MAX_ 농가 중 검색결과)",
+			        "infoPostFix" : "",
+			        "thousands" : ",",
+			        "lengthMenu" : "_MENU_ 개씩 보기",
+			        "loadingRecords" : "로딩중...",
+			        "processing" : "처리중...",
+			        "search" : "검색 : ",
+			        "zeroRecords" : "검색된 신청목록이 없습니다",
+			        "paginate" : {
+			            "first" : "첫 페이지",
+			            "last" : "마지막 페이지",
+			            "next" : "다음",
+			            "previous" : "이전"
+			        },
+			        "aria" : {
+			            "sortAscending" : " :  오름차순 정렬",
+			            "sortDescending" : " :  내림차순 정렬"
+			        }
+			}
+			
+			$('#getJoinFarm').sysDataTable(lang_kor,[0]);
+			
+			$('.joinFarmCancelBtn').click(function(){
+				var removeTr = $(this).parent().parent();
+				var farmJoinCode = $(this).val(); 
+				
+				swal({
+					  title: "정말로 취소 하시겠습니까",
+					  type: "warning",
+					  showCancelButton: true,
+					  confirmButtonText:"예",
+					  cancelButtonText:"아니오",
+					  closeOnConfirm: true
+					}, function (btn) {
+						if(btn){
+							console.log('취소');
+							var request = $.ajax({
+					               url:"/json/removeFarmJoin",
+					               method:"post", 
+					               data : {"farmJoinCode":farmJoinCode},
+					            });
+					            request.done(function(data){
+					            	if('삭제실패' == data){
+					            		
+					            	}
+					            	else if('삭제성공' == data){
+					            		location.reload();	
+					            	}
+					            });
+					            request.fail(function( jqXHR, textStatus ){
+					               alert( "Request failed : " + textStatus );
+					            });
+						}
+							
+					});
+			})
+		</script>
+	</th:block>
 
 </html>

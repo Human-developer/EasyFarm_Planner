@@ -23,37 +23,15 @@
 		    font-family: 'Noto Sans KR', sans-serif;
 		    
 		}
-		.lc-round-btn {
-		    display: block;
+		.btn {
+		    
 		    width: 100%;
-		    height: 60px;
-		    line-height: 58px;
-		    font-weight: 700;
-		    font-size: 20px;
-		    border-radius: 60px;
-		    background-color: #3BBD5A;
-		    color: #fff;
-		    transition: box-shadow .2s;
-		    margin-top: 30px;
+		  
 		    
 		}
-		.btn{ border-radius: 60px;
-		  background-color: #3BBD5A;
-		  width: auto;
-		   color: #fff;
-		    font-weight: 700;
-		    
-		   }
+		
 		   
-		 .green-input {
-		    display: block;
-		    width: 100%;
-		    border: 2px solid #3BBD5A;
-		    height: 50px;
-		    padding: 0 10px;
-		    line-height: 46px;
-		    font-size: 16px;
-		}	
+	
 		
 	</style>
 	</th:block>
@@ -177,7 +155,7 @@
 					">
 					
 						<div class="box-content" style="border: 2px solid #3BBD5A" >
-							<div class="box-content t-center important-col" style="border-bottom : 2px solid #3BBD5A" >
+							<div class="box-content t-center important-col" style="border-bottom : 2px solid gray;" >
 								<h3>회원수정</h3>
 							</div>
 							<div class="panel-body" >
@@ -185,19 +163,19 @@
 									<div class="form-group">
 										<label for="memberId" class="col-sm-2 control-label" ><strong>아이디</strong></label>
 									    <div class="col-sm-10">
-									      <input type="text" size="15" class="green-input" name="memberId" id="memberId" readonly="readonly" th:value="${m.memberId}" >
+									      <input type="text" size="15" class="form-control" name="memberId" id="memberId" readonly="readonly" th:value="${m.memberId}" >
 									    </div>				   					   
 									</div>
 									<div class="form-group">
 										<label for="memberPw" class="col-sm-2 control-label"><strong>비밀번호</strong></label>
 									    <div class="col-sm-10">
-									      <input type="password" size="15" class="green-input" name="memberPw" id="memberPw" th:value="${m.memberPw}" placeholder="4~12자의 영문 대소문자와 숫자로만 입력">
+									      <input type="password" size="15" class="form-control" name="memberPw" id="memberPw" th:value="${m.memberPw}" placeholder="4~12자의 영문 대소문자와 숫자로만 입력">
 									    </div>
 									</div>
 									<div class="form-group">
 										<label for="memberPwCheck" class="col-sm-2 control-label"><strong>비밀번호확인</strong></label>
 									    <div class="col-sm-10">
-									      <input type="password" size="15" class="green-input" name="memberPwCheck" id="memberPwCheck" th:value="${m.memberPw}" placeholder="비밀번호확인">
+									      <input type="password" size="15" class="form-control" name="memberPwCheck" id="memberPwCheck" th:value="${m.memberPw}" placeholder="비밀번호확인">
 									    </div>
 									</div>
 								
@@ -205,20 +183,20 @@
 									<div class="form-group">
 										<label for="memberPhone" class="col-sm-2 control-label"><strong>휴대폰번호</strong></label>
 									    <div class="col-sm-10">
-									      <input type="tel" size="12" class="green-input" name="memberPhone" id="memberPhone" th:value="${m.memberPhone}" placeholder="000-0000-0000">
+									      <input type="tel" size="12" class="form-control" name="memberPhone" id="memberPhone" th:value="${m.memberPhone}" placeholder="000-0000-0000">
 									    </div>
 									</div>
 									<div class="form-group" th:if="${session.SLEVEL == '관리자'}">
 										<label  class="col-sm-2 control-label"><strong>권한설정</strong></label>
 									    <div class="col-sm-10">
-									      <select id="levelCode" name="levelCode" class="green-input">
-									      	<option value="level_1">:: 관 리 자 ::</option>
-									      	<option value="level_2">:: 회    원 ::</option>
+									      <select id="levelCode" name="levelCode" class="form-control">
+									      	<option th:each="l : ${levelList}" th:value="${l.levelCode}" th:text="${l.levelName}"></option>
+									      	
 									      </select>
 									    </div>
 									</div>
 									<div class="form-group" th:if="${session.SLEVEL != '관리자'}">
-									   	 <input type="text" class="green-input" name="levelCode" id="levelCode" th:value="${m.levelCode}" hidden="">
+									   	 <input type="text" class="form-control" name="levelCode" id="levelCode" th:value="${m.levelCode}" hidden="">
 									   
 									</div>
 								
@@ -226,19 +204,19 @@
 									<div class="form-group">
 										<label for="memberEmail" class="col-sm-2 control-label"><strong>이메일</strong></label>
 									    <div class="col-sm-10">
-									      <input type="email" class="green-input" name="memberEmail" id="memberEmail" th:value="${m.memberEmail}" placeholder="test@email.com">
+									      <input type="email" class="form-control" name="memberEmail" id="memberEmail" th:value="${m.memberEmail}" placeholder="test@email.com">
 									    </div>
 									</div>
 									<div class="form-group">
 										<label for="memberAddress" class="col-sm-2 control-label"><strong>주소</strong></label>
 									    <div class="col-sm-10">
-									      <input type="text" class="green-input" name="memberAddress" id="memberAddress" th:value="${m.memberAddress}" placeholder="Address">
+									      <input type="text" class="form-control" name="memberAddress" id="memberAddress" th:value="${m.memberAddress}" placeholder="Address">
 									    </div>
 									</div>
 									<div class="form-group" th:if="${session.SLEVEL == '관리자'}">
 									    <label class="col-sm-2 control-label"><strong>회원 상태</strong></label>
 									    <div class="col-sm-10">
-									      <select id="memberStatus" name="memberStatus" class="green-input">
+									      <select id="memberStatus" name="memberStatus" class="form-control">
 									      	<option value="정상">:: 정상 ::</option>
 									      	<option value="정지">:: 정지 ::</option>
 									      	<option value="휴면">:: 휴면 ::</option>
@@ -247,14 +225,14 @@
 									    </div>
 									</div>
 									<div class="form-group" th:if="${session.SLEVEL != '관리자'}">
-									   	 <input type="text" class="green-input" name="memberStatus" id="memberStatus" th:value="${m.memberStatus}" hidden="">
+									   	 <input type="text" class="form-control" name="memberStatus" id="memberStatus" th:value="${m.memberStatus}" hidden="">
 									   
 									</div>
-									
+									<hr>
 									<div class="form-group">
 										<div class="col-sm-10 col-sm-offset-1">
-											<button type="submit" id="addCheck" class="lc-round-btn" style="margin-top: 10px;">수정완료</button>
-											<a th:href="@{/member/getMember}"><button type="button" class="lc-round-btn">수정취소</button></a>
+											<button type="submit" id="addCheck" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px; margin-bottom: 15px;">수정완료</button>
+											<a th:href="@{/member/getMember}" ><button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">수정취소</button></a>
 										</div>
 									</div>
 								</div>
