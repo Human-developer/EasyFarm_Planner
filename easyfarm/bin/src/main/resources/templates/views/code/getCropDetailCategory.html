@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	
+	<th:block layout:fragment="customTitle">
+		<title>상세작업항목 리스트</title>
+	</th:block>
+	<th:block layout:fragment="pageTitle">
+		상세작업항목
+	</th:block>
+	
+		<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+		<!-- Data Tables -->
+		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/media/css/dataTables.bootstrap.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css}">
+	</th:block>
+	
+	<th:block layout:fragment="customContents">
+		<div class="box-content" style="margin-top: 20px">
+			<h4 class="box-title">상세작업항목 리스트</h4>
+		<div class="dropdown js__drop_down">
+						<a href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
+						<ul class="sub-menu">
+							<li><a href="#">Action</a></li>
+							<li><a href="#">Another action</a></li>
+							<li><a href="#">Something else there</a></li>
+							<li class="split"></li>
+							<li><a href="#">Separated link</a></li>
+						</ul>
+						<!-- /.sub-menu -->
+					</div>
+		<table id="example" class="table table-striped table-bordered display" style="width:100%">
+			<thead>
+				<tr>
+					<th class="hidden">공통상세작업항목코드</th>
+					<th>공통상세작업항목명 </th>
+					<th>작성자아이디 </th>
+					<th>작성일자</th>
+					<th th:if = "${session.SLEVEL == '관리자'}">수정</th>
+					<th th:if = "${session.SLEVEL == '관리자'}">삭제</th>
+				</tr>			
+			</thead>
+			<tbody>
+				<tr th:if="${#lists.size(cropDetailCategory)} > 0" th:each="l:${cropDetailCategory}">
+					<td th:hidden="${l.commonWorkphaseCateCode}"></td>
+					<td th:text="${l.commonWorkphaseCateName}"></td>
+					<td th:text="${l.regMemberId}"></td>
+					<td th:text="${l.regDate}"></td>
+					<td th:if = "${session.SLEVEL == '관리자'}">
+						<a th:href="@{/getCropDetailCategory(commonWorkphaseCateCode=${l.commonWorkphaseCateCode})}">수정</a>
+					</td>
+					<td th:if = "${session.SLEVEL == '관리자'}">
+						<a th:href="@{/getCropDetailCategory(commonWorkphaseCateCode=${l.commonWorkphaseCateCode})}">삭제</a>		
+					</td>
+				</tr>
+				<tr th:unless="${#lists.size(cropDetailCategory)} != 0">
+					<td colspan="10" style="text-align: center;">조회된 내용이 없습니다.</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+		<div th:include="views/code/back :: back"></div>
+	</th:block>
+<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+		<script th:src="@{/assets/plugin/datatables/media/js/jquery.dataTables.min.js}"></script>
+		<script th:src="@{/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js}"></script>
+		<script th:src="@{/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js}"></script>
+		<script th:src="@{/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js}"></script>
+		<script th:src="@{/assets/scripts/datatables.demo.min.js}"></script>
+		<script th:src="@{/assets/scripts/main.min.js}"></script>
+		<script th:src="@{/assets/plugin/jquery-ui/jquery-ui.min.js}"></script>
+		<script th:src="@{/assets/plugin/jquery-ui/jquery.ui.touch-punch.min.js}"></script>
+	</th:block>
+	
+</html>

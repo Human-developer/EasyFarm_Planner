@@ -9,10 +9,12 @@
 		<id property="farmCode" column="farm_code" />
 		<result property="farmName" column="farm_name"/>
 		<result property="ceoId" column="ceo_member_id"/>
+		<result property="farmMemberLevel" column="farm_level_code"/>
 		<result property="farmArea" column="farm_area"/>
 		<result property="farmAddress" column="farm_address"/>
 		<result property="farmPublicStatus" column="farm_public_status"/>
 		<result property="farmRegDate" column="farm_reg_date"/>
+		<result property="farmMemberCount" column="farm_member_count"/>
 	</resultMap>
 
 	<resultMap type="FarmMember" id="farmMemberResultMap">
@@ -24,12 +26,154 @@
 		<result property="farmJoinApprovalDate" column="farm_join_approval_date"/>
 		<result property="farmMemberStatus" column="farm_member_status"/>
 	</resultMap>
-
-	<select id="searchFarm" resultMap ="farmResultMap" parameterType="String">
+	
+	<resultMap type="FarmMemberJoin" id="farmJoinResultMap">
+		<id property="farmJoinCode" column ="farm_join_code"/>
+		<result property="farmCode" column ="farm_code"/>
+		<result property="farmJoinRequestMemberId" column ="farm_join_request_member_id"/>
+		<result property="memberName" column ="member_name"/>
+		<result property="memberAge" column ="member_age"/>
+		<result property="farmJoinRequestDate" column ="farm_join_request_date"/>
+		<result property="farmJoinPurpose" column ="farm_join_purpose"/>
+		<result property="farmJoinApproval" column ="farm_join_approval"/>
+		<result property="farmJoinApprovalMemberId" column ="farm_join_approval_member_id"/>
+	</resultMap>
+	
+	
+	<select id="farmByName" resultMap="farmResultMap" parameterType="String" >
+		SELECT 
+			farm_code, 
+			farm_name, 
+			ceo_member_id, 
+			farm_area, 
+			farm_address, 
+			farm_public_status, 
+			farm_reg_date
+		FROM 
+			tb_farm
+		WHERE
+			farm_name = #{farmName}
+	</select>
+	
+	<insert id="addFarm" parameterType="Farm">
+		INSERT INTO tb_farm
+			( 
+			farm_code,
+			farm_name, 
+			ceo_member_id, 
+			farm_area, 
+			farm_address, 
+			farm_public_status, 
+			farm_reg_date)
+		VALUES 
+			( 
+			sf_farm_max_code(),
+			#{farmName}, 
+			#{ceoId}, 
+			#{farmArea}, 
+			#{farmAddress}, 
+			#{farmPublicStatus}, 
+			NOW())
+	</insert>
+	
+	<insert id="addFarmMember" parameterType="FarmMember">
+		INSERT INTO tb_farm_member
+			( 
+			farm_member_code,
+			farm_code, 
+			farm_member_id, 
+			farm_level_code, 
+			farm_join_approval_date, 
+			farm_member_status)
+		VALUES 
+			( 
+			sf_farm_member_max_code(),
+			sf_addmember_farm_code(#{farmCode}), 
+			#{farmMemberId}, 
+			#{farmLevelCode}, 
+			NOW(), 
+			#{farmMemberStatus})
+	</insert>
+	
+	
+	<select id="myFamr" resultMap="farmResultMap" parameterType="String">
+		 SELECT 
+			f.farm_code, 
+			f.farm_name, 
+			f.ceo_member_id,
+			fm.farm_level_code, 
+			f.farm_area, 
+			f.farm_address, 
+			f.farm_public_status, 
+			f.farm_reg_date
+		FROM 
+			tb_farm f
+			join
+			tb_farm_member fm
+		WHERE
+			f.ceo_member_id =#{memberId}
+		GROUP BY f.farm_code;
+	</select>
+	
+	<select id="detailFarm" resultMap="farmResultMap" parameterType="Farm">
+		SELECT 
+			f.farm_code, 
+			f.farm_name, 
+			f.ceo_member_id,
+			fm.farm_level_code, 
+			f.farm_area, 
+			f.farm_address, 
+			f.farm_public_status, 
+			f.farm_reg_date
+		FROM 
+			tb_farm f
+			join
+			tb_farm_member fm
+			on
+			f.farm_code = fm.farm_code
+		WHERE
+			fm.farm_member_id =#{ceoId}
+			AND
+			f.farm_code = #{farmCode}
+			AND
+			fm.farm_member_status ='정상'
+		GROUP BY f.farm_code;
+	</select>
+	
+	
+	<select id="belongFarm" resultMap="farmResultMap" parameterType="String">
+		SELECT 
+			f.farm_code, 
+			f.farm_name, 
+			f.ceo_member_id,
+			fm.farm_level_code, 
+			f.farm_area, 
+			f.farm_address, 
+			f.farm_public_status, 
+			f.farm_reg_date
+		FROM 
+			tb_farm_member as fm
+			join
+			tb_farm_member_level AS l
+			join
+			tb_farm as f
+			on
+			fm.farm_code = f.farm_code
+			AND
+			fm.farm_member_id != f.ceo_member_id
+		WHERE
+			fm.farm_member_id = #{memberId}
+			AND
+			fm.farm_member_status ='정상'
+		GROUP BY f.farm_code
+	</select>
+	
+	<select id="updateByFarm" resultMap="farmResultMap" parameterType="String">
 		SELECT 
 			f.farm_code, 
 			f.farm_name, 
 			f.ceo_member_id, 
+			fm.farm_level_code,
 			f.farm_area, 
 			f.farm_address, 
 			f.farm_public_status, 
@@ -37,24 +181,28 @@
 		FROM 
 			tb_farm AS f
 			join
-			tb_farm_member AS m
+			tb_farm_member AS fm
 			on
-			m.farm_code = f.farm_code
-		<trim prefix="WHERE">
-			<if test="searchKey != null">
-				<if test="'ceoId'.equals(searchKey)">
-					f.ceo_member_id =#{searchValue}
-				</if>
-				<if test="'memberId'.equals(searchKey)">
-					m.farm_member_id= #{searchValue}
-					AND
-					f.ceo_member_id != #{searchValue}	
-				</if>
-			</if>
-		</trim>
-		GROUP BY f.farm_code
+			fm.farm_code = f.farm_code
+		WHERE
+			f.farm_code= #{farmCode}
+			AND
+			fm.farm_member_id = #{memberId}
 	</select>
-	<select id="myFarm" resultMap="farmResultMap" parameterType="String">
+	
+	<update id="updateFarm" parameterType="Farm">
+		UPDATE tb_farm
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="ceoId != null">ceo_member_id=#{ceoId},</if>
+			<if test="farmArea != null">farm_area=#{farmArea},</if>
+			<if test="farmAddress != null">farm_address=#{farmAddress},</if>
+			<if test="farmPublicStatus != null">farm_public_status=#{farmPublicStatus},</if>
+		</trim>
+		WHERE 
+			farm_code=#{farmCode}
+	</update>
+	
+	<select id="searchFarm" resultMap="farmResultMap" parameterType="String">
 		SELECT 
 			f.farm_code, 
 			f.farm_name, 
@@ -62,33 +210,162 @@
 			f.farm_area, 
 			f.farm_address, 
 			f.farm_public_status, 
-			f.farm_reg_date
+			f.farm_reg_date,
+			sf_farm_member_count(f.farm_code) AS 'farm_member_count'
 		FROM 
 			tb_farm AS f
 		WHERE
-			f.farm_code =#{fCode}
-	
-	</select>
-	
-	
-	<select id="myFarmMemberList" resultMap="farmMemberResultMap" parameterType="String" >
-		SELECT
-			m.farm_member_code,
-			m.farm_code,
-			m.farm_member_id,
-			l.farm_level_name,
-			m.farm_level_code,
-			m.farm_join_approval_date,
-			m.farm_member_status
-		FROM
-			tb_farm_member AS m
-		JOIN
-			tb_farm_member_level AS l
-			ON
-			l.farm_level_code = m.farm_level_code
-		WHERE
-			m.farm_member_status=#{memberStatus}
+			f.farm_code NOT IN	(SELECT 
+										fm.farm_code 
+									FROM 
+										tb_farm_member AS fm
+									WHERE
+										fm.farm_member_id = #{memberId}
+									AND
+									fm.farm_member_status = '정상')
 			AND
-			m.farm_code =#{fCode}
+			f.farm_public_status ='y'
+		GROUP BY f.farm_code;
 	</select>
+	
+	<select id="getMemberFarm" resultMap="farmMemberResultMap" parameterType="String">
+		SELECT 
+			fm.farm_member_code, 
+			fm.farm_code, 
+			fm.farm_member_id, 
+			fm.farm_level_code, 
+			fml.farm_level_name,
+			fm.farm_join_approval_date, 
+			fm.farm_member_status
+		FROM 
+			tb_farm_member AS fm
+			join
+			tb_farm_member_level AS fml
+			on
+			fm.farm_level_code = fml.farm_level_code
+		WHERE
+			fm.farm_code =#{farmCode}
+			AND
+			fm.farm_member_status = '정상'
+			ORDER BY FIELD(fm.farm_level_code,'farm_level_1','farm_level_2','farm_level_3')	asc
+	</select>
+	
+	<insert id="addFarmMemberJoin" parameterType="String">
+		INSERT INTO tb_farm_member_join
+			(farm_join_code, 
+			farm_code, 
+			farm_join_request_member_id, 
+			farm_join_request_date, 
+			farm_join_purpose
+			)
+		VALUES 
+			(sf_farm_member_join_max_code(), 
+			sf_farm_name_by_code(#{farmName}), 
+			#{memberId}, 
+			NOW(), 
+			#{farmJoinPurpose})
+	</insert>
+	
+	
+	<select id="listJoinFarm"  resultMap="farmJoinResultMap" parameterType="String">
+		SELECT 
+			farm_join_code, 
+			farm_code, 
+			farm_join_request_member_id, 
+			farm_join_request_date, 
+			farm_join_purpose, 
+			farm_join_approval, 
+			farm_join_approval_member_id
+		FROM 
+			tb_farm_member_join
+		WHERE
+			farm_join_approval IS null
+			AND
+			farm_join_request_member_id =#{memberId}
+	</select>
+	
+	<select id="addFarmMemberJoinCheck"  resultMap="farmJoinResultMap" parameterType="String">
+		SELECT 
+			farm_join_code, 
+			farm_code, 
+			farm_join_request_member_id, 
+			farm_join_request_date, 
+			farm_join_purpose, 
+			farm_join_approval, 
+			farm_join_approval_member_id
+		FROM 
+			tb_farm_member_join
+		WHERE
+			farm_join_approval IS null
+			AND
+			farm_join_request_member_id =#{memberId}
+			AND
+			farm_code = sf_farm_name_by_code(#{farmName});
+	</select>
+	
+	<select id="getJoinFarm" resultMap="farmJoinResultMap" parameterType ="String">
+		SELECT 
+			fmj.farm_join_code, 
+			fmj.farm_code, 
+			fmj.farm_join_request_member_id, 
+			m.member_name,
+			sf_iden_num_age(m.member_iden_num) AS member_age,
+			fmj.farm_join_request_date, 
+			fmj.farm_join_purpose
+		FROM 
+			tb_farm_member_join AS fmj
+			JOIN
+			tb_member AS m
+			ON
+			m.member_id = fmj.farm_join_request_member_id
+		WHERE
+			fmj.farm_join_approval IS null
+			AND
+			fmj.farm_code = #{farmCode};
+	</select>
+	
+	<update id="farmJoinMember" parameterType="String">
+		UPDATE tb_farm_member_join
+		SET
+			farm_join_approval=#{approval},
+			farm_join_approval_member_id=#{memberId}
+		WHERE 
+			farm_join_code=#{farmMemberJoinCode}
+	</update>
+	
+	<select id="getJoinMember" resultMap="farmJoinResultMap" parameterType="String">
+		SELECT 
+			farm_join_code, 
+			farm_code, 
+			farm_join_request_member_id, 
+			farm_join_request_date, 
+			farm_join_purpose, 
+			farm_join_approval, 
+			farm_join_approval_member_id
+		FROM 
+			tb_farm_member_join
+		WHERE
+			farm_join_code =#{farmMemberJoinCode}
+	</select>
+	
+	<insert id="joinAddFarmMember" parameterType="FarmMember">
+		INSERT INTO tb_farm_member
+			( 
+			farm_member_code,
+			farm_code, 
+			farm_member_id, 
+			farm_level_code, 
+			farm_join_approval_date, 
+			farm_member_status)
+		VALUES 
+			( 
+			sf_farm_member_max_code(),
+			#{farmCode}, 
+			#{farmMemberId}, 
+			#{farmLevelCode}, 
+			NOW(), 
+			#{farmMemberStatus})
+	</insert>
 </mapper>
+
+

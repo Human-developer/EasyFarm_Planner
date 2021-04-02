@@ -1,5 +1,7 @@
 package easyfarm.domain;
 
+import java.util.Date;
+
 public class Report {
 
 	    // 회원신고기록코드
@@ -33,7 +35,7 @@ public class Report {
 	    private String reportReason;
 
 	    // 정지일수
-	    private String reportBanDays;
+	    private int reportBanDays;
 
 	    // 신고사유 작성일
 	    private String reportRegDate;
@@ -47,7 +49,7 @@ public class Report {
 	    private String statusCriteriaName;
 
 	    // 기준일수
-	    private String statusCriteriaDays;
+	    private int statusCriteriaDays;
 
 	    // 작성자아이디
 	    private String memberId;
@@ -62,10 +64,10 @@ public class Report {
 	    private String autoRestNum;
 
 	    // 자동휴면예정일
-	    private String autoRestDate;
+	    private Date autoRestDate;
 
 	    // 자동탈퇴예정일
-	    private String autoWithdrawalDate;
+	    private Date autoWithdrawalDate;
 	    
 	    // 정지회원 관리코드
 	    private String banCurrentCode;
@@ -77,7 +79,7 @@ public class Report {
 	    private String banBeginDate;
 
 	    // 최종정지종료일
-	    private String banEndDate;
+	    private Date banEndDate;
 
 	    
 	    
@@ -169,11 +171,11 @@ public class Report {
 			this.reportReason = reportReason;
 		}
 
-		public String getReportBanDays() {
+		public int getReportBanDays() {
 			return reportBanDays;
 		}
 
-		public void setReportBanDays(String reportBanDays) {
+		public void setReportBanDays(int reportBanDays) {
 			this.reportBanDays = reportBanDays;
 		}
 
@@ -201,11 +203,11 @@ public class Report {
 			this.statusCriteriaName = statusCriteriaName;
 		}
 
-		public String getStatusCriteriaDays() {
+		public int getStatusCriteriaDays() {
 			return statusCriteriaDays;
 		}
 
-		public void setStatusCriteriaDays(String statusCriteriaDays) {
+		public void setStatusCriteriaDays(int statusCriteriaDays) {
 			this.statusCriteriaDays = statusCriteriaDays;
 		}
 
@@ -241,19 +243,19 @@ public class Report {
 			this.autoRestNum = autoRestNum;
 		}
 
-		public String getAutoRestDate() {
+		public Date getAutoRestDate() {
 			return autoRestDate;
 		}
 
-		public void setAutoRestDate(String autoRestDate) {
+		public void setAutoRestDate(Date autoRestDate) {
 			this.autoRestDate = autoRestDate;
 		}
 
-		public String getAutoWithdrawalDate() {
+		public Date getAutoWithdrawalDate() {
 			return autoWithdrawalDate;
 		}
 
-		public void setAutoWithdrawalDate(String autoWithdrawalDate) {
+		public void setAutoWithdrawalDate(Date autoWithdrawalDate) {
 			this.autoWithdrawalDate = autoWithdrawalDate;
 		}
 
@@ -281,13 +283,14 @@ public class Report {
 			this.banBeginDate = banBeginDate;
 		}
 
-		public String getBanEndDate() {
+		public Date getBanEndDate() {
 			return banEndDate;
 		}
 
-		public void setBanEndDate(String banEndDate) {
+		public void setBanEndDate(Date banEndDate) {
 			this.banEndDate = banEndDate;
 		}
+		
 		
 
 		@Override

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>농가탈퇴신청목록</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		<a th:href="@{/farm}">농가관리</a>>농가탈퇴신청목록
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib"></th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss"></th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+		<div class ="container-fluid">
+			<div class ="row">
+				<div class ="box-content">
+					<h3>농가탈퇴신청목록</h3>
+					<hr>
+					<table class ="table">
+						<thead>
+							<tr>
+								<th>신청자아이디</th>
+								<th>신청자명</th>
+								<th>탈퇴사유</th>
+								<th>탈퇴신청일</th>
+								<th>승인</th>
+								<th>거부</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>아이디</td>
+								<td>이름</td>
+								<td>사유</td>
+								<td>신청일</td>
+								<td><a th:href="@{#}">승인(처리사유필요)</a></td>
+								<td><a th:href="@{#}">거부(처리사유필요)</a></td>
+							</tr>
+						</tbody>
+					</table>
+					<a th:href="@{/farm/getMemberFarm}">농가회원관리페이지</a>
+				</div>
+			</div>
+		</div>
+		
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib"></th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript"></th:block>
+
+</html>

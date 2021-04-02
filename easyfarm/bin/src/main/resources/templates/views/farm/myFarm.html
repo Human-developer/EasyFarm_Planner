@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>내 농가</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		<a th:href="@{/farm}">농가관리</a>>내 농가
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
+	</th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss"></th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+		<div class ="container-fluid">
+			<div class ="row">
+				<div class ="box-content">
+					<h3>내농가</h3>
+					<hr>
+						<table id="myFarmTable">
+							<thead>
+								<tr>
+									<th th:text = "${'농가코드'}"/>
+									<th th:text = "${'권한'}"/>
+									<th th:text ="${'농가명'}"/>
+									<th th:text ="${'대표자 아이디'}"/>
+									<th th:text ="${'토지 면적'}"/>
+									<th th:text ="${'주소'}"/>
+									<th th:text ="${'농가 생성일'}"/>
+									<th th:text ="${'농가 공개유무'}"/>
+									<th th:text ="${''}"/>
+								</tr>
+							</thead>
+							
+							<tbody>
+								<tr th:each="farm : ${myFarmList}" class ="farmList">
+									<td th:text = "${farm.farmCode}"/>
+									<td th:text = "${farm.farmMemberLevel}"/>
+									<td th:text = "${farm.farmName}"/>
+									<td th:text = "${farm.ceoId}"/>
+									<td th:text = "${farm.farmArea}"/>
+									<td th:text = "${farm.farmAddress}"/>
+									<td th:text = "${farm.farmRegDate}"/>
+									<td th:if = "${farm.farmPublicStatus == 'Y'}">공개</td>
+									<td th:if = "${farm.farmPublicStatus == 'N'}">비공개</td>
+									<td>
+										<div class="btn-group">
+											<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button> 
+											<ul class="dropdown-menu">
+												<li><a th:href="@{/farm/detailFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">상세보기</a></li>
+												<li><a th:href="@{/farm/getJoinFarm(farmCode=${farm.farmCode})}">가입신청 목록</a></li>
+												<li><a th:href="@{/farm/modifyFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">수정</a></li>
+												
+											</ul>
+										</div>
+									</td>
+									
+								</tr>
+								
+							</tbody>
+						</table>
+					</div>
+					
+				</div>
+			</div>
+					
+					
+					
+					
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+		<div th:replace="fragments/dataTable :: dataTable" th:remove="tag"></div>	
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+			var lang_kor = {
+			        "decimal" : "",
+			        "emptyTable" : "내 농가가 없습니다",
+			        "info" : "_START_ - _END_ (총 _TOTAL_ 명)",
+			        "infoEmpty" : "0명",
+			        "infoFiltered" : "(전체 _MAX_ 농가 중 검색결과)",
+			        "infoPostFix" : "",
+			        "thousands" : ",",
+			        "lengthMenu" : "_MENU_ 개씩 보기",
+			        "loadingRecords" : "로딩중...",
+			        "processing" : "처리중...",
+			        "search" : "검색 : ",
+			        "zeroRecords" : "검색된 농가가 없습니다.",
+			        "paginate" : {
+			            "first" : "첫 페이지",
+			            "last" : "마지막 페이지",
+			            "next" : "다음",
+			            "previous" : "이전"
+			        },
+			        "aria" : {
+			            "sortAscending" : " :  오름차순 정렬",
+			            "sortDescending" : " :  내림차순 정렬"
+			        }
+			}
+			
+			$('#myFarmTable').sysDataTable(lang_kor,[0,1]);
+			
+			
+		</script>
+	</th:block>
+
+</html>

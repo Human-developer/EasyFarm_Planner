@@ -10,6 +10,7 @@ public class FarmMemberJoin {
 	private String farmJoinPurpose;
 	private String farmJoinApproval;
 	private String farmJoinApprovalMemberId;
+	private Farm farm;
 	
 	public String getFarmJoinCode() {
 		return farmJoinCode;
@@ -66,30 +67,22 @@ public class FarmMemberJoin {
 	public void setFarmJoinApprovalMemberId(String farmJoinApprovalMemberId) {
 		this.farmJoinApprovalMemberId = farmJoinApprovalMemberId;
 	}
+	public Farm getFarm() {
+		return farm;
+	}
+	public void setFarm(Farm farm) {
+		this.farm = farm;
+	}
+	
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("FarmMemberJoin [farmJoinCode=");
-		builder.append(farmJoinCode);
-		builder.append(", farmCode=");
-		builder.append(farmCode);
-		builder.append(", farmJoinRequestMemberId=");
-		builder.append(farmJoinRequestMemberId);
-		builder.append(", memberName=");
-		builder.append(memberName);
-		builder.append(", memberAge=");
-		builder.append(memberAge);
-		builder.append(", farmJoinRequestDate=");
-		builder.append(farmJoinRequestDate);
-		builder.append(", farmJoinPurpose=");
-		builder.append(farmJoinPurpose);
-		builder.append(", farmJoinApproval=");
-		builder.append(farmJoinApproval);
-		builder.append(", farmJoinApprovalMemberId=");
-		builder.append(farmJoinApprovalMemberId);
-		builder.append("]");
-		return builder.toString();
+		return "FarmMemberJoin [farmJoinCode=" + farmJoinCode + ", farmCode=" + farmCode + ", farmJoinRequestMemberId="
+				+ farmJoinRequestMemberId + ", memberName=" + memberName + ", memberAge=" + memberAge
+				+ ", farmJoinRequestDate=" + farmJoinRequestDate + ", farmJoinPurpose=" + farmJoinPurpose
+				+ ", farmJoinApproval=" + farmJoinApproval + ", farmJoinApprovalMemberId=" + farmJoinApprovalMemberId
+				+ ", farm=" + farm + "]";
 	}
+	
 	
 	
 	

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="assets/script/html5shiv.min.js"></script>
+		<script src="assets/script/respond.min.js"></script>
+	<![endif]-->
+	<!-- 
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<div th:fragment="dataTable">
+		<script src="/assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+		<script src="/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+		<script src="/assets/scripts/datatables.demo.min.js"></script>
+		
+		<script th:src = @{/assets/sys/myDataTable.js}></script>
+	</div>
+
+</html>

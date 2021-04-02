@@ -38,7 +38,6 @@
 	<select id="getExpectedDate" resultMap="reportResultMap">
 		SELECT 
 			  auto_rest_num
-			, status_criteria_code
 			, login_member_id
 			, auto_rest_date
 			, auto_withdrawal_date
@@ -63,37 +62,37 @@
 	</select>
 	
 	<insert id="addBaseDate" parameterType="Report">
-	INSERT INTO 
-		tb_member_status_criteria_set
-	(	  
-		  status_criteria_code
-		, status_criteria_name
-		, status_criteria_days
-		, member_id
-		, reg_date
-		
-	)
-	VALUES 
-	(	
-		  sf_member_status_criteria_max_code()
-		, #{statusCriteriaName}
-		, #{statusCriteriaDays}
-		, #{memberId}
-		, NOW()
-		
+		INSERT INTO 
+			tb_member_status_criteria_set
+		(	  
+			  status_criteria_code
+			, status_criteria_name
+			, status_criteria_days
+			, member_id
+			, reg_date
+			
+		)
+		VALUES 
+		(	
+			  sf_member_status_criteria_max_code()
+			, #{statusCriteriaName}
+			, #{statusCriteriaDays}
+			, #{memberId}
+			, NOW()
+			
 	)
 	</insert>
 	
 	<update id="modifyBaseDate" parameterType="Report">
-	UPDATE 
-		tb_member_status_criteria_set
-	SET
-		  status_criteria_name= #{statusCriteriaName}
-		, status_criteria_days= #{statusCriteriaDays}
-		, member_id= #{memberId}
-		, reg_date= NOW()
-		, use_status= #{useStatus}
-	WHERE status_criteria_code= #{statusCriteriaCode}
+		UPDATE 
+			tb_member_status_criteria_set
+		SET
+			  status_criteria_name= #{statusCriteriaName}
+			, status_criteria_days= #{statusCriteriaDays}
+			, member_id= #{memberId}
+			, reg_date= NOW()
+			, use_status= #{useStatus}
+		WHERE status_criteria_code= #{statusCriteriaCode}
 	</update>
 	
 	<delete id="removeBaseDate">
@@ -230,5 +229,113 @@
 			tb_report_reason AS r
 		on
 			b.report_code = r.report_code
+		<if test="reporedId != null and reporedId != ''.toString()">
+			WHERE b.ban_member_id = #{reporedId}
+		</if> 
+	</select>
+	<delete id="removeBan">
+		DELETE FROM tb_ban_current_situation WHERE ban_current_code=#{banCode}
+	</delete>
+	<insert id="addBanCurrentSituation">
+		INSERT INTO tb_ban_current_situation
+			(
+			 ban_current_code 
+			, ban_member_id
+			, report_code
+			, ban_begin_date
+			, ban_end_date
+			)
+		VALUES 
+			(
+			sf_ban_current_situation_max_code()
+			, #{reportedId}
+			, #{reportCode}
+			, NOW()
+			, #{banEndDate}
+			)
+	</insert>
+	<update id="updateMember">
+		UPDATE tb_member
+		SET
+			member_status='정지'
+		WHERE member_id=#{reportedId}
+	</update>
+	<update id="updateMemberCancel">
+		UPDATE tb_member
+		SET
+			member_status='정상'
+		WHERE member_id=#{banId}
+	</update>
+	<select id="getstatusCriteriaName"  resultMap="reportResultMap">
+		SELECT 
+			 status_criteria_days
+			,status_criteria_name
+		FROM 
+			tb_member_status_criteria_set
+	</select>
+	
+	<update id="modifyBaseDateStatus">
+		UPDATE tb_member_status_criteria_set
+		SET
+			use_status='N'
+		WHERE status_criteria_code=#{statusCode} and status_criteria_name = #{statusName}
+	</update>
+	<update id="cancelBaseDateStatus">
+		UPDATE tb_member_status_criteria_set
+		SET
+			use_status='Y'
+		WHERE status_criteria_code=#{statusCode} and status_criteria_name = #{statusName}
+	</update>
+	<select id="getStatus" resultMap="reportResultMap">
+		SELECT 
+		      status_criteria_code
+			, status_criteria_name
+			, status_criteria_days
+			, member_id
+			, reg_date
+			, use_status
+		FROM 
+			tb_member_status_criteria_set 
+		WHERE 
+			status_criteria_name = #{statusName} 
+		ORDER 
+			BY reg_date DESC 
+		LIMIT 1
+	</select>
+	<select id="getStatusDays" resultMap="reportResultMap">
+		SELECT 
+			status_criteria_code
+			, status_criteria_name
+			, status_criteria_days
+			, member_id
+			, reg_date
+			, use_status
+		FROM 
+			tb_member_status_criteria_set
+		WHERE status_criteria_name = #{statusName} AND use_status = 'Y'
+	</select>
+	
+	<insert id="addStatusSchedule">
+		INSERT INTO tb_member_status_schedule
+		( auto_rest_num
+		, login_member_id
+		, auto_rest_date
+		, auto_withdrawal_date
+		)
+		VALUES 
+		( 
+		  sf_member_status_schedule_max_code()
+		, #{loginId}
+		, #{autoRestDate}
+		, #{autoWithdrawalDate}
+		)
+		
+	</insert>
+	<select id="updateStatusSchedule">
+		UPDATE tb_member_status_schedule
+		SET
+			auto_rest_date=#{autoRestDate},
+			auto_withdrawal_date=#{autoWithdrawalDate}
+		WHERE login_member_id=#{loginId}
 	</select>
 </mapper>

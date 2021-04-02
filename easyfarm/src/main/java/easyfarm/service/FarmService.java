@@ -191,4 +191,28 @@ public class FarmService {
 		
 		return result;
 	}
+	
+	
+	public List<FarmMemberJoin> myGetJoinFarm(String memberId){
+		List<FarmMemberJoin> resultMemberJoinList = null;
+		
+		if(memberId != null) {
+			resultMemberJoinList = farmMapper.myGetJoinFarm(memberId);
+		}
+		return resultMemberJoinList;
+	}
+	
+	public int removeJoinFarm(String farmJoinCode) {
+		int result =0;
+		
+		if(farmJoinCode != null) {
+			result += farmMapper.removeJoinFarm(farmJoinCode);
+		}
+		
+		return result;
+	}
+	
+	public String getFarmMemberLevel(String farmCode, String memberId) {
+		return farmMapper.getFarmMemberLevel(farmCode, memberId);
+	}
 }

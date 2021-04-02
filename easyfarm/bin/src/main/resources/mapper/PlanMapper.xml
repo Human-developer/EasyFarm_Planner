@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="easyfarm.dao.PlanMapper">
+
+	<resultMap type="EtcPay" id="resultEtcPay">
+		<id column=""  property=""/>
+		<result column="" property="" />
+	</resultMap>
+  	
+  	<insert id="addProjectPlan" parameterType="map">
+  		INSERT INTO tb_project_plan
+		(
+			project_plan_code
+			,project_code
+			,project_plan_n
+			,reg_member_id
+			,reg_date
+						)
+		VALUES
+		(	
+			 sf_project_plan_max_code()
+			,#{projectCode}
+			,#{maxProjectPlanNum}
+			,#{memberId}
+			,NOW()
+						)
+  	</insert>
+  	
+  	<select id="getTaxPayCateCode" resultType="map">
+  		SELECT
+			 tpc.tax_pay_cate_code	AS taxPayCateCode
+			,tpc.tax_pay_cate_name	AS taxPayCateName
+		FROM
+			tb_tax_pay_cate AS tpc
+		WHERE
+			tpc.use_status = 'O'
+  	</select>
+  	
+  	<select id="getStockItemInfo" resultType="map" parameterType="String">
+  		SELECT
+  			 si.stock_item_code 						AS stockItemCode
+  			,si.stock_item_quantity 					AS stockItemQuantity
+			,si.stock_item_quantity_unit 				AS stockItemQuantityUnit
+			,si.stock_item_quantity_capacity 			AS stockItemQuantityCapacity
+			,si.stock_item_quantity_capacity_unit 		AS stockItemQuantityCapacityUnit
+			,erp.stock_item_income_quantity_total 		AS stockItemIncomeQuantityTotal
+			,erp.stock_item_income_per_pay 				AS stockItemIncomePerPay
+			,ru.resource_retain_quantity 				AS resourceRetainQuantity
+			,ru.resource_retain_quantity_capacity_extra AS resourceRetainQuantityCapacityExtra
+			,ru.available_status 						AS availableStatus
+		FROM
+			tb_resource_usecapacity AS ru
+			INNER join
+			tb_exp_resource_pay AS erp
+			on
+			ru.resource_pay_code = erp.resource_pay_code
+			INNER join
+			tb_stock_item AS si
+			on
+			erp.stock_item_code = si.stock_item_code
+		WHERE
+			ru.resource_usecapacity_code = #{stockItemCode}
+  	</select>
+  	
+  	<select id="getStockItem" resultType="map" parameterType="map">
+  		SELECT
+			 si.stock_item_code 					AS stockItemCode
+			,sc.stock_cate_name						AS stockCateName
+			,si.stock_item_name 					AS stockItemName
+			,si.stock_item_quantity 				AS stockItemQuantity
+			,si.stock_item_quantity_unit 			AS stockItemQuantityUnit
+			,si.stock_item_quantity_capacity 		AS stockItemQuantityCapacity
+			,si.stock_item_quantity_capacity_unit 	AS stockItemQuantityCapacityUnit
+			,ru.resource_usecapacity_code AS resourceUsecapacityCode
+			,ru.resource_retain_quantity AS resourceRetainQuantity
+			,ru.resource_retain_quantity_capacity_extra AS resourceRetainQuantityCapacityExtra
+			,ru.available_status					AS availableStatus
+		FROM
+			tb_stock_item AS si
+			INNER join
+			tb_stock_cate AS sc
+			on
+			si.stock_cate_code = sc.stock_cate_code
+			INNER join
+			tb_exp_resource_pay AS erp
+			on
+			si.stock_item_code = erp.stock_item_code
+			INNER join
+			tb_resource_usecapacity AS ru
+			on
+			erp.resource_pay_code = ru.resource_pay_code
+		WHERE
+			si.farm_code = #{farmCode}
+			and
+			ru.available_status = 'Y'
+  	</select>
+  	
+  	<select id="getFarmRetainMachine" resultType="map" parameterType="map">
+  		SELECT
+			 cm.common_machine_code 		AS commonMachineCode
+			,cm.common_machine_name 		AS commonMachineName
+		FROM
+			tb_farm_retain_machine AS frm
+			INNER join
+			tb_farm_bookmark_machine AS fbm
+			on
+			frm.farm_bookmark_machine_code = fbm.farm_bookmark_machine_code
+			INNER join
+			tb_common_machine AS cm
+			on
+			fbm.common_machine_code = cm.common_machine_code
+		WHERE
+			frm.farm_code = #{farmCode}
+  	</select>
+  	
+  	<select id="getFarmBookmarkMachine" resultType="map" parameterType="map">
+  		SELECT
+			 cm.common_machine_code 		AS commonMachineCode
+			,cm.common_machine_name 		AS commonMachineName
+		FROM
+			tb_farm_bookmark_machine AS fbm
+			INNER join
+			tb_common_machine AS cm
+			on
+			fbm.common_machine_code = cm.common_machine_code
+		WHERE
+			fbm.farm_code = #{farmCode}
+  	</select>
+  	
+  	<select id="getClientName" resultType="map" parameterType="map">
+  		SELECT
+			 c.client_code 		AS clientCode
+			,c.client_name 		AS clientName
+		FROM
+			tb_client AS c
+		WHERE
+			c.farm_code = #{farmCode}
+  	</select>
+  	
+  	<select id="getWorkphaseName" resultType="map" parameterType="map">
+  		SELECT
+			 cpi.workphase
+			,cpi.workphase_name AS workphaseName
+		FROM
+			tb_project_workphase AS pw
+			INNER join
+			tb_crop_phase_info AS cpi
+			on
+			pw.crop_phase_info_code = cpi.crop_phase_info_code
+			AND
+			cpi.use_status = 'O'
+		WHERE
+			pw.project_code = #{projectCode}
+  	</select>
+  	
+  	<select id="getProjectPlanNList" resultType="map" parameterType="String">
+  		SELECT
+			 fp.project_code 				AS projectCode
+			,fp.project_name 				AS projectName
+			,fp.project_area 				AS projectArea
+			,fp.project_begin 				AS projectBegin
+			,fp.project_end 				AS projectEnd
+			,fp.project_estimate_income 	AS projectEstimateIncome
+			,fp.project_estimate_spending 	AS projectEstimateSpending
+			,pp.project_plan_code 			AS projectPlanCode
+			,pp.project_plan_n 				AS projectPlanN
+		FROM
+			tb_project_plan AS pp
+			INNER join
+			tb_farm_project AS fp
+			on
+			pp.project_code = fp.project_code
+		WHERE
+			fp.project_code = #{projectCode}
+		ORDER BY projectPlanN*1 ASC;
+  	</select>
+  	
+  	<select id="getMaxProjectPlanNum" resultType="map" parameterType="String">
+  		SELECT
+			IFNULL(concat(Max(CAST(REPLACE(pp.project_plan_n,'차','') AS UNSIGNED))+1,'차'),'1차') AS maxProjectPlanNum
+		FROM
+			tb_project_plan AS pp
+		WHERE
+			pp.project_code = #{projectCode}
+  	</select>
+  	
+  	<select id="getProjectPlanInfo" resultType="map" parameterType="String">
+  		SELECT
+			 pp.project_plan_code 			AS projectPlanCode
+			,pp.project_code 				AS projectCode
+			,pp.project_plan_n 				AS projectPlanN
+			,fp.farm_code 					AS farmCode
+			,fp.crop_code 					AS cropCode
+			,fp.project_name 				AS projectName
+			,fp.project_area 				AS projectArea
+			,fp.project_begin 				AS projectBegin
+			,fp.project_end 				AS projectEnd
+			,fp.project_estimate_income 	AS projectEstimateIncome
+			,fp.project_estimate_spending 	AS projectEstimateSpending
+		FROM
+			tb_project_plan AS pp
+			INNER join
+			tb_farm_project AS fp
+			on
+			pp.project_code = fp.project_code
+		WHERE
+			pp.project_plan_code = #{projectPlanCode}
+  	</select>
+  	
+  	<select id="getWorkphaseCateName" resultType="map" parameterType="map">
+  		SELECT
+			cwc.common_workphase_cate_name 	AS commonWorkphaseCateName
+		FROM
+			tb_farm_workphase_cate AS fwc
+			INNER join
+			tb_common_workphase_cate AS cwc
+			on
+			fwc.common_workphase_cate_code = cwc.common_workphase_cate_code
+		WHERE
+			fwc.project_code = #{projectCode}
+  	</select>
+	
+	<select id="getFarmProjectInfo" resultType="map" parameterType="String">
+		SELECT
+			 fp.project_name 				AS projectName
+			,fp.project_area 				AS projectArea
+			,fp.project_begin 				AS projectBegin
+			,fp.project_end 				AS projectEnd
+			,fp.project_estimate_income 	AS projectEstimateIncome
+			,fp.project_estimate_spending 	AS projectEstimateSpending
+		FROM
+			tb_farm_project AS fp
+		WHERE
+			fp.project_code = #{projectCode}
+	</select>
+	
+	<select id="getEtcPayPlan" resultType="EtcPay" >
+		SELECT 					
+			etc_pay_code 					AS	etcPayCode	,
+			plan_workphase_code 			AS	planWorkphaseCode	,
+			plan_workphase_cate_code 		AS	planWorkphaseCateCode	,
+			client_code 					AS	clientCode	,
+			etc_pay_date 					AS	etcPayDate	,
+			etc_pay 						AS	etcPay	,
+			etc_pay_detail 					AS	etcPayDetail	,
+			reg_farm_member_code 			AS	regFarmMemberCode	,
+			reg_date 						AS	regDate	,
+			mod_farm_member_code 			AS	modFarmMemberCode	,
+			mod_date						AS	modDate	
+		FROM tb_exp_etc_pay		
+	</select>
+  
+  	<select id="getResourcePayPlan" resultType="ResourcePay" >
+	   	SELECT 
+			resource_pay_code        			AS resourcePayCode, 
+			farm_code        					AS farmCode,
+			client_code        					AS clientCode, 
+			stock_item_code       				AS stockItemCode, 
+			stock_item_income_quantity        	AS stockItemIncomeQuantity, 
+			stock_item_income_quantity_total	AS stockItemIncomeQuantityTotal, 
+			stock_item_income_per_pay       	AS stockItemIncomePerPay, 
+			stock_item_total_pay        		AS stockItemTotalPay, 
+			stock_item_income_date        		AS stockItemIncomeDate, 
+			reg_farm_member_code        		AS regFarmMemberCode, 
+			reg_date        					AS regDate, 
+			mod_farm_member_code        		AS modFarmMemberCode, 
+			mod_date        					AS modDate
+		FROM tb_exp_resource_pay
+   </select>
+   
+  	<select id="getInsurancePayPlan" resultType="InsurancePay" >
+	   SELECT 
+			insure_pay_code            		AS insurePayCode, 
+			project_code           			AS projectCode, 
+			insure_company            		AS insureCompany, 
+			insure_name            			AS insureName, 
+			insure_datail            		AS insureDatail, 
+			insure_area            			AS insureArea, 
+			insure_pay_total            	AS insurePayTotal, 
+			reg_farm_member_code            AS regFarmMemberCode, 
+			reg_date            			AS regDate, 
+			mod_farm_member_code            AS modFarmMemberCode, 
+			mod_date            			AS modDate
+		FROM tb_exp_insure_pay
+   </select>
+   
+  	<select id="getMachineLeasePayPlan" resultType="MachineLeasePay" >
+	   SELECT 
+			machine_lease_code        		AS machineLeaseCode, 
+			plan_workphase_code        		AS planWorkphaseCode, 
+			plan_workphase_cate_code        AS planWorkphaseCateCode, 
+			client_code        				AS clientCode, 
+			common_machine_code        		AS commonMachineCode, 
+			machine_lease_howlong        	AS machineLeaseHowlong, 
+			machine_lease_pay_day        	AS machineLeasePayDay, 
+			machine_lease_pay_total        	AS machineLeasePayTotal,
+			reg_farm_member_code        	AS regFarmMemberCode, 
+			reg_date        				AS regDate, 
+			mod_farm_member_code        	AS modFarmMemberCode, 
+			mod_date       					AS modDate
+		FROM tb_exp_machine_lease
+   </select>
+   
+  	<select id="getMachineUsePayPlan" resultType="MachineUsePay" >
+	   SELECT 
+			machine_use_code        		AS machineUseCode, 
+			plan_workphase_code        		AS planWorkphaseCode, 
+			plan_workphase_cate_code        AS planWorkphaseCateCode, 
+			farm_retain_machine_code        AS farmRetainMachineCode, 
+			reg_farm_member_code        	AS regFarmMemberCode, 
+			reg_date        				AS regDate, 
+			mod_farm_member_code        	AS modFarmMemberCode,
+			mod_date				        AS modDate
+		FROM tb_exp_machine_use
+   </select>
+   
+  	<select id="getProductGainPlan" resultType="ProductGain" >
+		  SELECT 
+			product_gain_code        		AS productGainCode, 
+			project_code        			AS projectCode, 
+			stock_item_code        			AS stockItemCode,
+			gain_quantity        			AS gainQuantity, 
+			gain_quantity_capacity        	AS gainQuantityCapacity,
+			gain_date        				AS gainDate, 
+			reg_farm_member_code        	AS regFarmMemberCode, 
+			reg_date       					AS regDate, 
+			mod_farm_member_code        	AS modFarmMemberCode, 
+			mod_date        				AS modDate
+		FROM tb_product_gain
+   </select>
+   
+  	<select id="getResourceUsePlan" resultType="ResourceUsePlan" >
+		  SELECT 
+			resource_useplan_code        			AS resourceUseplanCode, 
+			resource_usecapacity_code        		AS resourceUsecapacityCode, 
+			plan_workphase_code        				AS planWorkphaseCode, 
+			plan_workphase_cate_code        		AS planWorkphaseCateCode, 
+			stock_item_use_quantity        			AS stockItemUseQuantity, 
+			stock_item_use_quantity_total        	AS stockItemUseQuantityTotal, 
+			stock_item_use_quantity_conversion_pay  AS stockItemUseQuantityConversionPay, 
+			stock_item_use_date        				AS stockItemUseDate, 
+			reg_farm_member_code       				AS regFarmMemberCode, 
+			reg_date        						AS regDate, 
+			mod_farm_member_code        			AS modFarmMemberCode, 
+			mod_date        						AS modDate
+		FROM tb_exp_resource_useplan
+   </select>
+   
+  	<select id="getTaxPayPlan" resultType="TaxPay" >
+		 SELECT 
+			tax_pay_code        		AS taxPayCode, 
+			plan_workphase_code        	AS planWorkphaseCode, 
+			plan_workphase_cate_code    AS planWorkphaseCateCode, 
+			client_code       			AS clientCode, 
+			tax_pay_cate_code        	AS taxPayCateCode, 
+			tax_pay_whatmonth        	AS taxPayWhatmonth, 
+			tax_pay        				AS taxPay, 
+			tax_pay_detail        		AS taxPayDetail, 
+			reg_farm_member_code        AS regFarmMemberCode, 
+			reg_date        			AS regFarmMemberCode, 
+			mod_farm_member_code        AS modFarmMemberCode, 
+			mod_date        			AS modDate
+		FROM tb_exp_tax_pay
+   </select>
+   
+  	<select id="getWorkForcePayPlan" resultType="WorkForcePay" >
+		SELECT 
+			workforce_pay_code        	AS workforcePayCode, 
+			plan_workphase_code        	AS planWorkphaseCode,
+			plan_workphase_cate_code    AS planWorkphaseCateCode, 
+			workforce_count        		AS workforceCount, 
+			workforce_howlong        	AS workforceHowlong, 
+			workforce_require_day       AS workforceRequireDay, 
+			workforce_pay_day        	AS workforcePayDay, 
+			workforce_pay_total        	AS workforcePayTotal, 
+			reg_farm_member_code        AS regFarmMemberCode, 
+			reg_date        			AS regDate, 
+			mod_farm_member_code        AS modFarmMemberCode, 
+			mod_date        			AS modDate
+		FROM tb_exp_workforce_pay
+   </select>
+  	
+</mapper>
+  
+  
+  

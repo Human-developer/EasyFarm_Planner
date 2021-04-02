@@ -27,11 +27,16 @@ public interface FarmMapper {
 	public FarmMemberJoin addFarmMemberJoinCheck(String farmName, String memberId);
 	public List<FarmMemberJoin> listJoinFarm(String memberId);
 	public List<FarmMemberJoin> getJoinFarm(String farmCode);
-	
+	public String getFarmMemberLevel(String farmCode, String memberId);
 	
 	//가입 승인후
 	public int farmJoinMember(String farmMemberJoinCode,String approval,String memberId);
 	public FarmMemberJoin getJoinMember(String farmMemberJoinCode);
 	public int joinAddFarmMember(FarmMember farmMember);
+	
+	//가입신청한 목록
+	public List<FarmMemberJoin> myGetJoinFarm(String memberId);
+	//가입신청 취소
+	public int removeJoinFarm(String farmJoinCode);
 	
 }

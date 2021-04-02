@@ -4,15 +4,29 @@
 	  layout:decorate="@{layout/default}">
 
 	<th:block layout:fragment="customTitle">
-		<title>코드 메인</title>
+		<title>코드관리</title>
 	</th:block>
 	
 	<th:block layout:fragment="pageTitle">
-		코드 메인
+		코드 사이트맵
 	</th:block>
 	
 	<th:block layout:fragment="customContents">
-		메인화면
+		<div class="box-content" >
+			<h1>코드관리</h1> 
+			데이터등록은 관리자만 가능
+			<hr/>
+			<ul class="list-inline">
+				<li class="margin-bottom-10"><a th:href="@{/code/getCropCode}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>작물 리스트</strong></button></a> </li>
+				<li class="margin-bottom-10"><a  th:if="${session.SLEVEL == '관리자'}" th:href="@{/code/addCrop}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>작물 등록</strong></button></a> </li></br>
+				<li class="margin-bottom-10"><a th:href="@{/code/getCropWorkStage}">		<button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>작업단계 리스트</strong></button></a></li>				
+				<li class="margin-bottom-10"><a th:if="${session.SLEVEL == '관리자'}"  th:href="@{/code/addCropWorkStage}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>작업단계 등록</strong></button></a> </li></br>
+				<li class="margin-bottom-10"><a th:href="@{/code/getCropDetailCategory}">	<button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>상세작업항목 리스트</strong></button></a>  </li>
+				<li class="margin-bottom-10"><a  th:if="${session.SLEVEL == '관리자'}" th:href="@{/code/addCropDetailCategory}">	<button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>상세작업항목 등록</strong></button></a> </li></br>
+				<li class="margin-bottom-10"><a th:href="@{code/getCommonMachineCode}">		<button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>농기계 리스트</strong></button></a></li>
+				<li class="margin-bottom-10"><a  th:if="${session.SLEVEL == '관리자'}" th:href="@{code/addCommonMachineCode}">		<button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>농기계 등록</strong></button></a></li>
+			</ul>
+		</div>
 	</th:block>
 
 </html>

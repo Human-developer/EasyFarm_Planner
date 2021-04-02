@@ -22,6 +22,8 @@ public interface MemberMapper {
 	
 	// 로그인 기록 전체 조회 & 검색
 	public List<Member> getLogin();
+	// 최근 로그인 기록 조회
+	public List<Member> getLoginMaxDate();
 	
 	// 회원가입
 	public int addMember(Member member);
@@ -61,6 +63,11 @@ public interface MemberMapper {
 	
 	//휴면|탈퇴 예정일 조회
 	public List<Report> getExpectedDate();
+	//휴면|탈퇴 예정일 등록
+	public void addStatusSchedule(String loginId,String autoRestDate,String autoWithdrawalDate);
+	//휴면|탈퇴 예정일 업데이트
+	public void updateStatusSchedule(String loginId,String autoRestDate,String autoWithdrawalDate);
+	
 	//휴면|탈퇴 기준일 조회
 	public List<Report> getBaseDate();
 	//휴면|탈퇴 기준이름 리스트
@@ -71,6 +78,14 @@ public interface MemberMapper {
 	public Report getBaseDate(String statusCriteriaCode);
 	//휴면|탈퇴 기준일 수정
 	public int modifyBaseDate(Report report);
+	//상태 N으로
+	public void modifyBaseDateStatus(String statusCode,String statusName);
+	//상태 Y로
+	public void cancelBaseDateStatus(String statusCode,String statusName);
+	//가장최근에 생성한 기준일 조회
+	public Report getStatus(String statusName);
+	//기준일 조회
+	public Report getStatusDays(String statusName);
 	//휴면|탈퇴 기준일 삭제
 	public int removeBaseDate(String statusCriteriaCode);
 	
@@ -97,4 +112,13 @@ public interface MemberMapper {
 	
 	//정지회원조회
 	public List<Report> getSuspend();
+	public Report getSuspend(String reportedId);
+	//정지등록
+	public void addBanCurrentSituation(String reportedId,String reportCode ,String banEndDate);
+	public void updateMember(String reportedId);
+	//정지해제
+	public void removeBan(String banCode);
+	public void updateMemberCancel(String banId);
+	
+	
 }
