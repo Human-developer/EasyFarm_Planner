@@ -376,7 +376,7 @@
 			workforce_require_day       AS workforceRequireDay, 
 			workforce_pay_day        	AS workforcePayDay, 
 			workforce_pay_total        	AS workforcePayTotal, 
-			reg_farm_member_code        AS regFarmMemberCode, 
+			reg_member_id        		AS regMemberId, 
 			reg_date        			AS regDate, 
 			mod_farm_member_code        AS modFarmMemberCode, 
 			mod_date        			AS modDate
