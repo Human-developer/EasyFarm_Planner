@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>농가관리>농가검색&가입신청</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		<a th:href="@{/farm}">농가관리</a>>농가검색&가입신청
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+			<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
+	</th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+			.modal {
+			        text-align: center;
+			}
+			
+			.modal:before {
+			                display: inline-block;
+			                vertical-align: middle;
+			                content: " ";
+			                height: 100%;
+			}
+			
+			 
+			.modal-dialog {
+			        display: inline-block;
+			        text-align: left;
+			        vertical-align: middle;
+			}
+		</style>
+	</th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+		<div class ="container-fluid">
+			<div class ="row">			
+				<div class ="box-content">
+					<h3>농가검색&가입신청</h3>
+					<hr>
+					
+					
+					<table id="farmTable" class="table table-striped table-bordered display dataTable" style ="width: 100%;">
+						<thead>
+							<tr>
+								<th th:text = "${'농가코드'}"/>
+								<th th:text ="${'농가명'}"/>
+								<th th:text ="${'대표자 아이디'}"/>
+								<th th:text ="${'토지 면적'}"/>
+								<th th:text ="${'주소'}"/>
+								<th th:text ="${'농가 생성일'}"/>
+								<th th:text ="${'농가 회원수'}"/>
+								<th th:text ="${'가입신청'}"/>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr th:each="farm : ${farmList}" class ="farmList">
+								<td class ="farmCode" th:text = "${farm.farmCode}"/>
+								<td class ="farmName" th:text = "${farm.farmName}"/>
+								<td class ="ceoId" th:text = "${farm.ceoId}"/>
+								<td class ="farmArea" th:text = "${farm.farmArea + '평'}"/>
+								<td class ="farmAddress" th:text = "${farm.farmAddress}"/>
+								<td class ="farmRegDate" th:text = "${farm.farmRegDate}"/>
+								<td class ="farmMemberCount" th:text = "${farm.farmMemberCount + '명'}"/>
+								<td class ="t-center">
+									<button type="button" class="btn btn-xs btn-success margin-bottom-10 waves-effect waves-light farm_join_btn" data-toggle="modal" data-target="#farmJoinModal">가입신청</button>
+								</td>
+							</tr>
+							
+						</tbody>
+					</table>	
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
+	</th:block>
+	
+	
+	<!-- customModals start -->
+	<th:block layout:fragment="customModals">
+		<div class="modal fade" id="farmJoinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title t-center" id="myModalLabel">농가 가입 신청</h4>
+					</div>
+					<div class="modal-body">
+						<div class ="row">
+							<div class ="col-xs-12">
+								<div class ="col-xs-12 margin-bottom-15" style ="padding: 0px;">
+									<strong class ="col-xs-3 col-xs-offset-2">농가 이름 : </strong>
+									<div id="modalFarmName"></div>
+								</div>
+								<div class ="col-xs-12 margin-bottom-15" style ="padding: 0px;">
+									<strong class ="col-xs-3 col-xs-offset-2">농가 주소 : </strong>
+									<div id="modalFarmAddress"></div>
+								</div>
+								<div class ="col-xs-12 margin-bottom-15" style ="padding: 0px;">
+									<strong class ="col-xs-3 col-xs-offset-2">토지면적 : </strong>
+									<div id="modalFarmArea"></div>
+								</div>
+								<div class ="col-xs-12 margin-bottom-15" style ="padding: 0px;">
+									<strong class ="col-xs-3 col-xs-offset-2">회원 수 : </strong>
+									<div id="modalFarmMemberCount"></div>
+								</div>
+							</div>	
+							<div class ="col-xs-12">
+								<h3 class ="t-center">가입목적</h3>
+								<textarea id = "farmJoinPurpose" style ="resize: none; margin-bottom: 15px"class ="form-control" cols="10"></textarea>
+							</div>
+						</div>
+						
+					</div>
+					<div class="modal-footer t-center">
+						<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">취소</button>
+						<button type="button" id ="addFarmMemberBtn" class="btn btn-primary btn-sm waves-effect waves-light" data-dismiss="modal">농가 가입</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+	<!-- customModals end -->
+	
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+		<script src="/assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+		<script src="/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+		<script src="/assets/scripts/datatables.demo.min.js"></script>
+		
+		<script th:src = @{/assets/sys/myDataTable.js}></script>
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+			var lang_kor = {
+			        "decimal" : "",
+			        "emptyTable" : "검색된 농가가 없습니다.",
+			        "info" : "_START_ - _END_ (총 _TOTAL_ 명)",
+			        "infoEmpty" : "0명",
+			        "infoFiltered" : "(전체 _MAX_ 농가 중 검색결과)",
+			        "infoPostFix" : "",
+			        "thousands" : ",",
+			        "lengthMenu" : "_MENU_ 개씩 보기",
+			        "loadingRecords" : "로딩중...",
+			        "processing" : "처리중...",
+			        "search" : "검색 : ",
+			        "zeroRecords" : "검색된 농가가 없습니다.",
+			        "paginate" : {
+			            "first" : "첫 페이지",
+			            "last" : "마지막 페이지",
+			            "next" : "다음",
+			            "previous" : "이전"
+			        },
+			        "aria" : {
+			            "sortAscending" : " :  오름차순 정렬",
+			            "sortDescending" : " :  내림차순 정렬"
+			        }
+			}
+			$('#farmTable').sysDataTable(lang_kor,[0]);
+			
+			
+			$('.farm_join_btn').click(function(){
+				$('#farmJoinPurpose').val('');
+				var farmTr = $(this).parent().parent();
+				//버튼 있는 행에 있는 데이터들
+				var farmName = farmTr.children('.farmName').text();
+				var ceoId = farmTr.children('.ceoId').text() ;
+				var farmArea = farmTr.children('.farmArea').text(); 
+				var farmAddress = farmTr.children('.farmAddress').text(); 
+				var farmRegDate = farmTr.children('.farmRegDate').text(); 
+				var farmMemberCount = farmTr.children('.farmMemberCount').text();
+				
+				//모달에 데이터 출력해줄 태그들
+				var modalFarmName = $('#modalFarmName');
+				var modalFarmAddress = $('#modalFarmAddress');
+				var modalFarmArea = $('#modalFarmArea');
+				var modalFarmMemberCount = $('#modalFarmMemberCount');
+				
+				modalFarmName.text(farmName);
+				modalFarmAddress.text(farmAddress);
+				modalFarmArea.text(farmArea);
+				modalFarmMemberCount.text(farmMemberCount);
+			});
+			
+			$('#addFarmMemberBtn').click(function(){
+				var farmJoinPurpose = $('#farmJoinPurpose').val();
+				var modalFarmName = $('#modalFarmName').text();
+				
+				var request = $.ajax({
+		               url:"/json/addfarmMemberJoin",
+		               method:"post", 
+		               data :	{
+									"farmName":modalFarmName,
+									"farmJoinPurpose":farmJoinPurpose
+								},
+		            });
+		            request.done(function(data){
+		            	var checkType = 'error';
+		            	if(data =='신청완료'){
+		            		checkType = 'success';
+		            	}
+		            	
+		            	
+		            	swal({
+							title: "농가 가입신청",
+							text: data,
+							type: checkType,
+							confirmButtonColor: '#304ffe'
+						});
+		            });
+		            request.fail(function( jqXHR, textStatus ){
+		               alert( "Request failed : " + textStatus );
+		            });
+				
+			});
+		</script>
+	</th:block>
+
+</html>

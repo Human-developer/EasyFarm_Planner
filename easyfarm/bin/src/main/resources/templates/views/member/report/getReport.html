@@ -22,7 +22,8 @@
 	
 				
 			<div class="box-content">
-					<table  class="table table-hover table-striped">
+	
+					<table id="example" class="table table-striped table-bordered display" style="width:100%">
 						<thead>
 							<tr>
 								<th>신고 코드</th>
@@ -30,40 +31,167 @@
 								<th>대상 아이디</th>
 								<th>작성자 아이디</th>
 								<th>내용</th>			
-								<th>등록일</th>
-								<th th:if = "${session.SLEVEL == '관리자'}">상세보기</th>
-								<th th:if = "${session.SLEVEL == '관리자'}">승인</th>
-								<th th:if = "${session.SLEVEL == '관리자'}">반려</th>
+								<th>등록일</th>																						
+								<th>상태</th>																						
+								<th th:if = "${session.SLEVEL == '관리자'}">승인&반려</th>
+								
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="r : ${reportList}">
-								<td th:text="${r.reportCode}"></td>							
-								<td th:text="${r.reportReason}"></td>				
+							<tr  th:each="r : ${reportList}" th:if = "${r.useStatus != 'N'}">
+								<td th:text="${r.reportHistoryCode}"></td>							
+								<td th:text="${r.reportReason}"></td>		
 								<td th:text="${r.reportedMemberId}"></td>				
 								<td th:text="${r.reportMemberId}"></td>			
-								<td th:text="${r.reportDetailReason}"></td>
-								<td th:text="${r.regDate}"></td>									
-								<td th:if = "${session.SLEVEL == '관리자'}">
-									<a th:href ="@{/member/modifReasonReport(reportCode=${r.reportCode})}">승인</a>
+								
+								<td ><a th:text="내용" th:data-val="${r.reportDetailReason}" href="#" class="contents"></a></td>								
+								<td th:text="${r.reportDate}"></td>
+								<td th:if = "${session.SLEVEL == '관리자' && r.reportApproval == '진행중'}" th:text="진행중"></td>
+								<td th:if = "${session.SLEVEL == '관리자' && r.reportApproval != '진행중'}" th:text="완료"></td>
+																	
+								<td th:if = "${session.SLEVEL == '관리자' && r.reportApproval == '진행중'}">
+									<div class="btn-group" >
+										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="fa fa-balance-scale" ></span></button> 
+										<ul class="dropdown-menu">
+											<li ><a class="okey" th:data-val="${r.reportHistoryCode}" th:data-val2="승인" href="#">승인</a></li>
+											<li ><a class="no" th:data-val="${r.reportHistoryCode}" th:data-val2="반려"   href="#">반려</a></li>
+										
+										</ul> 
+									</div>
 								</td>
-								<td th:if = "${session.SLEVEL == '관리자'}">
-									<a th:href ="@{/member/modifReasonReport(reportCode=${r.reportCode})}">반려</a>
-								</td>
+								 <td th:if = "${session.SLEVEL == '관리자' && r.reportApproval != '진행중'}">
+									<div class="btn-group" >
+										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="fa fa-balance-scale" ></span></button> 
+										<ul class="dropdown-menu">
+										  	<li th:if="${session.SLEVEL == '관리자'}"><a class="remove" th:data-val="${r.reportHistoryCode}" href="#">삭제</a></li>
+										</ul> 
+									</div>
+								</td> 
+								
+							</tr>
 							
-							</tr>
-							<tr th:if="${reportList.size() == 0}"> 
-								<td colspan="9" style ="text-align: center;">
-								조회된 내용이 없습니다
-								</td>
-							</tr>
 						</tbody>		
 	
 					</table>
-				
-			</div>
+				<div class="modal-content"  style = "display: none">
+					<div class="modal-header">
+						<button type="button" class="close" ><span class="close" style="color: black;">X</span></button>
+						<h4 class="modal-title">신고내용</h4>
+					</div>
+					<div class="modal-body">
+						<p class="text" style="color: black;"></p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn  close" ><span style="color: black;">Close</span> </button>
+					</div>
+				</div>
+		</div>
 			
+	
+	
 	</th:block>
 	
+	<th:block layout:fragment="customScriptLib">
+		<script src="/assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+		<script src="/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+		<script src="/assets/scripts/datatables.demo.min.js"></script>
+		
+	</th:block>
+	
+	<th:block layout:fragment="customJavaScript">
+		<script>
+		 $('.contents').click(function(){
+			  
+	    	  var contents = $(this).attr("data-val");
+			  $('.modal-content').attr('style','display: block');
+			  $('.text').text(contents);
+				   
+		  })
+		 
+		 	
+		 $('.close').click(function(){
+		  		  
+		 	 $('.modal-content').attr('style','display: none');
+		 })
+		 
+		 $('.remove').click(function(){
+			 var result = $(this).attr("data-val");
+			 location.href = "/member/removeReportHistoryCode?reportHistoryCode="+result;
+		 })
+		 
+		
+		 
+		 
+		$('.okey').click(function(){	
+			 var removeCode = $(this).attr("data-val");
+		  	 var result = $(this).attr("data-val2");
+			 swal({
+						title: "승인 사유입력",
+						type: "input",   showCancelButton: true,
+						closeOnConfirm: false,
+						animation: "slide-from-top",
+						inputPlaceholder: "사유 입력",
+						confirmButtonColor: '#304ffe',
+					}, function(inputValue){
+						if (inputValue === false) return false;
+						if (inputValue === "") {
+							swal({   
+								title: "승인 사유를 입력해주세요",
+								type: 'error' ,
+								confirmButtonColor: '#f60e0e',
+							});
+							return false
+						}
+						swal({   
+								title: "완료!",
+								text: "You wrote: " + inputValue,
+								type: 'success' ,
+								confirmButtonColor: '#304ffe',
+								
+						});
+						
+							
+				location.href = "/member/resultReport?reportHistoryCode="+removeCode+"&&reportApproval="+result+"&&reportApprovalReason="+inputValue
+						
+			});
+		});
+		$('.no').click(function(){	
+			 var removeCode = $(this).attr("data-val");
+		  	 var result = $(this).attr("data-val2");
+			 swal({
+						title: "반려 사유입력",
+						type: "input",   showCancelButton: true,
+						closeOnConfirm: false,
+						animation: "slide-from-top",
+						inputPlaceholder: "사유 입력",
+						confirmButtonColor: '#304ffe',
+					}, function(inputValue){
+						if (inputValue === false) return false;
+						if (inputValue === "") {
+							swal({   
+								title: "반려 사유를 입력해주세요",
+								type: 'error' ,
+								confirmButtonColor: '#f60e0e',
+							});
+							return false
+						}
+						swal({   
+								title: "완료!",
+								text: "You wrote: " + inputValue,
+								type: 'success' ,
+								confirmButtonColor: '#304ffe',
+								
+						});
+						
+							
+				location.href = "/member/resultReport?reportHistoryCode="+removeCode+"&&reportApproval="+result+"&&reportApprovalReason="+inputValue
+						
+			});
+		});
+		
+		</script>
+	</th:block>
 
 </html>

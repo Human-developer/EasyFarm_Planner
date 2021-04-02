@@ -49,7 +49,7 @@
 					<td th:text="${l.regMemberId}"></td>
 					<td th:text="${l.regDate}"></td>
 					<td th:if = "${session.SLEVEL == '관리자'}">
-						<a th:href="@{/getCropDetailCategory(commonWorkphaseCateCode=${l.commonWorkphaseCateCode})}">수정</a>
+						<a th:href="@{/code/modifyCropDetailCategory(commonWorkphaseCateCode=${l.commonWorkphaseCateCode})}">수정</a>
 					</td>
 					<td th:if = "${session.SLEVEL == '관리자'}">
 						<a th:href="@{/getCropDetailCategory(commonWorkphaseCateCode=${l.commonWorkphaseCateCode})}">삭제</a>		
@@ -61,7 +61,7 @@
 			</tbody>
 		</table>
 		</div>
-		<div th:include="views/code/back :: back"></div>
+				<div th:include="views/code/back :: back"></div>
 	</th:block>
 <!-- 사용자 정의 자바스크립트 라이브러리 -->
 	<th:block layout:fragment="customScriptLib">

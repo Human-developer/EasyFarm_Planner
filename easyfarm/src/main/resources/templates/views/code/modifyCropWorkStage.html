@@ -3,95 +3,116 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="@{layout/default}">
 
-	<th:block layout:fragment="customTitle">
-		<title>작물 수정</title>
-	</th:block>
-	
-	<th:block layout:fragment="pageTitle">
+<th:block layout:fragment="customTitle">
+	<title>작물 수정</title>
+</th:block>
+
+<th:block layout:fragment="pageTitle">
 		작물코드 - 작물수정
 	</th:block>
-	
-	<th:block layout:fragment="customContents">
-	
-	
-		<form th:action="@{/code/modifyCropWorkStage}" method="post">
-			<div class="container-fluid">
-				<div class="row" >
-					<div class="col-lg-offset-2 col-lg-8">
-						<div class="panel panel-default">
-							<div class="panel-heading t-center important-col ">
-								<h3><strong>작업단계 정보수정</strong></h3>
-							</div>
-							<div class="panel-body">
-								<div class="form-horizontal">
-									<div  class="form-group margin-bottom-20">
-										<label for="cropname" class="col-sm-3 control-label"><strong>작물명</strong></label>
-										<div class="col-sm-6">
-											<input id="cropname" name="cropName" type="text" class="form-control" th:value="${cropWorkStage.crop.cropName}" readonly/>
-										</div>
+
+<th:block layout:fragment="customContents">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-offset-2 col-sm-8">
+				<div class="box-content">
+					<h3>
+						<strong>작업단계 정보수정</strong>
+					</h3>
+					<hr>
+
+					<form th:action="@{/code/modifyCropWorkStage}" method="post">
+						<div class="panel-body" style="padding-top: 0">
+							<div class="form-horizontal">
+								<div class="form-group margin-bottom-20">
+									<input name="cropPhaseInfoCode" type="hidden"
+										class="form-control"
+										th:value="${cropWorkStage.cropPhaseInfoCode}" /> <label
+										for="cropname" class="col-sm-3 control-label"><strong>작물명</strong></label>
+									<div class="col-sm-6">
+										<input id="cropname" name="cropName" type="text"
+											class="form-control"
+											th:value="${cropWorkStage.crop.cropName}" readonly />
 									</div>
-									<div class="form-group margin-bottom-20">
-										<label for="cropcodename" class="col-sm-3 control-label"><strong>작물, 작업단계</strong></label>
-											
-										<div class="col-sm-6">
-											<div class="card-content">
-											<select class="form-control" name="workphase" id="cropcodename" >
-												  <option th:value="1단계" th:selected="${cropWorkStage.workphase == '1단계'}">1단계</option>
-												  <option th:value="2단계" th:selected="${cropWorkStage.workphase == '2단계'}">2단계</option>
-												  <option th:value="3단계" th:selected="${cropWorkStage.workphase == '3단계'}">3단계</option>
-												  <option th:value="4단계" th:selected="${cropWorkStage.workphase == '4단계'}">4단계</option>
-												  <option th:value="5단계" th:selected="${cropWorkStage.workphase == '5단계'}">5단계</option>
-												  <option th:value="6단계" th:selected="${cropWorkStage.workphase == '6단계'}">6단계</option>
-												  <option th:value="7단계" th:selected="${cropWorkStage.workphase == '7단계'}">7단계</option>
-												  <option th:value="8단계" th:selected="${cropWorkStage.workphase == '8단계'}">8단계</option>
-												  <option th:value="9단계" th:selected="${cropWorkStage.workphase == '9단계'}">9단계</option>
-												  <option th:value="10단계"th:selected="${cropWorkStage.workphase =='10단계'}">10단계</option>
+								</div>
+								<div class="form-group margin-bottom-20">
+									<label for="cropcodename" class="col-sm-3 control-label"><strong>작업단계</strong></label>
+
+									<div class="col-sm-6">
+										<div class="card-content">
+											<select class="form-control" name="workphase"
+												id="cropcodename">
+												<option th:value="1단계"
+													th:selected="${cropWorkStage.workphase == '1단계'}">1단계</option>
+												<option th:value="2단계"
+													th:selected="${cropWorkStage.workphase == '2단계'}">2단계</option>
+												<option th:value="3단계"
+													th:selected="${cropWorkStage.workphase == '3단계'}">3단계</option>
+												<option th:value="4단계"
+													th:selected="${cropWorkStage.workphase == '4단계'}">4단계</option>
+												<option th:value="5단계"
+													th:selected="${cropWorkStage.workphase == '5단계'}">5단계</option>
+												<option th:value="6단계"
+													th:selected="${cropWorkStage.workphase == '6단계'}">6단계</option>
+												<option th:value="7단계"
+													th:selected="${cropWorkStage.workphase == '7단계'}">7단계</option>
+												<option th:value="8단계"
+													th:selected="${cropWorkStage.workphase == '8단계'}">8단계</option>
+												<option th:value="9단계"
+													th:selected="${cropWorkStage.workphase == '9단계'}">9단계</option>
+												<option th:value="10단계"
+													th:selected="${cropWorkStage.workphase =='10단계'}">10단계</option>
 											</select>
-											</div>
 										</div>
 									</div>
-									
-									<div  class="form-group margin-bottom-20">
-										<label for="workphasename" class="col-sm-3 control-label"><strong>작업단계명</strong></label>
-										<div class="col-sm-6">
-											<input id="workphasename" name="workphaseName" type="text" class="form-control" th:value="${cropWorkStage.workphaseName}"/>
-										</div>
+								</div>
+
+								<div class="form-group margin-bottom-20">
+									<label for="workphasename" class="col-sm-3 control-label"><strong>작업단계명</strong></label>
+									<div class="col-sm-6">
+										<input id="workphasename" name="workphaseName" type="text"
+											class="form-control"
+											th:value="${cropWorkStage.workphaseName}" />
 									</div>
-									
-									<div  class="form-group margin-bottom-20">
-										<label for="usestatus" class="col-sm-3 control-label"><strong>사용가능여부</strong></label>
-										<div class="col-sm-6">
+								</div>
+
+								<div class="form-group margin-bottom-20">
+									<label for="usestatus" class="col-sm-3 control-label"><strong>사용가능여부</strong></label>
+									<div class="col-sm-6">
 										<ul class="list-inline">
 											<li>
-												<div class="radio info" >
-													<input type="radio"  name="useStatus" id="radio-10" th:value="O">
-													<label for="radio-10">O</label>
+												<div class="radio info">
+													<input type="radio" name="useStatus" id="radio-10"
+														th:value="O"> <label for="radio-10">O</label>
 												</div>
 											</li>
 											<li>
-												<div class="radio pink" >
-													<input type="radio" name="useStatus" id="radio-11" th:value="X" >
-													<label for="radio-11">X</label>
+												<div class="radio pink">
+													<input type="radio" name="useStatus" id="radio-11"
+														th:value="X"> <label for="radio-11">X</label>
 												</div>
 											</li>
 										</ul>
-										</div>
 									</div>
-	
-									<hr style="border-color : #ccd1d9;">
-									
-									<div class="form-group">
-										<div class="col-sm-10 col-sm-offset-1">
-											<button type="submit" class="btn btn-success btn-rounded waves-effect waves-light" style="width: 100%">작물정보 수정</button></li>
-										</div>
+								</div>
+
+								<hr>
+
+								<div class="form-group">
+									<div class="col-sm-10 col-sm-offset-1">
+										<button type="submit"
+											class="btn btn-success btn-rounded waves-effect waves-light"
+											style="width: 100%">작물정보 수정</button>
+										</li>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					</form>
 				</div>
 			</div>
-		</form>
-	</th:block>
+		</div>
+	</div>
+</th:block>
 
 </html>

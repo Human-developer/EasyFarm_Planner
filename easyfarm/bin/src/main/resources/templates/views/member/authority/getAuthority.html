@@ -26,7 +26,10 @@
 	
 				
 			<div class="box-content">
-					<table  class="table table-hover table-striped">
+					<div class=""  align="right"> 
+						<a th:href="@{/member/addAuthority}" style="color: black;"><button type="button" class="btn " style="margin-right: 30px; " > 등록 </button></a>
+					</div>
+					<table id="example" class="table table-striped table-bordered display" style="width:100%">
 						<thead>
 							<tr>
 								<th>권한 코드</th>
@@ -34,8 +37,8 @@
 								<th>사용 상태</th>
 								<th>등록 아이디</th>			
 								<th>권한 등록일자</th>
-								<th th:if = "${session.SLEVEL == '관리자'}">수정</th>
-								<th th:if = "${session.SLEVEL == '관리자'}">삭제</th>
+								<th th:if = "${session.SLEVEL == '관리자'}">설정</th>
+								
 							</tr>
 						</thead>
 						<tbody>
@@ -45,22 +48,18 @@
 								<td th:text="${l.useStatus}"></td>			
 								<td th:text="${l.memberId}"></td>
 								<td th:text="${l.memberRegDate}"></td>				
-								
-								
 								<td th:if = "${session.SLEVEL == '관리자'}">
-									<a th:href ="@{/member/modifyAuthority(levelCode=${l.levelCode})}">수정</a>
-								</td>
-								<td th:if = "${session.SLEVEL == '관리자'}">
-								<button type="button" class="remove" th:value="${l.levelCode}">삭제</button>
-									
+									<div class="btn-group">
+										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button> 
+										<ul class="dropdown-menu">
+											<li><a th:href ="@{/member/modifyAuthority(levelCode=${l.levelCode})}">수정</a></li>
+											<li><a th:data-val="${l.levelCode}" class="remove" th:href="@{#}">삭제</a></li>
+										</ul> 
+									</div>
 								</td>
 							
 							</tr>
-							<tr th:if="${levelList.size() == 0}"> 
-								<td colspan="10" style ="text-align: center;">
-								조회된 내용이 없습니다
-								</td>
-							</tr>
+							
 						</tbody>		
 	
 					</table>
@@ -69,6 +68,14 @@
 			
 	</th:block>
 	
+	<th:block layout:fragment="customScriptLib">
+		<script src="/assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+		<script src="/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+		<script src="/assets/scripts/datatables.demo.min.js"></script>
+		
+	</th:block>
 	<th:block layout:fragment="customJavaScript">
 		<script type="text/javascript">
 		
@@ -81,7 +88,7 @@
 					       
 				
 					      $('.remove').click(function(){
-					    	  var removeCode = $(this).val();
+					    	  var removeCode = $(this).attr("data-val");
 								swal({   
 									title: "정말 삭제하시겠습니까?",   
 									text: "삭제시 복구불가",   

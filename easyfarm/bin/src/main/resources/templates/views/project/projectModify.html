@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>프로젝트 수정</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		프로젝트 수정
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+		<!-- 데이트피커 플러그인 css, js파일 연결 -->
+		<link rel="stylesheet" href="/assets/plugin/air-datepicker/css/datepicker.min.css">
+	</th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss"></th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+		<div class="box-content">
+			<form id="projectModifyForm" action="/projectModifyByProjectCode" method="post">
+				<input type="hidden" name="farmCode" th:value="${farmCode}">
+				<div class="form-group">
+					<label for="projectName">프로젝트 이름</label>
+					<input type="hidden" class="form-control" id="projectCode" name="projectCode" th:value="${project.projectCode}">
+					<input type="text" class="form-control" id="projectName" name="projectName" th:value="${project.projectName}">
+				</div>
+				<div class="form-group">
+					<label for="cropName">작물 이름</label>
+					<input type="hidden" class="form-control" id="cropCode" name="cropCode" th:value="${project.cropCode}"readonly="readonly">
+					<input type="text" class="form-control" id="cropName" name="cropName" th:value="${project.crop.cropName}"readonly="readonly">
+				</div>
+				<div class="form-group">
+					<label for="projectArea">프로젝트 면적</label>
+					<input type="text" class="form-control" id="projectArea" name="projectArea" th:value="${project.projectArea}">
+				</div>
+				<div class="form-group">
+					<label for="projectBeginDate">프로젝트 시작일</label>
+					<input type="text" class=" form-control" id="projectBeginDate" name="projectBegin" data-language='kr' th:value="${#strings.substring(project.projectBegin, 0,10)}" readonly="readonly">
+				</div>
+				<div class="form-group">
+					<label for="projectEndDate">프로젝트 종료일</label>
+					<input type="text" class=" form-control" id="projectEndDate" name="projectEnd" data-language='kr' th:value="${#strings.substring(project.projectEnd,0,10)}"readonly="readonly">
+				</div>
+				<div class="form-group">
+					<label for="projectEstimateIncome">프로젝트 총수입예산</label>
+					<input type="text" class="form-control" id="projectEstimateIncome" name="projectEstimateIncome" th:value="${project.projectEstimateIncome}">
+				</div>
+				<div class="form-group">
+					<label for="projectEstimateSpending">프로젝트 총지출예산</label>
+					<input type="text" class="form-control" id="projectEstimateSpending" name="projectEstimateSpending" th:value="${project.projectEstimateSpending}">
+				</div>
+				<!-- 작업단계 선택  패널-->
+				<div class="panel panel-success">
+					<div class="panel-heading">프로젝트 안에서 사용할 작업단계를 선택해주세요<small class="panelhead-small">  * 특별한 이유가 없다면 전체 체크를 추천합니다</small></div>
+					<div class="panel-body panel-workphase"></div>
+				</div>		
+				
+				<button type="submit" id="projectModifyBtn" class="btn btn-default">프로젝트 수정</button>
+			</form>
+		</div>
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+		<script src="/assets/plugin/air-datepicker/js/datepicker.min.js"></script>
+		<script src="/assets/plugin/air-datepicker/js/i18n/datepicker.kr.js"></script>
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+			/* datepicker */
+			var date = new Date();
+			var beginDate = $('#projectBeginDate').datepicker({
+			  //년-월-일
+			  startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+			  language: 'kr',
+			  autoClose: true,
+			  //선택한 날짜를 가져옴
+			  onSelect: function (date) {
+			      var endNum = date;
+			      //종료일 datepicker에 최소날짜를 방금 클릭한 날짜로 설정
+			      $('#date_end').datepicker({
+			          minDate: new Date(endNum),
+			      });
+			  }
+			}).data('datepicker');
+			var endDate = $('#projectEndDate').datepicker({
+			  startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),  // 시간, 분은 00으로 초기 설정
+			  language: 'kr',
+			  autoClose: true,
+			  //선택한 날짜를 가져옴
+			  onSelect: function (date) {
+			      var startNum = date;
+			      $('#date_start').datepicker({
+			          //시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
+			          maxDate: new Date(startNum),
+			      });
+			  }
+			}).data('datepicker');
+			
+			/* ajax로 프로젝트별작업단계 호출 */
+			var projectCode = $('#projectCode').val();
+			var request = $.ajax({
+				url:"getProjectWorkphaseListByProjectCode", // 컨트롤러
+				method:"post", 
+				data : {"projectCode":projectCode},
+				dataType: "json"
+			});
+			request.done(function( d ){
+				var pannelWorkphase = $('.panel-workphase');
+				pannelWorkphase.empty();
+				
+				$.each(d, function(index, value){
+					console.log(value.useStatus)
+					if(value.useStatus == "Y"){
+						pannelWorkphase.append(
+							$("<td><input type=\"checkbox\" checked=\"true\" usestatus="+value.useStauts+" class=\"check-workphase\" name=\"projectWorkphaseCode\" value="+value.projectWorkphaseCode+"> "+value.cropPhaseInfo.workphaseName+"</td>")
+						)
+					}else if(value.useStatus == "N"){
+						pannelWorkphase.append(
+							$("<td><input type=\"checkbox\" usestatus="+value.useStauts+" class=\"check-workphase\" name=\"projectWorkphaseCode\" value="+value.projectWorkphaseCode+"> "+value.cropPhaseInfo.workphaseName+"</td>")
+						)
+					}
+				})
+			});
+			request.fail(function( jqXHR, textStatus ){
+				alert( "Request failed : " + textStatus );
+			});
+		</script>
+	</th:block>
+
+</html>
