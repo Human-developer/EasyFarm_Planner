@@ -30,6 +30,10 @@ $.fn.sysDataTable = function(langKor, tagets,displayLen){
             }
         ]
 		});
+	
+	 	/*,
+	  	ordering: true,
+	  	serverSide: false*/
 }
 
 			        

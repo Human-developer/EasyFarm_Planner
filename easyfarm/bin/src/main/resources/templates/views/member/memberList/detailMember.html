@@ -117,18 +117,19 @@
 						</div>				
 					</div>				
 				</div>	
+					<div class="form-group ">
+						<div class="col-sm-offset-1 col-sm-4" th:if = "${session.SLEVEL == '관리자' && m.memberStatus != '탈퇴'}">
+						<button type="submit" class="lc-round-btn" >수정</button>
+						</div>
+					</div>
 				
 					<div class="form-group ">
 						<div class="col-sm-offset-1 col-sm-4">
-						<button type="submit" class="lc-round-btn">수정</button>
+							<a th:href="@{/}" style="color: white;"><button type="button" class ="lc-round-btn" > 메인 </button></a>
 						</div>
 					</div>
+					
 	
-					<div class="form-group ">
-						<div class="col-sm-offset-1 col-sm-4">
-							<a th:href="@{/}" style="color: white;"><button type="button" class ="lc-round-btn"> 메인 </button></a>
-						</div>
-					</div>
 						
 				
 					

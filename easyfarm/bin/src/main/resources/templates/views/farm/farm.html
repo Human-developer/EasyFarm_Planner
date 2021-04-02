@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>메인화면</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		Home
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib"></th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss"></th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+		<div class ="container-fluid">
+			<div class ="row">
+				<div class ="box-content t-center">
+					<a class ="btn btn-success" th:href="@{/farm/farmMain}">농가메인</a>				<br><br>
+					<a class ="btn btn-success" th:href="@{/farm/addFarm}">농가등록</a>
+					<a class ="btn btn-success" th:href="@{/farm/myFarm}">내농가</a>					
+					<a class ="btn btn-warning" th:href="@{/farm/belongFarm}">내소속농가</a>
+					<a class ="btn btn-warning" th:href="@{/farm/detailFarm}">농가상세보기</a>			<br><br>
+					<a class ="btn btn-warning" th:href="@{/farm/modifyFarm}">농가수정</a>				
+					<a class ="btn btn-warning" th:href="@{/farm/getMemberFarm}">농가회원조회</a>
+					<a class ="btn btn-success" th:href="@{/farm/searchFarm}">농가검색&가입</a>		<br><br>			
+					<a class ="btn" th:href="@{/farm/myGetJoinFarm}">!내신청리스트</a>		
+					<a class ="btn" th:href="@{/farm/getLeaverFarm}">!농가탈퇴신청목록</a>	<br><br>
+					<br><br><br><br>
+					<a class ="btn" th:href="@{#}">##농가별 거래처 등록</a>			
+					<a class ="btn" th:href="@{#}">##농가별 거래처 수정</a>
+					<a class ="btn" th:href="@{#}">##농가별 거래처 조회</a> <br><br>
+					<a class ="btn" th:href="@{#}">##농가별 농기계 등록</a>
+					<a class ="btn" th:href="@{#}">##농가별 농기계 수정</a>
+					<a class ="btn" th:href="@{#}">##농가별 거래처 조회</a>
+				</div>
+			</div>
+		</div>
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib"></th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+	</th:block>
+
+</html>

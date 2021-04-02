@@ -29,6 +29,19 @@ public class FarmController {
 	@Autowired
 	private FarmService farmService;
 	
+	@PostMapping("/json/removeFarmJoin")
+	public @ResponseBody String removeFarmJoin(@RequestParam(value = "farmJoinCode", required = false) String farmJoinCode) {
+		String result = "삭제실패";
+		if(farmJoinCode != null) {
+			int removeResult = 0;
+			removeResult += farmService.removeJoinFarm(farmJoinCode);
+			if(removeResult > 0) {
+				result ="삭제성공";
+			}
+		}
+		return result;
+	}
+	
 	@PostMapping("/json/farmJoinMember")
 	public @ResponseBody String farmJoinMember(HttpSession session,
 			@RequestParam(value = "farmMemberJoinCode",required = false) String farmMemberJoinCode,
@@ -260,7 +273,7 @@ public class FarmController {
 	/* 농가회원조회 */
 	@GetMapping("/farm/getMemberFarm")
 	public String getMemberFarm(
-			Model model,
+			Model model, HttpSession session,
 			@RequestParam(value = "farmCode", required = false) String farmCode,
 			@RequestParam(value = "farmMemberLevel", required = false) String farmMemberLevel) {
 		
@@ -268,6 +281,11 @@ public class FarmController {
 			List<FarmMember> farmMemberList = farmService.getMemberFarm(farmCode);
 			if(farmMemberList != null) {
 				model.addAttribute("farmMemberList", farmMemberList);
+				
+				if(farmMemberLevel!= null) {
+					String memberId = (String)session.getAttribute("SID");
+					farmMemberLevel = farmService.getFarmMemberLevel(farmCode,memberId);
+				}
 				model.addAttribute("myMemberLevel", farmMemberLevel);
 			}
 			
@@ -312,7 +330,16 @@ public class FarmController {
 	
 	/* 내가입신청리스트 */
 	@GetMapping("/farm/myGetJoinFarm")
-	public String myGetJoinFarm(Model model) {
+	public String myGetJoinFarm(Model model, HttpSession session) {
+		String memberId = (String)session.getAttribute("SID");
+		if(memberId != null) {
+			List<FarmMemberJoin> farmMemberJoinList = farmService.myGetJoinFarm(memberId);
+			System.out.println(farmMemberJoinList + "tttttttttttttttttttttttt");
+			if(farmMemberJoinList != null) {
+				model.addAttribute("myGetJoinFarmList", farmMemberJoinList);
+			}
+		}
+		
 		return "views/farm/myGetJoinFarm";
 	}
 	/* 내가입신청리스트 */
