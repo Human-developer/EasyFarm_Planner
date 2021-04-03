@@ -5,10 +5,34 @@
  
 <mapper namespace="easyfarm.dao.PlanMapper">
 
-	<resultMap type="EtcPay" id="resultEtcPay">
-		<id column=""  property=""/>
-		<result column="" property="" />
+	<resultMap type="InsurancePay" id="resultInsurancePay">
+		<result property="insurePayCode" 	column="insure_pay_code"/>
+		<result property="projectCode" 		column="project_code"/>
+		<result property="insureCompany" 	column="insure_company"/>
+		<result property="insureName" 		column="insure_name"/>
+		<result property="insureDatail" 	column="insure_datail"/>
+		<result property="insureArea" 		column="insure_area"/>
+		<result property="insurePayTotal" 	column="insure_pay_total"/>
+		<result property="regMemberId" 		column="reg_member_id"/>
+		<result property="regDate" 			column="reg_date"/>
 	</resultMap>
+	
+	<select id="getInsurePayList" resultMap="resultInsurancePay" parameterType="String">
+		SELECT 
+			 eip.insure_pay_code
+			,eip.project_code
+			,eip.insure_company
+			,eip.insure_name
+			,eip.insure_datail
+			,eip.insure_area
+			,eip.insure_pay_total
+			,eip.reg_member_id
+			,eip.reg_date
+		FROM 
+			tb_exp_insure_pay AS eip
+		WHERE
+			project_code = #{projectCode}
+	</select>
   	
   	<insert id="addProjectPlan" parameterType="map">
   		INSERT INTO tb_project_plan
