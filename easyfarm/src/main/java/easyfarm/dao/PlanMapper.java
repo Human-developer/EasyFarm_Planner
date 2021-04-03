@@ -46,10 +46,14 @@ public interface PlanMapper {
 	//프로젝트 통합계획 등록
 	public int addProjectPlan(Map<String, Object> projectPlanData);
 	
-	//프로젝트별 보험료지출계획 조회
-	public List<InsurancePay> getInsurePayList(String projectCode);
+	//프로젝트별 보험지출계획 조회
+	public List<InsurancePay> getInsurePayList(Map<String, Object> paramMap);
 	
+	//프로젝트별 보험지출계획 등록
+	public int addInsurePay(Map<String, Object> paramMap);
 	
+	//프로젝트별 보험지출계획 수정
+	public int modifyInsurePay(InsurancePay insurePay);
 	
 	//프로젝트별 작업단계 조회
 	public List<Map<String, Object>> getWorkphaseName(Map<String, Object> projectData);

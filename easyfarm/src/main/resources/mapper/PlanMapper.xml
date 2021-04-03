@@ -17,7 +17,47 @@
 		<result property="regDate" 			column="reg_date"/>
 	</resultMap>
 	
-	<select id="getInsurePayList" resultMap="resultInsurancePay" parameterType="String">
+	<update id="modifyInsurePay" parameterType="InsurancePay">
+		UPDATE tb_exp_insure_pay
+		SET
+			 insure_company 	= #{insureCompany}
+			,insure_name 		= #{insureName}
+			,insure_datail 		= #{insureDatail}
+			,insure_area		= #{insureArea}
+			,insure_pay_total	= #{insurePayTotal}
+		WHERE 
+			insure_pay_code		= #{insurePayCode}
+	</update>
+	
+	<insert id="addInsurePay" parameterType="map">
+		INSERT INTO tb_exp_insure_pay
+		(
+			 insure_pay_code
+			,project_code
+			,insure_company
+			,insure_name
+			,insure_datail
+			,insure_area
+			,insure_pay_total
+			,reg_member_id
+			,reg_date
+		)
+		VALUES 
+		(
+			 sf_exp_insure_pay_max_code()
+			,#{insurePay.projectCode} 
+			,#{insurePay.insureCompany} 
+			,#{insurePay.insureName}
+			,#{insurePay.insureDatail} 
+			,#{insurePay.insureArea}
+			,#{insurePay.insurePayTotal}
+			,#{regMemberId}
+			,NOW()
+		)
+	
+	</insert>
+	
+	<select id="getInsurePayList" resultMap="resultInsurancePay" parameterType="map">
 		SELECT 
 			 eip.insure_pay_code
 			,eip.project_code
@@ -31,7 +71,11 @@
 		FROM 
 			tb_exp_insure_pay AS eip
 		WHERE
-			project_code = #{projectCode}
+			eip.project_code = #{projectCode}
+		<if test="insurePayCode != null and insurePayCode != ''.toString()">
+			and
+			eip.insure_pay_code = #{insurePayCode}
+		</if>
 	</select>
   	
   	<insert id="addProjectPlan" parameterType="map">
@@ -42,7 +86,7 @@
 			,project_plan_n
 			,reg_member_id
 			,reg_date
-						)
+		)
 		VALUES
 		(	
 			 sf_project_plan_max_code()
@@ -50,7 +94,7 @@
 			,#{maxProjectPlanNum}
 			,#{memberId}
 			,NOW()
-						)
+		)
   	</insert>
   	
   	<select id="getTaxPayCateCode" resultType="map">

@@ -72,6 +72,7 @@ public class PlanService {
 		return result;
 	}
 	
+	//프로젝트 통합계획 등록
 	public int addProjectPlan(Map<String, Object> projectPlanData) {
 		int result = 0;
 		if(projectPlanData != null && !"".equals(projectPlanData)) {
@@ -121,18 +122,31 @@ public class PlanService {
 	}
 	
 	//프로젝트별 보험료지출계획 조회
-	public List<InsurancePay> getInsurePayList(String projectCode){
+	public List<InsurancePay> getInsurePayList(Map<String, Object> paramMap){
 		List<InsurancePay> insurancePayList = null;
-		System.out.println(projectCode + "projectCode PlanService 실행");
-		if(projectCode != null && !"".equals(projectCode)) {
-			insurancePayList = planMapper.getInsurePayList(projectCode);
-			System.out.println(insurancePayList + "insurancePayList PlanService 실행 ");
+		if(paramMap != null && !"".equals(paramMap)) {
+			insurancePayList = planMapper.getInsurePayList(paramMap);
 		}
-		
 		return insurancePayList;
 	}
 	
+	//프로젝트 보험지출계획 등록
+	public int addInsurePay(Map<String, Object> paramMap) {
+		int result = 0;
+		if(paramMap != null && !"".equals(paramMap)) {
+			result = planMapper.addInsurePay(paramMap);
+		}
+		return result;
+	}
 	
+	//프로젝트 보험지출계획 수정
+	public int modifyInsurePay(InsurancePay insurePay) {
+		int result = 0;
+		if(insurePay != null && !"".equals(insurePay)) {
+			result = planMapper.modifyInsurePay(insurePay);
+		}
+		return result;
+	}
 	
 	public List<EtcPay> getEtcPayPlan(){
 		List<EtcPay> etcPayPlan = null;

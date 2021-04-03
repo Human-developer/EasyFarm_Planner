@@ -375,5 +375,4 @@ $(function(){
 		show: false
 	})
 	
-	
 });

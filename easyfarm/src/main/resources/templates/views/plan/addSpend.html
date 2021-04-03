@@ -489,8 +489,8 @@
 							<hr>
 							<div class="form-group t-center">
 								<button type="submit" id="btnSize" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btnSize">계획서등록</button>
-								<button type="button" class="btn btn-success btn-md waves-effect waves-light btn-rounded btnSize">
-									<a th:href="@{/plan/getSchedule(projectPlanCode=${projectPlanCode})}">켈린더 돌아가기</a>
+								<button type="button" th:value="|/plan/getSchedule?projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" class="btn btn-success btn-md waves-effect waves-light btn-rounded btnSize">
+									켈린더 돌아가기
 								</button>
 							</div>
 						</div>
@@ -557,7 +557,11 @@
 	
 	<!-- 사용자 정의 자바스크립트 -->
 	<th:block layout:fragment="customJavaScript">
-		
+		<script type="text/javascript">
+			function moveAddSpend(btn){
+					location.href = btn.value;
+				};
+		</script>
 	</th:block>
 
 </html>
