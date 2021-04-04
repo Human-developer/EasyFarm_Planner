@@ -77,6 +77,9 @@ public class MemberService {
 	 public void removeUpdateMember(Member member) {
 		 if(member != null)  memberMapper.removeUpdateMember(member);
 	 }
+	 public void removeUpdateMember(String useStatus ,String memberId) {
+		 memberMapper.removeUpdateMember(useStatus,memberId);
+	 }
 	 //회원탈퇴시 탈퇴회원등록
 	 public void addCancelMember(Member member) {
 		 if(member != null)  memberMapper.addCancelMember(member);
@@ -179,6 +182,11 @@ public class MemberService {
 		 
 		 return nameList;
 	 }
+	 public List<Report> getstatusCriteriaName(String statusName){
+		 List<Report> nameList = memberMapper.getstatusCriteriaName(statusName);
+		 
+		 return nameList;
+	 }
 	 // 휴면|탈퇴 기준일 수정
 	 public void removeBaseDate(String statusCriteriaCode) {
 		 memberMapper.removeBaseDate(statusCriteriaCode);
@@ -243,6 +251,9 @@ public class MemberService {
 	 // 정지회원조회
 	 public Report getSuspend(String reportedId) {
 		 Report banList = memberMapper.getSuspend(reportedId);
+		 if(banList == null) {
+			 return null;
+		 }
 		 return banList;
 	 }
 	 //정지 등록

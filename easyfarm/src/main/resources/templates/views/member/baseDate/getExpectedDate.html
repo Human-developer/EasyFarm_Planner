@@ -23,6 +23,8 @@
 	
 			
 			<div class="box-content">
+			<h3>휴면|탈퇴 예정일조회</h3>
+					<hr>	
 					<table id="expectedTable">
 						<thead>
 							<tr>
@@ -37,8 +39,8 @@
 							<tr th:each="e : ${expectedList}">
 								<td th:text="${e.autoRestNum}"></td>							
 								<td th:text="${e.loginMemberId}"></td>
-								<td th:text="${e.autoRestDate}"></td>				
-								<td th:text="${e.autoWithdrawalDate}"></td>							
+								<td th:text="${e.regDate}"></td>				
+								<td th:text="${e.regDay}"></td>							
 								
 							
 							</tr>

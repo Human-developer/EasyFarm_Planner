@@ -17,6 +17,22 @@
 		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
 	</th:block>
 	
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+		
+			.modal-content{
+				        display: none;
+				        width: 500px;
+				        height: 200px;
+				        position: absolute;
+				        top:50%;
+				        left: 50%;
+				        margin: -250px 0 0 -250px;
+				        background:white;
+				        z-index: 2;
+				    }
+		</style>
+	</th:block>
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
 	<th:block layout:fragment="customContents">
 	
