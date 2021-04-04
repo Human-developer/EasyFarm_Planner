@@ -9,39 +9,90 @@
 		<div class="modal fade" id="planAddClient" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel-1">거래처 등록</h4>
-					</div>
 					<div class="modal-body">
 						
-						<div class="form-horizontal">
-							<div class="form-group form-group-sm">
-								<label for="workPhase" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>작업단계</strong></label>
-							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhase" id="workPhase"/>
-							    </div>
-						    	<label for="workPhaseDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
-								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="date-range">
-										<input type="text" class="form-control" name="start" />
-										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" />
+						<div class="box-content card white">
+							<div class="box-title">
+								<div class="row">
+									<div class="col-sm-12">
+										<h4>등록된 거래처 목록</h4>
 									</div>
 								</div>
 							</div>
-							<div class="form-group form-group-sm">
-								<label for="workPhaseCate" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>상세항목</strong></label>
-							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhaseCate" id="workPhaseCate"/>
-							    </div>
-							    
-							    <label for="workPhaseCateDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
-								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="date-range">
-										<input type="text" class="form-control" name="start" />
-										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" />
+							<div class="card-content">
+								<div class="table-responsive">
+									<table id="clientListTable" class="table table-striped table-bordered display" style="width:100%">
+										<thead>
+											<tr>
+												<th class="hidden">거래처코드</th>
+												<th>거래처명</th>
+												<th>전화번호</th>
+												<th>주소</th>
+												<th>계좌은행</th>
+												<th>계좌번호</th>
+												<th>간단메모</th>
+											</tr>
+										</thead>
+										<tbody>
+											<th:block th:if="${#lists.size(clientNameList) > 0}" th:each="c : ${clientNameList}">
+												<tr>
+													<td th:text="${c.clientCode}" class="hidden"></td>
+													<td th:text="${c.clientName}"></td>
+													<td th:text="${c.clientPhone}"></td>
+													<td th:text="${c.clientAddress}"></td>
+													<td th:text="${c.clientAccountBank}"></td>
+													<td th:text="${c.clientAccount}"></td>
+													<td th:text="${c.clientMemo}"></td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="box-title">
+								<div class="row">
+									<div class="col-sm-12">
+										<h4>거래처 등록</h4>
+									</div>
+								</div>
+							</div>
+							<div class="card-content">
+								<div class="form-horizontal">
+									<div class="form-group">
+										<label for="clientName" class="col-sm-3 control-label"><strong>거래처명</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="clientName" id="clientName" placeholder="거래처명">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="clientPhone" class="col-sm-3 control-label"><strong>전화번호</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="clientPhone" id="clientPhone" placeholder="전화번호">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="clientAddress" class="col-sm-3 control-label"><strong>주소</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="clientAddress" id="clientAddress" placeholder="주소">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="clientAccountBank" class="col-sm-3 control-label"><strong>계좌은행</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="clientAccountBank" id="clientAccountBank" placeholder="계좌은행">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="clientAccount" class="col-sm-3 control-label"><strong>계좌</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="clientAccount" id="clientAccount" placeholder="계좌">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="clientMemo" class="col-sm-3 control-label"><strong>간단메모</strong></label>
+									    <div class="col-sm-6">
+									    	<textarea class="form-control" id="clientMemo" name="clientMemo" rows="3" placeholder="메모를 작성해주세요" style="resize: none;"></textarea>
+									    </div>
 									</div>
 								</div>
 							</div>
@@ -49,7 +100,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">등록</button>
+						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">거래처 등록</button>
 					</div>
 				</div>
 			</div>
@@ -60,39 +111,94 @@
 		<div class="modal fade" id="planAddStock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel-1">품목 등록</h4>
-					</div>
 					<div class="modal-body">
-						
-						<div class="form-horizontal">
-							<div class="form-group form-group-sm">
-								<label for="workPhase" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>작업단계</strong></label>
-							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhase" id="workPhase"/>
-							    </div>
-						    	<label for="workPhaseDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
-								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="date-range">
-										<input type="text" class="form-control" name="start" />
-										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" />
+						<div class="box-content card white">
+							<div class="box-title">
+								<div class="row">
+									<div class="col-sm-12">
+										<h4>등록된 품목 목록</h4>
 									</div>
 								</div>
 							</div>
-							<div class="form-group form-group-sm">
-								<label for="workPhaseCate" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>상세항목</strong></label>
-							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhaseCate" id="workPhaseCate"/>
-							    </div>
-							    
-							    <label for="workPhaseCateDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
-								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="date-range">
-										<input type="text" class="form-control" name="start" />
-										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" />
+							<div class="card-content">
+								<div class="table-responsive">
+									<table id="stockItemTable" class="table table-striped table-bordered display" style="width:100%">
+										<thead>
+											<tr>
+												<th>카테고리명</th>
+												<th>품목명</th>
+												<th>품목수량</th>
+												<th>수량단위</th>
+												<th>품목용량</th>
+												<th>용량단위</th>
+												<th>작성자</th>
+											</tr>
+										</thead>
+										<tbody>
+											<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+												<tr>
+													<td th:text="${fs.stockCate.stockCateName}"></td>
+													<td th:text="${fs.stockItemName}"></td>
+													<td th:text="${fs.stockItemQuantity}"></td>
+													<td th:text="${fs.stockItemQuantityUnit}"></td>
+													<td th:text="${fs.stockItemQuantityCapacity}"></td>
+													<td th:text="${fs.stockItemQuantityCapacityUnit}"></td>
+													<td th:text="${fs.regMemberId}"></td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="box-title">
+								<div class="row">
+									<div class="col-sm-12">
+										<h4>품목 등록</h4>
+									</div>
+								</div>
+							</div>
+							<div class="card-content">
+								<div class="form-horizontal">
+									<div class="form-group">
+										<label class="col-sm-3 control-label"><strong>품목카테고리</strong></label>
+									    <div class="col-md-6">
+											<select class="form-control" name="stockCateCode" id="stockCateCode">
+												<option value=""> :: 카테고리선택 :: </option>
+												<th:block th:if="${#lists.size(stockCateList) > 0}" th:each="s : ${stockCateList}">
+													<option th:value="${s.stockCateCode}" th:text="${s.stockCateName}"></option>
+												</th:block>
+											</select>
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="stockItemName" class="col-sm-3 control-label"><strong>품목명</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="stockItemName" id="stockItemName" placeholder="품목명">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="stockItemQuantity" class="col-sm-3 control-label"><strong>품목수량</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="stockItemQuantity" id="stockItemQuantity" placeholder="품목수량">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="stockItemQuantityUnit" class="col-sm-3 control-label"><strong>수량단위</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="stockItemQuantityUnit" id="stockItemQuantityUnit" placeholder="수량단위">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="stockItemQuantityCapacity" class="col-sm-3 control-label"><strong>품목용량</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="stockItemQuantityCapacity" id="stockItemQuantityCapacity" placeholder="품목용량">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="stockItemQuantityCapacityUnit" class="col-sm-3 control-label"><strong>용량단위</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="stockItemQuantityCapacityUnit" id="stockItemQuantityCapacityUnit" placeholder="용량단위">
+									    </div>
 									</div>
 								</div>
 							</div>
@@ -100,7 +206,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">등록</button>
+						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">품목등록</button>
 					</div>
 				</div>
 			</div>
@@ -116,47 +222,130 @@
 						<h4 class="modal-title" id="myModalLabel-1">농기계즐겨찾기 등록</h4>
 					</div>
 					<div class="modal-body">
-						
-						<div class="form-horizontal">
-							<div class="form-group form-group-sm">
-								<label for="workPhase" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>작업단계</strong></label>
-							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhase" id="workPhase"/>
-							    </div>
-						    	<label for="workPhaseDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
-								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="date-range">
-										<input type="text" class="form-control" name="start" />
-										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" />
+						<div class="box-content card white">
+							<div class="box-title">
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="pull-left">
+											<h4>공통농기계목록</h4>
+										</div>
+										<div class="pull-right">
+											<button type="button" id="planAddCommonMachineBtn" class="btn btn-primary btn-md waves-effect waves-light btn-rounded"  data-toggle="modal" data-target="#planAddCommonMachine">공통농기계등록</button>
+										</div>
 									</div>
 								</div>
 							</div>
-							<div class="form-group form-group-sm">
-								<label for="workPhaseCate" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>상세항목</strong></label>
-							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhaseCate" id="workPhaseCate"/>
-							    </div>
-							    
-							    <label for="workPhaseCateDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
-								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="date-range">
-										<input type="text" class="form-control" name="start" />
-										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" />
+							<div class="card-content">
+								<div class="table-responsive">
+									<table id="commonMachineListTable" class="table table-striped table-bordered display" style="width:100%">
+										<thead>
+											<tr>
+												<th class="hidden">공통농기계코드</th>
+												<th>#</th>
+												<th>농기계명</th>
+												<th>작성자아이디</th>
+												<th>작성일</th>
+											</tr>
+										</thead>
+										<tbody>
+											<th:block th:if="${commonMachineList != null && #lists.size(commonMachineList) > 0}" th:each="c : ${commonMachineList}">
+												<tr>
+													<td th:text="${c.commonMachineCode}" class="hidden"></td>
+													<td><input type="checkbox" class="checkbox primary"/></td>
+													<td th:text="${c.commonMachineName}"></td>
+													<td th:text="${c.regMemberId}"></td>
+													<td th:text="${c.regDate}"></td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="box-title">
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="pull-left">
+											<h4>농기계즐겨찾기목록</h4>
+										</div>
 									</div>
+								</div>
+							</div>
+							<div class="card-content">
+								<div class="table-responsive">
+									<table id="farmBookmarkMachineListTable" class="table table-striped table-bordered display" style="width:100%">
+										<thead>
+											<tr>
+												<th>농기계명</th>
+												<th>작성자아이디</th>
+												<th>작성일</th>
+												<th>삭제</th>
+											</tr>
+										</thead>
+										<tbody>
+											<th:block th:if="${#lists.size(farmBookmarkMachineList) > 0}" th:each="f : ${farmBookmarkMachineList}">
+												<tr>
+													<td th:text="${f.commonMachineName}"></td>
+													<td th:text="${f.regMemberId}"></td>
+													<td th:text="${f.regDate}"></td>
+													<td>
+														<a>삭제</a>
+													</td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">등록</button>
+						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">즐겨찾기 등록</button>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- 농기계즐겨찾기 모달 끝-->
+		
+		<!-- 공통농기계등록 모달 시작 -->
+		
+		<div class="modal fade" id="planAddCommonMachine" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">
+			<div class="modal-dialog vertical-al94" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						
+						<div class="box-content card white">
+							<div class="box-title">
+								<div class="row">
+									<div class="col-sm-12">
+										<h4>공통농기계등록</h4>
+									</div>
+								</div>
+							</div>
+							<div class="card-content">
+								<div class="form-horizontal">
+									<div class="form-group">
+										<label for="commonMachineName" class="col-sm-3 control-label"><strong>농기계명</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="commonMachineName" id="commonMachineName" placeholder="농기계명">
+									    </div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-sm waves-effect waves-light removeZ-index" data-dismiss="modal">닫기</button>
+						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light removeZ-index">등록</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<!-- 공통농기계등록 모달 끝 -->
+		
 		
 		<!-- 보유농기계등록 모달 시작-->
 		<div class="modal fade" id="planAddRetainMachine" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">
@@ -167,42 +356,84 @@
 						<h4 class="modal-title" id="myModalLabel-1">보유농기계 등록</h4>
 					</div>
 					<div class="modal-body">
+					
+						<div class="box-content card white">
 						
-						<div class="form-horizontal">
-							<div class="form-group form-group-sm">
-								<label for="workPhase" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>작업단계</strong></label>
-							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhase" id="workPhase"/>
-							    </div>
-						    	<label for="workPhaseDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
-								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="date-range">
-										<input type="text" class="form-control" name="start" />
-										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" />
+							<div class="box-title">
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="pull-left">
+											<h4>농기계즐겨찾기목록</h4>
+										</div>
 									</div>
 								</div>
 							</div>
-							<div class="form-group form-group-sm">
-								<label for="workPhaseCate" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>상세항목</strong></label>
-							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhaseCate" id="workPhaseCate"/>
-							    </div>
-							    
-							    <label for="workPhaseCateDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
-								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="date-range">
-										<input type="text" class="form-control" name="start" />
-										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" />
+							<div class="card-content">
+								<div class="table-responsive">
+									<table id="farmBookmarkMachineListTable" class="table table-striped table-bordered display" style="width:100%">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>농기계명</th>
+												<th>작성자아이디</th>
+												<th>작성일</th>
+											</tr>
+										</thead>
+										<tbody>
+											<th:block th:if="${#lists.size(farmBookmarkMachineList) > 0}" th:each="f : ${farmBookmarkMachineList}">
+												<tr>
+													<td><input type="checkbox" class="checkbox primary"/></td>
+													<td th:text="${f.commonMachineName}"></td>
+													<td th:text="${f.regMemberId}"></td>
+													<td th:text="${f.regDate}"></td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="box-title">
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="pull-left">
+											<h4>보유농기계목록</h4>
+										</div>
 									</div>
+								</div>
+							</div>
+							<div class="card-content">
+								<div class="table-responsive">
+									<table id="farmBookmarkMachineListTable" class="table table-striped table-bordered display" style="width:100%">
+										<thead>
+											<tr>
+												<th class="hidden">농기계명</th>
+												<th>농기계명</th>
+												<th>작성자아이디</th>
+												<th>작성일</th>
+												<th>삭제</th>
+											</tr>
+										</thead>
+										<tbody>
+											<th:block th:if="${#lists.size(farmRetainMachineList) > 0}" th:each="f : ${farmRetainMachineList}">
+												<tr>
+													<td th:text="${f.farmRetainMachineCode}" class="hidden"></td>
+													<td th:text="${f.commonMachineName}"></td>
+													<td th:text="${f.regMemberId}"></td>
+													<td th:text="${f.regDate}"></td>
+													<td>
+														<a>삭제</a>
+													</td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">등록</button>
+						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">보유농기계 등록</button>
 					</div>
 				</div>
 			</div>
@@ -220,36 +451,11 @@
 					<div class="modal-body">
 						
 						<div class="form-horizontal">
-							<div class="form-group form-group-sm">
-								<label for="workPhase" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>작업단계</strong></label>
-							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhase" id="workPhase"/>
-							    </div>
-						    	<label for="workPhaseDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
-								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="date-range">
-										<input type="text" class="form-control" name="start" />
-										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" />
-									</div>
-								</div>
-							</div>
-							<div class="form-group form-group-sm">
-								<label for="workPhaseCate" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>상세항목</strong></label>
-							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhaseCate" id="workPhaseCate"/>
-							    </div>
-							    
-							    <label for="workPhaseCateDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
-								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="date-range">
-										<input type="text" class="form-control" name="start" />
-										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" />
-									</div>
-								</div>
-							</div>
+							
+							
+							
 						</div>
+						
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
@@ -270,37 +476,33 @@
 					</div>
 					<div class="modal-body">
 						
-						<div class="form-horizontal">
-							<div class="form-group form-group-sm">
-								<label for="workPhase" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>작업단계</strong></label>
-							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhase" id="workPhase"/>
-							    </div>
-						    	<label for="workPhaseDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
-								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="date-range">
-										<input type="text" class="form-control" name="start" />
-										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" />
-									</div>
-								</div>
-							</div>
-							<div class="form-group form-group-sm">
-								<label for="workPhaseCate" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>상세항목</strong></label>
-							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhaseCate" id="workPhaseCate"/>
-							    </div>
-							    
-							    <label for="workPhaseCateDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
-								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="date-range">
-										<input type="text" class="form-control" name="start" />
-										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" />
-									</div>
-								</div>
-							</div>
+						<div class="table-responsive">
+							<table id="resourceUsecapacityListTable" class="table table-striped table-bordered display" style="width:100%">
+								<thead>
+									<tr>
+										<th>거래처</th>
+										<th>카테고리</th>
+										<th>품목명</th>
+										<th>잔여수량</th>
+										<th>잔여용량</th>
+										<th>사용가능여부</th>
+									</tr>
+								</thead>
+								<tbody>
+									<th:block th:if="${#lists.size(resourceUsecapacityList) > 0}" th:each="r : ${resourceUsecapacityList}">
+										<tr>
+											<td th:text="${r.clientName}"></td>
+											<td th:text="${r.stockCateName}"></td>
+											<td th:text="${r.stockItemName}"></td>
+											<td th:text="${r.resourceRetainQuantity}"></td>
+											<td th:text="${r.resourceRetainQuantityCapacityExtra}"></td>
+											<td th:text="${r.availableStatus}"></td>
+										</tr>
+									</th:block>
+								</tbody>
+							</table>
 						</div>
+						
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>

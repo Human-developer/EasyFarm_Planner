@@ -369,11 +369,24 @@ $(function(){
 	});
 	
 	/*간편등록*/
-	$('#planAddClient').modal({
+	$('#planAddClient, #planAddStock, #planAddBookmarkMachine, #planAddRetainMachine, #planAddResourcePay, #planAddResourceUsecapacity, #planAddCommonMachine').modal({
 		keyboard: true,
 		backdrop: 'static',
 		show: false
 	})
 	
+	$('#commonMachineListTable').DataTable();
+	$('#farmBookmarkMachineListTable').DataTable();
+	$('#clientListTable').DataTable();
+	$('#stockItemTable').DataTable();
+	$('#resourceUsecapacityListTable').DataTable();
+	
+	$('#planAddCommonMachineBtn').click(function(){
+		$('#planAddBookmarkMachine').addClass('z-index1040');
+	});
+	
+	$('.removeZ-index').click(function(){
+		$('#planAddBookmarkMachine').removeClass('z-index1040');
+	})
 	
 });

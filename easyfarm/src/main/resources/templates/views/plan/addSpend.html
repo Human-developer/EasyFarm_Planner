@@ -43,6 +43,10 @@
 	
 		<!-- DateRangepicker -->
 		<link rel="stylesheet" th:href="@{/assets/plugin/daterangepicker/daterangepicker.css}">
+		
+		<!-- Data Tables -->
+		<link rel="stylesheet" href="/assets/plugin/datatables/media/css/dataTables.bootstrap.min.css">
+		<link rel="stylesheet" href="/assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css">
 	</th:block>
 	
 	<!-- 사용자 정의 css -->
@@ -75,7 +79,17 @@
 			button a{color: white;}
 			button a:link { color: white; text-decoration: none;}
 			button a:visited { color: white; text-decoration: none;}
-			button a:hover { color: white; text-decoration: none;}​
+			button a:hover { color: white; text-decoration: none;}
+			
+			.vertical-al94{vertical-align: 94px;}
+			.z-index1040{z-index: 1040;}
+			
+			#clientListTable td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}​
+			#stockItemTable td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+			#stockItemTable{table-layout:fixed}​
+			#resourceUsecapacityListTable td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+			table td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}​
+
 		</style>
 	</th:block>
 	
@@ -143,9 +157,9 @@
 									<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
 									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddClient">거래처등록</button></li>
 									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddStock">품목등록</button></li>
+									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddResourcePay">농자재매입등록</button></li>
 									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddBookmarkMachine">농기계즐겨찾기등록</button></li>
 									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddRetainMachine">보유농기계등록</button></li>
-									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddResourcePay">농자재매입등록</button></li>
 								</ul>
 								<ul class="list-inline">
 									<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">관리화면</button></li>
@@ -166,7 +180,6 @@
 								<li role="presentation" class="active"><a href="#workforcePay-justified" id="workforcePay-tab-justified" role="tab" data-toggle="tab" aria-expanded="true" aria-controls="workforcePay">인건비</a></li>
 								<li role="presentation"><a href="#machine-justified" role="tab" id="machine-tab-justified" data-toggle="tab" aria-controls="machine">농기계</a></li>
 								<li role="presentation"><a href="#resource-justified" role="tab" id="resource-tab-justified" data-toggle="tab" aria-controls="resource">농자재</a></li>
-								<li role="presentation"><a href="#insurePay-justified" role="tab" id="insurePay-tab-justified" data-toggle="tab" aria-controls="insurePay">보험료</a></li>
 								<li role="presentation"><a href="#taxPay-justified" role="tab" id="taxPay-tab-justified" data-toggle="tab" aria-controls="taxPay">공과금</a></li>
 								<li role="presentation"><a href="#productGain-justified" role="tab" id="productGain-tab-justified" data-toggle="tab" aria-controls="productGain">생산물</a></li>
 								<li role="presentation"><a href="#etcPay-justified" role="tab" id="etcPay-tab-justified" data-toggle="tab" aria-controls="etcPay">기타비용</a></li>
@@ -210,8 +223,6 @@
 												<div class="col-sm-12">
 													<div class="pull-left">
 														<div class="switch primary"><input type="checkbox" checked id="leaseSwitch"><label for="leaseSwitch">농기계 대여 후 작업시</label></div>
-														<button type="button" id="test1" class="hidden"></button>
-														<button type="button" id="test2" class="hidden"></button>
 													</div>
 													<!-- <div class="pull-right">
 														<button type="button" id="planAddBtn" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded">대여농기계등록</button>
@@ -285,7 +296,7 @@
 														<select class="form-control" name="farmRetainMachineCode" id="farmRetainMachineCode" readonly="readonly">
 															<option value=""> :: 종류선택 :: </option>
 															<th:block th:if="${#lists.size(farmRetainMachineList) > 0}" th:each="f : ${farmRetainMachineList}">
-																<option th:value="${f.commonMachineCode}" th:text="${f.commonMachineName}" disabled="disabled"></option>
+																<option th:value="${f.farmRetainMachineCode}" th:text="${f.commonMachineName}" disabled="disabled"></option>
 															</th:block>
 														</select>
 												    </div>
@@ -342,40 +353,6 @@
 												    </div>
 												</div>
 											</div>
-										</div>
-									</div>
-								</div>
-								<div class="tab-pane fade" role="tabpanel" id="insurePay-justified" aria-labelledby="insurePay-tab-justified">
-									<div class="form-horizontal">
-										<div class="form-group">
-											<label for="insureCompany" class="col-sm-2 control-label"><strong>보험사</strong></label>
-										    <div class="col-md-4">
-										      <input id="insureCompany" type="text" name="insureCompany" class="form-control">
-										    </div>
-										</div>
-										<div class="form-group">
-											<label for="insureName" class="col-sm-2 control-label"><strong>보험명</strong></label>
-										    <div class="col-md-4">
-										      <input id="insureName" type="text" name="insureName" class="form-control">
-										    </div>
-										</div>
-										<div class="form-group">
-											<label for="insureDatail" class="col-sm-2 control-label"><strong>보장내용</strong></label>
-										    <div class="col-md-4">
-										      <input id="insureDatail" type="text" name="insureDatail" class="form-control">
-										    </div>
-										</div>
-										<div class="form-group">
-											<label for="insureArea" class="col-sm-2 control-label"><strong>가입면적</strong></label>
-										    <div class="col-md-4">
-										      <input id="insureArea" type="text" name="insureArea" class="form-control">
-										    </div>
-										</div>
-										<div class="form-group">
-											<label for="insurePayTotal" class="col-sm-2 control-label"><strong>예상총보험비</strong></label>
-										    <div class="col-md-4">
-										      <input id="insurePayTotal" type="text" name="insurePayTotal" class="form-control">
-										    </div>
 										</div>
 									</div>
 								</div>
@@ -489,8 +466,8 @@
 							<hr>
 							<div class="form-group t-center">
 								<button type="submit" id="btnSize" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btnSize">계획서등록</button>
-								<button type="button" class="btn btn-success btn-md waves-effect waves-light btn-rounded btnSize">
-									<a th:href="@{/plan/getSchedule(projectPlanCode=${projectPlanCode})}">켈린더 돌아가기</a>
+								<button type="button" th:value="|/plan/getSchedule?projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" class="btn btn-success btn-md waves-effect waves-light btn-rounded btnSize">
+									켈린더 돌아가기
 								</button>
 							</div>
 						</div>
@@ -551,13 +528,25 @@
 		<!-- Demo Scripts -->
 		<script th:src="@{/assets/scripts/form.custom.PGS.js}"></script>
 		
+		<!-- Data Tables -->
+		<script src="/assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+		<script src="/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+		<script src="/assets/scripts/datatables.demo.min.js"></script>
+		<script src="/assets/sys/myDataTable.js"></script>
+		
 		<!-- addSpend.html Scripts -->
 		<script th:src="@{/assets/scripts/addSpend.js}"></script>
 	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 -->
 	<th:block layout:fragment="customJavaScript">
-		
+		<script type="text/javascript">
+			function moveAddSpend(btn){
+					location.href = btn.value;
+				};
+		</script>
 	</th:block>
 
 </html>

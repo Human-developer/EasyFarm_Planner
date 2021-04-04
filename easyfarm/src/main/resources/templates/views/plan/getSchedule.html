@@ -63,9 +63,8 @@
 						<div class="row">
 							<div class="form-group col-sm-2">
 								<select class="form-control" name="projectPlanNList" id="projectPlanNList">
-									<option value=""> :: 계획차수선택 :: </option>
 									<th:block th:if="${#lists.size(projectPlanNList) > 0}" th:each="p : ${projectPlanNList}">
-										<option th:value="${p.projectPlanCode}" th:text="${p.projectPlanN}"></option>
+										<option th:value="${p.projectPlanCode}" th:text="${p.projectPlanN}" th:selected="${p.projectPlanN} == ${projectPlanN}"></option>
 									</th:block>
 								</select>
 							</div>
@@ -103,8 +102,13 @@
 									<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">관리화면</button></li>
 									<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
 									<li class="margin-bottom-10">
-										<button type="button" th:value="|/plan/insurePayList?projectCode=${projectCode}|" onclick="moveAddSpend(this)" class="btn btn-warning btn-rounded btn-bordered waves-effect waves-light">
+										<button type="button" th:value="|/plan/insurePayList?projectCode=${projectCode}&projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" class="btn btn-violet btn-rounded btn-bordered waves-effect waves-light">
 											프로젝트 보험료지출계획 관리
+										</button>
+									</li>
+									<li class="margin-bottom-10">
+										<button type="button" th:value="|/plan/resultPlan|" onclick="moveAddSpend(this)" class="btn btn-violet btn-rounded btn-bordered waves-effect waves-light">
+											프로젝트 통합계획별 수입/지출 조회
 										</button>
 									</li>
 								</ul>
@@ -227,7 +231,7 @@
 			function onChangeDate(yy,mm,dd){
 				var date = yy + "-" + mm + "-" + dd;
 				$('[name="start"], [name="end"]').val(date);
-			}
+			};
 			
 			/* $('#planAddBtn').click(function(){
 				location.href = '/plan/addSpend';
@@ -235,8 +239,12 @@
 			
 			function moveAddSpend(btn){
 				location.href = btn.value;
-			}
+			};
 			
+			$('#projectPlanNList').change(function(){
+				var projectPlanCode = $(this).val();
+				location.href = "/plan/getSchedule?projectPlanCode=" + projectPlanCode; 
+			});
 			
 		</script>
 	</th:block>

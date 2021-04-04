@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import easyfarm.domain.plan.CommonMachine;
 import easyfarm.domain.plan.EtcPay;
 import easyfarm.domain.plan.InsurancePay;
 import easyfarm.domain.plan.MachineLeasePay;
@@ -15,6 +16,8 @@ import easyfarm.domain.plan.MachineUsePay;
 import easyfarm.domain.plan.ProductGain;
 import easyfarm.domain.plan.ResourcePay;
 import easyfarm.domain.plan.ResourceUsePlan;
+import easyfarm.domain.plan.StockCate;
+import easyfarm.domain.plan.StockItem;
 import easyfarm.domain.plan.TaxPay;
 import easyfarm.domain.plan.WorkForcePay;
 
@@ -46,10 +49,14 @@ public interface PlanMapper {
 	//프로젝트 통합계획 등록
 	public int addProjectPlan(Map<String, Object> projectPlanData);
 	
-	//프로젝트별 보험료지출계획 조회
-	public List<InsurancePay> getInsurePayList(String projectCode);
+	//프로젝트별 보험지출계획 조회
+	public List<InsurancePay> getInsurePayList(Map<String, Object> paramMap);
 	
+	//프로젝트별 보험지출계획 등록
+	public int addInsurePay(Map<String, Object> paramMap);
 	
+	//프로젝트별 보험지출계획 수정
+	public int modifyInsurePay(InsurancePay insurePay);
 	
 	//프로젝트별 작업단계 조회
 	public List<Map<String, Object>> getWorkphaseName(Map<String, Object> projectData);
@@ -66,7 +73,7 @@ public interface PlanMapper {
 	//농가별 보유농기계 조회
 	public List<Map<String, Object>> getFarmRetainMachine(Map<String, Object> projectData);
 	
-	//농가별 품목조회
+	//농가별 사용가능한 품목조회
 	public List<Map<String, Object>> getStockItem(Map<String, Object> projectData);
 	
 	//품목정보조회
@@ -75,6 +82,12 @@ public interface PlanMapper {
 	//공과금항목조회
 	public List<Map<String, Object>> getTaxPayCateCode();
 	
+	//품목카테고리조회
+	public List<StockCate> getStockCateList();
 	
-
+	//공통농기계목록조회
+	public List<CommonMachine> getCommonMachineList();
+	
+	//품목리스트조회
+	public List<StockItem> getStockItemList(String farmCode);
 }

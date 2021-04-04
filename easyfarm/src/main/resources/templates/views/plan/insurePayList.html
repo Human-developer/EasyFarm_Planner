@@ -18,13 +18,17 @@
 	
 		<link rel="stylesheet" href="/assets/sys/sysStyle.css">
 		<!-- Data Tables -->
-		<link rel="stylesheet" href="assets/plugin/datatables/media/css/dataTables.bootstrap.min.css">
-		<link rel="stylesheet" href="assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css">
+		<link rel="stylesheet" href="/assets/plugin/datatables/media/css/dataTables.bootstrap.min.css">
+		<link rel="stylesheet" href="/assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css">
 		
 	</th:block>
 	
 	<!-- 사용자 정의 css -->
-	<th:block layout:fragment="customCss"></th:block>
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+			.btnSize{margin-right: 5px;}
+		</style>
+	</th:block>
 	
 	
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
@@ -44,7 +48,12 @@
 							</th:block>
 						</div>
 						<div class="pull-right">
-							<button id="addProjectPlanBtn" type="button" class="btn btn-primary btn-sm waves-effect waves-light btn-rounded">보험지출계획 등록하기</button>
+							<button type="button" th:value="|/plan/addInsurePay?projectCode=${projectCode}&projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
+								보험지출계획 등록하기
+							</button>
+							<button type="button" th:value="|/plan/getSchedule?projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" class="btn btn-success btn-sm waves-effect waves-light btn-rounded">
+								켈린더 돌아가기
+							</button>
 						</div>
 						<div style="margin-top: 6px;">
 							<small style="color: red; margin-left: 6px;"></small>
@@ -61,6 +70,8 @@
 										<th>가입면적</th>
 										<th>예상총보험비</th>
 										<th>작성일</th>
+										<th>수정</th>
+										<th>삭제</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -73,6 +84,10 @@
 											<td th:text="${i.insureArea}"></td>
 											<td th:text="${i.insurePayTotal}"></td>
 											<td th:text="${i.regDate}"></td>
+											<td>
+												<a th:href="@{/plan/modifyInsurePay(insurePayCode=${i.insurePayCode}, projectCode=${projectCode}, projectPlanCode=${projectPlanCode})}">수정</a>
+											</td>
+											<td><a>삭제</a></td>
 										</tr>
 									</th:block>
 								</tbody>
@@ -100,8 +115,11 @@
 	<!-- 사용자 정의 자바스크립트 -->
 	<th:block layout:fragment="customJavaScript">
 		<script type="text/javascript">
-			
-			
+		
+			function moveAddSpend(btn){
+				location.href = btn.value;
+			};	
+		
 			var lang_kor = {
 			        "decimal" : "",
 			        "emptyTable" : "등록된 프로젝트 계획이 없습니다",
