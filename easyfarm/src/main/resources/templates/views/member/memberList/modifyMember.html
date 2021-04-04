@@ -187,7 +187,7 @@
 									    </div>
 									</div>
 									<div class="form-group" th:if="${session.SLEVEL == '관리자'}">
-										<label  class="col-sm-2 control-label"><strong>권한설정</strong></label>
+										<label  class="col-sm-2 control-label"><strong>권한</strong></label>
 									    <div class="col-sm-10">
 									      <select id="levelCode" name="levelCode" class="form-control">
 									      	<option th:each="l : ${levelList}" th:value="${l.levelCode}" th:text="${l.levelName}"></option>
@@ -214,7 +214,7 @@
 									    </div>
 									</div>
 									<div class="form-group" th:if="${session.SLEVEL == '관리자'}">
-									    <label class="col-sm-2 control-label"><strong>회원 상태</strong></label>
+									    <label class="col-sm-2 control-label"><strong>상태</strong></label>
 									    <div class="col-sm-10">
 									      <select id="memberStatus" name="memberStatus" class="form-control">
 									      	<option value="정상">:: 정상 ::</option>

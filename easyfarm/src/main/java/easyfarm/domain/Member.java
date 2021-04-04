@@ -25,8 +25,24 @@ public class Member {
 	private String cancelDate;			//탈퇴날짜
 	private String loginMemberId;		//로그인아이디
 	private String loginCode;			//로그인코드
-	private Date loginDate;			//로그인 날짜
+	private Date loginDate;				//로그인 날짜
 	private Date logoutDate;			//로그아웃 날짜
+	private String regDate;				// 날짜값을 셋팅
+	private String regDay;				//날짜값을 셋팅
+	
+	
+	public String getRegDate() {
+		return regDate;
+	}
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
+	public String getRegDay() {
+		return regDay;
+	}
+	public void setRegDay(String regDay) {
+		this.regDay = regDay;
+	}
 	public String getMemberId() {
 		return memberId;
 	}

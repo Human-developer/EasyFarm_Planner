@@ -28,7 +28,7 @@
   	</resultMap>
 	
    <select id="getEtcPayResult" resultMap="resultEtcPayMap" parameterType="String" >
-		 SELECT
+		SELECT
 			p.etc_pay_code
 			,p.plan_workphase_code
 			,p.plan_workphase_cate_code
@@ -37,6 +37,7 @@
 			,p.etc_pay_detail
 			,p.reg_member_id
 			,p.reg_date
+			,p.client_code
 			,r.etc_pay_run_code
 			,r.etc_pay_run_date
 			,r.etc_pay_run_pay
@@ -44,6 +45,7 @@
 			,r.complete_status
 			,r.reg_member_id
 			,r.reg_date
+			,r.client_code
 		FROM
 		tb_etc_pay_run AS r
 		JOIN
@@ -58,6 +60,7 @@
 	  		<id column="farm_resource_pay_run_code"  			property="farmResourcePayRunCode"/>
 	  		<result column="farm_resource_pay_code" 			property="farmResourcePayCode" />
 	  		<result column="farm_code" 							property="farmCode" />
+	  		<result column="client_code" 						property="clientCode" />
 	  		<result column="stock_item_code" 					property="stockItemCode" />
 	  		<result column="stock_item_income_quantity" 		property="stockItemIncomeQuantity" />
 	  		<result column="stock_item_income_quantity_total" 	property="stockItemIncomeQuantityTotal" />
@@ -188,7 +191,7 @@
 	  		<id column="machine_lease_run_code"  		property="machineLeaseRunCode"/>   		<!--농기계대여계획대비실행코드-->                              
 	  		<result column="machine_lease_code" 		property="machineLeaseCode" />     		<!--농기계대여료지출계획코드-->         
 	  		<result column="client_code" 				property="clientCode" />       			<!--거래처코드-->            
-	  		<result column="farm_bookmark_machine_code"	property="farmBookmarkMachineCode" />   		<!--공통농기계코드-->            
+	  		<result column="farm_bookmark_machine_code"	property="farmBookmarkMachineCode" />   <!--공통농기계코드-->            
 	  		<result column="machine_lease_run_date" 	property="machineLeaseRunDate" />       <!--대여일-->            
 	  		<result column="machine_lease_run_pay" 		property="machineLeaseRunPay" />      	<!--대여료-->            
 	  		<result column="complete_status" 			property="completeStatus" />       		<!--실행완료여부-->            
@@ -215,6 +218,7 @@
 		, r.client_code
 		, r.farm_bookmark_machine_code
 		, r.machine_lease_run_date
+		, r.machine_lease_run_payday
 		, r.machine_lease_run_pay
 		, r.complete_status
 		, r.reg_member_id

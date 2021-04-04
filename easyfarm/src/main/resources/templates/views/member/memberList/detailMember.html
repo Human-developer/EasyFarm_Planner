@@ -19,123 +19,68 @@
 	<!-- 사용자 정의 css -->
 	<th:block layout:fragment="customCss">
 		<style>
-		button {
-		    border: 0;
-		    border-radius: 0;
-		    padding: 0;
-		    outline: none;
-		    cursor: pointer;
-		    background-color: transparent;
-		    font-family: 'Noto Sans KR', sans-serif;
-		    
-		}
-		.lc-round-btn {
-		    display: block;
-		    width: 100%;
-		    height: 60px;
-		    line-height: 58px;
-		    font-weight: 700;
-		    font-size: 20px;
-		    border-radius: 60px;
-		    background-color: #3BBD5A;
-		    color: #fff;
-		    transition: box-shadow .2s;
-		    margin-top: 30px;
-		    
-		}
 		
-		.ma-tap-20{margin-top: 20px;}
-		.ma-tap-10{margin-top: 10px;}
-		.hid{   display: block;
-		    width: 100%;
-		    border: 2px solid white;
-		    height: 50px;
-		    padding: 0 10px;
-		    line-height: 46px;
-		    font-size: 16px;  }
+		
+
 		</style>
 	</th:block>
 	
 	
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
 	<th:block layout:fragment="customContents" th:with="m = ${member}">
-	<form th:action="@{/member/modifyMember}" method="get">
-		<div class="box-content">
+<!-- 	<form th:action="@{/member/modifyMember}" method="get"> -->
+	
+	
+	<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-offset-4 col-md-4 box-content " style="text-align: center;">
-					<h1>회원정보</h1>
-					<div class="box-content ma-tap-20"  >
-						<div class="form-group" >
-							<label for="memberId" class="col-sm-3 control-label ma-tap-10"  ><strong>ID</strong></label>
-						    <div class="col-sm-9">
-						      <input type="text" class="form-control" name="memberId" id="memberId" readonly="readonly" th:value="${m.memberId}" >
-						    </div>				   					   
+			
+				<div class="box-content">
+					<h3>회원 상세보기</h3>
+					<hr>
+						<div class=" col-sm-3 ">
+						
+							<!-- <a href="" class="avatar"><img th:src="@{/assets/images/avatar-sm-5.jpg}"  style="width: 50%;" alt=""><span class="status online"></span></a> -->
+				<input type=file name='file1' style='display: none;'> 
+
+
+
 						</div>
-						<div class="form-group" >
-							<label for="memberPwCheck" class="col-sm-3 control-label ma-tap-20"  ><strong>PW</strong></label>
-						    <div class="col-sm-9 ma-tap-10" >
-						      <input type="password" class="form-control" name="memberPwCheck" id="memberPwCheck" readonly="readonly" th:value="${m.memberPw}" placeholder="비밀번호확인">
-						    </div>
-						</div>
+					<div class="col-sm-6 col-sm-offset-2" style="margin-left: 0px;">
+						<table class="table"  th:with="m = ${member}">
+							<tbody>
+								<tr>
+									<th>ID</th>
+									<td th:text="${m.memberId}"></td>
+								</tr>
+								<tr>
+									<th>번호</th>
+									<td th:text="${m.memberPhone}"></td>
+								</tr>
+								<tr>
+									<th>이메일</th>
+									<td th:text="${m.memberEmail}"></td>
+								</tr>
+								<tr>
+									<th>주소</th>
+									<td th:text="${m.memberAddress}"></td>
+								</tr>
+								<tr>
+									<th>회원 가입일자</th>
+									<td th:text="${m.memberRegDate}"></td>
+								</tr>
+							
+							
+							</tbody>
+							
 						
-						
-						
+						</table>
+						<a th:href="@{/member/modifyMember(memberId = ${m.memberId})}"><button type="button"  class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" >수정</button></a>
+						<a th:href="@{/}" style="color: white;"><button type="button" class ="btn btn-success btn-rounded btn-bordered waves-effect waves-light" > 메인 </button></a>
 					</div>
 				</div>
-				<div class="col-md-offset-4 col-md-4 box-content" style="text-align: center;">
-					<h1>회원연락처</h1>
-					<div class="box-content ma-tap-20">
-						<div class="form-group">
-							<label for="memberPhone" class="col-sm-3 control-label ma-tap-10" ><strong>번호</strong></label>
-						    <div class="col-sm-9">
-						      <input type="tel" class="form-control" name="memberPhone" id="memberPhone" readonly="readonly" th:value="${m.memberPhone}" placeholder="000-0000-0000">
-						    </div>
-						</div>
-						<div class="form-group">
-							<label for="memberEmail" class="col-sm-3 control-label" style="margin-top: 20px"><strong>이메일</strong></label>
-						    <div class="col-sm-9">
-						      <input type="email" class="form-control ma-tap-10" name="memberEmail"  readonly="readonly" id="memberEmail" th:value="${m.memberEmail}" placeholder="test@email.com">
-						    </div>
-						</div>
-					</div>
-					
-				</div>		
-				<div class="col-md-offset-4 col-md-4 box-content" style="text-align: center;">
-					<h1>회원주소</h1>
-					<div class="box-content ma-tap-20" >
-						<div class="form-group">
-							<label for="memberAddress" class="col-sm-3 control-label ma-tap-10 " ><strong>주소</strong></label>
-						    <div class="col-sm-9">
-						      <input type="text" class="form-control" name="memberAddress" id="memberAddress"  readonly="readonly" th:value="${m.memberAddress}" placeholder="Address">
-						    </div>
-						</div>				
-						<div class="form-group">
-							<label  class="col-sm-3 control-label  ma-tap-20" ><strong></strong></label>
-						    <div class="col-sm-9">
-						      <input type="text" class="hid ma-tap-10"  hidden="" readonly="readonly" >
-						    </div>
-						</div>				
-					</div>				
-				</div>	
-					<div class="form-group ">
-						<div class="col-sm-offset-1 col-sm-4" th:if = "${session.SLEVEL == '관리자' && m.memberStatus != '탈퇴'}">
-						<button type="submit" class="lc-round-btn" >수정</button>
-						</div>
-					</div>
-				
-					<div class="form-group ">
-						<div class="col-sm-offset-1 col-sm-4">
-							<a th:href="@{/}" style="color: white;"><button type="button" class ="lc-round-btn" > 메인 </button></a>
-						</div>
-					</div>
-					
-	
-						
-				
-					
+
 			</div>
 		</div>
-	</form>
 	</th:block>
 	
 	
@@ -143,6 +88,8 @@
 	<th:block layout:fragment="customScriptLib"></th:block>
 	
 	<!-- 사용자 정의 자바스크립트 -->
-	<th:block layout:fragment="customJavaScript"></th:block>
+	<th:block layout:fragment="customJavaScript">
+		
+	</th:block>
 
 </html>
