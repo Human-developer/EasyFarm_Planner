@@ -4,7 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
 <mapper namespace="easyfarm.dao.PlanMapper">
-
+	
+	<!-- 보험지출계획 -->
 	<resultMap type="InsurancePay" id="resultInsurancePay">
 		<result property="insurePayCode" 	column="insure_pay_code"/>
 		<result property="projectCode" 		column="project_code"/>
@@ -16,6 +17,88 @@
 		<result property="regMemberId" 		column="reg_member_id"/>
 		<result property="regDate" 			column="reg_date"/>
 	</resultMap>
+	
+	<!-- 품목카테고리 -->
+	<resultMap type="StockCate" id="resultStockCate">
+		<result property="stockCateCode"		column="stock_cate_code"/>
+		<result property="stockCateName"		column="stock_cate_name"/>
+		<result property="regMemberId"			column="reg_member_id"/>
+		<result property="regDate"				column="reg_date"/>
+	</resultMap>
+	
+	<!-- 품목 -->
+	<resultMap type="StockItem" id="resultStockItem">
+		<result property="stockItemCode"					column="stock_item_code"/>
+		<result property="farmCode"							column="farm_code"/>
+		<result property="stockCateCode"					column="stock_cate_code"/>
+		<result property="stockItemName"					column="stock_item_name"/>
+		<result property="stockItemQuantity"				column="stock_item_quantity"/>
+		<result property="stockItemQuantityUnit"			column="stock_item_quantity_unit"/>
+		<result property="stockItemQuantityCapacity"		column="stock_item_quantity_capacity"/>
+		<result property="stockItemQuantityCapacityUnit"	column="stock_item_quantity_capacity_unit"/>
+		<result property="regMemberId"						column="reg_member_id"/>
+		<result property="regDate"							column="reg_date"/>
+		<association property="stockCate" 					javaType="StockCate">
+			<id 	 property="stockCateCode" 				column="stock_cate_code"/>
+			<result  property="stockCateName" 				column="stock_cate_name"/>
+		</association>
+	</resultMap>
+	
+	<!-- 공통농기계 -->
+	<resultMap type="CommonMachine" id="resultCommonMachine">
+		<result property="commonMachineCode"	column="common_machine_code"/>
+		<result property="commonMachineName" 	column="common_machine_name"/>
+		<result property="regMemberId" 			column="reg_member_id"/>
+		<result property="regDate" 				column="reg_date"/>
+	</resultMap>
+	
+	<!-- 농기계즐겨찾기 -->
+	<resultMap type="FarmBookmarkMachine" id="resultFarmBookmarkMachine">
+		<result property="farmBookmarkMachineCode"	column="farm_bookmark_machine_code"/>
+		<result property="commonMachineCode" 		column="common_machine_code"/>
+		<result property="farmCode" 				column="farm_code"/>
+		<result property="regMemberId" 				column="reg_member_id"/>
+		<result property="regDate" 					column="reg_date"/>
+	</resultMap>
+	
+	<select id="getStockItemList" resultMap="resultStockItem" parameterType="String">
+		SELECT
+			 sc.stock_cate_name
+			,si.stock_item_name
+			,si.stock_item_quantity
+			,si.stock_item_quantity_unit
+			,si.stock_item_quantity_capacity
+			,si.stock_item_quantity_capacity_unit
+			,si.reg_member_id
+		FROM
+			tb_stock_item AS si
+			INNER join
+			tb_stock_cate AS sc
+			on
+			si.stock_cate_code = sc.stock_cate_code
+		where
+			si.farm_code = #{farmCode}
+	</select>
+	
+	<select id="getCommonMachineList" resultMap="resultCommonMachine">
+		SELECT 
+			 common_machine_code
+			,common_machine_name
+			,reg_member_id
+			,reg_date
+		FROM 
+			tb_common_machine
+	</select>
+	
+	<select id="getStockCateList" resultMap="resultStockCate">
+		SELECT 
+			 stock_cate_code
+			,stock_cate_name
+			,reg_member_id
+			,reg_date
+		FROM
+			tb_stock_cate
+	</select>
 	
 	<update id="modifyInsurePay" parameterType="InsurancePay">
 		UPDATE tb_exp_insure_pay
@@ -135,17 +218,18 @@
   	
   	<select id="getStockItem" resultType="map" parameterType="map">
   		SELECT
-			 si.stock_item_code 					AS stockItemCode
-			,sc.stock_cate_name						AS stockCateName
-			,si.stock_item_name 					AS stockItemName
-			,si.stock_item_quantity 				AS stockItemQuantity
-			,si.stock_item_quantity_unit 			AS stockItemQuantityUnit
-			,si.stock_item_quantity_capacity 		AS stockItemQuantityCapacity
-			,si.stock_item_quantity_capacity_unit 	AS stockItemQuantityCapacityUnit
-			,ru.resource_usecapacity_code AS resourceUsecapacityCode
-			,ru.resource_retain_quantity AS resourceRetainQuantity
+			  c.client_name								AS clientName
+			,si.stock_item_code 						AS stockItemCode
+			,sc.stock_cate_name							AS stockCateName
+			,si.stock_item_name 						AS stockItemName
+			,si.stock_item_quantity 					AS stockItemQuantity
+			,si.stock_item_quantity_unit 				AS stockItemQuantityUnit
+			,si.stock_item_quantity_capacity 			AS stockItemQuantityCapacity
+			,si.stock_item_quantity_capacity_unit 		AS stockItemQuantityCapacityUnit
+			,ru.resource_usecapacity_code 				AS resourceUsecapacityCode
+			,ru.resource_retain_quantity 				AS resourceRetainQuantity
 			,ru.resource_retain_quantity_capacity_extra AS resourceRetainQuantityCapacityExtra
-			,ru.available_status					AS availableStatus
+			,ru.available_status						AS availableStatus
 		FROM
 			tb_stock_item AS si
 			INNER join
@@ -157,19 +241,27 @@
 			on
 			si.stock_item_code = erp.stock_item_code
 			INNER join
+			tb_client AS c
+			on
+			erp.client_code = c.client_code
+			INNER join
 			tb_resource_usecapacity AS ru
 			on
 			erp.resource_pay_code = ru.resource_pay_code
 		WHERE
 			si.farm_code = #{farmCode}
+		<if test="availableStatus != null and availableStatus != ''.toString()">
 			and
 			ru.available_status = 'Y'
+		</if>
   	</select>
   	
   	<select id="getFarmRetainMachine" resultType="map" parameterType="map">
   		SELECT
-			 cm.common_machine_code 		AS commonMachineCode
+			 frm.farm_retain_machine_code	AS farmRetainMachineCode
 			,cm.common_machine_name 		AS commonMachineName
+			,frm.reg_member_id 				AS regMemberId
+			,frm.reg_date 					AS regDate
 		FROM
 			tb_farm_retain_machine AS frm
 			INNER join
@@ -186,8 +278,12 @@
   	
   	<select id="getFarmBookmarkMachine" resultType="map" parameterType="map">
   		SELECT
-			 cm.common_machine_code 		AS commonMachineCode
+			 fbm.farm_bookmark_machine_code	AS farmBookmarkMachineCode
+			,cm.common_machine_code 		AS commonMachineCode
 			,cm.common_machine_name 		AS commonMachineName
+			,fbm.farm_code					AS farmCode
+			,fbm.reg_member_id				AS regMemberId
+			,fbm.reg_date					AS regDate
 		FROM
 			tb_farm_bookmark_machine AS fbm
 			INNER join
@@ -200,8 +296,15 @@
   	
   	<select id="getClientName" resultType="map" parameterType="map">
   		SELECT
-			 c.client_code 		AS clientCode
-			,c.client_name 		AS clientName
+			 c.client_code 				AS clientCode
+			,c.client_name 				AS clientName
+			,c.client_phone 			AS clientPhone
+			,c.client_address 			AS clientAddress
+			,c.client_account_bank 		AS clientAccountBank
+			,c.client_account 			AS clientAccount
+			,c.client_memo 				AS clientMemo
+			,c.reg_member_id 			AS regMemberId
+			,CAST(c.reg_date AS DATE) 	AS regDate
 		FROM
 			tb_client AS c
 		WHERE

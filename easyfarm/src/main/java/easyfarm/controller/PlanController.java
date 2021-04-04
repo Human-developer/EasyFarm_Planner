@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import easyfarm.domain.plan.CommonMachine;
 import easyfarm.domain.plan.InsurancePay;
 import easyfarm.domain.plan.ProjectPlan;
+import easyfarm.domain.plan.StockCate;
+import easyfarm.domain.plan.StockItem;
 import easyfarm.service.PlanService;
 
 @Controller
@@ -239,6 +242,7 @@ public class PlanController {
 			projectData.put("projectCode", projectCode);
 			projectData.put("farmCode", farmCode);
 			projectData.put("cropCode", cropCode);
+			projectData.put("availableStatus", "Y");
 			
 			if(stockItemCode != null && !"".equals(stockItemCode.trim())) {
 				projectData.put("stockItemCode", stockItemCode);
@@ -268,14 +272,31 @@ public class PlanController {
 			List<Map<String, Object>> farmRetainMachineList = planService.getFarmRetainMachine(projectData);
 			model.addAttribute("farmRetainMachineList", farmRetainMachineList);
 			
-			/* 품목조회 */
+			/* 농가별 사용가능한 품목조회 */
 			List<Map<String, Object>> stockItemList = planService.getStockItem(projectData);
 			model.addAttribute("stockItemList", stockItemList);
 			
 			/* 공과금항목조회 */
 			List<Map<String, Object>> taxPayCateCodeList = planService.getTaxPayCateCode();
-			System.out.println(taxPayCateCodeList);
 			model.addAttribute("taxPayCateCodeList", taxPayCateCodeList);
+			
+			/* 품목카테고리조회 */
+			List<StockCate> stockCateList = planService.getStockCateList();
+			model.addAttribute("stockCateList", stockCateList);
+			
+			/* 공통농기계목록조회 */
+			List<CommonMachine> commonMachineList = planService.getCommonMachineList();
+			model.addAttribute("commonMachineList", commonMachineList);
+			
+			/* 품목리스트조회 */
+			List<StockItem> farmStockItemList = planService.getStockItemList(farmCode);
+			model.addAttribute("farmStockItemList", farmStockItemList);
+			
+			/* 농자재소모현황리스트 */
+			Map<String, Object> resourceUsecapacityData = new HashMap<String, Object>();
+			resourceUsecapacityData.put("farmCode", farmCode);
+			List<Map<String, Object>> resourceUsecapacityList = planService.getStockItem(resourceUsecapacityData);
+			model.addAttribute("resourceUsecapacityList", resourceUsecapacityList);
 			
 		}
 		
