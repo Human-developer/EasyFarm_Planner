@@ -31,6 +31,8 @@
 			
 			
 			<div class="box-content">
+			<h3>로그인기록 조회</h3>
+				<hr>
 					<table id="loginTable" >
 						<thead>
 							<tr>
@@ -45,8 +47,8 @@
 							<tr th:each="l : ${loginList}">
 								<td th:text="${l.loginCode}"></td>							
 								<td th:text="${l.loginMemberId}"></td>				
-								<td th:text="${l.loginDate}"></td>			
-								<td th:text="${l.logoutDate}"></td>			
+								<td th:text="${l.regDay}"></td>			
+								<td th:text="${l.regDate}"></td>			
 														
 							</tr>
 							

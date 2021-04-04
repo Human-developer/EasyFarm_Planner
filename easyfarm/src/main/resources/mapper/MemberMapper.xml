@@ -203,17 +203,20 @@
 		</trim>		
 	</update>
 	
-	<update id="removeUpdateMember" parameterType="Member">
+	<update id="removeUpdateMember" > 
 			UPDATE tb_member
-		<trim prefix="SET" suffixOverrides=",">
+			SET
+			
+			<if test="memberStatus == null and memberStatus == ''.toString()">
+				member_status = #{memberStatus}
+			</if>
 			
 			<if test="memberStatus != null and memberStatus != ''.toString()">
-				member_status = #{memberStatus},
+				member_status = #{memberStatus}
 			</if>
-		</trim>
-		<trim prefix="WHERE" prefixOverrides="AND |OR ">
-			member_id = #{memberId}
-		</trim>		
+				
+			WHERE member_id = #{memberId}
+			
 	</update>
 	
 	<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ권한 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
@@ -310,7 +313,9 @@
 		, #{memberIdenNum}
 		, #{memberRegDate}
 		, NOW()
-		, #{cancelMemberReason})
+		, #{cancelMemberReason}
+		)
+		
 	</insert>
 	<select id="getCancelMember" resultMap="cancel" resultType="Member">
 		SELECT

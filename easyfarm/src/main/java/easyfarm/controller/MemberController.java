@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import easyfarm.domain.Member;
 import easyfarm.domain.Report;
 import easyfarm.service.MemberService;
@@ -29,11 +31,13 @@ public class MemberController {
 	
 	@Autowired
 	MemberService memberService;
+	
 	 
 	// 매일 00시에 자동실행
 	@Scheduled(cron="0 0 00 * * ?")
 	public void scheduler(){
-	    
+		
+	   
 		Date today = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -52,8 +56,8 @@ public class MemberController {
 		    String banEndDay = simpleDate.format(banEndDate);
 		    
 		    int compare = toDay.compareTo(banEndDay);
-
-		    if(compare < 0) {
+		    	
+		    if(compare > 0) {
 		      memberService.removeBan(banCode,banId);
 		    }
 		}
@@ -92,7 +96,7 @@ public class MemberController {
 		  if(!idList.contains(loginId)) {
 			  memberService.addStatusSchedule(loginId,autoRestDate,autoWithdrawalDate);
 			  
-		  //아이디가 있을시 예쩡일 업데이트 
+		  //아이디가 있을시 예정일 업데이트 
 		  }else if(idList.contains(loginId)) {
 				  
 				  memberService.updateStatusSchedule(loginId,autoRestDate,autoWithdrawalDate);
@@ -102,25 +106,29 @@ public class MemberController {
 	   }
 	   
 	   for(Report expected : expectedList) {
-		 Date RestDay = expected.getAutoRestDate();
-		 Date WithdrawalDay = expected.getAutoWithdrawalDate();
-		 String memberId = expected.getLoginMemberId();
+		 Date RestDay = expected.getAutoRestDate(); //자동휴면일
+		 Date WithdrawalDay = expected.getAutoWithdrawalDate(); //자동탈퇴일
+		 String memberId = expected.getLoginMemberId(); //로그인아이디
 		   
 		   int compare = today.compareTo(RestDay);
 		   int Comparison = today.compareTo(WithdrawalDay);
-		   if(compare < 0) {
+		   
+		   if(compare > 0) {
 			   Member member = memberService.getMemberInfoById(memberId);
-			   member.setUseStatus("휴면");
+			   System.out.println(" 탈퇴히ㅗ원 발생wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+			   String useStatus = member.getUseStatus();
 			   //상태 휴면으로 변경
-			   memberService.removeUpdateMember(member);
+			   memberService.removeUpdateMember(memberId,useStatus);
 		   }
 		   
-		   if(Comparison < 0) {
+		   if(Comparison > 0) {
+			   System.out.println(" 탈퇴히ㅗ원 발생wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
 			   Member member = memberService.getMemberInfoById(memberId);
 			   member.setUseStatus("탈퇴");
 			   //회원목록에서는 상태탈퇴로 변경
 			   memberService.removeUpdateMember(member);
 			   //탈퇴회원등록
+			   member.setCancelMemberReason("자동탈퇴");
 			   memberService.addCancelMember(member);
 		   }
 		   
@@ -208,12 +216,31 @@ public class MemberController {
 		 session.setAttribute("Error", msg);
 		 return "redirect:/member/login";
 	 }
-	 //로그인기록 조회
+	 //로그인기록 조회 34ms
 	 @GetMapping("/member/getLoginHistory")
 	 public String getloginHistory(Model model) {
+		 long start = System.currentTimeMillis();
+		 try {
+			 List<Member> loginList = memberService.getLogin();
+			 SimpleDateFormat formmat = new SimpleDateFormat("yyyy-MM-dd");
+			 for(Member login : loginList) {
+				 Date loginDay = login.getLoginDate();
+				 Date logoutDay= login.getLogoutDate();
+				 
+				 String loginDate = formmat.format(loginDay);
+				 String logoutDate = formmat.format(logoutDay);
+				 
+				 login.setRegDay(loginDate);
+				 login.setRegDate(logoutDate);
+			 }
+			 model.addAttribute("loginList",loginList);
+			 
+		 }finally {
+			 long finish = System.currentTimeMillis();
+			 long timeMs = finish - start;
+			 System.out.println("findMembers :"+ timeMs + "ms");
+		}
 		
-		 List<Member> loginList = memberService.getLogin();
-		 model.addAttribute("loginList",loginList);
 		
 		 return "views/member/getLoginHistory";
 	 }
@@ -375,7 +402,11 @@ public class MemberController {
 	  public String getAuthority(Model model) {
 		  	
 		
-		  List<Member> levelList = memberService.getAuthority();	  		  
+		  List<Member> levelList = memberService.getAuthority();	
+		  for(Member level : levelList) {
+			  String levelDate = level.getMemberRegDate().substring(0,10);
+			  level.setMemberRegDate(levelDate);
+		  }
 		  model.addAttribute("levelList",levelList);
 		  
 		  return "views/member/authority/getAuthority"; 
@@ -438,21 +469,21 @@ public class MemberController {
 		  
 		  List<Member> cancelList = memberService.getCancelMember();
 		  
-		  for(int i=0; i < cancelList.size(); i++) {
+		  for(Member cancel : cancelList) {
 			  
 			  
-			  String address = cancelList.get(i).getMemberAddress().substring(0,4);
-			  String date = cancelList.get(i).getCancelDate().substring(0,8);
-			  String phone= cancelList.get(i).getMemberPhone().substring(0,5);
-			  String email = cancelList.get(i).getMemberEmail().substring(0,4);
-			  String reason = cancelList.get(i).getCancelMemberReason().substring(0,6);
+			  String address = cancel.getMemberAddress();
+			  String date = cancel.getCancelDate();
+			  String phone= cancel.getMemberPhone();
+			  String email = cancel.getMemberEmail();
+			  String reason = cancel.getCancelMemberReason();
 			  
 			  
-			  cancelList.get(i).setMemberAddress(address+"...");  
-			  cancelList.get(i).setCancelDate(date+"...");  
-			  cancelList.get(i).setMemberPhone(phone+"...");  
-			  cancelList.get(i).setMemberEmail(email+"...");  
-			  cancelList.get(i).setCancelMemberReason(reason+"...");  
+			  cancel.setMemberAddress(address);  
+			  cancel.setCancelDate(date);  
+			  cancel.setMemberPhone(phone);  
+			  cancel.setMemberEmail(email);  
+			  cancel.setCancelMemberReason(reason);  
 		  }
 		  
 		  model.addAttribute("cancelList",cancelList);
@@ -464,6 +495,17 @@ public class MemberController {
 	  @GetMapping("/member/getExpectedDate")
 	  public String getExpectedDate(Model model) {
 		  List<Report> expectedList = memberService.getExpectedDate(); 
+		  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		  
+		  for(Report expected : expectedList) {
+			  Date restDate= expected.getAutoRestDate();
+			  Date withdrawalDate= expected.getAutoWithdrawalDate();
+			  String restDay = format.format(restDate);
+			  String withdrawalDay = format.format(withdrawalDate);
+			  expected.setRegDate(restDay);
+			  expected.setRegDay(withdrawalDay);
+			  
+		  }
 		  model.addAttribute("expectedList",expectedList);
 		  
 		  return "views/member/baseDate/getExpectedDate";
@@ -474,6 +516,12 @@ public class MemberController {
 	  @GetMapping("/member/getBaseDate")
 	  public String getBaseDate(Model model) {
 		  List<Report> baseDateList = memberService.getBaseDate();
+		  for(Report baseDate : baseDateList) {
+			  String regDate = baseDate.getRegDate().substring(0,10);
+			  baseDate.setRegDate(regDate);
+		  }
+			  
+		 
 		  model.addAttribute("baseDateList",baseDateList);
 		  
 		  return "views/member/baseDate/getBaseDate";
@@ -576,16 +624,27 @@ public class MemberController {
 		  
 		  Report baseDate = memberService.getBaseDate(statusCriteriaCode);
 		  
-		  //비교를위해 휴면&탈퇴 이름을 변수가 닮아준다
+		  //비교를위해 휴면&탈퇴 이름을 변수에 담아준다
 		  String statusName = baseDate.getStatusCriteriaName();
-		  //삭제
-		  memberService.removeBaseDate(statusCriteriaCode);
+		  
+		  List<Report> baseNameList = memberService.getstatusCriteriaName(statusName);
+		  
+		  
+		  if(baseNameList.size() > 1) {		
+			  //삭제
+			  memberService.removeBaseDate(statusCriteriaCode);
 			  
-		  //삭제후 가장최근에 등록한 기준일상태를 Y로 변경  
-		  statusCriteriaCode = memberService.getStatus(statusName);
-		  if(statusCriteriaCode != null && !"".equals(statusCriteriaCode.trim())) {
-			  memberService.cancelBaseDateStatus(statusCriteriaCode,statusName);		  
+			  //삭제후 가장최근에 등록한 기준일상태를 Y로 변경  
+			  statusCriteriaCode = memberService.getStatus(statusName);
+			  if(statusCriteriaCode != null && !"".equals(statusCriteriaCode.trim())) {
+				  memberService.cancelBaseDateStatus(statusCriteriaCode,statusName);		  
+			  }
 		  }
+		  
+		 
+			  
+		 
+		  
 		  
 		  return "redirect:/member/getBaseDate";
 
@@ -596,6 +655,12 @@ public class MemberController {
 	  @GetMapping("/member/getReasonReport")
 	  public String getReasonReport(Model model) {
 		  List<Report> reportReasonList = memberService.getReasonReport();
+		  
+		  for(Report report : reportReasonList) {
+			  
+			  String reportRegDate = report.getReportRegDate().substring(0,10);
+			  report.setReportRegDate(reportRegDate);
+		  }
 		  
 		  model.addAttribute("reportReasonList",reportReasonList);
 		  
@@ -670,6 +735,7 @@ public class MemberController {
 			  	@RequestParam(value = "reportCode",required = false,defaultValue = "")String reportCode,
 			  	@RequestParam(value = "reportedId",required = false,defaultValue = "")String reportedId,
 			  	@RequestParam(value = "reportApproval",required = false,defaultValue = "")String reportApproval) {
+		  
 		  if("승인".equals(reportApproval)) {
 			  System.out.println("실행");
 			  // 신고상태변경
@@ -688,10 +754,11 @@ public class MemberController {
 			  String banEndDay = format.format(date);
 			  //이미 정지되있을땐 x 
 			  Report member = memberService.getSuspend(reportedId);
-			  String banId = member.getBanMemberId();
-			  if(banId != null) {
-				  memberService.addBanCurrentSituation(reportedId,reportCode,banEndDay);			  
-			  }			  
+			  if(member == null) {				  
+				  			  
+					  memberService.addBanCurrentSituation(reportedId,reportCode,banEndDay);			  
+				  		  
+			  }
 		  
 		  }else {			  
 			  memberService.resultReport(reportHistoryCode,reportApproval,reportApprovalReason);			  
@@ -708,7 +775,7 @@ public class MemberController {
 				
 				  for(Report report : reportList) { 
 					  
-				   String date = report.getReportDate().substring(2,10); 
+				   String date = report.getReportDate().substring(0,10); 
 				   report.setReportDate(date);
 				  }
 				 
@@ -722,7 +789,7 @@ public class MemberController {
 				  
 				  for(Report report : reportList) { 
 					  
-					   String date = report.getReportDate().substring(2,10); 
+					   String date = report.getReportDate().substring(0,10); 
 					   report.setReportDate(date);
 					  }
 				  

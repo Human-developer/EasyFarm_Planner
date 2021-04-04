@@ -40,6 +40,7 @@ public interface MemberMapper {
 	
 	//회원 탈퇴시 상태변경
 	public int removeUpdateMember(Member member);
+	public int removeUpdateMember(String useStatus ,String memberId);
 	//회원 탈퇴시 탈퇴회원등록
 	public int addCancelMember(Member member);
 	
@@ -71,6 +72,7 @@ public interface MemberMapper {
 	//휴면|탈퇴 기준일 조회
 	public List<Report> getBaseDate();
 	//휴면|탈퇴 기준이름 리스트
+	public List<Report> getstatusCriteriaName(String statusName);
 	public List<Report> getstatusCriteriaName();
 	//휴면|탈퇴 기준일 등록
 	public int addBaseDate(Report report);
