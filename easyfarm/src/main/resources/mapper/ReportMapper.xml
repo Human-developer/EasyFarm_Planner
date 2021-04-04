@@ -272,6 +272,9 @@
 			,status_criteria_name
 		FROM 
 			tb_member_status_criteria_set
+		<if test="statusName != null and statusName != ''.toString">
+		WHERE status_criteria_name = #{statusName}
+		</if>
 	</select>
 	
 	<update id="modifyBaseDateStatus">

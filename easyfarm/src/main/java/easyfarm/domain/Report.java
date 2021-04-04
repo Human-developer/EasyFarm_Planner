@@ -54,8 +54,7 @@ public class Report {
 	    // 작성자아이디
 	    private String memberId;
 
-	    // 작성일
-	    private String regDate;
+	  
 
 	    // 사용유무
 	    private String useStatus;
@@ -80,9 +79,25 @@ public class Report {
 
 	    // 최종정지종료일
 	    private Date banEndDate;
+	    
+	    // 작성일
+	    private String regDate;
+	    
+	    // 화면 보여주기용
+	    private String regDay;
+	    
+	    
 
 	    
 	    
+		public String getRegDay() {
+			return regDay;
+		}
+
+		public void setRegDay(String regDay) {
+			this.regDay = regDay;
+		}
+
 		public String getLoginMemberId() {
 			return loginMemberId;
 		}
