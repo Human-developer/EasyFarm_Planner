@@ -7,9 +7,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import easyfarm.dao.FarmMapper;
 import easyfarm.domain.Farm;
+import easyfarm.domain.FarmCancelRequest;
 import easyfarm.domain.FarmMember;
 import easyfarm.domain.FarmMemberJoin;
 
@@ -214,5 +216,57 @@ public class FarmService {
 	
 	public String getFarmMemberLevel(String farmCode, String memberId) {
 		return farmMapper.getFarmMemberLevel(farmCode, memberId);
+	}
+	
+	
+	//탈퇴신청
+	public String addCancelMember(String memberId, String farmName,String cancelRequestReason) {
+		String result = "신청실패";
+		if(memberId != null && farmName != null) {
+			FarmCancelRequest cancelRequestResult = farmMapper.addCancelMemberCheck(memberId, farmName);
+			if(cancelRequestResult == null) {
+				int insertResult = 0;
+				insertResult += farmMapper.addCancelMember(memberId, farmName,cancelRequestReason);
+				
+				if(insertResult > 0) {
+					result ="신청완료";
+				}
+			}
+			else {
+				result ="이미 신청 하셨습니다";
+			}
+				
+		}
+		
+		
+		return result;
+	}
+	
+	
+	//농가별 탈퇴신청목록
+	public List<FarmCancelRequest> getLeaverFarm(String farmCode,String memberId){
+		List<FarmCancelRequest> result =null;
+		if(farmCode != null) {			
+			result = farmMapper.getLeaverFarm(farmCode,memberId);
+		}
+		
+		return result;
+	}
+	
+	public int isLeaverFarm(FarmCancelRequest cancelRequest) {
+		int result = 0;
+		if(cancelRequest!= null) {
+			String approval = cancelRequest.getCancelApproval();
+			
+			if("탈퇴승인".equals(approval)) {
+				
+			}
+			else if("탈퇴거부".equals(approval)) {
+				result += farmMapper.isLeaverFarm(cancelRequest);
+			}
+			
+		}
+		
+		return result;
 	}
 }

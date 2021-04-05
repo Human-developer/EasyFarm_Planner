@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import easyfarm.domain.Farm;
+import easyfarm.domain.FarmCancelRequest;
 import easyfarm.domain.FarmMember;
 import easyfarm.domain.FarmMemberJoin;
 import easyfarm.service.FarmService;
@@ -29,6 +30,48 @@ public class FarmController {
 	@Autowired
 	private FarmService farmService;
 	
+	//탈퇴 승인거부
+	@PostMapping("/farm/isLeaverFarm")
+	public @ResponseBody String isLeaverFarm(
+			HttpSession session,
+			FarmCancelRequest cancelRequest) {
+		String result = "실패";
+		String memberId = (String)session.getAttribute("SID");
+		
+		if(memberId != null && cancelRequest != null)
+		{			
+			cancelRequest.setCancelApprovalMemberId(memberId);
+			
+			farmService.isLeaverFarm(cancelRequest);
+		}
+		else {
+			result = "실패";
+		}
+		
+			
+		return result;
+	}
+	
+	//탈퇴신청
+	@PostMapping("/farm/addLeaverFarm")
+	public @ResponseBody String addCancelMember(
+			HttpSession session,
+			@RequestParam(value = "farmName",required = false) String farmName,
+			@RequestParam(value = "cancelRequestReason",required = false) String cancelRequestReason) {
+		String result = "신청실패";
+		String memberId = (String)session.getAttribute("SID");
+		
+		if(memberId != null && farmName != null) {
+			
+			result = farmService.addCancelMember(memberId,farmName,cancelRequestReason);
+
+		}
+		
+		
+		return result;
+	}
+	
+	//가입신청취소
 	@PostMapping("/json/removeFarmJoin")
 	public @ResponseBody String removeFarmJoin(@RequestParam(value = "farmJoinCode", required = false) String farmJoinCode) {
 		String result = "삭제실패";
@@ -42,6 +85,7 @@ public class FarmController {
 		return result;
 	}
 	
+	//가입승인 거부
 	@PostMapping("/json/farmJoinMember")
 	public @ResponseBody String farmJoinMember(HttpSession session,
 			@RequestParam(value = "farmMemberJoinCode",required = false) String farmMemberJoinCode,
@@ -64,6 +108,7 @@ public class FarmController {
 		return result;
 	}
 	
+	//가입신청
 	@PostMapping("/json/addfarmMemberJoin")
 	public @ResponseBody String addFarmMemberJoin(
 			HttpSession session,
@@ -82,6 +127,7 @@ public class FarmController {
 		return result;
 	}
 	
+	//농가명 중복확인
 	@PostMapping("/json/farmNameCheck")
 	public @ResponseBody String farmNameCheck(@RequestParam(value = "farmName", required = false) String farmName) {
 		String result = "생성불가";
@@ -322,7 +368,20 @@ public class FarmController {
 	
 	/* 농가탈퇴신청리스트 */
 	@GetMapping("/farm/getLeaverFarm")
-	public String getLeaverFarm(Model model) {
+	public String getLeaverFarm(
+			Model model,
+			HttpSession session,
+			@RequestParam(value = "farmCode", required = false) String farmCode) {
+		String memberId = (String)session.getAttribute("SID");
+		if(farmCode != null && memberId != null) {
+			List<FarmCancelRequest> farmLeaverFarmList = farmService.getLeaverFarm(farmCode,memberId);
+			
+			if(farmLeaverFarmList != null) {
+				model.addAttribute("farmLeaverFarmList", farmLeaverFarmList);
+			}
+		}
+		
+		
 		return "views/farm/getLeaverFarm";
 	}
 	/* 농가탈퇴신청리스트 */
