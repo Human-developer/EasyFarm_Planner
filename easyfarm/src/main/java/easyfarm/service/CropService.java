@@ -55,6 +55,16 @@ public class CropService {
 		int result = cropMapper.addCrop(test);
 		return result;
 	}
+	//작업단계 추가등록
+	public int addCropWorkStage(CropWorkStage crop, String memberId) {
+		Map<String, Object> test = new HashMap<>();
+		test.put("crop", crop);
+		test.put("memberId", memberId);
+		int result = cropMapper.addCropWorkStage(test);
+		return result;
+		
+	}
+	//상세작업항목 등록
 	 public int addCropDetailCategory(CropDetailCategory crop, String memberId) { 
 		 Map<String, Object> test = new HashMap<>();
 		 test.put("crop", crop); 
@@ -115,27 +125,19 @@ public class CropService {
 		}
 		return crop;
 	}
-	//작업단계 추가등록
-	public int addCropWorkStage(CropWorkStage crop, String memberId) {
-		Map<String, Object> test = new HashMap<>();
-		test.put("crop", crop);
-		test.put("memberId", memberId);
-		int result = cropMapper.addCropWorkStage(test);
-		return result;
-		
-	}
 	
 	//작업단계 정보조회
 	public CropWorkStage getcropPhaseInfo(String cropPhaseInfoCode) {
 		CropWorkStage cropWorkStage = cropMapper.getcropPhaseInfo(cropPhaseInfoCode);
 		return cropWorkStage;
 	}
+	//작업단계 정보조회- 작업단계와 작물코드 동시에 조회
 	public CropWorkStage getcropPhaseInfo2(String workphase, String cropCode) {
 		CropWorkStage cropWorkStage = cropMapper.getcropPhaseInfo2(workphase, cropCode);
 		return cropWorkStage;
 		
 	}
-	//작물정보-작물명 조회
+	//작물 정보조회-작물명 조회
 	public Crop getCropNameinfo(String cropName) {
 		return cropMapper.getcropNameInfo(cropName);
 	}
