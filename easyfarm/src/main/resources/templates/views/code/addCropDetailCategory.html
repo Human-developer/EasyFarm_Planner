@@ -15,7 +15,6 @@
 	<style>
 button {
 	border: 0;
-	border-radius: 0;
 	padding: 0;
 	outline: none;
 	cursor: pointer;
@@ -38,7 +37,6 @@ button {
 }
 
 .btn {
-	border-radius: 60px;
 	background-color: #3BBD5A;
 	width: auto;
 	color: #fff;
@@ -79,7 +77,7 @@ button {
 					$('#cropdetcate').focus();
 					return false;
 				}
-
+			
 				return true;
 			})
 		});
@@ -101,7 +99,7 @@ button {
 							<div class="form-horizontal">
 								<div class="form-group margin-bottom-20">
 									<label for="cropdetcate" class="col-sm-3 control-label"><strong>상세작업명</strong></label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<!-- 제한조건넣기 -->
 										<input type="text" size="20" class="green-input"
 											name="commonWorkphaseCateName" id="cropdetcate"
@@ -124,7 +122,12 @@ button {
 			</div>
 		</div>
 	</div>
-	<div th:include="views/code/back :: back"></div>
+	<div class="box-content">
+		<ul class="list-inline">
+			<li class="margin-bottom-10"><a th:href="@{/code}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>코드관리로 돌아가기</strong></button></a> </li>
+			<li ><a th:href="@{/code/getCropDetailCategory}">	<button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>상세작업항목 리스트</strong></button></a>  </li>
+		</ul>		
+	</div>
 </th:block>
 
 
