@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>메인화면</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		Home
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib"></th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+		#subtit{background-color : #e8f2fe;}
+		</style>
+	</th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+			<div class="box-content">
+				<div class="row" style="background-color : white;">				
+					<div class="col-md-12" style="text-align:center;" > <h3>배포날짜 : 2021-04-05 </h3></div>
+					<div class="col-md-12 m-t-sm m-b-sm">
+						<table class="mb-0 table table-bordered">
+							<tr>
+								<td class="td-header text-center " id="subtit" ><Strong>프로젝트명</Strong></td>
+								<td class="td-val">농사 계획일정 수립 및 실행결과에 따른 수입/지출 예측 및 비교를 해주는 농가경영 관리 시스템 </td>
+								<td class="td-header text-center" id="subtit"><Strong>팀명</Strong></td>							
+								<td class="td-val">이지팜(6명)</td>																
+							</tr>
+							<tr>
+						<td class="td-header text-center"id="subtit"><Strong>목적</Strong></td>
+						<td class="td-val">국가와 지자체들이 귀농인들을 유치하기 위해 많은 지원정책을 펼치고 있음에도
+							귀농의 어려움으로 인해 <br> 사람들의 인식이 나빠지고 해마다 귀농을 희망하는 사람들이 줄어들고 있습니다.
+							<br> <br> 또한 현재 생활하는 귀농인들의 만족 여부를 조사한 결과 불만족이라고 답변한 비율은
+							7.3%였고 <br> 주요 불만족 사유로 영농 기술 부족과 자금부족을 뽑았습니다. (2019년 기준 귀농귀촌
+							종합 센터 통계자료) <br> <br> 따라서 귀농인들의 만족도를 높이기 위해서는 성공적인 농사를
+							도와 소득을 늘리는 것이 가장 필요하며 <br> 귀농인들의 만족도를 높임으로써 귀농에 대한 인식을 고쳐 더
+							많은 사람들이 <br> 귀농을 고려하게 되어 도시-시골 간 인구 불균형 문제와 실업 문제 해결로 이어지게 될
+							것입니다. <br> <br> 그러한 이유로 저희는 지출을 예측하고 작물에 따른 스케줄을 관리하여 <br>
+							농사 실패 가능성을 줄이고 안정적인 소득을 통해 귀농인들이 <br> 성공적으로 정착할 수 있도록 돕기 위한
+							목적으로 해당 프로젝트를 진행하게 되었습니다.
+						</td>
+						<td class="td-header text-center" id="subtit"><Strong>개발환경</Strong></td>
+								<td class="td-val">
+												▶OS : windows10 <br>
+												<br>▶WAS : apache-tomcat-9.0.27 <br>
+												<br>▶Web browser : Chrome <br>
+												<br>▶Language : Java, javascript, HTML5, JQuery, CSS, thymeleaf  <br>
+												<br>▶Framework :  bootstrap4, SpringFramework, Mybatis 3.0 <br>
+												<br>▶DBMS : mySQL <br>
+												<br>▶Tools : Spring Tool Suite4, GitHub, HeidiSQL <br>
+								</td>														
+							</tr>
+							<tr>		
+								<td class="td-header text-center" id="subtit"><Strong>박금성</Strong></td>
+								<td colspan="3">damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+								</td>
+							</tr>
+							<tr>		
+								<td class="td-header text-center" id="subtit"><Strong>한강희</Strong></td>
+								<td colspan="3">damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+								</td>
+							</tr>
+							<tr>		
+								<td class="td-header text-center" id="subtit"><Strong>유승범</Strong></td>
+								<td colspan="3">damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+								</td>
+							</tr>
+							<tr>		
+								<td class="td-header text-center" id="subtit"><Strong>송영석</Strong></td>
+								<td colspan="3">damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+								</td>
+							</tr>
+							<tr>		
+								<td class="td-header text-center" id="subtit"><Strong>서동훈</Strong></td>
+								<td colspan="3">damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+								</td>
+							</tr>
+							<tr>		
+								<td class="td-header text-center" id="subtit"><Strong>박영환</Strong></td>
+								<td colspan="3">damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+											<br>damdang gineung
+								</td>
+							</tr>
+					</table>
+						
+					</div>	
+				</div>	
+			</div>
+			<div class="box-content">
+			@@@@@@@@@@@@@@@@@@@@@@@
+			</div>
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib"></th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript"></th:block>
+
+</html>
