@@ -14,10 +14,32 @@
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
-	<th:block layout:fragment="customCssLib"></th:block>
+	<th:block layout:fragment="customCssLib">
+		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
+	</th:block>
 	
 	<!-- 사용자 정의 css -->
-	<th:block layout:fragment="customCss"></th:block>
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+			.modal {
+			        text-align: center;
+			}
+			
+			.modal:before {
+			                display: inline-block;
+			                vertical-align: middle;
+			                content: " ";
+			                height: 100%;
+			}
+			
+			 
+			.modal-dialog {
+			        display: inline-block;
+			        text-align: left;
+			        vertical-align: middle;
+			}
+		</style>
+	</th:block>
 	
 	
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
@@ -27,9 +49,10 @@
 				<div class ="box-content">
 					<h3>농가탈퇴신청목록</h3>
 					<hr>
-					<table class ="table">
+					<table id = "leaverFarmMemberTable">
 						<thead>
 							<tr>
+								<th>탈퇴신청코드</th>
 								<th>신청자아이디</th>
 								<th>신청자명</th>
 								<th>탈퇴사유</th>
@@ -39,13 +62,14 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>아이디</td>
-								<td>이름</td>
-								<td>사유</td>
-								<td>신청일</td>
-								<td><a th:href="@{#}">승인(처리사유필요)</a></td>
-								<td><a th:href="@{#}">거부(처리사유필요)</a></td>
+							<tr th:each="farmLeaverFarm : ${farmLeaverFarmList}">
+								<td th:text = "${farmLeaverFarm.cancelRequestCode}"></td>
+								<td class ="memberId" th:text = "${farmLeaverFarm.farmMember.farmMemberId}"></td>
+								<td class ="memberName" th:text = "${farmLeaverFarm.member.memberName}"></td>
+								<td class ="memberReason" th:text = "${farmLeaverFarm.cancelRequestReason}"></td>
+								<td th:text = "${farmLeaverFarm.cancelRequestDate}"></td>
+								<td><button type="button" class ="reaverSuccess btn btn-xs btn-success waves-effect waves-light"data-toggle="modal" data-target="#reaverlModal" th:data-value ="${farmLeaverFarm.cancelRequestCode}">승인</button></td>
+								<td><button type="button" class ="reaverCancel btn btn-xs btn-danger waves-effect waves-light" data-toggle="modal" data-target="#reaverlModal" th:data-value ="${farmLeaverFarm.cancelRequestCode}">거부</button></td>
 							</tr>
 						</tbody>
 					</table>
@@ -55,12 +79,158 @@
 		</div>
 		
 	</th:block>
+	<!-- customModals start -->
+	<th:block layout:fragment="customModals">
+		<div class="modal fade" id="reaverlModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title t-center" id="myModalLabel">모달 타이틀</h4>
+					</div>
+					<div class="modal-body">
+						<div class ="row">
+							<div class ="col-xs-12">
+								<h4 class ="col-xs-4 col-xs-offset-2">신청자 ID : </h4>
+								<h5 id = "modalId" class ="col-xs-4">아이디</h5>
+							</div>
+							<div class ="col-xs-12">
+								<h4 class ="col-xs-4 col-xs-offset-2">신청자 명 : </h4>
+								<h5 id = "modalName" class ="col-xs-4">이름</h5>
+							</div>
+							<div class ="col-xs-12">
+								<h4 class ="col-xs-4 col-xs-offset-2">신청 사유 : </h4>
+								<h5 id = "modalReason" class ="col-xs-4">탈퇴 사유</h5>
+							</div>
+							<div class ="col-xs-12">
+								<h3 class ="t-center">사유</h3>
+								<textarea id = "reason" style ="resize: none; margin-bottom: 15px"class ="form-control" cols="10"></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer t-center">
+						<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">취소</button>
+						<button type="button" id ="modalSuccessBtn" class="btn btn-primary btn-sm waves-effect waves-light" data-dismiss="modal">승인 거부 버튼</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+	<!-- customModals end -->
+	
 	
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
-	<th:block layout:fragment="customScriptLib"></th:block>
+	<th:block layout:fragment="customScriptLib">
+		<div th:replace="fragments/dataTable :: dataTable" th:remove="tag"></div>
+	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 -->
-	<th:block layout:fragment="customJavaScript"></th:block>
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+			var lang_kor = {
+			        "decimal" : "",
+			        "emptyTable" : "탈퇴 신청한 회원이 없습니다",
+			        "info" : "_START_ - _END_ (총 _TOTAL_ 명)",
+			        "infoEmpty" : "0명",
+			        "infoFiltered" : "(전체 _MAX_ 농가 중 검색결과)",
+			        "infoPostFix" : "",
+			        "thousands" : ",",
+			        "lengthMenu" : "_MENU_ 개씩 보기",
+			        "loadingRecords" : "로딩중...",
+			        "processing" : "처리중...",
+			        "search" : "검색 : ",
+			        "zeroRecords" : "검색된 탈퇴신청 회원이 없습니다.",
+			        "paginate" : {
+			            "first" : "첫 페이지",
+			            "last" : "마지막 페이지",
+			            "next" : "다음",
+			            "previous" : "이전"
+			        },
+			        "aria" : {
+			            "sortAscending" : " :  오름차순 정렬",
+			            "sortDescending" : " :  내림차순 정렬"
+			        }
+			}
+			
+			        
+			$('#leaverFarmMemberTable').sysDataTable(lang_kor,[0]);
+		 	
+			
+			
+			var modalLabel =$('#myModalLabel');
+			var modalSuccessBtn = $('#modalSuccessBtn');
+			var modalId = $('#modalId');
+			var modalName = $('#modalName');
+			var modalReason = $('#modalReason');
+			var reason = $('#reason');
+			$('.reaverSuccess').click(function(){
+				modalLabel.text("농가 탈퇴 승인");
+				reason.val('');
+				modalSuccessBtn.text('승인');
+				modalId.text($(this).parent().parent().children('.memberId').text());
+				modalName.text($(this).parent().parent().children('.memberName').text());
+				modalReason.text($(this).parent().parent().children('.memberReason').text());
+				
+				$('#modalSuccessBtn').val($(this).attr('data-value'));
+			})
+			
+			$('.reaverCancel').click(function(){
+				modalLabel.text("농가 탈퇴 거부");
+				reason.val('');
+				modalSuccessBtn.text('거부');
+				modalId.text($(this).parent().parent().children('.memberId').text());
+				modalName.text($(this).parent().parent().children('.memberName').text());
+				modalReason.text($(this).parent().parent().children('.memberReason').text());
+				
+				$('#modalSuccessBtn').val($(this).attr('data-value'));
+			})
+			
+			$('#modalSuccessBtn').click(function(){
+				var modalText = $(this).text();
+				var reaverCode = $(this).val();
+				var reaverReason = reason.val();
+				
+				
+				if('승인' == modalText){
+					isLeaverFarm({"reason":reaverReason,"reaverCode" :reaverCode, "approval":"탈퇴승인"});
+				}
+				else if('거부' == modalText){
+					isLeaverFarm({"reason":reaverReason,"reaverCode" :reaverCode, "approval":"탈퇴거부"});
+				}
+			})
+			
+			function isLeaverFarm(objData){
+				
+				var request = $.ajax({
+		               url:"/farm/isLeaverFarm",
+		               method:"post", 
+		               data :	{
+		            	   			"cancelApprovalReason" : objData.reason,
+		            	   			"cancelRequestCode" : objData.reaverCode,
+		            	   			"cancelApproval" : objData.approval
+								},
+		            });
+		            request.done(function(data){
+		            	console.log(data);
+		            	/* var checkType = 'error';
+		            	if(data =='처리완료'){
+		            		checkType = 'success';
+		            	}
+		            	
+		            	swal({
+							title: "농가 탈퇴 신청",
+							text: data,
+							type: checkType,
+							confirmButtonColor: '#304ffe'
+						}); */
+		            });
+		            request.fail(function( jqXHR, textStatus ){
+		               alert( "Request failed : " + textStatus );
+		            });
+			}
+			
+		</script>
+	</th:block>
 
 </html>

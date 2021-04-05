@@ -15,7 +15,6 @@
 	<style>
 button {
 	border: 0;
-	border-radius: 0;
 	padding: 0;
 	outline: none;
 	cursor: pointer;
@@ -38,7 +37,6 @@ button {
 }
 
 .btn {
-	border-radius: 60px;
 	background-color: #3BBD5A;
 	width: auto;
 	color: #fff;
@@ -108,10 +106,10 @@ button {
 											name="commonMachineName" id="commonmachineName"
 											placeholder="농기계명 입력">
 									</div>
-									<div class="col-sm-1">
-										<button id="checkBtn" type="button" class="btn form-control"
-											value="no">중복확인</button>
-									</div>
+<!-- 									<div class="col-sm-1"> -->
+<!-- 										<button id="checkBtn" type="button" class="btn form-control" -->
+<!-- 											value="no">중복확인</button> -->
+<!-- 									</div> -->
 								</div>
 								<hr>
 								<div class="form-group">
@@ -128,7 +126,12 @@ button {
 			</div>
 		</div>
 	</div>
-	<div th:include="views/code/back :: back"></div>
+	<div class="box-content">
+		<ul class="list-inline">
+			<li class="margin-bottom-10"><a th:href="@{/code}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>코드관리로 돌아가기</strong></button></a> </li>
+			<li ><a th:href="@{code/getCommonMachineCode}">		<button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>농기계 리스트</strong></button></a></li>
+		</ul>		
+	</div>
 </th:block>
 
 
