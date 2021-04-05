@@ -21,6 +21,8 @@ import easyfarm.domain.plan.EtcPay;
 import easyfarm.domain.plan.InsurancePay;
 import easyfarm.domain.plan.MachineLeasePay;
 import easyfarm.domain.plan.MachineUsePay;
+import easyfarm.domain.plan.PlanWorkphase;
+import easyfarm.domain.plan.PlanWorkphaseCate;
 import easyfarm.domain.plan.ProductGain;
 import easyfarm.domain.plan.ResourcePay;
 import easyfarm.domain.plan.ResourceUsePlan;
@@ -185,6 +187,43 @@ public class PlanService {
 		}
 		return result;
 	}
+	
+	//단계별작업계획 월켈린더 리스트
+	public List<Map<String, Object>> getPlanWorkphaseSchedule(String projectPlanCode) {
+		List<Map<String, Object>> result = null;
+		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
+			result = planMapper.getPlanWorkphaseSchedule(projectPlanCode);
+		}
+		return result;
+	}
+	
+	//단계별 상세작업계획 월켈린더 리스트
+	public List<Map<String, Object>> getPlanWorkphaseCateSchedule(String projectPlanCode) {
+		List<Map<String, Object>> result = null;
+		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
+			result = planMapper.getPlanWorkphaseCateSchedule(projectPlanCode);
+		}
+		return result;
+	}
+	
+	//단계별작업계획 등록
+	public int addPlanWorkphase(PlanWorkphase planWorkphase) {
+		int result = 0;
+		if(planWorkphase.getPlanWorkphaseCode() != null && !"".equals(planWorkphase.getPlanWorkphaseCode().trim())) {
+			result = planMapper.addPlanWorkphase(planWorkphase);
+		}
+		return result;
+	}
+	
+	//단계별 상세작업계획 등록
+	public int addPlanWorkphaseCate(PlanWorkphaseCate planWorkphaseCate) {
+		int result = 0;
+		if(planWorkphaseCate.getPlanWorkphaseCateCode() != null && !"".equals(planWorkphaseCate.getPlanWorkphaseCateCode().trim())) {
+			result = planMapper.addPlanWorkphaseCate(planWorkphaseCate);
+		}
+		return result;
+	}
+	
 	
 	public List<EtcPay> getEtcPayPlan(){
 		List<EtcPay> etcPayPlan = null;

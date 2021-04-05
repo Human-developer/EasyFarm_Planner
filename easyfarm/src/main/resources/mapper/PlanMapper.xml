@@ -61,6 +61,166 @@
 		<result property="regDate" 					column="reg_date"/>
 	</resultMap>
 	
+	<!-- 기간별작업단계계획 -->
+	<resultMap type="PlanWorkphase" id="resultPlanWorkphase">
+		<result property="planWorkphaseCode" 		column="plan_workphase_code"/>
+		<result property="projectPlanCode" 			column="project_plan_code"/>
+		<result property="projectWorkphaseCode" 	column="project_workphase_code"/>
+		<result property="planWorkphaseBegin" 		column="plan_workphase_begin"/>
+		<result property="planWorkphaseEnd" 		column="plan_workphase_end"/>
+		<result property="planWorkphaseColor" 		column="plan_workphase_color"/>
+		<result property="planWorkphaseTextColor" 	column="plan_workphase_text_color"/>
+		<result property="regMemberId" 				column="reg_member_id"/>
+		<result property="regDate" 					column="reg_date"/>
+		<result property="runStatus" 				column="run_status"/>
+	</resultMap>
+	
+	<!-- 작업단계별상세작업항목 -->
+	<resultMap type="PlanWorkphaseCate" id="resultPlanWorkphaseCate">
+		<result property="planWorkphaseCateCode" 	column="plan_workphase_cate_code"/>
+		<result property="projectPlanCode" 			column="project_plan_code"/>
+		<result property="planWorkphaseCode" 		column="plan_workphase_code"/>
+		<result property="farmWorkphaseCateCode" 	column="farm_workphase_cate_code"/>
+		<result property="planWorkphaseCateBegin" 	column="plan_workphase_begin"/>
+		<result property="planWorkphaseCateEnd" 	column="plan_workphase_end"/>
+		<result property="planWorkphaseColor" 		column="plan_workphase_color"/>
+		<result property="planWorkphaseTextColor" 	column="plan_workphase_text_color"/>
+		<result property="regMemberId" 				column="reg_member_id"/>
+		<result property="regDate" 					column="reg_date"/>
+		<result property="runStatus" 				column="run_status"/>
+	</resultMap>
+	
+	
+	<insert id="addPlanWorkphaseCate" parameterType="PlanWorkphaseCate" >
+		INSERT INTO tb_plan_workphase_cate
+		(
+			 plan_workphase_cate_code
+			,project_plan_code
+			,plan_workphase_code
+			,farm_workphase_cate_code
+			,plan_workphase_begin
+			,plan_workphase_end
+			,plan_workphase_color
+			,plan_workphase_text_color
+			,reg_member_id
+			,reg_date
+			,run_status
+		)
+		VALUES 
+		(
+			 sf_plan_workphase_cate_max_code()
+			,#{projectPlanCode}
+			,#{planWorkphaseCode}
+			,#{farmWorkphaseCateCode}
+			,#{planWorkphaseCateBegin}
+			,#{planWorkphaseCateEnd}
+			,#{planWorkphaseColor}
+			,#{planWorkphaseTextColor}
+			,#{regMemberId}
+			,NOW()
+			,#{runStatus}
+		)
+	
+	</insert>
+	
+	<insert id="addPlanWorkphase" parameterType="PlanWorkphase">
+		INSERT INTO tb_plan_workphase
+		(
+			 plan_workphase_code
+			,project_plan_code
+			,project_workphase_code
+			,plan_workphase_begin
+			,plan_workphase_end
+			,plan_workphase_color
+			,plan_workphase_text_color
+			,reg_member_id
+			,reg_date
+			,run_status
+		)
+		VALUES
+		(
+			 sf_plan_workphase_max_code()
+			,#{projectPlanCode}
+			,#{projectWorkphaseCode}
+			,#{planWorkphaseBegin}
+			,#{planWorkphaseEnd}
+			,#{planWorkphaseColor}
+			,#{planWorkphaseTextColor}
+			,#{regMemberId}
+			,NOW()
+			,#{runStatus}
+		)
+	</insert>
+	
+	<!-- 월켈린더 정보가져오기 시작-->
+	
+	<!-- 단계별작업계획 -->
+	<select id="getPlanWorkphaseSchedule" resultType="map" parameterType="String">
+		SELECT
+			 pw.plan_workphase_code		 	AS planWorkphaseCode
+			,cpi.workphase 				 	AS workphase
+			,cpi.workphase_name 		 	AS workphaseName
+			,pw.plan_workphase_begin 	 	AS planWorkphaseBegin
+			,pw.plan_workphase_end		 	AS planWorkphaseEnd
+			,pw.plan_workphase_color 		AS planWorkphaseColor
+			,pw.plan_workphase_text_color 	AS planWorkphaseTextColor
+		FROM
+			tb_plan_workphase AS pw
+			LEFT join
+			tb_plan_workphase_cate AS pwc
+			on
+			pw.plan_workphase_code = pwc.plan_workphase_code
+			INNER join
+			tb_project_workphase AS prw
+			on
+			pw.project_workphase_code = prw.project_workphase_code
+			INNER join
+			tb_crop_phase_info AS cpi
+			on
+			prw.crop_phase_info_code = cpi.crop_phase_info_code
+		WHERE
+			pw.project_plan_code = #{projectPlanCode}
+			and
+			pwc.plan_workphase_code IS NULL
+	</select>
+	
+	<!-- 단계별 상세작업계획 -->
+	<select id="getPlanWorkphaseCateSchedule" resultType="map" parameterType="String">
+		SELECT
+			 pwc.plan_workphase_cate_code 		AS planWorkphaseCateCode
+			,cpi.workphase 						AS workphase
+			,cpi.workphase_name 				AS workphaseName
+			,cwc.common_workphase_cate_name 	AS commonWorkphaseCateName
+			,pwc.plan_workphase_begin 			AS planWorkphaseBegin
+			,pwc.plan_workphase_end 			AS planWorkphaseEnd
+			,pwc.plan_workphase_color 			AS planWorkphaseColor
+			,pwc.plan_workphase_text_color 		AS planWorkphaseTextColor
+		FROM
+			tb_plan_workphase_cate AS pwc
+			INNER join
+			tb_plan_workphase AS pw
+			on
+			pwc.plan_workphase_code = pw.plan_workphase_code
+			INNER join
+			tb_farm_workphase_cate AS fwc
+			on
+			pwc.farm_workphase_cate_code = fwc.farm_workphase_cate_code
+			INNER join
+			tb_common_workphase_cate AS cwc
+			on
+			fwc.common_workphase_cate_code = cwc.common_workphase_cate_code
+			INNER join
+			tb_project_workphase AS prw
+			on
+			pw.project_workphase_code = prw.project_workphase_code
+			INNER join
+			tb_crop_phase_info AS cpi
+			on
+			prw.crop_phase_info_code = cpi.crop_phase_info_code
+		WHERE
+			pwc.project_plan_code = #{projectPlanCode}
+	</select>
+	<!-- 월켈린더 정보가져오기 끝-->
 	<select id="getStockItemList" resultMap="resultStockItem" parameterType="String">
 		SELECT
 			 sc.stock_cate_name
@@ -313,8 +473,9 @@
   	
   	<select id="getWorkphaseName" resultType="map" parameterType="map">
   		SELECT
-			 cpi.workphase
-			,cpi.workphase_name AS workphaseName
+  			 pw.project_workphase_code 		AS projectWorkphaseCode
+			,cpi.workphase					AS workphase
+			,cpi.workphase_name 			AS workphaseName
 		FROM
 			tb_project_workphase AS pw
 			INNER join
@@ -383,7 +544,8 @@
   	
   	<select id="getWorkphaseCateName" resultType="map" parameterType="map">
   		SELECT
-			cwc.common_workphase_cate_name 	AS commonWorkphaseCateName
+  			 fwc.farm_workphase_cate_code		AS farmWorkphaseCateCode
+			,cwc.common_workphase_cate_name 	AS commonWorkphaseCateName
 		FROM
 			tb_farm_workphase_cate AS fwc
 			INNER join

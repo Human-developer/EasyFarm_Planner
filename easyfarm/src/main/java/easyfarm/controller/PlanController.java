@@ -1,5 +1,6 @@
 package easyfarm.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import easyfarm.domain.plan.CommonMachine;
 import easyfarm.domain.plan.InsurancePay;
+import easyfarm.domain.plan.PlanWorkphase;
+import easyfarm.domain.plan.PlanWorkphaseCate;
 import easyfarm.domain.plan.ProjectPlan;
 import easyfarm.domain.plan.StockCate;
 import easyfarm.domain.plan.StockItem;
@@ -303,6 +306,59 @@ public class PlanController {
 		return "views/plan/addSpend";
 	}
 	
+	@GetMapping("/plan/addWorkphasePlan")
+	public String addWorkphasePlan(Model model
+			  					  ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode) {
+		
+		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
+		
+			/* 계획정보조회 */
+			Map<String, Object> projectPlanInfo = planService.getProjectPlanInfo(projectPlanCode);
+			String projectPlanN = (String) projectPlanInfo.get("projectPlanN");
+			String projectCode = (String) projectPlanInfo.get("projectCode");
+			model.addAttribute("projectPlanCode", projectPlanCode);
+			model.addAttribute("projectPlanN", projectPlanN);
+			
+			Map<String, Object> projectData = new HashMap<String, Object>();
+			projectData.put("projectCode", projectCode);
+			
+			/* 작업단계 */
+			List<Map<String, Object>> workphaseNameList = planService.getWorkphaseName(projectData);
+			System.out.println(workphaseNameList);
+			model.addAttribute("workphaseNameList", workphaseNameList);
+			
+			/* 상세작업항목조회 */
+			List<Map<String, Object>> workphaseCateNameList = planService.getWorkphaseCateName(projectData);
+			model.addAttribute("workphaseCateNameList", workphaseCateNameList);
+			
+		}
+		return "views/plan/addWorkphasePlan";
+	}
+	
+	@PostMapping("/plan/addWorkphasePlan")
+	public String addWorkphasePlan(PlanWorkphase planWorkphase, PlanWorkphaseCate planWorkphaseCate, HttpSession session) {
+		int result = 0;
+		String projectPlanCode = null;
+		String memberId = (String) session.getAttribute("SID");
+		if(planWorkphase.getPlanWorkphaseCode() != null && !"".equals(planWorkphase.getPlanWorkphaseCode().trim())
+				&& planWorkphaseCate.getPlanWorkphaseCateCode() != null && !"".equals(planWorkphaseCate.getPlanWorkphaseCateCode().trim())) {
+			
+			planWorkphaseCate.setRegMemberId(memberId);
+			planWorkphaseCate.setRunStatus("실행전");
+			
+			result = planService.addPlanWorkphaseCate(planWorkphaseCate);
+			projectPlanCode = planWorkphaseCate.getProjectPlanCode();
+		}else {
+			planWorkphase.setRegMemberId(memberId);
+			planWorkphase.setRunStatus("실행전");
+			
+			result = planService.addPlanWorkphase(planWorkphase);
+			projectPlanCode = planWorkphase.getProjectPlanCode();
+		}
+		
+		return "/plan/getSchedule?projectPlanCode=" + projectPlanCode;
+	}
+	
 	@GetMapping("/plan/resultPlan")
 	public String resultPlan() {
 		return "views/plan/resultPlan";
@@ -318,6 +374,45 @@ public class PlanController {
 			stockItemInfo = planService.getStockItemInfo(resourceStockItemCode);
 		}
 		return stockItemInfo;
+	}
+	
+	@PostMapping("/plan/calendarDataList")
+	@ResponseBody
+	public List<Map<String, Object>> getCalendarDataList(@RequestParam(value = "projectPlanCode", required = false)String projectPlanCode) {
+		
+		List<Map<String, Object>> workphaseSchedule = null;
+		List<Map<String,Object>> calList = new ArrayList<Map<String,Object>>();
+		Map<String, Object> workphaseData = null;
+		Map<String,Object> data = null;
+		String workphaseName = null;
+		
+		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
+			workphaseSchedule = planService.getPlanWorkphaseSchedule(projectPlanCode);
+			
+			for(int i = 0; i < workphaseSchedule.size(); i++) {
+				data = new HashMap<String,Object>();
+			
+				workphaseData = workphaseSchedule.get(i);
+				workphaseName = workphaseData.get("workphase") + " : " + workphaseData.get("workphaseName");
+				
+				data.put("title", 		workphaseName);
+				data.put("start", 		workphaseData.get("planWorkphaseBegin"));
+				data.put("end", 		workphaseData.get("planWorkphaseEnd"));
+				data.put("color",		workphaseData.get("planWorkphaseColor"));
+				data.put("textColor", 	workphaseData.get("planWorkphaseTextColor"));
+				data.put("planWorkphaseCode", 	workphaseData.get("planWorkphaseCode"));
+				data.put("projectPlanCode", 	projectPlanCode);
+				calList.add(data);
+			}
+			
+			planService.getPlanWorkphaseCateSchedule(projectPlanCode);
+			
+			System.out.println(calList);
+		}
+		
+		
+		
+		return calList;
 	}
 	
 	@GetMapping("/plan/test")

@@ -34,6 +34,7 @@ $(document).ready(function() {
 			eventLimit: true, // allow "more" link when too many events
 			navLinks: true,
 			droppable: true, // this allows things to be dropped onto the calendar
+			displayEventTime: false,
 			drop: function(date, allDay) {
 				var originalEventObject = $(this).data('eventObject');
 				var valueArray = ($(this).attr('class')).split(" ");
@@ -57,6 +58,10 @@ $(document).ready(function() {
 			eventDragStop : function(info){
 				console.log(info);
 			},
+			eventClick: function(data){
+				var projectPlanCode = data.projectPlanCode;
+				location.href = '/plan/addSpend?projectPlanCode=' + projectPlanCode;
+			},
 			customButtons: {
                 changeDateButton: {
                     text: '날짜선택',
@@ -75,11 +80,14 @@ $(document).ready(function() {
         	   $('#planModal').modal('show');
             },
             
-			/*events : function(info, successCallback, failureCallback, callback) {				
+			events : function(info, successCallback, failureCallback, callback) {				
+				
+				var projectPlanCode = $('#projectPlanNList').val();
 				
 				var request = $.ajax({
-				  url: "/calendarSelect",
-				  method: "get",
+				  url: "/plan/calendarDataList",
+				  data: { projectPlanCode : projectPlanCode },
+				  method: "Post",
 				  dataType: "json"
 				});
 				 
@@ -91,74 +99,8 @@ $(document).ready(function() {
 				  alert( "Request failed: " + textStatus );
 				});
 				
-			},*/
-			/*events: [
-				{
-					title: 'All Day Event',
-					start: YM + '-01',
-					className: 'bg-success',
-					myData : '11111'
-				},
-				{
-					title: 'Long Event',
-					start: YM + '-07',
-					end: YM + '-10'
-				},
-				{
-					id: 999,
-					title: 'Repeating Event',
-					start: YM + '-09T16:00:00',
-					className: 'bg-danger'
-				},
-				{
-					id: 999,
-					title: 'Repeating Event',
-					start: YM + '-16T16:00:00',
-					className: 'bg-danger'
-				},
-				{
-					title: 'Conference',
-					start: YESTERDAY,
-					end: TOMORROW,
-					className: 'bg-warning'
-				},
-				{
-					title: 'Meeting',
-					start: TODAY + 'T10:30:00',
-					end: TODAY + 'T12:30:00',
-					className: 'bg-success'
-				},
-				{
-					title: 'Lunch',
-					start: TODAY + 'T12:00:00',
-					className: 'bg-info'
-				},
-				{
-					title: 'Meeting',
-					start: TODAY + 'T14:30:00',
-					className: 'bg-success'
-				},
-				{
-					title: 'Happy Hour',
-					start: TODAY + 'T17:30:00',
-					className: 'bg-info'
-				},
-				{
-					title: 'Dinner',
-					start: TODAY + 'T20:00:00',
-					className: 'bg-success'
-				},
-				{
-					title: 'Birthday Party',
-					start: TOMORROW + 'T07:00:00',
-					className: 'bg-orange'
-				},
-				{
-					title: 'Click for Google',
-					url: 'http://google.com/',
-					start: YM + '-28'
-				}
-			]*/
+			},
+			
 		});
 		$('#external-events .fc-event').each(function () {
 			// create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)

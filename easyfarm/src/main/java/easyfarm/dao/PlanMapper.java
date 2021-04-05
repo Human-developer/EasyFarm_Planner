@@ -13,6 +13,8 @@ import easyfarm.domain.plan.EtcPay;
 import easyfarm.domain.plan.InsurancePay;
 import easyfarm.domain.plan.MachineLeasePay;
 import easyfarm.domain.plan.MachineUsePay;
+import easyfarm.domain.plan.PlanWorkphase;
+import easyfarm.domain.plan.PlanWorkphaseCate;
 import easyfarm.domain.plan.ProductGain;
 import easyfarm.domain.plan.ResourcePay;
 import easyfarm.domain.plan.ResourceUsePlan;
@@ -90,4 +92,18 @@ public interface PlanMapper {
 	
 	//품목리스트조회
 	public List<StockItem> getStockItemList(String farmCode);
+	
+	//단계별작업계획 월켈린더 리스트
+	public List<Map<String, Object>> getPlanWorkphaseSchedule(String projectPlanCode);
+	
+	//단계별 상세작업계획 월켈린더 리스트
+	public List<Map<String, Object>> getPlanWorkphaseCateSchedule(String projectPlanCode);
+	
+	//단계별 작업계획 등록
+	public int addPlanWorkphase(PlanWorkphase planWorkphase);
+	
+	//단계별 상세작업계획 등록
+	public int addPlanWorkphaseCate(PlanWorkphaseCate planWorkphaseCate);
+	
+		
 }
