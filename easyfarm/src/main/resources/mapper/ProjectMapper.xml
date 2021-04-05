@@ -67,7 +67,7 @@
 	<!-- 등록 - 프로젝트 코드 최대값 가져오기 -->
 	<select id="getMaxProjectCode" resultType="String">
 		SELECT
-			MAX(project_code)
+			MAX(CAST(SUBSTRING(project_code, 9) AS UNSIGNED))
 		FROM
 			tb_farm_project
 	</select>
@@ -106,9 +106,17 @@
 	<!-- 등록 - 프로젝트별 작업단계 코드 최대값 가져오기 -->
 	<select id="getMaxProjectWorkphaseCode" resultType="String">
 		SELECT
-			MAX(project_workphase_code)
+			MAX(CAST(SUBSTRING(project_workphase_code, 19) AS UNSIGNED))
 		FROM
 			tb_project_workphase
+	</select>
+	<select id="getCropPhaseCodeByCropCode" resultType="String" parameterType="String">
+		SELECT
+			crop_phase_info_code
+		FROM
+			tb_crop_phase_info
+		WHERE
+			crop_code = #{cropCode}
 	</select>
 	<!-- 등록 4 - 프로젝트별 작업단계 insert -->
 	<insert id="projectWorkphaseAddByProjectWorkphase" parameterType="ProjectWorkphase">
@@ -128,10 +136,10 @@
 			#{projectWorkphaseCode},
 			#{projectCode},
 			#{cropCode},
-			(SELECT crop_phase_info_code FROM tb_crop_phase_info WHERE crop_code = #{cropCode} GROUP BY crop_phase_info),
+			#{cropPhaseInfoCode},
 			#{regMemberId},
 			NOW(),
-			IF(crop_phase_info_code = #{cropPhaseInfoCode}, 'Y','N')
+			#{useStatus}
 		)
 	</insert>
 	
