@@ -333,7 +333,7 @@ $(function(){
 			var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
 			$(this).datepicker('setDate', new Date(year, month, 1)); 
 			$(".ui-datepicker-calendar").css("display","none"); 
-			} 
+		} 
 	});
 	
 	$("#taxPayWhatmonth").focus(function () {
@@ -381,12 +381,6 @@ $(function(){
 	$('#stockItemTable').DataTable();
 	$('#resourceUsecapacityListTable').DataTable();
 	
-	$('#planAddCommonMachineBtn').click(function(){
-		$('#planAddBookmarkMachine').addClass('z-index1040');
-	});
 	
-	$('.removeZ-index').click(function(){
-		$('#planAddBookmarkMachine').removeClass('z-index1040');
-	})
 	
 });

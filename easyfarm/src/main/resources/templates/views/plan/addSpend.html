@@ -5,12 +5,12 @@
 	  
 	<!-- 화면 title 설정 -->
 	<th:block layout:fragment="customTitle">
-		<title>계획서 등록</title>
+		<title>상세계획 관리</title>
 	</th:block>
 	
 	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
 	<th:block layout:fragment="pageTitle">
-		계획서 등록
+		상세계획 관리
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
@@ -81,15 +81,14 @@
 			button a:visited { color: white; text-decoration: none;}
 			button a:hover { color: white; text-decoration: none;}
 			
-			.vertical-al94{vertical-align: 94px;}
-			.z-index1040{z-index: 1040;}
-			
 			#clientListTable td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}​
 			#stockItemTable td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 			#stockItemTable{table-layout:fixed}​
 			#resourceUsecapacityListTable td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 			table td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}​
-
+			
+			#accordion{font-size: 20px;}
+			.ui-accordion .ui-accordion-header{padding: .8em .8em .8em .8em !important; font-size: 16px;}
 		</style>
 	</th:block>
 	
@@ -101,7 +100,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="box-content">
-							<h3>계획서 등록</h3>
+							<h3>작업일정 상세계획</h3>
 							<hr/>
 							
 							<div class="form-horizontal margin-bottom-30">
@@ -153,27 +152,413 @@
 							
 							<div class="box-content">
 								<ul class="list-inline">
-									<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">간편등록</button></li>
-									<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
-									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddClient">거래처등록</button></li>
-									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddStock">품목등록</button></li>
-									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddResourcePay">농자재매입등록</button></li>
-									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddBookmarkMachine">농기계즐겨찾기등록</button></li>
-									<li class="margin-bottom-10"><button type="button" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddRetainMachine">보유농기계등록</button></li>
-								</ul>
-								<ul class="list-inline">
 									<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">관리화면</button></li>
 									<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
 									<li class="margin-bottom-10"><button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">거래처관리</button></li>
 									<li class="margin-bottom-10"><button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">품목관리</button></li>
 									<li class="margin-bottom-10"><button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">농기계관리</button></li>
 								</ul>
-								<ul class="list-inline">
-									<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">상세보기</button></li>
-									<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
-									<li class="margin-bottom-10"><button type="button" class="btn btn-warning btn-rounded btn-bordered waves-effect waves-light" data-toggle="modal" data-target="#planAddResourceUsecapacity">농자재소모현황 상세보기</button></li>
-								</ul>
 							</div>
+							
+							<!-- 사전정보등록 아코디온 시작 -->
+							<div class="box-content no-padding">
+								<div id="accordion" class="js__ui_accordion">
+									<h2 class="accordion-title">농가단위 사전정보등록</h2>
+									<div class="accordion-content no-padding">
+									
+									<!-- 탭항목시작 -->
+									<ul class="nav nav-tabs nav-justified" id="myTabs-justified" role="tablist">
+										<li role="presentation" class="active">
+											<a href="#client-justified" id="client-tab-justified" role="tab" data-toggle="tab" aria-expanded="true" aria-controls="client">
+												거래처
+											</a>
+										</li>
+										<li role="presentation">
+											<a href="#stockItem-justified" role="tab" id="stockItem-tab-justified" data-toggle="tab" aria-controls="stockItem">
+												품목
+											</a>
+										</li>
+										<li role="presentation">
+											<a href="#planResourcePay-justified" role="tab" id="planResourcePay-tab-justified" data-toggle="tab" aria-controls="planResourcePay">
+												농자재매입
+											</a>
+										</li>
+										<li role="presentation">
+											<a href="#commonMachine-justified" role="tab" id="commonMachine-tab-justified" data-toggle="tab" aria-controls="commonMachine">
+												공통농기계
+											</a>
+										</li>
+										<li role="presentation">
+											<a href="#planBookmarkMachine-justified" role="tab" id="planBookmarkMachine-tab-justified" data-toggle="tab" aria-controls="planBookmarkMachine">
+												농기계즐겨찾기
+											</a>
+										</li>
+										<li role="presentation">
+											<a href="#planRetainMachine-justified" role="tab" id="planRetainMachine-tab-justified" data-toggle="tab" aria-controls="planRetainMachine">
+												보유농기계
+											</a>
+										</li>
+									</ul>
+									<!-- 탭항목끝 -->
+									
+									<!-- 탭항목별컨텐츠 시작-->
+									<div class="tab-content" id="myTabContent-justified">
+									
+										<!-- 거래처관리 시작 -->
+										<div class="tab-pane fade in active" role="tabpanel" id="client-justified" aria-labelledby="client-tab-justified">
+											<div class="box-content card white">
+												<div class="box-title">
+													<div class="row">
+														<div class="col-sm-12">
+															<h4>등록된 거래처 목록</h4>
+														</div>
+													</div>
+												</div>
+												<div class="card-content">
+													<div class="table-responsive">
+														<table id="clientListTable" class="table table-striped table-bordered display" style="width:100%">
+															<thead>
+																<tr>
+																	<th class="hidden">거래처코드</th>
+																	<th>거래처명</th>
+																	<th>전화번호</th>
+																	<th>주소</th>
+																	<th>계좌은행</th>
+																	<th>계좌번호</th>
+																	<th>간단메모</th>
+																</tr>
+															</thead>
+															<tbody>
+																<th:block th:if="${#lists.size(clientNameList) > 0}" th:each="c : ${clientNameList}">
+																	<tr>
+																		<td th:text="${c.clientCode}" class="hidden"></td>
+																		<td th:text="${c.clientName}"></td>
+																		<td th:text="${c.clientPhone}"></td>
+																		<td th:text="${c.clientAddress}"></td>
+																		<td th:text="${c.clientAccountBank}"></td>
+																		<td th:text="${c.clientAccount}"></td>
+																		<td th:text="${c.clientMemo}"></td>
+																	</tr>
+																</th:block>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<hr/>
+											<div class="form-group t-center">
+												<div class="row">
+													<div class="col-md-6 col-md-offset-3">
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+															data-toggle="modal" data-target="#planAddClient">거래처등록
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- 거래처관리 끝 -->
+										
+										<!-- 품목관리 시작 -->
+										<div class="tab-pane fade" role="tabpanel" id="stockItem-justified" aria-labelledby="stockItem-tab-justified">
+											<div class="box-content card white">
+												<div class="box-title">
+													<div class="row">
+														<div class="col-sm-12">
+															<h4>등록된 품목 목록</h4>
+														</div>
+													</div>
+												</div>
+												<div class="card-content">
+													<div class="table-responsive">
+														<table id="stockItemTable" class="table table-striped table-bordered display" style="width:100%">
+															<thead>
+																<tr>
+																	<th>카테고리명</th>
+																	<th>품목명</th>
+																	<th>품목수량</th>
+																	<th>수량단위</th>
+																	<th>품목용량</th>
+																	<th>용량단위</th>
+																	<th>작성자</th>
+																</tr>
+															</thead>
+															<tbody>
+																<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+																	<tr>
+																		<td th:text="${fs.stockCate.stockCateName}"></td>
+																		<td th:text="${fs.stockItemName}"></td>
+																		<td th:text="${fs.stockItemQuantity}"></td>
+																		<td th:text="${fs.stockItemQuantityUnit}"></td>
+																		<td th:text="${fs.stockItemQuantityCapacity}"></td>
+																		<td th:text="${fs.stockItemQuantityCapacityUnit}"></td>
+																		<td th:text="${fs.regMemberId}"></td>
+																	</tr>
+																</th:block>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<hr/>
+											<div class="form-group t-center">
+												<div class="row">
+													<div class="col-md-6 col-md-offset-3">
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+															data-toggle="modal" data-target="#planAddStock">품목등록
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- 품목관리 끝 -->
+										
+										<!-- 농재자매입관리 시작 -->
+										<div class="tab-pane fade" role="tabpanel" id="planResourcePay-justified" aria-labelledby="planResourcePay-tab-justified">
+											<div class="box-content card white">
+												<div class="box-title">
+													<div class="row">
+														<div class="col-sm-12">
+															<h4>등록된 농자재매입 목록</h4>
+														</div>
+													</div>
+												</div>
+												<div class="card-content">
+													<div class="table-responsive">
+														<table id="stockItemTable" class="table table-striped table-bordered display" style="width:100%">
+															<thead>
+																<tr>
+																	<th>카테고리명</th>
+																	<th>품목명</th>
+																	<th>품목수량</th>
+																	<th>수량단위</th>
+																	<th>품목용량</th>
+																	<th>용량단위</th>
+																	<th>작성자</th>
+																</tr>
+															</thead>
+															<tbody>
+																<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+																	<tr>
+																		<td th:text="${1}"></td>
+																		<td th:text="${2}"></td>
+																		<td th:text="${3}"></td>
+																		<td th:text="${4}"></td>
+																		<td th:text="${5}"></td>
+																		<td th:text="${6}"></td>
+																		<td th:text="${7}"></td>
+																	</tr>
+																</th:block>
+															</tbody>
+														</table>
+													</div>
+												</div>
+												<div class="box-title">
+													<div class="row">
+														<div class="col-sm-12">
+															<h4>농자재 소모현황</h4>
+														</div>
+													</div>
+												</div>
+												<div class="card-content">
+													<div class="table-responsive">
+														<table id="resourceUsecapacityListTable" class="table table-striped table-bordered display" style="width:100%">
+															<thead>
+																<tr>
+																	<th>거래처</th>
+																	<th>카테고리</th>
+																	<th>품목명</th>
+																	<th>잔여수량</th>
+																	<th>잔여용량</th>
+																	<th>사용가능여부</th>
+																</tr>
+															</thead>
+															<tbody>
+																<th:block th:if="${#lists.size(resourceUsecapacityList) > 0}" th:each="r : ${resourceUsecapacityList}">
+																	<tr>
+																		<td th:text="${r.clientName}"></td>
+																		<td th:text="${r.stockCateName}"></td>
+																		<td th:text="${r.stockItemName}"></td>
+																		<td th:text="${r.resourceRetainQuantity}"></td>
+																		<td th:text="${r.resourceRetainQuantityCapacityExtra}"></td>
+																		<td th:text="${r.availableStatus}"></td>
+																	</tr>
+																</th:block>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<hr/>
+											<div class="form-group t-center">
+												<div class="row">
+													<div class="col-md-6 col-md-offset-3">
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+															data-toggle="modal" data-target="#planAddResourcePay">농자재매입등록
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- 농재자매입관리 끝 -->
+										
+										<!-- 공통농기계관리 시작 -->
+										<div class="tab-pane fade" role="tabpanel" id="commonMachine-justified" aria-labelledby="commonMachine-tab-justified">
+											<div class="box-content card white">
+												<div class="box-title">
+													<div class="row">
+														<div class="col-sm-12">
+															<h4>등록된 공통농기계 목록</h4>
+														</div>
+													</div>
+												</div>
+												<div class="card-content">
+													<div class="table-responsive">
+														<table id="commonMachineListTable" class="table table-striped table-bordered display" style="width:100%">
+															<thead>
+																<tr>
+																	<th class="hidden">공통농기계코드</th>
+																	<th>#</th>
+																	<th>농기계명</th>
+																	<th>작성자아이디</th>
+																	<th>작성일</th>
+																</tr>
+															</thead>
+															<tbody>
+																<th:block th:if="${commonMachineList != null && #lists.size(commonMachineList) > 0}" th:each="c : ${commonMachineList}">
+																	<tr>
+																		<td th:text="${c.commonMachineCode}" class="hidden"></td>
+																		<td><input type="checkbox" class="checkbox primary"/></td>
+																		<td th:text="${c.commonMachineName}"></td>
+																		<td th:text="${c.regMemberId}"></td>
+																		<td th:text="${c.regDate}"></td>
+																	</tr>
+																</th:block>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<hr/>
+											<div class="form-group t-center">
+												<div class="row">
+													<div class="col-md-6 col-md-offset-3">
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+															data-toggle="modal" data-target="#planAddCommonMachine">공통농기계 등록
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- 공통농기계관리 끝 -->
+										
+										<!-- 농기계즐겨찾기관리 시작 -->
+										<div class="tab-pane fade" role="tabpanel" id="planBookmarkMachine-justified" aria-labelledby="planBookmarkMachine-tab-justified">
+											<div class="box-content card white">
+												<div class="box-title">
+													<div class="row">
+														<div class="col-sm-12">
+															<h4>등록된 농기계 즐겨찾기 목록</h4>
+														</div>
+													</div>
+												</div>
+												<div class="card-content">
+													<div class="table-responsive">
+														<table id="farmBookmarkMachineListTable" class="table table-striped table-bordered display" style="width:100%">
+															<thead>
+																<tr>
+																	<th>농기계명</th>
+																	<th>작성자아이디</th>
+																	<th>작성일</th>
+																	<th>삭제</th>
+																</tr>
+															</thead>
+															<tbody>
+																<th:block th:if="${#lists.size(farmBookmarkMachineList) > 0}" th:each="f : ${farmBookmarkMachineList}">
+																	<tr>
+																		<td th:text="${f.commonMachineName}"></td>
+																		<td th:text="${f.regMemberId}"></td>
+																		<td th:text="${f.regDate}"></td>
+																		<td>
+																			<a>삭제</a>
+																		</td>
+																	</tr>
+																</th:block>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<hr/>
+											<div class="form-group t-center">
+												<div class="row">
+													<div class="col-md-6 col-md-offset-3">
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+															data-toggle="modal" data-target="#planAddBookmarkMachine">농기계즐겨찾기 등록
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- 농기계즐겨찾기관리 끝 -->
+										
+										<!-- 보유농기계관리 시작 -->
+										<div class="tab-pane fade" role="tabpanel" id="planRetainMachine-justified" aria-labelledby="planRetainMachine-tab-justified">
+											<div class="box-content card white">
+												<div class="box-title">
+													<div class="row">
+														<div class="col-sm-12">
+															<h4>등록된 보유농기계 목록</h4>
+														</div>
+													</div>
+												</div>
+												<div class="card-content">
+													<div class="table-responsive">
+														<table id="farmBookmarkMachineListTable" class="table table-striped table-bordered display" style="width:100%">
+															<thead>
+																<tr>
+																	<th class="hidden">농기계명</th>
+																	<th>농기계명</th>
+																	<th>작성자아이디</th>
+																	<th>작성일</th>
+																	<th>삭제</th>
+																</tr>
+															</thead>
+															<tbody>
+																<th:block th:if="${#lists.size(farmRetainMachineList) > 0}" th:each="f : ${farmRetainMachineList}">
+																	<tr>
+																		<td th:text="${f.farmRetainMachineCode}" class="hidden"></td>
+																		<td th:text="${f.commonMachineName}"></td>
+																		<td th:text="${f.regMemberId}"></td>
+																		<td th:text="${f.regDate}"></td>
+																		<td>
+																			<a>삭제</a>
+																		</td>
+																	</tr>
+																</th:block>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<hr/>
+											<div class="form-group t-center">
+												<div class="row">
+													<div class="col-md-6 col-md-offset-3">
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+															data-toggle="modal" data-target="#planAddRetainMachine">보유농기계 등록
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- 보유농기계관리 끝 -->
+									</div>
+									<!-- 탭항목별컨텐츠 끝-->
+									</div>
+								</div>
+							</div>
+							<!-- 사전정보등록 아코디온 끝 -->
+							
 								
 							<!-- 탭항목시작 -->
 							<ul class="nav nav-tabs nav-justified" id="myTabs-justified" role="tablist">
@@ -188,90 +573,97 @@
 							
 							<!-- 탭항목별컨텐츠 시작-->
 							<div class="tab-content" id="myTabContent-justified">
+								<!-- 인건비관리 시작 -->
 								<div class="tab-pane fade in active" role="tabpanel" id="workforcePay-justified" aria-labelledby="workforcePay-tab-justified">
-									<div class="form-horizontal">
-										<div class="form-group">
-											<label for="workforceCount" class="col-sm-2 control-label"><strong>근무인원</strong></label>
-										    <div class="col-md-4">
-										      <input id="workforceCount" type="text" name="workforceCount" class="form-control" placeholder="0">
-										    </div>
+									
+									<div class="box-content card white">
+										<div class="box-title">인건비 지출계획</div>
+										<div class="card-content">
+											<div class="table-responsive">
+												<table class="table table-hover" style="width:100%">
+													<thead>
+														<tr>
+															<th>근무인원</th>
+															<th>근무일수</th>
+															<th>일일인건비</th>
+															<th>인건비합계</th>
+															<th>작성자</th>
+															<th>작성일</th>
+														</tr>
+													</thead>
+													<tbody>
+														<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+															<tr>
+																<td th:text="${1}"></td>
+																<td th:text="${2}"></td>
+																<td th:text="${3}"></td>
+																<td th:text="${4}"></td>
+																<td th:text="${5}"></td>
+																<td th:text="${6}"></td>
+															</tr>
+														</th:block>
+													</tbody>
+												</table>
+											</div>
 										</div>
-										<div class="form-group">
-											<label for="workforceHowlong" class="col-sm-2 control-label"><strong>근무일수</strong></label>
-										    <div class="col-md-4">
-										      <input id="workforceHowlong" type="text" name="workforceHowlong" class="form-control" placeholder="0">
-										    </div>
-										</div>
-										<div class="form-group">
-											<label for="workforcePayDay" class="col-sm-2 control-label"><strong>일일인건비</strong></label>
-										    <div class="col-md-4">
-										      <input id="workforcePayDay" type="text" name="workforcePayDay" class="form-control" placeholder="1000">
-										    </div>
-										</div>
-										<div class="form-group">
-											<label for="workforcePayTotal" class="col-sm-2 control-label"><strong>인건비합계</strong></label>
-										    <div class="col-md-4">
-										      <input id="workforcePayTotal" type="text" name="workforcePayTotal" class="form-control" readonly="readonly">
-										    </div>
+									</div>
+									<hr/>
+									<div class="form-group t-center">
+										<div class="row">
+											<div class="col-md-6 col-md-offset-3">
+												<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+													data-toggle="modal" data-target="#planAddWorkforcePay">인건비 지출계획등록
+												</button>
+											</div>
 										</div>
 									</div>
 								</div>
+								<!-- 인건비관리 끝 -->
+								
+								<!-- 농기계관리 시작 -->
 								<div class="tab-pane fade" role="tabpanel" id="machine-justified" aria-labelledby="machine-tab-justified">
 									<div class="box-content card white">
 										<div class="box-title">
 											<div class="row">
 												<div class="col-sm-12">
 													<div class="pull-left">
-														<div class="switch primary"><input type="checkbox" checked id="leaseSwitch"><label for="leaseSwitch">농기계 대여 후 작업시</label></div>
+														<div class="switch primary"><input type="checkbox" checked id="leaseSwitch"><label for="leaseSwitch">농기계 대여 지출계획</label></div>
 													</div>
-													<!-- <div class="pull-right">
-														<button type="button" id="planAddBtn" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded">대여농기계등록</button>
-													</div> -->
+													<div class="pull-right">
+														<button type="button" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded"
+															data-toggle="modal" data-target="#planAddMachineLease">대여농기계등록</button>
+													</div>
 												</div>
 											</div>
 										</div>
 										<div class="card-content">
-											<div class="form-horizontal">
-												<div class="form-group">
-													<label class="col-sm-2 control-label"><strong>거래처</strong></label>
-												    <div class="col-md-4">
-														<select class="form-control" name="machineClientCode" id="machineClientCode" readonly="readonly">
-															<option value=""> :: 거래처선택 :: </option>
-															<th:block th:if="${#lists.size(clientNameList) > 0}" th:each="c : ${clientNameList}">
-																<option th:value="${c.clientCode}" th:text="${c.clientName}" disabled="disabled"></option>
-															</th:block>
-														</select>
-												    </div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-2 control-label"><strong>대여농기계종류</strong></label>
-												    <div class="col-md-4">
-														<select class="form-control" name="commonMachineCode" id="commonMachineCode" readonly="readonly">
-															<option value=""> :: 종류선택 :: </option>
-															<th:block th:if="${#lists.size(farmBookmarkMachineList) > 0}" th:each="f : ${farmBookmarkMachineList}">
-																<option th:value="${f.commonMachineCode}" th:text="${f.commonMachineName}" disabled="disabled"></option>
-															</th:block>
-														</select>
-												    </div>
-												</div>
-												<div class="form-group">
-													<label for="machineLeaseHowlong" class="col-sm-2 control-label"><strong>대여일수</strong></label>
-												    <div class="col-md-4" id="inputFormLeaseHowlong">
-													    <input id="machineLeaseHowlong" type="text" name="machineLeaseHowlong" class="form-control" readonly="readonly" placeholder="0">
-												    </div>
-												</div>
-												<div class="form-group">
-													<label for="machineLeasePayDay" class="col-sm-2 control-label"><strong>일일대여료</strong></label>
-												    <div class="col-md-4" id="inputFormLeasePayDay">
-												    	<input id="machineLeasePayDay" type="text" name="machineLeasePayDay" class="form-control" readonly="readonly" placeholder="1000">
-												    </div>
-												</div>
-												<div class="form-group">
-													<label for="machineLeasePayTotal" class="col-sm-2 control-label"><strong>총대여료합계</strong></label>
-												    <div class="col-md-4">
-												    	<input id="machineLeasePayTotal" type="text" name="machineLeasePayTotal" class="form-control" readonly="readonly" placeholder="0">
-												    </div>
-												</div>
+											<div class="table-responsive">
+												<table class="table table-hover" style="width:100%">
+													<thead>
+														<tr>
+															<th>거래처</th>
+															<th>농기계종류</th>
+															<th>대여일수</th>
+															<th>일일대여료</th>
+															<th>총대여료합계</th>
+															<th>작성자</th>
+															<th>작성일</th>
+														</tr>
+													</thead>
+													<tbody>
+														<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+															<tr>
+																<td th:text="${1}"></td>
+																<td th:text="${2}"></td>
+																<td th:text="${3}"></td>
+																<td th:text="${4}"></td>
+																<td th:text="${5}"></td>
+																<td th:text="${6}"></td>
+																<td th:text="${7}"></td>
+															</tr>
+														</th:block>
+													</tbody>
+												</table>
 											</div>
 										</div>
 									</div>
@@ -280,192 +672,246 @@
 											<div class="row">
 												<div class="col-sm-12">
 													<div class="pull-left">
-														<div class="switch primary"><input type="checkbox" checked id="useSwitch"><label for="useSwitch">보유 농기계 작업시</label></div>
+														<div class="switch primary"><input type="checkbox" checked id="useSwitch"><label for="useSwitch">보유 농기계 지출계획</label></div>
 													</div>
-													<!-- <div class="pull-right">
-														<button type="button" id="planAddBtn" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded">보유농기계등록</button>
-													</div> -->
+													<div class="pull-right">
+														<button type="button" id="planAddBtn" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded"
+															data-toggle="modal" data-target="#planAddMachineUse">보유농기계등록</button>
+													</div>
 												</div>
 											</div>
 										</div>
 										<div class="card-content">
-											<div class="form-horizontal">
-												<div class="form-group">
-													<label for="farmRetainMachineCode" class="col-sm-2 control-label"><strong>보유농기계종류</strong></label>
-												    <div class="col-md-4">
-														<select class="form-control" name="farmRetainMachineCode" id="farmRetainMachineCode" readonly="readonly">
-															<option value=""> :: 종류선택 :: </option>
-															<th:block th:if="${#lists.size(farmRetainMachineList) > 0}" th:each="f : ${farmRetainMachineList}">
-																<option th:value="${f.farmRetainMachineCode}" th:text="${f.commonMachineName}" disabled="disabled"></option>
-															</th:block>
-														</select>
-												    </div>
-												</div>
+											<div class="table-responsive">
+												<table class="table table-hover" style="width:100%">
+													<thead>
+														<tr>
+															<th>농기계종류</th>
+															<th>작성자</th>
+															<th>작성일</th>
+														</tr>
+													</thead>
+													<tbody>
+														<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+															<tr>
+																<td th:text="${1}"></td>
+																<td th:text="${2}"></td>
+																<td th:text="${3}"></td>
+															</tr>
+														</th:block>
+													</tbody>
+												</table>
 											</div>
 										</div>
 									</div>
 								</div>
+								<!-- 농기계관리 끝 -->
+								
+								<!-- 농자재관리 시작 -->
 								<div class="tab-pane fade" role="tabpanel" id="resource-justified" aria-labelledby="resource-tab-justified">
 									<div class="box-content card white">
-										<div class="box-title">농자재사용계획</div>
+										<div class="box-title">농자재사용 지출계획</div>
 										<div class="card-content">
-											<div class="form-horizontal">
-												<div class="form-group">
-													<label class="col-sm-2 control-label"><strong>품목</strong></label>
-												    <div class="col-md-4">
-														<select class="form-control" name="resourceStockItemCode" id="resourceStockItemCode">
-															<option value=""> :: 품목선택 :: </option>
-															<th:block th:if="${#lists.size(stockItemList) > 0}" th:each="s : ${stockItemList}">
-																<option th:value="${s.resourceUsecapacityCode}" th:text="|${s.stockCateName} : ${s.stockItemName}|"></option>
-															</th:block>
-														</select>
-												    </div>
-												</div>
-												<div class="form-group">
-													<label for="resourceRetainQuantity" class="col-sm-2 control-label"><strong>잔여수량</strong></label>
-												    <div class="col-md-4">
-												    	<input id="resourceRetainQuantity" type="text" name="resourceRetainQuantity" class="form-control" readonly="readonly" placeholder="0">
-												    </div>
-												</div>
-												<div class="form-group">
-													<label for="resourceRetainQuantityCapacityExtra" class="col-sm-2 control-label"><strong>총잔여용량</strong></label>
-												    <div class="col-md-4">
-												    	<input id="resourceRetainQuantityCapacityExtra" type="text" name="resourceRetainQuantityCapacityExtra" class="form-control" readonly="readonly" placeholder="0">
-												    </div>
-												</div>
-												<hr/>
-												<div class="form-group">
-													<label for="stockItemUseQuantity" class="col-sm-2 control-label"><strong>사용수량</strong></label>
-												    <div class="col-md-4">
-													    <input id="stockItemUseQuantity" type="text" name="stockItemUseQuantity" class="form-control" placeholder="0" readonly="readonly">
-												    </div>
-												</div>
-												<div class="form-group">
-													<label for="stockItemUseQuantityTotal" class="col-sm-2 control-label"><strong>총 사용용량</strong></label>
-												    <div class="col-md-4">
-													    <input id="stockItemUseQuantityTotal" type="text" name="stockItemUseQuantityTotal" class="form-control" placeholder="0" readonly="readonly">
-												    </div>
-												</div>
-												<div class="form-group">
-													<label for="stockItemUseQuantityConversionPay" class="col-sm-2 control-label"><strong>총사용량금액환산</strong></label>
-												    <div class="col-md-4">
-												    	<input id="stockItemUseQuantityConversionPay" type="text" name="stockItemUseQuantityConversionPay" class="form-control" readonly="readonly" placeholder="0">
-												    </div>
+											<div class="table-responsive">
+												<table class="table table-hover" style="width:100%">
+													<thead>
+														<tr>
+															<th>농자재소모현황코드</th>
+															<th>카테고리</th>
+															<th>품목명</th>
+															<th>사용수량</th>
+															<th>수량단위</th>
+															<th>사용용량</th>
+															<th>용량단위</th>
+															<th>사용량금액환산</th>
+															<th>작성자</th>
+															<th>작성일</th>
+														</tr>
+													</thead>
+													<tbody>
+														<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+															<tr>
+																<td th:text="${1}"></td>
+																<td th:text="${2}"></td>
+																<td th:text="${3}"></td>
+																<td th:text="${4}"></td>
+																<td th:text="${5}"></td>
+																<td th:text="${6}"></td>
+																<td th:text="${7}"></td>
+																<td th:text="${8}"></td>
+																<td th:text="${9}"></td>
+																<td th:text="${10}"></td>
+															</tr>
+														</th:block>
+													</tbody>
+												</table>
+											</div>
+											<hr/>
+											<div class="form-group t-center">
+												<div class="row">
+													<div class="col-md-6 col-md-offset-3">
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+															data-toggle="modal" data-target="#planAddResourceUsePlan">농자재 지출계획등록
+														</button>
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
+								<!-- 농자재관리 끝 -->
+								
+								<!-- 공과금관리 시작 -->
 								<div class="tab-pane fade" role="tabpanel" id="taxPay-justified" aria-labelledby="taxPay-tab-justified">
-									<div class="form-horizontal">
-										<div class="form-group">
-											<label for="taxPayCateCode" class="col-sm-2 control-label"><strong>공과금종류</strong></label>
-										    <div class="col-md-4">
-												<select class="form-control" name="taxPayCateCode" id="taxPayCateCode">
-													<option value=""> :: 종류선택 :: </option>
-													<th:block th:if="${#lists.size(taxPayCateCodeList) > 0}" th:each="t : ${taxPayCateCodeList}">
-														<option th:value="${t.taxPayCateCode}" th:text="${t.taxPayCateName}"></option>
-													</th:block>
-												</select>
-										    </div>
-										</div>
-										<div class="form-group">
-											<label for="taxPayClientCode" class="col-sm-2 control-label"><strong>거래처</strong></label>
-										    <div class="col-md-4">
-												<select class="form-control" name="taxPayClientCode" id="taxPayClientCode">
-													<option value=""> :: 거래처선택 :: </option>
-													<th:block th:if="${#lists.size(clientNameList) > 0}" th:each="c : ${clientNameList}">
-														<option th:value="${c.clientCode}" th:text="${c.clientName}"></option>
-													</th:block>
-												</select>
-										    </div>
-										</div>
-										<div class="form-group">
-											<label for="taxPayWhatmonth" class="col-sm-2 control-label"><strong>납부월</strong></label>
-										    <div class="col-md-4">
-										      <input id="taxPayWhatmonth" type="text" name="taxPayWhatmonth" class="form-control" placeholder="2021-1">
-										    </div>
-										</div>
-										<div class="form-group">
-											<label for="taxPay" class="col-sm-2 control-label"><strong>납부금액</strong></label>
-										    <div class="col-md-4">
-										      <input id="taxPay" type="text" name="taxPay" class="form-control" placeholder="100">
-										    </div>
-										</div>
-										<div class="form-group">
-											<label for="taxPayDetail" class="col-sm-2 control-label"><strong>추가메모</strong></label>
-											<div class="col-md-4">
-												<textarea class="form-control" id="taxPayDetail" name="taxPayDetail" rows="3" placeholder="메모를 작성해주세요" style="resize: none;"></textarea>
+									<div class="box-content card white">
+										<div class="box-title">공과금 지출계획</div>
+										<div class="card-content">
+											<div class="table-responsive">
+												<table class="table table-hover" style="width:100%">
+													<thead>
+														<tr>
+															<th>공과금지출계획코드</th>
+															<th>거래처명</th>
+															<th>공과금항목</th>
+															<th>납부월</th>
+															<th>납부금액</th>
+															<th>추가메모</th>
+															<th>작성자</th>
+															<th>작성일</th>
+														</tr>
+													</thead>
+													<tbody>
+														<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+															<tr>
+																<td th:text="${1}"></td>
+																<td th:text="${2}"></td>
+																<td th:text="${3}"></td>
+																<td th:text="${4}"></td>
+																<td th:text="${5}"></td>
+																<td th:text="${6}"></td>
+																<td th:text="${7}"></td>
+																<td th:text="${8}"></td>
+															</tr>
+														</th:block>
+													</tbody>
+												</table>
+											</div>
+											<hr/>
+											<div class="form-group t-center">
+												<div class="row">
+													<div class="col-md-6 col-md-offset-3">
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+															data-toggle="modal" data-target="#planAddTaxPayPlan">공과금 지출계획등록
+														</button>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
+								<!-- 공과금관리 끝 -->
+								
+								<!-- 생산물관리 시작 -->
 								<div class="tab-pane fade" role="tabpanel" id="productGain-justified" aria-labelledby="productGain-tab-justified">
-									<div class="form-horizontal">
-										<div class="form-group">
-											<label for="productGainStockItemCode" class="col-sm-2 control-label"><strong>품목</strong></label>
-										    <div class="col-md-4">
-												<select class="form-control" name="productGainStockItemCode" id="productGainStockItemCode">
-													<option value=""> :: 품목선택 :: </option>
-													<th:block th:if="${#lists.size(stockItemList) > 0}" th:each="s : ${stockItemList}">
-														<option th:value="${s.resourceUsecapacityCode}" th:text="|${s.stockCateName} : ${s.stockItemName}|"></option>
-													</th:block>
-												</select>
-										    </div>
-										</div>
-										<div class="form-group">
-											<label for="gainQuantity" class="col-sm-2 control-label"><strong>수확수량</strong></label>
-										    <div class="col-md-4">
-										      <input id="gainQuantity" type="text" name="gainQuantity" class="form-control">
-										    </div>
-										</div>
-										<div class="form-group">
-											<label for="gainQuantityCapacity" class="col-sm-2 control-label"><strong>총수확량계산</strong></label>
-										    <div class="col-md-4">
-										      <input id="gainQuantityCapacity" type="text" name="gainQuantityCapacity" class="form-control" readonly="readonly">
-										    </div>
-										</div>
-										<div class="form-group">
-											<label for="productGainDetail" class="col-sm-2 control-label"><strong>추가메모</strong></label>
-											<div class="col-md-4">
-												<textarea class="form-control" id="productGainDetail" name="productGainDetail" rows="3" placeholder="메모를 작성해주세요" style="resize: none;"></textarea>
+									<div class="box-content card white">
+										<div class="box-title">생산물 수확계획</div>
+										<div class="card-content">
+											<div class="table-responsive">
+												<table class="table table-hover" style="width:100%">
+													<thead>
+														<tr>
+															<th>생산물수확계획코드</th>
+															<th>카테고리</th>
+															<th>품목명</th>
+															<th>수확수량</th>
+															<th>수확용량</th>
+															<th>추가메모</th>
+															<th>작성자</th>
+															<th>작성일</th>
+														</tr>
+													</thead>
+													<tbody>
+														<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+															<tr>
+																<td th:text="${1}"></td>
+																<td th:text="${2}"></td>
+																<td th:text="${3}"></td>
+																<td th:text="${4}"></td>
+																<td th:text="${5}"></td>
+																<td th:text="${6}"></td>
+																<td th:text="${7}"></td>
+																<td th:text="${8}"></td>
+															</tr>
+														</th:block>
+													</tbody>
+												</table>
+											</div>
+											<hr/>
+											<div class="form-group t-center">
+												<div class="row">
+													<div class="col-md-6 col-md-offset-3">
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+															data-toggle="modal" data-target="#planAddProductGain">생산물 수확계획등록
+														</button>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
+								<!-- 생산물관리 끝 -->
+								
+								<!-- 기타비용관리 시작 -->
 								<div class="tab-pane fade" role="tabpanel" id="etcPay-justified" aria-labelledby="etcPay-tab-justified">
-									<div class="form-horizontal">
-										<div class="form-group">
-											<label for="etcPayClientCode" class="col-sm-2 control-label"><strong>거래처</strong></label>
-										    <div class="col-md-4">
-												<select class="form-control" name="etcPayClientCode" id="etcPayClientCode">
-													<option value=""> :: 거래처선택 :: </option>
-													<th:block th:if="${#lists.size(clientNameList) > 0}" th:each="c : ${clientNameList}">
-														<option th:value="${c.clientCode}" th:text="${c.clientName}"></option>
-													</th:block>
-												</select>
-										    </div>
-										</div>
-										<div class="form-group">
-											<label for="etcPay" class="col-sm-2 control-label"><strong>지출금액</strong></label>
-										    <div class="col-md-4">
-										      <input id="etcPay" type="text" value="" name="etcPay" class="form-control" placeholder="100">
-										    </div>
-										</div>
-										<div class="form-group">
-											<label for="etcPayDetail" class="col-sm-2 control-label"><strong>추가메모</strong></label>
-											<div class="col-md-4">
-												<textarea class="form-control" id="etcPayDetail" rows="3" name="etcPayDetail" placeholder="메모를 작성해주세요" style="resize: none;"></textarea>
+									<div class="box-content card white">
+										<div class="box-title">기타비용 지출계획</div>
+										<div class="card-content">
+											<div class="table-responsive">
+												<table class="table table-hover" style="width:100%">
+													<thead>
+														<tr>
+															<th>기타비용지출계획코드</th>
+															<th>거래처명</th>
+															<th>지출금액</th>
+															<th>추가메모</th>
+															<th>작성자</th>
+															<th>작성일</th>
+														</tr>
+													</thead>
+													<tbody>
+														<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+															<tr>
+																<td th:text="${1}"></td>
+																<td th:text="${2}"></td>
+																<td th:text="${3}"></td>
+																<td th:text="${4}"></td>
+																<td th:text="${5}"></td>
+																<td th:text="${6}"></td>
+															</tr>
+														</th:block>
+													</tbody>
+												</table>
+											</div>
+											<hr/>
+											<div class="form-group t-center">
+												<div class="row">
+													<div class="col-md-6 col-md-offset-3">
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+															data-toggle="modal" data-target="#planAddEtcPay">기타비용 지출계획등록
+														</button>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
+								<!-- 기타비용관리 끝 -->
 							</div>
 							<!-- 탭항목별컨텐츠 끝-->
 								
 							<hr>
 							<div class="form-group t-center">
-								<button type="submit" id="btnSize" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btnSize">계획서등록</button>
+								<button type="submit" id="btnSize" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btnSize">수정완료</button>
 								<button type="button" th:value="|/plan/getSchedule?projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" class="btn btn-success btn-md waves-effect waves-light btn-rounded btnSize">
 									켈린더 돌아가기
 								</button>
