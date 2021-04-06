@@ -48,7 +48,7 @@
 		<script type="text/javascript">
 		var key = "";
 		var isCertification = "";
-		
+			  //매일 유효성검사
 			  $(".sendMail").click(function() {// 메일 입력 유효성 검사
 					var mail = $("#memberEmail").val(); //사용자의 이메일 입력값. 
 					
@@ -64,6 +64,7 @@
 							success: function(data){
 														
 								key = data.mailAuthKey;
+								console.log(key);
 							}
 		
 						});
@@ -78,7 +79,7 @@
 				});
 			  
 			 
-			  
+			  //인증 여부확인
 			  $(".compare").on("click", function() {
 				 
 				
@@ -98,9 +99,7 @@
 				
 				});
 			 	
-			  
-		
-		
+
 				//아이디 중복검사
 				$('#checkBtn').click(function(){
 					
@@ -150,19 +149,15 @@
 			
 
 		
-
-				$('#memberId').keyup(function(){
-					$('#checkBtn').attr('value','no');
-				});
-
-	
-			
+			//중복검사후 아이디변경시 중복체크 초기화
+			$('#memberId').keyup(function(){
+				$('#checkBtn').attr('value','no');
+			});
 
 
 			// 유효성 검사
 			$('#addCheck').click(function(){
-							
-				
+											
 				var getMail = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
 				var getCheck= RegExp(/^[a-zA-Z0-9]{4,12}$/);
 				var getName= RegExp(/^[가-힣]+$/);
@@ -317,7 +312,7 @@
 			
 			
 
-			
+		//주민등록번호 유효성검사 
 		function check_jumin()
 		{
 			var jumins3 = $("#memberIdenNum").val() + $("#memberIdenNum2").val();
@@ -337,10 +332,10 @@
 				$("#memberIdenNum").focus();
 				return false;
 			}
-				//주민번호 존재 검사
+			//주민번호 존재 검사
 				
 			for (var i = 0; i < buf.length; i++){
-				buf[i] = parseInt(jumins3.charAt(i));
+				buf[i] = parseInt(jumins3.charAt(i)); //int형으로 변환
 			}
 				
 				var multipliers = [2,3,4,5,6,7,8,9,2,3,4,5];
@@ -356,7 +351,7 @@
 				 swal({
 						title: "잘못된 주민등록번호 입니다.",
 						confirmButtonColor: '#304ffe'
-					});
+				 });
 				$("#memberIdenNum").focus();
 				return false;
 			} 
@@ -512,7 +507,7 @@
 									    </div>
 									</div>
 									<div class="form-group">
-										<label for="memberEmail" id="certified2" class="col-sm-2 control-label"><strong>인증번호</strong></label>
+										<label for="memberEmail" id="certified2" class="col-sm-2 control-label" style="display: none;"><strong>인증번호</strong></label>
 										 <div class="col-sm-6">
 									     <input type="text" class="form-control" name="" id="certified" placeholder="인증번호" style="display: none;">
 									     <span class="compare-text"></span>

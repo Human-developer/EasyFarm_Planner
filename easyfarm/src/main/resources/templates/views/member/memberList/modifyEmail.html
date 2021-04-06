@@ -10,7 +10,7 @@
 	
 	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
 	<th:block layout:fragment="pageTitle">
-		<a th:href="@{/member/login}">로그인</a>-아이디 찾기
+		<a th:href="@{/member/detailMember(memberId=${session.SID})}">내정보</a>-이메일변경
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
@@ -36,28 +36,29 @@
 	
 	
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
-	<th:block layout:fragment="customContents">
-	<form th:action="@{/member/addAuthority}" method="post">
+	<th:block layout:fragment="customContents"  th:with="m = ${member}"> 
+	
 		
+		<form th:action="@{/member/modifyEmail}" method="Post">				
 			<div class="container-fluid">
 				<div class="row" >
 					<div class="
 					col-lg-offset-3 col-lg-6
 					
 					">
-					
 						<div class="box-content" style="border : 2px solid gray">
 							<div class="box-content  t-center important-col" style="border-bottom : 2px solid #3BBD5A">
 							
-								<h3>아이디 찾기</h3><small style="color: red; margin-left: 6px;"><i class="fa fa-lightbulb-o">이메일 인증 완료 후 확인클릭시 아이디가 나옵니다. </i></small>
+								<h3>이메일 변경</h3>
 							</div>
 							<div class="panel-body" >
 						
 								<div class="form-horizontal">
-								<div class="form-group">
+								<div class="form-group" >
+										<input type="hidden" th:value="${m.memberId}" id="memberId" name="memberId" >
 										<label for="memberEmail" class="col-sm-2 control-label"><strong>이메일</strong></label>
 									    <div class="col-sm-6">
-									      <input type="email" class="form-control" name="memberEmail" id="memberEmail" placeholder="test@email.com">
+									      <input type="email" class="form-control" name="memberEmail" th:value="${m.memberEmail}" id="memberEmail" placeholder="test@email.com">
 									      <span class="email-text"></span>
 									    </div>
 									    <div class="col-sm-1">
@@ -75,9 +76,11 @@
 									   	 </div>
 									</div>		
 									<div class="form-group">	
-										<div class="col-sm-offset-4">
-											<button type="button" style="width: 40%;" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" id="idResult">확인</button>		
+										<div class="col-sm-offset-3">
+											<button type="submit" style="width: 20%;" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" id="idResult">확인</button>		
+											<a th:href="@{/member/detailMember(memberId = ${m.memberId})}" style="margin-left: 10px;"><button type="button" style="width: 20%;" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">취소</button>	</a>	
 										</div>
+										
 									</div>	
 									
 								</div>
@@ -85,21 +88,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			
-			<div class="modal-content"  style = "display: none">
-					<div class="modal-header">
-						<button type="button" class="close" ><span class="close" style="color: black;">X</span></button>
-						<h4 class="modal-title">아이디</h4>
-					</div>
-					<div class="modal-body">
-						<p>아이디 :</p> <p class="text" style="color: black;"></p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn  close  " ><span style="color: black;">Close</span> </button>
-					</div>
-				</div>
-			
+			</div>		
 		</form>
 	</th:block>
 	
@@ -125,7 +114,7 @@
 					
 						$.ajax({
 							type : 'post',
-							url : '/member/findId',
+							url : '/checkMail',
 							data : {mail:mail},
 							dataType :'json',
 							success: function(data){
@@ -217,13 +206,8 @@
 						return false;
 					}
 					
-					  $('.modal-content').attr('style','display: block');
-					  $('.text').text(memberId);
 			  });
-			  $('.close').click(function(){
-		  		  
-				 	 $('.modal-content').attr('style','display: none');
-			  })
+			
 	</script>
 	
 	

@@ -82,6 +82,10 @@ public class MemberService {
 		 if(member != null)  memberMapper.modifyMember(member);
 		 
 	 }
+	 //회원 이메일수정
+	 public void modifyEmail(Member member) {
+		 if(member != null) memberMapper.modifyEmail(member);
+	 }
 	 //회원탈퇴시 상태변경
 	 public void removeUpdateMember(Member member) {
 		 if(member != null)  memberMapper.removeUpdateMember(member);

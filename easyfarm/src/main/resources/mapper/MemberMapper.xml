@@ -115,6 +115,12 @@
 				logout_date=NOW()
 			WHERE login_code = #{loginCode};
 	</update>
+	<update id="modifyEmail"  parameterType="Member" >
+		UPDATE tb_member
+		SET
+			member_email=#{memberEmail}
+		WHERE member_id=#{memberId}
+	</update>
 	
 	<select	id="getMemberInfoById" resultMap="memberResultMap" parameterType="String">
 			SELECT 

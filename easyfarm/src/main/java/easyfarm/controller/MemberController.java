@@ -14,12 +14,9 @@ import java.util.Random;
 
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,110 +44,8 @@ public class MemberController {
 
 	
 	
-	// 매일 00시에 자동실행
-	@Scheduled(cron="0 0 00 * * ?")
-	public void scheduler(){
-		
-	   
-		Date today = new Date();
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
-		Calendar cal = Calendar.getInstance();
-		 
-		List<Report> reportMember = memberService.getSuspend();
-		 
-		//정지해제
-		for(Report report : reportMember) {
-				 
-		    Date banEndDate = report.getBanEndDate();
-		    String banCode = report.getBanCurrentCode();
-		    String banId = report.getBanMemberId();
-
-		    String toDay= simpleDate.format(today);
-		    String banEndDay = simpleDate.format(banEndDate);
-		    
-		    int compare = toDay.compareTo(banEndDay);
-		    	
-		    if(compare > 0) {
-		      memberService.removeBan(banCode,banId);
-		    }
-		}
-		    
-	     
-	   
-		int restDate = memberService.getStatusDays("휴면");
-		int withdrawalDate = memberService.getStatusDays("탈퇴");
-		List<Member> loginMaxDateList = memberService.getLoginMaxDate();
-		List<Report> expectedList = memberService.getExpectedDate();
-		List<String> idList = new ArrayList<String>();
-		   
-		for(Report expected : expectedList ) {
-			   
-			idList.add(expected.getLoginMemberId());
-		}
-		   
-	  
-	   
-	   for(Member login : loginMaxDateList) {
-		   
-		   Date logoutDate = login.getLogoutDate();
-		   String loginId = login.getLoginMemberId();
-		   
-		   cal.setTime(logoutDate);
-		   cal.add(cal.DATE, restDate); // 셋팅된 날에 기준일을 더해준다
-		   Date restDay = cal.getTime();
-		   String autoRestDate = format.format(restDay);//자동휴면일
-		   
-		   cal.setTime(logoutDate);
-		   cal.add(cal.DATE, withdrawalDate); // 셋팅된 날에 기준일을 더해준다 
-		   Date withdrawalDay = cal.getTime();
-		   String autoWithdrawalDate = format.format(withdrawalDay); //자동탈퇴일
-		   
-		  //자동휴면|탈퇴 예정일조회 테이블에 아이디없을시 등록
-		  if(!idList.contains(loginId)) {
-			  memberService.addStatusSchedule(loginId,autoRestDate,autoWithdrawalDate);
-			  
-		  //아이디가 있을시 예정일 업데이트 
-		  }else if(idList.contains(loginId)) {
-				  
-				  memberService.updateStatusSchedule(loginId,autoRestDate,autoWithdrawalDate);
-		  }
-			 
-		  
-	   }
-	   
-	   for(Report expected : expectedList) {
-		 Date RestDay = expected.getAutoRestDate(); //자동휴면일
-		 Date WithdrawalDay = expected.getAutoWithdrawalDate(); //자동탈퇴일
-		 String memberId = expected.getLoginMemberId(); //로그인아이디
-		   
-		   int compare = today.compareTo(RestDay);
-		   int Comparison = today.compareTo(WithdrawalDay);
-		   
-		   if(compare > 0) {
-			   Member member = memberService.getMemberInfoById(memberId);
-			   System.out.println(" 탈퇴히ㅗ원 발생wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
-			   String useStatus = member.getUseStatus();
-			   //상태 휴면으로 변경
-			   memberService.removeUpdateMember(memberId,useStatus);
-		   }
-		   
-		   if(Comparison > 0) {
-			   System.out.println(" 탈퇴히ㅗ원 발생wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
-			   Member member = memberService.getMemberInfoById(memberId);
-			   member.setUseStatus("탈퇴");
-			   //회원목록에서는 상태탈퇴로 변경
-			   memberService.removeUpdateMember(member);
-			   //탈퇴회원등록
-			   member.setCancelMemberReason("자동탈퇴");
-			   memberService.addCancelMember(member);
-		   }
-		   
-	   }
-	   
-	   
-	   
-	 }
+	
+	
 	
 	 @GetMapping("/member")
 	 public String member() {
@@ -189,7 +84,7 @@ public class MemberController {
 					 if(member.getMemberStatus() != "탈퇴" && !"탈퇴".equals(member.getMemberStatus().trim()) && 
 					    member.getMemberStatus() != "정지" &&	 !"정지".equals(member.getMemberStatus().trim())) {
 						 if(session.getAttribute("SID") == null) {
-							 //memberService.updateLogin(memberId);							
+							 memberService.updateLogin(memberId);							
 						 }
 					
 						 // 아이디
@@ -362,7 +257,7 @@ public class MemberController {
 		 Member member = memberService.getMemberInfoByEmail(mail); 
 		 if(member != null) {
 			
-			 Random random=new Random();  //난수 생성을 위한 랜덤 클래스
+			 Random random=new Random();  //난수 생성을 위한 랜덤 클래스?
 			 String key="";  //인증번호 
 			
 			 SimpleMailMessage message = new SimpleMailMessage();
@@ -385,38 +280,47 @@ public class MemberController {
 			 return map;
 		 }
 		 map.put("msg", "등록되지 않은 이메일입니다");
-		return map;
+		 return map;
 	  }
-	  // 아이디 찾기
+	  // 비밀번호 찾기
 	  @GetMapping("/member/findPw")
 	  public String findPw() {
-		  return "views/member/findPw";
+		 return "views/member/findPw";
 	  }
 	  
 	  @PostMapping("/member/findPw") // AJAX와 URL을 매핑시켜줌 
 	  @ResponseBody  //AJAX후 다시 응답을 보내는게 아니기 때문에 적어줌, 안 적으면 이메일이 가도 개발자 도구에서 404오류가 뜸
-	  public Map<String, Object> findPw(@RequestParam(name="mail", required = false) String mail) {
-		  
+	  public Map<String, Object> findPw(@RequestParam(name="mail", required = false) String mail,
+			  							@RequestParam(name="memberId", required = false) String memberId) {
+		  long start = System.currentTimeMillis();
+			 try {
 		  System.out.println("화면에서 받은 메일주소: " + mail);
 		  Map<String, Object> map = new HashMap<String, Object>();
 		  Member member = memberService.getMemberInfoByEmail(mail); 
-		  System.out.println(member.getMemberPw() +"pwpwpwpwpwpwpwpwppwpwpw");
-		  if(member != null) {
-			  	  
-			  SimpleMailMessage message = new SimpleMailMessage();
-			  message.setTo(mail); //스크립트에서 보낸 메일을 받을 사용자 이메일 주소 
-			  //입력 키를 위한 코드
-			  message.setSubject("인증번호 입력을 위한 메일 전송");
-			  message.setText("비밀번호 : "+ member.getMemberPw());
+		  
+		  
 			  
-			  map.put("memberPw", member.getMemberPw());
+		  if(memberId.trim().equals(member.getMemberId())) {
+				
+				  SimpleMailMessage message = new SimpleMailMessage();
+				  message.setTo(mail); //스크립트에서 보낸 메일을 받을 사용자 이메일 주소 
+				  //입력 키를 위한 코드
+				  message.setSubject("easyFarm 비밀번호찾기 ");
+				  message.setText("비밀번호 : "+ member.getMemberPw());
+				  	  
+				  javaMailSender.send(message);
+				  return map;
+		  }else {
 			  
-			  
-			  javaMailSender.send(message);
-			  return map;
+				  map.put("msg","이메일과 등록된 아이디가 일치하지 않습니다");
+				  return map;		  
 		  }
-		  map.put("msg", "등록되지 않은 이메일입니다");
-		  return map;
+		
+			 }finally {
+				 long finish = System.currentTimeMillis();
+				 long timeMs = finish - start;
+				 System.out.println("findMembers :"+ timeMs + "ms");
+			}
 	  }
 
 	  //회원검색&조회
@@ -452,7 +356,24 @@ public class MemberController {
 		
 		  return "redirect:/member/getMember";
 	  }
+	  //회원 이메일 수정
+	  @GetMapping("/member/modifyEmail")
+	  public String modifyEmail(Model model,
+			  					@RequestParam(name = "email",required = false,defaultValue = "")String email) {
+		Member member =  memberService.getMemberInfoByEmail(email);
+		  model.addAttribute("member",member);
+		  return "views/member/memberList/modifyEmail";
+	  }
 		
+	  @PostMapping("/member/modifyEmail")
+	  public String modifyEmail(Member member) {
+		   if(member != null) {
+			   memberService.modifyEmail(member);		   
+		   }
+		   
+		  return "main";
+	  }
+	  
 	  //회원 탈퇴
 	  @GetMapping("/member/removeMember")
 	  public String removeMember(Model model,
