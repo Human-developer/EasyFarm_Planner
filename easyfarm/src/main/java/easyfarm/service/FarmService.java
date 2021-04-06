@@ -253,18 +253,46 @@ public class FarmService {
 		return result;
 	}
 	
+	//탈퇴 처리
 	public int isLeaverFarm(FarmCancelRequest cancelRequest) {
 		int result = 0;
 		if(cancelRequest!= null) {
 			String approval = cancelRequest.getCancelApproval();
 			
 			if("탈퇴승인".equals(approval)) {
-				
+					
+				result += farmMapper.leaverFarmMember(cancelRequest.getCancelRequestCode());
+				result += farmMapper.isLeaverFarm(cancelRequest);
 			}
 			else if("탈퇴거부".equals(approval)) {
 				result += farmMapper.isLeaverFarm(cancelRequest);
 			}
 			
+		}
+		
+		return result;
+	}
+	
+	//내 탈퇴신청목록
+	public List<FarmCancelRequest> myGetLeaverFarm(String memberId){
+		List<FarmCancelRequest> resultLeaverFarmList = null;
+		
+		if(memberId != null) {
+			resultLeaverFarmList = farmMapper.myGetLeaverFarm(memberId);
+		}
+		return resultLeaverFarmList;
+	}
+	
+	//농가탈퇴 취소
+	public String cancelLeaverFarm(String cancelLeaverFarm) {
+		String result ="삭제실패";
+		
+		if(cancelLeaverFarm != null) {
+			int deleteResult = 0;
+			deleteResult += farmMapper.cancelLeaverFarm(cancelLeaverFarm);
+			if(deleteResult > 0) {
+				result = "삭제성공";
+			}
 		}
 		
 		return result;

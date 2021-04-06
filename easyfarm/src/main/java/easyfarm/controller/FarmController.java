@@ -30,6 +30,19 @@ public class FarmController {
 	@Autowired
 	private FarmService farmService;
 	
+	//농가탈퇴 취소
+	@PostMapping("/json/cancelLeaverFarm")
+	public @ResponseBody String cancelLeaverFarm(
+			@RequestParam(value = "cancelRequestCode",required = false) String cancelRequestCode) {
+		String result ="삭제실패";
+		
+		if(cancelRequestCode != null) {
+			result = farmService.cancelLeaverFarm(cancelRequestCode);
+		}
+		
+		return result;
+	}
+	
 	//탈퇴 승인거부
 	@PostMapping("/farm/isLeaverFarm")
 	public @ResponseBody String isLeaverFarm(
@@ -41,14 +54,15 @@ public class FarmController {
 		if(memberId != null && cancelRequest != null)
 		{			
 			cancelRequest.setCancelApprovalMemberId(memberId);
+			int cancelResult = farmService.isLeaverFarm(cancelRequest);
 			
-			farmService.isLeaverFarm(cancelRequest);
+			if(cancelResult > 0) {
+				result ="성공";
+			}
 		}
 		else {
 			result = "실패";
 		}
-		
-			
 		return result;
 	}
 	
@@ -62,12 +76,8 @@ public class FarmController {
 		String memberId = (String)session.getAttribute("SID");
 		
 		if(memberId != null && farmName != null) {
-			
 			result = farmService.addCancelMember(memberId,farmName,cancelRequestReason);
-
 		}
-		
-		
 		return result;
 	}
 	
@@ -75,6 +85,7 @@ public class FarmController {
 	@PostMapping("/json/removeFarmJoin")
 	public @ResponseBody String removeFarmJoin(@RequestParam(value = "farmJoinCode", required = false) String farmJoinCode) {
 		String result = "삭제실패";
+		
 		if(farmJoinCode != null) {
 			int removeResult = 0;
 			removeResult += farmService.removeJoinFarm(farmJoinCode);
@@ -100,11 +111,7 @@ public class FarmController {
 			if(checkResult > 0) {				
 				result ="처리 완료";
 			}
-
-			
 		}
-		
-		
 		return result;
 	}
 	
@@ -115,15 +122,14 @@ public class FarmController {
 			@RequestParam(value = "farmName",required = false) String farmName,
 			@RequestParam(value = "farmJoinPurpose",required = false) String farmJoinPurpose) {
 		String result = "신청실패";
+		
 		if(farmName != null && farmJoinPurpose != null) {
 			String memberId = (String)session.getAttribute("SID");
+			
 			if(memberId != null && farmName != null && farmJoinPurpose != null) {
-				
 				result = farmService.addFarmMemberJoin(farmName, farmJoinPurpose, memberId);
 			}
-			
 		}
-		
 		return result;
 	}
 	
@@ -153,6 +159,7 @@ public class FarmController {
 	}
 	/* 농가경로 */
 	
+	
 	/* 농가메인 */
 	@GetMapping("/farm/farmMain")
 	public String farmMain(Model model, HttpSession session) {
@@ -168,12 +175,9 @@ public class FarmController {
 		if(belongFarmList != null) {
 			model.addAttribute("belongFarmList",belongFarmList);
 		}
-		
-		
 		return "views/farm/farmMain";
 	}
 	/* 농가메인 */
-	
 	
 	/* 농가상세보기 */
 	@GetMapping("/farm/detailFarm")
@@ -204,7 +208,6 @@ public class FarmController {
 				model.addAttribute("myFarmList",myFarmList);
 			}
 		}
-		
 		return "views/farm/myFarm";
 	}
 	/* 나의농가 */
@@ -232,6 +235,7 @@ public class FarmController {
 		String memberId = (String)session.getAttribute("SID");
 		List<Farm> farmList = null;
 		farmList = farmService.searchFarm(memberId);
+		
 		if(farmList != null) {
 			model.addAttribute("farmList", farmList);
 		}
@@ -254,9 +258,6 @@ public class FarmController {
 				//권한이없다
 				return "redirect:/farm/farmMain";
 			}
-			
-			
-			
 			return "views/farm/modifyFarm";
 		}
 		else {
@@ -294,9 +295,9 @@ public class FarmController {
 
 		return "views/farm/addFarm";
 	}
+	//처리
 	@PostMapping("/farm/addFarm")
 	public String addFarm(Model model,Farm farm) {
-		
 		
 		if(farm!=null)	{
 			int result = 0;
@@ -305,7 +306,6 @@ public class FarmController {
 			if(result > 0 ) {
 				System.out.println("농가생성 농가회원실패 조건이 뭘까?");
 			}
-			
 			return "redirect:/farm/myFarm";
 		}
 		else {
@@ -334,12 +334,10 @@ public class FarmController {
 				}
 				model.addAttribute("myMemberLevel", farmMemberLevel);
 			}
-			
 		}
 		else {
 			return "redirect:/farm/belongFarm";
 		}
-		
 		return "views/farm/getMemberFarm";
 	}
 	/* 농가회원조회 */
@@ -351,16 +349,15 @@ public class FarmController {
 		if(farmCode != null) {
 			List<FarmMemberJoin> farmMemberJoinList = farmService.getJoinFarm(farmCode);
 			System.out.println(farmMemberJoinList + "ttttttttttttttttttttttttttt");
+			
 			if(farmMemberJoinList != null) {
 				model.addAttribute("farmMemberJoinList", farmMemberJoinList);
 				model.addAttribute("farmCode", farmCode);
 			}
-			
 		}
 		else {
 			return "redirect:/farm/farmMain";
 		}
-		
 		return "views/farm/getJoinFarm";
 	}
 	/* 농가가입신청리스트 */
@@ -380,8 +377,6 @@ public class FarmController {
 				model.addAttribute("farmLeaverFarmList", farmLeaverFarmList);
 			}
 		}
-		
-		
 		return "views/farm/getLeaverFarm";
 	}
 	/* 농가탈퇴신청리스트 */
@@ -398,8 +393,22 @@ public class FarmController {
 				model.addAttribute("myGetJoinFarmList", farmMemberJoinList);
 			}
 		}
-		
 		return "views/farm/myGetJoinFarm";
 	}
 	/* 내가입신청리스트 */
+	
+	@GetMapping("/farm/myGetLeaverFarm")
+	public String myGetLeaverFarm(Model model, HttpSession session) {
+		String memberId = (String)session.getAttribute("SID");
+		if(memberId != null) {
+			List<FarmCancelRequest> myLeaverFarmList =farmService.myGetLeaverFarm(memberId);
+			
+			if(myLeaverFarmList != null) {
+				model.addAttribute("myLeaverFarmList", myLeaverFarmList);
+			}
+		}
+		
+		
+		return "views/farm/myGetLeaverFarm";
+	}
 }

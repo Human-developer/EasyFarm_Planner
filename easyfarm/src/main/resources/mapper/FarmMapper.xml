@@ -91,6 +91,17 @@
 			<result property="loginDate" 		column="login_date"/>
 			<result property="logoutDate" 	column="logout_date"/>
 		</association>
+		<association property="farm" javaType="Farm">
+			<id property="farmCode" column="farm_code" />
+			<result property="farmName" column="farm_name"/>
+			<result property="ceoId" column="ceo_member_id"/>
+			<result property="farmMemberLevel" column="farm_level_code"/>
+			<result property="farmArea" column="farm_area"/>
+			<result property="farmAddress" column="farm_address"/>
+			<result property="farmPublicStatus" column="farm_public_status"/>
+			<result property="farmRegDate" column="farm_reg_date"/>
+			<result property="farmMemberCount" column="farm_member_count"/>
+		</association>
 	</resultMap>
 	
 	<select id="farmByName" resultMap="farmResultMap" parameterType="String" >
@@ -548,6 +559,50 @@
 			farm_cancel_request_code=#{cancelRequestCode}
 	
 	</update>
+	
+	<update id="leaverFarmMember" parameterType="String">
+		UPDATE tb_farm_member
+		SET
+			farm_member_status='탈퇴'
+		WHERE 
+			farm_member_code = sf_farm_cancel_request_code_is_member_code(#{cancelRequestCode})
+	</update>
+	
+	<select id="myGetLeaverFarm" resultMap="farmCancelMemberResultMap" parameterType="String">
+		SELECT 
+			fcr.farm_cancel_request_code, 
+			fcr.farm_cancel_request_farm_member_code, 
+			fcr.farm_code, farm_cancel_request_reason, 
+			fcr.farm_cancel_request_date, 
+			fcr.farm_cancel_approval, 
+			fcr.farm_cancel_approval_reason, 
+			fcr.farm_cancel_approval_date, 
+			fcr.farm_cancel_approval_member_id,
+			f.farm_name,
+			f.ceo_member_id,
+			f.farm_area,
+			f.farm_address
+		FROM 
+			tb_farm_cancel_request AS fcr
+			join
+			tb_farm_member AS fm
+			on
+			fm.farm_member_code = fcr.farm_cancel_request_farm_member_code
+			join
+			tb_farm AS f
+			on
+			f.farm_code = fcr.farm_code
+		WHERE
+			fm.farm_member_id =#{memberId}
+	</select>
+	
+	<delete id="cancelLeaverFarm" parameterType="String">
+		DELETE 
+		FROM 
+			tb_farm_cancel_request 
+		WHERE 
+			farm_cancel_request_code=#{cancelLeaverFarm};
+	</delete>
 </mapper>
 
 
