@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import easyfarm.dao.ResultMapper;
+import easyfarm.domain.Farm;
 import easyfarm.domain.result.EtcPayResult;
 import easyfarm.domain.result.InsurancePayResult;
 import easyfarm.domain.result.MachineLeasePayResult;
@@ -63,9 +64,6 @@ public class ResultService {
 		List<EtcPayResult> etcPayList = null;
 		etcPayList =resultmapper.getEtcPayResult();
 		
-		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
-		//memberLevelName : 관리자 or 판매자 or 구매자 세팅
-		
 		return etcPayList;
 	}
 	public List<ResourcePayResult> getResourcePayResult(){
@@ -73,8 +71,6 @@ public class ResultService {
 		List<ResourcePayResult> resourcePayList = null;
 		resourcePayList =resultmapper.getResourcePayResult();
 		
-		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
-		//memberLevelName : 관리자 or 판매자 or 구매자 세팅
 		
 		return resourcePayList;
 	}
@@ -83,18 +79,12 @@ public class ResultService {
 		List<InsurancePayResult> insurancePayList = null;
 		insurancePayList =resultmapper.getInsurancePayResult();
 		
-		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
-		//memberLevelName : 관리자 or 판매자 or 구매자 세팅
-		
 		return insurancePayList;
 	}
 	public List<MachineLeasePayResult> getMachineLeasePayResult(){
 		/* MemberMapper member = new MemberMapper(); */
 		List<MachineLeasePayResult> machineLeasePay = null;
 		machineLeasePay =resultmapper.getMachineLeasePayResult();
-		
-		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
-		//memberLevelName : 관리자 or 판매자 or 구매자 세팅
 		
 		return machineLeasePay;
 	}
@@ -103,18 +93,12 @@ public class ResultService {
 		List<MachineUsePayResult> machineUsePay = null;
 		machineUsePay =resultmapper.getMachineUsePayResult();
 		
-		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
-		//memberLevelName : 관리자 or 판매자 or 구매자 세팅
-		
 		return machineUsePay;
 	}
 	public List<ProductGainResult> getProductGainResult(){
 		/* MemberMapper member = new MemberMapper(); */
 		List<ProductGainResult> productGainResult = null;
 		productGainResult =resultmapper.getProductGainResult();
-		
-		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
-		//memberLevelName : 관리자 or 판매자 or 구매자 세팅
 		
 		return productGainResult;
 	}
@@ -123,18 +107,12 @@ public class ResultService {
 		List<ResourceUsePlanResult> resourceUsePlanResult = null;
 		resourceUsePlanResult =resultmapper.getResourceUsePlanResult();
 		
-		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
-		//memberLevelName : 관리자 or 판매자 or 구매자 세팅
-		
 		return resourceUsePlanResult;
 	}
 	public List<TaxPayResult> getTaxPayResult(){
 		/* MemberMapper member = new MemberMapper(); */
 		List<TaxPayResult> taxPayResult = null;
 		taxPayResult =resultmapper.getTaxPayResult();
-		
-		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
-		//memberLevelName : 관리자 or 판매자 or 구매자 세팅
 		
 		return taxPayResult;
 	}
@@ -143,11 +121,19 @@ public class ResultService {
 		List<WorkForcePayResult> workForcePayResult = null;
 		workForcePayResult =resultmapper.getWorkForcePayResult();
 		
-		//실습. memberList 안에 객체 회원레벨1 : 관리자, 2: 판매자, 3: 구매자 로 세팅
-		//memberLevelName : 관리자 or 판매자 or 구매자 세팅
-		
 		return workForcePayResult;
 	}
+	
+	//아이디가 소속된 농가명 가져오기
+	public List<Map<String,Object>> getFarmName(String memberId) {
+		return resultmapper.getFarmName(memberId);
+	}
+	
+	//선택한 농가의 프로젝트 가져오기
+	public List<Map<String,Object>> getProjectNameByFarmName(String farmCode) {
+		return resultmapper.getProjectNameByFarmName(farmCode);
+	}
+	
 	
 	
 	

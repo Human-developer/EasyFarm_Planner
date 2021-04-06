@@ -1,12 +1,20 @@
 package easyfarm.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import easyfarm.domain.Farm;
+import easyfarm.domain.Member;
 import easyfarm.domain.plan.EtcPay;
 import easyfarm.domain.plan.InsurancePay;
 import easyfarm.domain.plan.MachineLeasePay;
@@ -37,20 +45,37 @@ public class ResultController {
 	@Autowired
 	PlanService planService;
 	
+	
+	@PostMapping(value = "/getProjectNameByFarmCode", produces = "application/json")
+	public @ResponseBody List<Map<String,Object>> test( @RequestParam(value = "farmCode",required = false) String farmCode,Model model) {
+		List<Map<String,Object>> project = null;
+		
+		project = resultService.getProjectNameByFarmName(farmCode);
+		System.out.println(project.toString() + "asddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
+		
+		return project;
+	}
+	
+	
 	@GetMapping("/result")
-	public String resultMain(Model model) {
+	public String resultMain(Model model,HttpSession session) {
 		
-		return "views/result/resultMain";
-	}
-	
-	@GetMapping("/resultCalendar")
-	public String resultTable(Model model) {
 		
-		return "views/result/resultCalendar";
-	}
-	
-	@GetMapping("/resultData")
-	public String resultData(Model model) {
+		List<Map<String,Object>> farm = null;
+		
+		 if(session.getAttribute("SID") == null) {
+			 return "views/member/login";
+		 }
+		
+		String memberId = (String) session.getAttribute("SID");
+		
+		if(memberId != null) {
+			
+			farm = resultService.getFarmName(memberId);
+			model.addAttribute("farm", farm);
+			
+		 }
+		
 		
 		List<EtcPayResult> etcpayResult = resultService.getEtcPayResult();
 		List<ResourcePayResult> resourcePayResult = resultService.getResourcePayResult();
@@ -71,7 +96,21 @@ public class ResultController {
 		model.addAttribute("productGainResult", productGainResult);
 		model.addAttribute("resourceUsePlanResult", resourceUsePlanResult);
 		model.addAttribute("taxPayResult", taxPayResult);
-		model.addAttribute("workForcePayResult", workForcePayResult);
+		model.addAttribute("workForcePayResult", workForcePayResult); 
+		
+		return "views/result/resultMain";
+	}
+	
+	@GetMapping("/resultCalendar")
+	public String resultTable(Model model) {
+		
+		return "views/result/resultCalendar";
+	}
+	
+	@GetMapping("/resultData")
+	public String resultData(Model model) {
+		
+		
 		
 		/*
 		List<EtcPay> etcPayPlan = planService.getEtcPayPlan();

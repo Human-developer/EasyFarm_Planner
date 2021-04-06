@@ -4,6 +4,33 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="easyfarm.dao.ResultMapper">
   	
+  	
+  	<select id="getProjectNameByFarmName" resultType="Map" parameterType="String">
+		SELECT
+			p.project_code AS projectCode
+			,p.project_name As projectName
+		FROM
+			tb_farm_project AS p
+		where
+			p.farm_code = #{farmCode} 
+  	</select>
+  
+  	
+  	<select id="getFarmName" resultType="Map" parameterType="String">
+		SELECT
+			f.farm_name AS farmName
+			,f.farm_code AS farmCode
+		FROM 
+			tb_farm_member AS m
+		inner JOIN
+			tb_farm AS f
+		on
+			m.farm_code=f.farm_code
+		WHERE
+			m.farm_member_id = #{memberId} 
+  	</select>
+  	
+  	
   	<resultMap type="EtcPayResult" id="resultEtcPayMap">
 	  		<id column="etc_pay_run_code"  				property="etcPayRunCode"/>          <!--기타비용지출계획대비실행코드-->                              
 	  		<result column="etc_pay_code" 				property="etcPayCode" />            <!--기타비용지출계획코드-->         

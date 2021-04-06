@@ -601,16 +601,99 @@
 			</div>
 		</div>
 	
-	
-	
-	
-	
 	</th:block>	
 	
 	
 	
 	<!-- 사용자 정의 자바스크립트 -->
 	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript" th:inline="javascript">
+				/*<![CDATA[*/
+				var farm = '[[${farm}]]';
+			    var farmNameObj = JSON.parse(farm);
+				var farmName = {};
+				console.log(farmNameObj);
+			    for(var i=0; i < farmNameObj.length; i++){
+			    	
+			    	farmName[farmNameObj[i].farmCode] = farmNameObj[i].farmName;
+			    }
+			    //console.log(farm);
+			    console.log(farmName);
+				/*]]>*/
+				 Swal.mixin({
+						  input: 'select',
+						  confirmButtonText: '다음 &rarr;',
+						  showCancelButton: true,
+						  inputOptions: {
+							    '농가명': farmName 
+							  },
+						  progressSteps: ['1', '2', '3']
+						}).queue([
+						  {
+						    title: '농가 선택',
+						    text: '농가를 선택해 주세요',
+						    preConfirm: function(farmCode){
+						    	delete this.inputOptions.농가명;
+						    	var test =this.inputOptions
+						    	var Data = {};
+						    	var request = $.ajax({
+						               url:"/getProjectNameByFarmCode",
+						               method:"post", 
+						               data : {"farmCode":farmCode},
+						               datatype: "json",
+						            });
+						            request.done(function(data){
+						            	console.log(typeof data, data.length)
+						            	console.log(data  + "<< data");	
+						            	for(var i=0; i < data.length; i++){
+						            		var code =  data[i].projectCode;
+						            		var value = data[i].projectName;
+						            		console.log(typeof code);
+						            		Data[code] = value;
+						            		//Data[data[i].projectCode] = data[i].projectName;
+						            		
+						            		console.log(data[i].projectCode);
+						            	}
+						            	console.log(Data + "<< Data!!" );
+						            });
+						            
+						            request.fail(function( jqXHR, textStatus ){
+						               alert( "Request failed : " + textStatus );
+						            });
+						            
+						            console.log(Data + "asldkfjlasdfjlsadjf");
+						            this.inputOptions.project = Data;
+						            
+						    	},
+						    
+						  },
+						  {
+							title: '프로젝트 선택',
+							text: '프로젝트를 선택해 주세요'
+						  },
+						  {
+							title: '작업단계 선택',
+							text: '작업단계를 선택해 주세요'
+						  },
+						]).then((result) => {
+							
+						  if (result.value) {
+						    const answers = JSON.stringify(result.value)
+						    Swal.fire({
+						      title: 'All done!',
+						      html: `
+						        Your answers:
+						        <pre><code>${answers}</code></pre>
+						      `,
+						      confirmButtonText: 'Lovely!'
+						    })
+						  }
+						})
+			       
+				
+			</script>
+		
+	
 	
 		<script type="text/javascript">
 			$(function(){
@@ -638,7 +721,7 @@
 				$('.machineleasetotal').text("비용 : "+machineLeaseSum);
 				$('.humantotal').text("비용 : "+humanSum);
 				$('.resourcetotal').text("비용 : "+resourceSum);
-				$('.paytotal').text(resourceSum+humanSum+machineLeaseSum+etcSum);
+				$('.paytotal').text(resourceSum + humanSum + machineLeaseSum + etcSum);
 			})
 			
 			$('#example2, #example3, #example4, #example5, #example6').DataTable();
@@ -680,8 +763,13 @@
 				return false;
 			} );
 			
+			
+			
+			
 			$(document).ready(function(){
-				alert("야옹");
+				
+			
+				
 			})
 			
 		</script>
@@ -699,6 +787,6 @@
 		<script src="assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
 		<script src="assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
 		<script src="assets/scripts/datatables.demo.min.js"></script>
-	
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 	</th:block>
 </html>
