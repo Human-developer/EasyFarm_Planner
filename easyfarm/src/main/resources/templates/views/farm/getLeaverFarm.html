@@ -213,17 +213,19 @@
 		            });
 		            request.done(function(data){
 		            	console.log(data);
-		            	/* var checkType = 'error';
-		            	if(data =='처리완료'){
+		            	 var checkType = 'error';
+		            	if(data =='성공'){
 		            		checkType = 'success';
 		            	}
 		            	
 		            	swal({
-							title: "농가 탈퇴 신청",
+							title: objData.approval,
 							text: data,
 							type: checkType,
 							confirmButtonColor: '#304ffe'
-						}); */
+							},
+							function(){location.reload();
+						});
 		            });
 		            request.fail(function( jqXHR, textStatus ){
 		               alert( "Request failed : " + textStatus );

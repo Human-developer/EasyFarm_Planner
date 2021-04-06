@@ -60,9 +60,11 @@
 											<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button> 
 											<ul class="dropdown-menu">
 												<li><a th:href="@{/farm/detailFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">상세보기</a></li>
+												<li><a th:href="@{/projectListByFarmCode(farmCode=${farm.farmCode})}">프로젝트</a></li>
 												<li><a th:href="@{/farm/getJoinFarm(farmCode=${farm.farmCode})}">가입신청 목록</a></li>
 												<li><a th:href="@{/farm/getLeaverFarm(farmCode=${farm.farmCode})}">탈퇴신청 목록</a></li>
 												<li><a th:href="@{/farm/modifyFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">수정</a></li>
+												
 											</ul>
 										</div>
 									</td>

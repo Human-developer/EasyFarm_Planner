@@ -45,5 +45,16 @@ public interface FarmMapper {
 	public int addCancelMember(String memberId, String farmName,String cancelRequestReason);
 	public List<FarmCancelRequest> getLeaverFarm(String farmCode,String memberId);
 	
+	//탈퇴신청 처리
 	public int isLeaverFarm(FarmCancelRequest cancelRequest);
+	
+	//회원 탈퇴 처리
+	public int leaverFarmMember(String cancelRequestCode);
+	
+	//내 탈퇴신청 목록
+	public List<FarmCancelRequest> myGetLeaverFarm(String memberId);
+	
+	//농가탈퇴 취소
+	public int cancelLeaverFarm(String cancelLeaverFarm);
+	
 }
