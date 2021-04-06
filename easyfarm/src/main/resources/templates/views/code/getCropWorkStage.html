@@ -19,7 +19,8 @@
 	
 	<th:block layout:fragment="customContents">
 		<div class="box-content" style="margin-top: 20px">
-			<h4 class="box-title">작업단계 리스트</h4>
+			<h3>작업단계 리스트</h3>
+			<hr>
 			<div class="dropdown js__drop_down">
 				<a href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
 				<ul class="sub-menu">
@@ -31,10 +32,11 @@
 				</ul>
 				<!-- /.sub-menu -->
 			</div>
-			<table id="example" class="table table-striped table-bordered display" style="width:100%">
+			<table id="test" class="table table-striped table-bordered display" style="width:100%">
 				<thead>
 					<tr>
 						<th class="hidden">작업단계코드</th>
+						<th >작업단계코드</th>
 						<th class="hidden">작물코드 </th>
 						<th>작물명</th>
 						<th>작업단계</th>
@@ -50,6 +52,7 @@
 					<tr th:if="${#lists.size(cropWorkStage)} > 0" th:each="l:${cropWorkStage}">
 						<!-- <td th:text="${l.cropPhaseInfoCode}"></td> -->
 						<td th:hidden="${l.cropPhaseInfoCode}"></td>
+						<td th:text="${l.cropPhaseInfoCode}"></td>
 						<td th:hidden="${l.cropCode}"></td>
 						<td th:text="${l.Crop.cropName}"></td>
 						<td th:text="${l.workphase}"></td>
@@ -69,17 +72,57 @@
 				</tbody>
 			</table>
 		</div>
-				<div th:include="views/code/back :: back"></div>
+		<div class="box-content">
+			<ul class="list-inline">
+				<li class="margin-bottom-10"><a th:href="@{/code}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>코드관리로 돌아가기</strong></button></a> </li>
+				<li ><a th:if="${session.SLEVEL == '관리자'}"  th:href="@{/code/addCropWorkStage}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>작업단계 등록</strong></button></a> </li></br>
+			</ul>		
 		</div>
 	</th:block>
 <!-- 사용자 정의 자바스크립트 라이브러리 -->
-	<th:block layout:fragment="customScriptLib">
+	<!-- <th:block layout:fragment="customScriptLib">
 		<script th:src="@{/assets/plugin/datatables/media/js/jquery.dataTables.min.js}"></script>
 		<script th:src="@{/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js}"></script>
 		<script th:src="@{/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js}"></script>
 		<script th:src="@{/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js}"></script>
 		<script th:src="@{/assets/scripts/datatables.demo.min.js}"></script>
 		<script th:src="@{/assets/scripts/main.min.js}"></script>
+	</th:block> -->
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+		<div th:replace="fragments/dataTable :: dataTable" th:remove="tag"></div>	
 	</th:block>
 	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+		var lang_kor = {
+		        "decimal" : "",
+		        "emptyTable" : "내 농가가 없습니다",
+		        "info" : "_START_ - _END_ (총 _TOTAL_ 명)",
+		        "infoEmpty" : "0명",
+		        "infoFiltered" : "(전체 _MAX_ 농가 중 검색결과)",
+		        "infoPostFix" : "",
+		        "thousands" : ",",
+		        "lengthMenu" : "_MENU_ 개씩 보기",
+		        "loadingRecords" : "로딩중...",
+		        "processing" : "처리중...",
+		        "search" : "검색 : ",
+		        "zeroRecords" : "검색된 농가가 없습니다.",
+		        "paginate" : {
+		            "first" : "첫 페이지",
+		            "last" : "마지막 페이지",
+		            "next" : "다음",
+		            "previous" : "이전"
+		        },
+		        "aria" : {
+		            "sortAscending" : " :  오름차순 정렬",
+		            "sortDescending" : " :  내림차순 정렬"
+		        }
+		}
+		
+		$('#test').sysDataTable(lang_kor);
+		
+		</script>
+	</th:block>
 </html>

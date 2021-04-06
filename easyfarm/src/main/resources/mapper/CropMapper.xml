@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="easyfarm.dao.CropMapper">
 	<resultMap type="Crop" id="CropResultMap">
-		<result property="cropCode"	column="crop_code"/>
-		<result property="cropCate"	column="crop_cate"/>
-		<result property="cropName"	column="crop_name"/>
+		<result property="cropCode"		column="crop_code"/>
+		<result property="cropCate"		column="crop_cate"/>
+		<result property="cropName"		column="crop_name"/>
 		<result property="useStatus"	column="use_status"/>
 		<result property="regMemberId"	column="reg_member_id"/>
 		<result property="regDate"		column="reg_date"/>
 		<association property="member" javaType="Member">
-			<id property="memberId" 			column="member_id"/>
+		<id 	property="memberId" 	column="member_id"/>
 		</association>
 	</resultMap> 
 	            
@@ -61,7 +61,7 @@
 			${searchKey} LIKE CONCAT('%',#{searchValue},'%')					
 		</if>
 	</trim>
-	order by c.crop_cate asc;
+		order by cast(SUBSTRING_INDEX(crop_code,'_',-1)AS UNSIGNED)
 	</select>
 	
 	<select id="getCropWorkStage" parameterType="String" resultMap="CropWorkStageResultMap">
@@ -98,9 +98,7 @@
 				cwc.common_workphase_cate_code = #{commonWorkphaseCateCode}
 			</if>
 		</trim>
-	 
-		
-	order by common_workphase_cate_code*1
+	order by cast(SUBSTRING_INDEX(common_workphase_cate_code,'_',-1)AS UNSIGNED)
 	</select>
 	
 	
@@ -246,8 +244,6 @@
 	 tb_crop as c
 	 on
 	  cp.crop_code = c.crop_code
-	  
-	  
 	 where
 	 crop_phase_info_code= #{cropPhaseInfoCode};
 	</select>
@@ -267,8 +263,6 @@
 	 tb_crop as c
 	 on
 	  cp.crop_code = c.crop_code
-	  
-	  
 	 where
 	 cp.workphase= #{workphase} and cp.crop_code = #{cropCode}
 	</select>
