@@ -34,6 +34,15 @@ public class MemberService {
 		memberMapper.addMember(member);
 		 
 	 }
+	 public Member getMemberInfoByEmail(String email) {
+		 Member member = null;
+		 member = memberMapper.getMemberInfoByEmail(email);
+		 
+		 if(member == null) {
+			 member = null;
+		 }
+		return member;
+	 }
 	 
 	 public List<Member> getMemberList(){
 		 List<Member> memberList = memberMapper.getMemberList();
@@ -72,6 +81,10 @@ public class MemberService {
 	 public void modifyMember(Member member) {
 		 if(member != null)  memberMapper.modifyMember(member);
 		 
+	 }
+	 //회원 이메일수정
+	 public void modifyEmail(Member member) {
+		 if(member != null) memberMapper.modifyEmail(member);
 	 }
 	 //회원탈퇴시 상태변경
 	 public void removeUpdateMember(Member member) {

@@ -27,7 +27,8 @@ public interface MemberMapper {
 	
 	// 회원가입
 	public int addMember(Member member);
-	
+	// 아이디 찾기|비밀번호찾기
+	public Member getMemberInfoByEmail(String email);
 	// 회원조회 & 검색
 	
 	public List<Member> getMemberList();
@@ -37,7 +38,8 @@ public interface MemberMapper {
 	
 	//회원 수정
 	public int modifyMember(Member member);
-	
+	//회원 이메일 수정
+	public void modifyEmail(Member member);
 	//회원 탈퇴시 상태변경
 	public int removeUpdateMember(Member member);
 	public int removeUpdateMember(String useStatus ,String memberId);

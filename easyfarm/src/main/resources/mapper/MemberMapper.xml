@@ -48,7 +48,22 @@
 
    
 	
-	
+	<select id="getMemberInfoByEmail" resultMap="memberResultMap">
+	SELECT 
+		  member_id
+		, member_pw
+		, member_name
+		, level_code
+		, member_gender
+		, member_address
+		, member_email
+		, member_phone
+		, member_iden_num
+		, member_reg_date
+		, member_status
+	FROM tb_member
+	WHERE member_email = #{email}
+	</select>
 	
 	<select id="getLoginCode" resultMap="memberResultMap" >
 		SELECT 
@@ -99,6 +114,12 @@
 			SET
 				logout_date=NOW()
 			WHERE login_code = #{loginCode};
+	</update>
+	<update id="modifyEmail"  parameterType="Member" >
+		UPDATE tb_member
+		SET
+			member_email=#{memberEmail}
+		WHERE member_id=#{memberId}
 	</update>
 	
 	<select	id="getMemberInfoById" resultMap="memberResultMap" parameterType="String">
