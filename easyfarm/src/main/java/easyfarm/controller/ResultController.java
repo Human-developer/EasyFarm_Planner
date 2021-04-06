@@ -53,6 +53,12 @@ public class ResultController {
 		project = resultService.getProjectNameByFarmName(farmCode);
 		System.out.println(project.toString() + "asddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
 		
+		
+		//[
+		//	{projectCode=project_16, projectName=팜코드4-1}, 
+		//	{projectCode=project_17, projectName=팜코드4-2}, 
+		//	{projectCode=project_18, projectName=팜코드4-3}
+		//]
 		return project;
 	}
 	
