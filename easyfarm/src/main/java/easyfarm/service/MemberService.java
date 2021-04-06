@@ -34,6 +34,15 @@ public class MemberService {
 		memberMapper.addMember(member);
 		 
 	 }
+	 public Member getMemberInfoByEmail(String email) {
+		 Member member = null;
+		 member = memberMapper.getMemberInfoByEmail(email);
+		 
+		 if(member == null) {
+			 member = null;
+		 }
+		return member;
+	 }
 	 
 	 public List<Member> getMemberList(){
 		 List<Member> memberList = memberMapper.getMemberList();

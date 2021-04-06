@@ -8,7 +8,7 @@
 	</th:block>
 	
 	<th:block layout:fragment="pageTitle">
-		회원관리 - 회원등록
+		<a th:href="@{/member/login}">로그인</a> - 회원등록
 	</th:block>
 	
 	<th:block layout:fragment="customCss">
@@ -46,10 +46,66 @@
 		
 	
 		<script type="text/javascript">
+		var key = "";
+		var isCertification = "";
 		
-			
+			  $(".sendMail").click(function() {// 메일 입력 유효성 검사
+					var mail = $("#memberEmail").val(); //사용자의 이메일 입력값. 
+					
+					if (mail == "") {
+						alert("메일 주소가 입력되지 않았습니다.");
+					} else {
+					
+						$.ajax({
+							type : 'post',
+							url : '/checkMail',
+							data : {mail:mail},
+							dataType :'json',
+							success: function(data){
+														
+								key = data.mailAuthKey;
+							}
+		
+						});
+						alert("인증번호가 전송되었습니다.");
+						isCertification=false; //추후 인증 여부를 알기위한 값
+						$("#certified").attr('style','display: block');
+						$("#certified2").attr('style','display: block');
+						$(".compare").attr('style','display: block');
+					}
+					
+					
+				});
+			  
+			 
+			  
+			  $(".compare").on("click", function() {
+				 
+				
+				 if($("#certified").val() != ""){
+					 					
+					if ($("#certified").val() == key) {   //인증 키 값을 비교를 위해 텍스트인풋과 벨류를 비교
+						$(".compare-text").text("인증 성공!").css("color", "black");
+						isCertification = true;  //인증 성공여부 check
+					}else{
+						$(".compare-text").text("불일치!").css("color", "red");
+						isCertification = false; //인증 실패
+					}
+				 }else{
+					 $(".compare-text").text("불일치!").css("color", "red");
+						isCertification = false; //인증 실패
+				 }
+				
+				});
+			 	
+			  
+		
+		
+				//아이디 중복검사
 				$('#checkBtn').click(function(){
+					
 					var memberId = $('#memberId').val();
+					
 					if(memberId != ""){
 						
 						$.ajax({
@@ -64,19 +120,15 @@
 										confirmButtonColor: '#304ffe'
 									});
 									$('#checkBtn').attr('value','yes');
-								}
-	
-								 else {
+								}else {
 									 swal({
 											title: "사용 불가능한 아이디 입니다.",
 											confirmButtonColor: '#304ffe'
 										});
-									
-									//중복된 아이디면 중복체크가 다시 필요하기 때문에 check의 값을 no로 다시 지정
+																		//중복된 아이디면 중복체크가 다시 필요하기 때문에 check의 값을 no로 다시 지정
 									$('#checkBtn').attr('value','no');
 										return;
-								}
-								
+								}							
 							},
 							error : function(xhr, status, error) {
 								console.log('xhr : ' + xhr);
@@ -103,11 +155,11 @@
 					$('#checkBtn').attr('value','no');
 				});
 
-		
-		
-
-
+	
 			
+
+
+			// 유효성 검사
 			$('#addCheck').click(function(){
 							
 				
@@ -115,8 +167,6 @@
 				var getCheck= RegExp(/^[a-zA-Z0-9]{4,12}$/);
 				var getName= RegExp(/^[가-힣]+$/);
 				var phoneNumberRegex = /^[0-9]{3}-[0-9]{4}-[0-9]{4}$/;
-				
-				
 				if(!getCheck.test($('#memberId').val())){
 					 swal({
 							title: "아이디를 형식에 맞게 써주세요.",
@@ -225,6 +275,15 @@
 					$('#memberEmail').focus();
 					return false;
 				}
+				
+				if(!isCertification){			
+					 swal({
+							title: "메일 인증이 완료되지않았습니다.",
+							confirmButtonColor: '#304ffe'
+						});
+					return false;
+				}
+				
 				if(!getMail.test($('#memberEmail').val())){
 					 swal({
 							title: "이메일을 형식에 맞게 입력 해주세요.",
@@ -247,6 +306,16 @@
 				
 				return true;
 			})
+			
+			$("#memberEmail").on("keyup",function(){
+				isCertification = false;
+				key ="";
+				$("#certified").attr('style','display: none');
+				$("#certified2").attr('style','display: none');
+				$(".compare").attr('style','display: none');
+			});
+			
+			
 
 			
 		function check_jumin()
@@ -357,7 +426,7 @@
 	<th:block layout:fragment="customContents">
 	
 	
-		<form th:action="@{/member/addMember}" method="post">
+		<form th:action="@{/member/addMember}" method="post"  >
 		
 			<div class="container-fluid">
 				<div class="row" >
@@ -367,7 +436,7 @@
 					">
 					
 						<div class="box-content" style="border : 2px solid #3BBD5A">
-							<div class="box-content  t-center important-col" style="border-bottom : 2px solid grey">
+							<div class="box-content  t-center important-col" style="border-bottom : 2px solid grey" >
 							
 								<h3>회원등록</h3>
 							</div>
@@ -435,15 +504,30 @@
 									</div>
 									<div class="form-group">
 										<label for="memberEmail" class="col-sm-2 control-label"><strong>이메일</strong></label>
-									    <div class="col-sm-10">
+									    <div class="col-sm-6">
 									      <input type="email" class="form-control" name="memberEmail" id="memberEmail" placeholder="test@email.com">
 									    </div>
+									    <div class="col-sm-1">
+									   	  <button type="button" class="sendMail btn">인증</button>
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="memberEmail" id="certified2" class="col-sm-2 control-label"><strong>인증번호</strong></label>
+										 <div class="col-sm-6">
+									     <input type="text" class="form-control" name="" id="certified" placeholder="인증번호" style="display: none;">
+									     <span class="compare-text"></span>
+									     </div>
+									   	 <div class="col-sm-1">
+									   	 <button type="button" class="compare btn" id="compare" style="display: none;">인증</button>
+									   	 </div>
 									</div>
 									<div class="form-group">
 										<label for="memberAddress" class="col-sm-2 control-label"><strong>주소</strong></label>
 									    <div class="col-sm-6">
 									      <input type="text" class="form-control" name="memberAddress"  id="memberAddress" placeholder="도로명 주소">
 									      <span id="guide" style="color:#999"></span>
+									      
+									     
 									    </div>
 									     <div class="col-sm-1">
 											<button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light addressBtn" onclick="sample4_execDaumPostcode()">주소검색</button>

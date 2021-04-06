@@ -27,7 +27,8 @@ public interface MemberMapper {
 	
 	// 회원가입
 	public int addMember(Member member);
-	
+	// 아이디 찾기|비밀번호찾기
+	public Member getMemberInfoByEmail(String email);
 	// 회원조회 & 검색
 	
 	public List<Member> getMemberList();
