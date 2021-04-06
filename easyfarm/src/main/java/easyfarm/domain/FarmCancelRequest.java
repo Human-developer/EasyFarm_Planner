@@ -12,6 +12,7 @@ public class FarmCancelRequest {
 	private String cancelApprovalMemberId;
 	private FarmMember farmMember;
 	private Member member;
+	private Farm farm;
 	
 	public String getCancelRequestCode() {
 		return cancelRequestCode;
@@ -79,6 +80,12 @@ public class FarmCancelRequest {
 	public void setMember(Member member) {
 		this.member = member;
 	}
+	public Farm getFarm() {
+		return farm;
+	}
+	public void setFarm(Farm farm) {
+		this.farm = farm;
+	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -104,16 +111,10 @@ public class FarmCancelRequest {
 		builder.append(farmMember);
 		builder.append(", member=");
 		builder.append(member);
+		builder.append(", farm=");
+		builder.append(farm);
 		builder.append("]");
 		return builder.toString();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }
