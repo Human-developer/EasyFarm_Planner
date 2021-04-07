@@ -671,6 +671,10 @@
 			farm_code=#{farmCode};
 	</update>
 	
+	
+	<select id="modifyFarmCeoCheck" resultType="boolean" parameterType="String">
+		SELECT sf_modify_Ceo_Farm_Check(#{ceoMemberCode}, #{memberCode}, #{memberId}, #{farmCode})
+	</select>
 </mapper>
 
 

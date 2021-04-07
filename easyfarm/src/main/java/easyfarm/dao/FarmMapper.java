@@ -65,4 +65,5 @@ public interface FarmMapper {
 	
 	public int modifyFarmMemberLevel(String farmMemberCode, String memberLevel);
 	public int modifyFarmCeo(String farmCode,String memberId);
+	public boolean modifyFarmCeoCheck(String ceoMemberCode, String memberCode, String memberId, String farmCode);
 }

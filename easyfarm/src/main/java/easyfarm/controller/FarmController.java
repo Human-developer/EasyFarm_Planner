@@ -36,11 +36,19 @@ public class FarmController {
 	public @ResponseBody String modifyCeoFarm(FarmMember farmMember) {
 		String result ="실패";
 		if(farmMember != null) {
-			int modifyCeoResult = farmService.modifyCeoFarm(farmMember);
-
-			if(modifyCeoResult > 0) {
-				result ="성공";
+			try {
+				int modifyCeoResult = farmService.modifyCeoFarm(farmMember);
+				if(modifyCeoResult > 0) {
+					result ="성공";
+				}
 			}
+			catch (Exception e) {
+				if(e.getMessage().equals("불일치")) {
+					result = "다시시도해주세요";
+				}
+				
+			}
+
 		}
 		
 		return result;
