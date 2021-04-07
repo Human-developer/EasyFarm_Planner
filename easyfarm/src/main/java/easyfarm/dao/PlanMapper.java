@@ -105,5 +105,7 @@ public interface PlanMapper {
 	//단계별 상세작업계획 등록
 	public int addPlanWorkphaseCate(PlanWorkphaseCate planWorkphaseCate);
 	
+	//단계별 작업계획 max코드 조회
+	public String getPlanWorkphaseMaxCode();
 		
 }

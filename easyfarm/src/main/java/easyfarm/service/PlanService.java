@@ -207,11 +207,26 @@ public class PlanService {
 	}
 	
 	//단계별작업계획 등록
-	public int addPlanWorkphase(PlanWorkphase planWorkphase) {
+	public int addPlanWorkphase(PlanWorkphase planWorkphase, PlanWorkphaseCate planWorkphaseCate) {
 		int result = 0;
-		if(planWorkphase.getPlanWorkphaseCode() != null && !"".equals(planWorkphase.getPlanWorkphaseCode().trim())) {
-			result = planMapper.addPlanWorkphase(planWorkphase);
+		String maxCode = null;
+		if(planWorkphase.getProjectWorkphaseCode() != null && !"".equals(planWorkphase.getProjectWorkphaseCode().trim())) {
+			
+			maxCode = planMapper.getPlanWorkphaseMaxCode();
+			
+			planWorkphase.setPlanWorkphaseCode(maxCode);
+			planWorkphase.setRunStatus("실행전");
+			
+			result += planMapper.addPlanWorkphase(planWorkphase);
 		}
+		if(planWorkphaseCate.getFarmWorkphaseCateCode() != null && !"".equals(planWorkphaseCate.getFarmWorkphaseCateCode().trim())) {
+			
+			planWorkphaseCate.setPlanWorkphaseCode(maxCode);
+			planWorkphaseCate.setRunStatus("실행전");
+			
+			result += planMapper.addPlanWorkphaseCate(planWorkphaseCate);
+		}
+		
 		return result;
 	}
 	

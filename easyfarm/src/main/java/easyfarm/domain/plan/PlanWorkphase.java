@@ -113,6 +113,7 @@ public class PlanWorkphase {
 	}
 
 	// PlanWorkphase 모델 복사
+	/*
     public void CopyData(PlanWorkphase param)
     {
         this.planWorkphaseCode = param.getPlanWorkphaseCode();
@@ -124,5 +125,5 @@ public class PlanWorkphase {
         this.regDate = param.getRegDate();
         this.runStatus = param.getRunStatus();
     }
-	
+	*/
 }

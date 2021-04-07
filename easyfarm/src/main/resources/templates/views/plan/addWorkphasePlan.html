@@ -35,11 +35,11 @@
 		<!-- Colorpicker -->
 		<link rel="stylesheet" th:href="@{/assets/plugin/colorpicker/css/bootstrap-colorpicker.min.css}">
 	
-		<!-- Datepicker -->
-		<link rel="stylesheet" th:href="@{/assets/plugin/datepicker/css/bootstrap-datepicker.min.css}">
-	
 		<!-- DateRangepicker -->
 		<link rel="stylesheet" th:href="@{/assets/plugin/daterangepicker/daterangepicker.css}">
+		
+		<!-- 데이트피커 플러그인 css, js파일 연결 -->
+		<link rel="stylesheet" href="/assets/plugin/air-datepicker/css/datepicker.min.css">
 	</th:block>
 	
 	<!-- 사용자 정의 css -->
@@ -54,14 +54,13 @@
 	
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
 	<th:block layout:fragment="customContents">
-		<form th:action="@{#}" method="post">
+		<form th:action="@{/plan/addWorkphasePlan}" method="post">
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="box-content">
 							<h3>계획 등록</h3>
 							<hr/>
-							
 							<div class="form-horizontal margin-bottom-30">
 								<div class="form-group">
 									<label for="projectPlanN" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>계획차수</strong></label>
@@ -92,7 +91,7 @@
 								<div class="form-group">
 									<label for="workPhaseCate" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>상세항목</strong></label>
 								    <div class="col-sm-4">
-										<select class="form-control" name="workPhaseCate" id="workPhaseCate">
+										<select class="form-control" name="farmWorkphaseCateCode" id="workPhaseCate">
 											<option value=""> :: 상세항목선택 :: </option>
 											<th:block th:if="${#lists.size(workphaseCateNameList) > 0}" th:each="w : ${workphaseCateNameList}">
 												<option th:value="${w.farmWorkphaseCateCode}" th:text="${w.commonWorkphaseCateName}"></option>
@@ -109,13 +108,13 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="workPhaseCate" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>배경색상</strong></label>
+									<label for="planWorkphaseColor" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>배경색상</strong></label>
 								    <div class="col-sm-4">
-										<input type="text" class="colorpicker-default form-control colorpicker-element" value="#3df545">
+										<input type="text" name="planWorkphaseColor" class="colorpicker-default form-control colorpicker-element" value="#3df545">
 								    </div>
-								    <label for="workPhaseCateDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>글자색상</strong></label>
+								    <label for="planWorkphaseTextColor" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>글자색상</strong></label>
 									<div class="col-md-5">
-										<input type="text" class="colorpicker-default form-control colorpicker-element" value="#ffffff">
+										<input type="text" name="planWorkphaseTextColor" class="colorpicker-default form-control colorpicker-element" value="#ffffff">
 									</div>
 								</div>
 							</div>
@@ -123,7 +122,7 @@
 							<hr>
 							<div class="form-group t-center">
 								<button type="submit" id="btnSize" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btnSize">계획등록</button>
-								<button type="button" th:value="|/plan/getSchedule?projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" class="btn btn-success btn-md waves-effect waves-light btn-rounded btnSize">
+								<button type="button" th:data-value="|/plan/getSchedule?projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" class="btn btn-success btn-md waves-effect waves-light btn-rounded btnSize">
 									켈린더 돌아가기
 								</button>
 							</div>
@@ -170,13 +169,16 @@
 		<!-- Demo Scripts -->
 		<script th:src="@{/assets/scripts/form.custom.PGS.js}"></script>
 		
+		<!-- 데이트피커 플러그인 css, js파일 연결 -->
+		<script src="/assets/plugin/air-datepicker/js/datepicker.min.js"></script>
+		<script src="/assets/plugin/air-datepicker/js/i18n/datepicker.kr.js"></script>
 	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 -->
 	<th:block layout:fragment="customJavaScript">
 		<script type="text/javascript">
 			function moveAddSpend(btn){
-					location.href = btn.value;
+				location.href = $(btn).attr('data-value');
 			};
 			
 			$('#workPhaseCateDate-range, #workPhaseDate-range').datepicker({

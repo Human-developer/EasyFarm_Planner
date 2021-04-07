@@ -53,12 +53,15 @@
 	<th:block layout:fragment="customCss">
 		<style type="text/css">
 			.form-control[readonly]{background-color: #F5F5F5;}
+			
 			.switch.primary input[type="checkbox"]:checked + label:before, .switch input[type="checkbox"]:checked + label:after{margin-top: 4px;}
 			.switch label:after, .switch label:before{margin-top: 4px;}
 			.switch label:before{background-color: grey;}
 			.switch{margin-bottom: 0px;}
+			
 			.box-content.card.white .box-title{background-color: #F5F5F5;}
 			hr{border-bottom: 1px solid grey;}
+			
 			.ui-datepicker-calendar {display: none;}
 			textarea.form-control {height : 140px;}
 			
@@ -150,13 +153,13 @@
 								</div>
 							</div>
 							
-							<div class="box-content">
+							<div class="box-content" style="color: red;">
 								<ul class="list-inline">
-									<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">관리화면</button></li>
-									<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
-									<li class="margin-bottom-10"><button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">거래처관리</button></li>
-									<li class="margin-bottom-10"><button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">품목관리</button></li>
-									<li class="margin-bottom-10"><button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">농기계관리</button></li>
+									<li>&#8251 농가단위 사전정보를 등록 하시면 지출계획 에서 선택 하실 수 있습니다.</li><br/>
+									<li>&#8251</li><br/>
+									<li>&#8251</li><br/>
+									<li>&#8251</li><br/>
+									<li>&#8251</li>
 								</ul>
 							</div>
 							
@@ -606,14 +609,14 @@
 												</table>
 											</div>
 										</div>
-									</div>
-									<hr/>
-									<div class="form-group t-center">
-										<div class="row">
-											<div class="col-md-6 col-md-offset-3">
-												<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
-													data-toggle="modal" data-target="#planAddWorkforcePay">인건비 지출계획등록
-												</button>
+										<hr/>
+										<div class="form-group t-center">
+											<div class="row">
+												<div class="col-md-6 col-md-offset-3">
+													<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+														data-toggle="modal" data-target="#planAddWorkforcePay">인건비 지출계획등록
+													</button>
+												</div>
 											</div>
 										</div>
 									</div>

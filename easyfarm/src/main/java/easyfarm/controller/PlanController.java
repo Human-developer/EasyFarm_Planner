@@ -338,30 +338,28 @@ public class PlanController {
 	@PostMapping("/plan/addWorkphasePlan")
 	public String addWorkphasePlan(PlanWorkphase planWorkphase, PlanWorkphaseCate planWorkphaseCate, HttpSession session) {
 		int result = 0;
-		String projectPlanCode = null;
 		String memberId = (String) session.getAttribute("SID");
-		if(planWorkphase.getPlanWorkphaseCode() != null && !"".equals(planWorkphase.getPlanWorkphaseCode().trim())
-				&& planWorkphaseCate.getPlanWorkphaseCateCode() != null && !"".equals(planWorkphaseCate.getPlanWorkphaseCateCode().trim())) {
-			
-			planWorkphaseCate.setRegMemberId(memberId);
-			planWorkphaseCate.setRunStatus("실행전");
-			
-			result = planService.addPlanWorkphaseCate(planWorkphaseCate);
-			projectPlanCode = planWorkphaseCate.getProjectPlanCode();
-		}else {
+		
+		if(planWorkphase.getProjectWorkphaseCode() != null && !"".equals(planWorkphase.getProjectWorkphaseCode().trim())) {
 			planWorkphase.setRegMemberId(memberId);
-			planWorkphase.setRunStatus("실행전");
+			planWorkphaseCate.setRegMemberId(memberId);
 			
-			result = planService.addPlanWorkphase(planWorkphase);
-			projectPlanCode = planWorkphase.getProjectPlanCode();
+			result = planService.addPlanWorkphase(planWorkphase, planWorkphaseCate);
 		}
 		
-		return "/plan/getSchedule?projectPlanCode=" + projectPlanCode;
+		System.out.println(result + " <--------- result");
+		//return "/plan/getSchedule?projectPlanCode=" + projectPlanCode;
+		return null;
 	}
 	
 	@GetMapping("/plan/resultPlan")
 	public String resultPlan() {
 		return "views/plan/resultPlan";
+	}
+	
+	@GetMapping("/plan/result")
+	public String result() {
+		return "views/plan/result";
 	}
 	
 	

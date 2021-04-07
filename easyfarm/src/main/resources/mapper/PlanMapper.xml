@@ -90,6 +90,9 @@
 		<result property="runStatus" 				column="run_status"/>
 	</resultMap>
 	
+	<select id="getPlanWorkphaseMaxCode" resultType="String">
+		SELECT sf_plan_workphase_max_code();
+	</select>
 	
 	<insert id="addPlanWorkphaseCate" parameterType="PlanWorkphaseCate" >
 		INSERT INTO tb_plan_workphase_cate
@@ -139,7 +142,7 @@
 		)
 		VALUES
 		(
-			 sf_plan_workphase_max_code()
+			 #{planWorkphaseCode}
 			,#{projectPlanCode}
 			,#{projectWorkphaseCode}
 			,#{planWorkphaseBegin}

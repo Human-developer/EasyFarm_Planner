@@ -58,9 +58,13 @@ $(document).ready(function() {
 			eventDragStop : function(info){
 				console.log(info);
 			},
-			eventClick: function(data){
-				var projectPlanCode = data.projectPlanCode;
-				location.href = '/plan/addSpend?projectPlanCode=' + projectPlanCode;
+			eventClick: function(data,a,b,c){
+				/*var yy=date.format("YYYY");
+	        	var mm=date.format("MM");
+	        	var dd=date.format("DD");
+	        	var ss=date.format("dd");
+		        onChangeDate(yy,mm,dd);*/
+				$('#planModal').modal('show');
 			},
 			customButtons: {
                 changeDateButton: {
@@ -72,12 +76,8 @@ $(document).ready(function() {
             },
             
             dayClick: function(date, allDay, jsEvent, view) {
-        	   var yy=date.format("YYYY");
-        	   var mm=date.format("MM");
-        	   var dd=date.format("DD");
-        	   var ss=date.format("dd");
-        	   onChangeDate(yy,mm,dd);
-        	   $('#planModal').modal('show');
+        	   
+        	   
             },
             
 			events : function(info, successCallback, failureCallback, callback) {				
