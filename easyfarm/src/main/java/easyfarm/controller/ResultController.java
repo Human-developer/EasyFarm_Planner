@@ -46,12 +46,12 @@ public class ResultController {
 	PlanService planService;
 	
 	
-	@PostMapping(value = "/getProjectNameByFarmCode", produces = "application/json")
+	@PostMapping(value = "/result/getProjectNameByFarmCode", produces = "application/json")
 	public @ResponseBody List<Map<String,Object>> test( @RequestParam(value = "farmCode",required = false) String farmCode,Model model) {
 		List<Map<String,Object>> project = null;
 		
 		project = resultService.getProjectNameByFarmName(farmCode);
-		System.out.println(project.toString() + "asddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
+		System.out.println(project.toString() + "muyahoooooooooooooooooooooooooooooooooooooo");
 		
 		
 		//[
@@ -60,6 +60,22 @@ public class ResultController {
 		//	{projectCode=project_18, projectName=팜코드4-3}
 		//]
 		return project;
+	}
+	
+	@PostMapping(value = "/result/getWorkPhaseByFarmCode", produces = "application/json")
+	public @ResponseBody List<Map<String,Object>> getWorkPhaseByProjectCode( @RequestParam(value = "projectCode",required = false) String projectCode) {
+		List<Map<String,Object>> workPhase = null;
+		
+		workPhase = resultService.getWorkPhaseByProjectCode(projectCode);
+		System.out.println(workPhase.toString() + "muyahuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+		
+		
+		//[
+		//	{projectCode=project_16, projectName=팜코드4-1}, 
+		//	{projectCode=project_17, projectName=팜코드4-2}, 
+		//	{projectCode=project_18, projectName=팜코드4-3}
+		//]
+		return workPhase;
 	}
 	
 	

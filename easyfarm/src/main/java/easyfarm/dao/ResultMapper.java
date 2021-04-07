@@ -42,4 +42,6 @@ public interface ResultMapper {
 	public List<Map<String,Object>> getFarmName(String memberId);
 	
 	public List<Map<String,Object>> getProjectNameByFarmName(String farmCode);
+	
+	public List<Map<String,Object>> getWorkPhaseByProjectCode(String projectCode);
 }

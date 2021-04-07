@@ -134,6 +134,11 @@ public class ResultService {
 		return resultmapper.getProjectNameByFarmName(farmCode);
 	}
 	
+	//선택한 프로젝트의 작업단계 가져오기
+	public List<Map<String,Object>> getWorkPhaseByProjectCode(String projectCode) {
+		return resultmapper.getWorkPhaseByProjectCode(projectCode);
+	}
+	
 	
 	
 	

@@ -19,6 +19,13 @@
 	
 	<!-- 사용자 정의 css -->
 	<th:block layout:fragment="customCss">
+		
+	<style type="text/css">
+		.swal2-popup{
+	         font-size: small !important;
+	         }
+	</style>
+
 	</th:block>
 	
 	<th:block layout:fragment="customContents">
@@ -611,8 +618,10 @@
 				/*<![CDATA[*/
 				var farm = '[[${farm}]]';
 			    var farmNameObj = JSON.parse(farm);
-				var farmName = {};
+				var farmName = {"":"농가를 선택해주세요"};
 				console.log(farmNameObj);
+				var Data ={"":"프로젝트를 선택해주세요"};
+				var WorkPhase = {"":"작업단계를 선택해주세요"};
 			    for(var i=0; i < farmNameObj.length; i++){
 			    	
 			    	farmName[farmNameObj[i].farmCode] = farmNameObj[i].farmName;
@@ -624,7 +633,9 @@
 						  input: 'select',
 						  confirmButtonText: '다음 &rarr;',
 						  showCancelButton: true,
+						  allowOutsideClick: false,
 						  inputOptions: {
+							  	
 							    '농가명': farmName 
 							  },
 						  progressSteps: ['1', '2', '3']
@@ -632,65 +643,96 @@
 						  {
 						    title: '농가 선택',
 						    text: '농가를 선택해 주세요',
-						    preConfirm: function(farmCode){
+							showLoaderOnConfirm: true,
+
+						    preConfirm: function(farmCode)
+						    {
 						    	delete this.inputOptions.농가명;
-						    	var test =this.inputOptions
-						    	var Data = {};
-						    	var request = $.ajax({
-						               url:"/getProjectNameByFarmCode",
-						               method:"post", 
-						               data : {"farmCode":farmCode},
-						               datatype: "json",
-						            });
-						            request.done(function(data){
-						            	console.log(typeof data, data.length)
-						            	console.log(data  + "<< data");	
-						            	for(var i=0; i < data.length; i++){
-						            		var code =  data[i].projectCode;
-						            		var value = data[i].projectName;
-						            		console.log(typeof code);
-						            		Data[code] = value;
-						            		//Data[data[i].projectCode] = data[i].projectName;
-						            		
-						            		console.log(data[i].projectCode);
-						            	}
-						            	console.log(Data + "<< Data!!" );
-						            });
-						            
-						            request.fail(function( jqXHR, textStatus ){
-						               alert( "Request failed : " + textStatus );
-						            });
-						            
-						            console.log(Data + "asldkfjlasdfjlsadjf");
-						            this.inputOptions.project = Data;
-						            
-						    	},
-						    
+							    this.inputOptions.project = Data;
+						    },
 						  },
 						  {
 							title: '프로젝트 선택',
-							text: '프로젝트를 선택해 주세요'
+							text: '프로젝트를 선택해 주세요',
+							preConfirm: function(projectCode)
+							{
+						    	delete this.inputOptions.project;
+							    this.inputOptions.WorkPhase = WorkPhase;
+						    },
 						  },
 						  {
 							title: '작업단계 선택',
 							text: '작업단계를 선택해 주세요'
 						  },
 						]).then((result) => {
-							
 						  if (result.value) {
 						    const answers = JSON.stringify(result.value)
-						    Swal.fire({
-						      title: 'All done!',
-						      html: `
-						        Your answers:
-						        <pre><code>${answers}</code></pre>
-						      `,
-						      confirmButtonText: 'Lovely!'
-						    })
+						    console.log(result + "<< result")
+						    if(result.value[0] != '' && result.value[1] != '' && result.value[2] != '' ){		//유효성(임시)
+							    console.log(result.value[0] + "<< result.value")
+							    
+							    Swal.fire({
+							      title: 'All done!',
+							      html: `
+							        Your answers:
+							        <pre><code>${answers}</code></pre>
+							      `,
+							      confirmButtonText: '완료!'
+							    })
+						    }
 						  }
 						})
-			       
+				$('.swal2-select').change(function(){								//농가코드를 선택할 경우 해당 농가코드의 프로젝트를 검색
+					var farmCode = $(this).val();
+					console.log(farmCode + "<<farmCode");
+					Data ={"":"프로젝트를 선택해주세요"};	//change가 바뀌었을 경우 초기화 해주기 위함
+					var request = $.ajax({
+			               url:"/result/getProjectNameByFarmCode",
+			               method:"post", 
+			               data : {"farmCode":farmCode},
+			               datatype: "json",
+			            });
+			            request.done(function(data){
+			            	
+			            	for(var i=0; i < data.length; i++){
+			            		var code =  data[i].projectCode;
+			            		var value = data[i].projectName;
+			            		Data[code] = value;
+			            	}
+			            });
+			            request.fail(function( jqXHR, textStatus ){
+			               alert( "Request failed : " + textStatus );
+			            });
+					console.log(farmCode + "<<farmCode");
+				});
 				
+				$('.swal2-confirm').click(function(){								//1페이지와 2페이지 구분을 위한 클래스 추가
+					$('.swal2-select').addClass("project-select");
+				})
+				
+			
+				$(document).on('change', '.project-select', function(){					//동적바인딩으로 2번째 페이지에 이벤트 걸기
+					var projectCode = $(this).val();
+					console.log(projectCode + "<<projectCode");
+					var request = $.ajax({
+			               url:"/result/getWorkPhaseByFarmCode",
+			               method:"post", 
+			               data : {"projectCode":projectCode},
+			               datatype: "json",
+			            });
+			            request.done(function(data){
+			            	console.log(data + "project data");
+			            	for(var i=0; i < data.length; i++){
+			            		var code =  data[i].WorkPhaseCode;
+			            		var name = data[i].WorkPhaseName;
+			            		WorkPhase[code] = name;
+			            	}
+			            });
+			            request.fail(function( jqXHR, textStatus ){
+			               alert( "Request failed : " + textStatus );
+			            });
+					console.log(projectCode + "<<projectCode");
+				});
 			</script>
 		
 	
@@ -766,11 +808,6 @@
 			
 			
 			
-			$(document).ready(function(){
-				
-			
-				
-			})
 			
 		</script>
 		

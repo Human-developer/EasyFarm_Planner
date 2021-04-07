@@ -5,6 +5,19 @@
   <mapper namespace="easyfarm.dao.ResultMapper">
   	
   	
+  	<select id="getWorkPhaseByProjectCode" resultType="Map" parameterType="String">
+		SELECT 
+			pw.project_workphase_code 	AS WorkPhaseCode
+			,cp.workphase_name 			AS WorkPhaseName
+		FROM tb_project_workphase AS pw
+		INNER JOIN
+		tb_crop_phase_info AS cp
+		ON
+		pw.crop_phase_info_code = cp.crop_phase_info_code
+		WHERE
+			pw.project_code =  #{projectCode} 
+  	</select>
+  	
   	<select id="getProjectNameByFarmName" resultType="Map" parameterType="String">
 		SELECT
 			p.project_code AS projectCode
