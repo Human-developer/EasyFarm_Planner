@@ -25,6 +25,27 @@
 		<result property="farmLevelName" column="farm_level_name"/>
 		<result property="farmJoinApprovalDate" column="farm_join_approval_date"/>
 		<result property="farmMemberStatus" column="farm_member_status"/>
+		<association property="member" javaType ="Member">
+			<id property="memberId" 		column="member_id"/>
+			<result property="memberPw"		column="member_pw"/>
+			<result property="memberName" 	column="member_name"/>
+			<result property="levelCode"	 	column="level_code"/>
+			<result property="memberGender" 	column="member_gender"/>
+			<result property="memberAddress" 	column="member_address"/>
+			<result property="memberEmail" 	column="member_email"/>
+			<result property="memberPhone" 	column="member_phone"/>
+			<result property="memberIdenNum" 	column="member_iden_num"/>
+			<result property="memberRegDate"	column="member_reg_date"/>
+			<result property="memberStatus" 	column="member_status"/>
+			<result property="levelName" 		column="level_name"/>
+			<result property="useStatus" 		column="use_status"/>
+			<result property="memberRegDate" 	column="reg_date"/>
+			
+			<result property="loginCode" 		column="login_code"/>
+			<result property="loginMemberId" 	column="login_member_id"/>
+			<result property="loginDate" 		column="login_date"/>
+			<result property="logoutDate" 	column="logout_date"/>
+		</association>
 	</resultMap>
 	
 	<resultMap type="FarmMemberJoin" id="farmJoinResultMap">
@@ -465,14 +486,7 @@
 	
 	
 	<select id="getFarmMemberLevel" resultType="String" parameterType="String">
-		SELECT 
-			farm_level_code
-		FROM 
-			tb_farm_member
-		WHERE
-			farm_member_id = #{memberId}
-			AND
-			farm_code = #{farmCode}
+		SELECT sf_code_id_by_level(#{farmCode},#{memberId});
 	</select>
 	
 	
@@ -603,6 +617,60 @@
 		WHERE 
 			farm_cancel_request_code=#{cancelLeaverFarm};
 	</delete>
+	
+	<select id="farmMemeberList" resultMap="farmMemberResultMap" parameterType="String">
+		SELECT 
+			fm.farm_member_code, 
+			fm.farm_member_id, 
+			fm.farm_level_code,
+			m.member_name
+		FROM 
+			tb_farm_member AS fm
+			JOIN
+			tb_member AS m
+			on
+			fm.farm_member_id = m.member_id
+		WHERE
+			fm.farm_code =  #{farmCode}
+			AND
+			fm.farm_member_status = '정상'
+			AND
+			fm.farm_level_code != 'farm_level_1';
+	</select>
+	
+	<update id="modifyCeoFarmProcedure" parameterType="String">
+		CALL sp_farm_member_code_by_farm_ceo_modify(#{farmMemberCode});
+	</update>
+	
+	<select id="farmCeoMemberCode" resultType="String" parameterType="String">
+		SELECT 
+			farm_member_code
+		FROM 
+			tb_farm_member
+		WHERE
+			farm_member_status = '정상'
+			AND
+			farm_level_code = 'farm_level_1'
+			AND
+			farm_code = #{farmCode};
+	</select>
+	
+	<update id="modifyFarmMemberLevel" parameterType="String">
+		UPDATE tb_farm_member
+		SET
+			farm_level_code=#{memberLevel}
+		WHERE 
+			farm_member_code=#{farmMemberCode};
+	</update>
+	
+	<update id="modifyFarmCeo" parameterType="String">
+		UPDATE tb_farm
+		SET
+			ceo_member_id=#{memberId}
+		WHERE 
+			farm_code=#{farmCode};
+	</update>
+	
 </mapper>
 
 

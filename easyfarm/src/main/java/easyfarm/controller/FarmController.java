@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
+import easyfarm.dao.FarmMapper;
 import easyfarm.domain.Farm;
 import easyfarm.domain.FarmCancelRequest;
 import easyfarm.domain.FarmMember;
@@ -29,6 +29,34 @@ public class FarmController {
 	
 	@Autowired
 	private FarmService farmService;
+	
+	
+	
+	@PostMapping("/json/modifyCeoFarm/")
+	public @ResponseBody String modifyCeoFarm(FarmMember farmMember) {
+		String result ="실패";
+		if(farmMember != null) {
+			int modifyCeoResult = farmService.modifyCeoFarm(farmMember);
+
+			if(modifyCeoResult > 0) {
+				result ="성공";
+			}
+		}
+		
+		return result;
+	}
+	@PostMapping("/json/farmMemberList")
+	public @ResponseBody List<FarmMember> getFarmMemberList(@RequestParam(value = "farmCode",required = false) String farmCode){
+		List<FarmMember> result = null;
+		
+		if(farmCode != null) {
+			List<FarmMember> memberList =	farmService.farmMemeberList(farmCode);
+			
+			if(memberList != null) result = memberList;
+		}
+		
+		return result;
+	}
 	
 	//농가탈퇴 취소
 	@PostMapping("/json/cancelLeaverFarm")
