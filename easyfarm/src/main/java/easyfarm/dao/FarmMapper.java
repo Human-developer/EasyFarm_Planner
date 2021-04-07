@@ -57,4 +57,12 @@ public interface FarmMapper {
 	//농가탈퇴 취소
 	public int cancelLeaverFarm(String cancelLeaverFarm);
 	
+	//농가 대표 수정
+	public List<FarmMember> farmMemeberList(String farmCode);
+	public int modifyCeoFarmProcedure(String farmMemberCode);
+	
+	public String farmCeoMemberCode(String farmCode);
+	
+	public int modifyFarmMemberLevel(String farmMemberCode, String memberLevel);
+	public int modifyFarmCeo(String farmCode,String memberId);
 }
