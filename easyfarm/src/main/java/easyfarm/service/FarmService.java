@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.SqlSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -325,11 +326,37 @@ public class FarmService {
 				result += farmMapper.modifyFarmMemberLevel(farmMemberCode, "farm_level_1");
 				//농가대표를 회원으로 수정
 				result += farmMapper.modifyFarmCeo(farmCode,farmMemberId);
+				
+				
+				//제대로 대표 수정이 이루어졌는지
+				boolean modifyFarmCeoCheck = farmMapper.modifyFarmCeoCheck(ceoFarmMemberCode,farmMemberCode,farmMemberId,farmCode);
+				
+				//잘못 수정되었다면 롤백
+				if(!modifyFarmCeoCheck) {
+					throw new RuntimeException("불일치"); 
+				}
 			}
 			
 			
 		}
 		
+		
+		return result;
+	}
+	
+	public String deportation(FarmMember farmMember, String memberId) {
+		String result = "실패";
+		
+		if(farmMember != null && memberId != null) {
+			int deportationResult = 0;
+			deportationResult += farmMapper.deportationCancelRequest(farmMember.getFarmMemberCode(),farmMember.getFarmCode(),memberId);
+			
+			deportationResult += farmMapper.deportationFarmMember(farmMember.getFarmMemberCode());
+			
+			if(deportationResult > 0) {
+				result ="성공";
+			}
+		}
 		
 		return result;
 	}

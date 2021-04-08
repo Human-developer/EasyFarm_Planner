@@ -47,6 +47,7 @@
 									<th th:text ="${'대표자 아이디'}"/>
 									<th th:text ="${'토지 면적'}"/>
 									<th th:text ="${'주소'}"/>
+									<th th:text ="${'농가 회원수'}"/>
 									<th th:text ="${'농가 생성일'}"/>
 									<th th:text ="${'농가 공개유무'}"/>
 									<th th:text ="${''}"/>
@@ -65,6 +66,7 @@
 									</td>
 									<td th:text = "${farm.farmArea}"/>
 									<td th:text = "${farm.farmAddress}"/>
+									<td th:text = "${farm.farmMemberCount + '명'}"/>
 									<td th:text = "${farm.farmRegDate}"/>
 									<td th:if = "${farm.farmPublicStatus == 'Y'}">공개</td>
 									<td th:if = "${farm.farmPublicStatus == 'N'}">비공개</td>
@@ -73,11 +75,11 @@
 											<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button> 
 											<ul class="dropdown-menu">
 												<li><a th:href="@{/farm/detailFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">상세보기</a></li>
+												<li><a th:href="@{/farm/getMemberFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">회원조회</a></li>
 												<li><a th:href="@{/projectListByFarmCode(farmCode=${farm.farmCode})}">프로젝트</a></li>
 												<li><a th:href="@{/farm/getJoinFarm(farmCode=${farm.farmCode})}">가입신청 목록</a></li>
 												<li><a th:href="@{/farm/getLeaverFarm(farmCode=${farm.farmCode})}">탈퇴신청 목록</a></li>
 												<li><a th:href="@{/farm/modifyFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">수정</a></li>
-												
 											</ul>
 										</div>
 									</td>
@@ -176,12 +178,16 @@
 		           		            	   "farmMemberId":farmMemberId
 		           		            	   },
 		           		            });
-		           		            request.done(function(data){
+		           		            request.done(function(data,errorThrown){
+		           		            	console.log(errorThrown + ': adfkljasdlfkjasdflj');
 		           		            	console.log(data);
 		           		            	if('성공' == data){
 		           		            		location.reload();
 		           		            	}
 		           		            	else if('실패' == data){
+		           		            		
+		           		            	}
+		           		            	else if('다시시도해주세요' == data){
 		           		            		
 		           		            	}
 		           		            	

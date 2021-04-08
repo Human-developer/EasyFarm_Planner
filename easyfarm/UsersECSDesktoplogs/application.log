@@ -1,0 +1,309 @@
+09:27:40.554 [restartedMain] INFO  easyfarm.EasyfarmApplication - Starting EasyfarmApplication using Java 1.8.0_144 on DESKTOP-048HU3O with PID 10612 (C:\Users\ECS\git\EasyFarm_Planner\easyfarm\target\classes started by ECS in C:\Users\ECS\git\EasyFarm_Planner\easyfarm)
+09:27:40.557 [restartedMain] INFO  easyfarm.EasyfarmApplication - No active profile set, falling back to default profiles: default
+09:27:40.959 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+09:27:40.960 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+09:27:41.820 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+09:27:41.839 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14 ms. Found 0 JDBC repository interfaces.
+09:27:42.076 [restartedMain] INFO  c.u.j.c.EnableEncryptablePropertiesBeanFactoryPostProcessor - Post-processing PropertySource instances
+09:27:42.107 [restartedMain] INFO  c.u.j.EncryptablePropertySourceConverter - Converting PropertySource configurationProperties [org.springframework.boot.context.properties.source.ConfigurationPropertySourcesPropertySource] to AOP Proxy
+09:27:42.108 [restartedMain] INFO  c.u.j.EncryptablePropertySourceConverter - Converting PropertySource commandLineArgs [org.springframework.core.env.SimpleCommandLinePropertySource] to EncryptableEnumerablePropertySourceWrapper
+09:27:42.109 [restartedMain] INFO  c.u.j.EncryptablePropertySourceConverter - Converting PropertySource servletConfigInitParams [org.springframework.core.env.PropertySource$StubPropertySource] to EncryptablePropertySourceWrapper
+09:27:42.109 [restartedMain] INFO  c.u.j.EncryptablePropertySourceConverter - Converting PropertySource servletContextInitParams [org.springframework.core.env.PropertySource$StubPropertySource] to EncryptablePropertySourceWrapper
+09:27:42.110 [restartedMain] INFO  c.u.j.EncryptablePropertySourceConverter - Converting PropertySource systemProperties [org.springframework.core.env.PropertiesPropertySource] to EncryptableMapPropertySourceWrapper
+09:27:42.110 [restartedMain] INFO  c.u.j.EncryptablePropertySourceConverter - Converting PropertySource systemEnvironment [org.springframework.boot.env.SystemEnvironmentPropertySourceEnvironmentPostProcessor$OriginAwareSystemEnvironmentPropertySource] to EncryptableSystemEnvironmentPropertySourceWrapper
+09:27:42.110 [restartedMain] INFO  c.u.j.EncryptablePropertySourceConverter - Converting PropertySource random [org.springframework.boot.env.RandomValuePropertySource] to EncryptablePropertySourceWrapper
+09:27:42.110 [restartedMain] INFO  c.u.j.EncryptablePropertySourceConverter - Converting PropertySource Config resource 'class path resource [application.properties]' via location 'optional:classpath:/' [org.springframework.boot.env.OriginTrackedMapPropertySource] to EncryptableMapPropertySourceWrapper
+09:27:42.111 [restartedMain] INFO  c.u.j.EncryptablePropertySourceConverter - Converting PropertySource devtools [org.springframework.core.env.MapPropertySource] to EncryptableMapPropertySourceWrapper
+09:27:42.134 [restartedMain] INFO  c.u.j.f.DefaultLazyPropertyFilter - Property Filter custom Bean not found with name 'encryptablePropertyFilter'. Initializing Default Property Filter
+09:27:42.262 [restartedMain] INFO  c.u.j.r.DefaultLazyPropertyResolver - Property Resolver custom Bean not found with name 'encryptablePropertyResolver'. Initializing Default Property Resolver
+09:27:42.264 [restartedMain] INFO  c.u.j.d.DefaultLazyPropertyDetector - Property Detector custom Bean not found with name 'encryptablePropertyDetector'. Initializing Default Property Detector
+09:27:42.598 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 80 (http)
+09:27:42.609 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-80"]
+09:27:42.611 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+09:27:42.611 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.43]
+09:27:42.735 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+09:27:42.735 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1774 ms
+09:27:43.520 [restartedMain] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+09:27:43.782 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+09:27:44.037 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+09:27:44.095 [restartedMain] INFO  o.s.s.c.ThreadPoolTaskScheduler - Initializing ExecutorService 'taskScheduler'
+09:27:44.533 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+09:27:44.557 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-80"]
+09:27:44.583 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 80 (http) with context path ''
+09:27:44.605 [restartedMain] INFO  easyfarm.EasyfarmApplication - Started EasyfarmApplication in 4.57 seconds (JVM running for 5.403)
+09:27:58.608 [http-nio-80-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+09:27:58.608 [http-nio-80-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+09:27:58.611 [http-nio-80-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+09:27:59.121 [http-nio-80-exec-1] WARN  n.n.u.t.e.ExpressionProcessor - Fragment expression "@{layout/default}" is being wrapped as a Thymeleaf 3 fragment expression (~{...}) for backwards compatibility purposes.  This wrapping will be dropped in the next major version of the expression processor, so please rewrite as a Thymeleaf 3 fragment expression to future-proof your code.  See https://github.com/thymeleaf/thymeleaf/issues/451 for more information.
+09:27:59.445 [http-nio-80-exec-1] WARN  n.n.u.t.fragments.FragmentProcessor - You don't need to put the layout:fragment/data-layout-fragment attribute into the <head> section - the decoration process will automatically copy the <head> section of your content templates into your layout page.
+09:28:03.325 [http-nio-80-exec-4] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT 
+				 m.member_id
+				,m.member_pw
+				,m.member_name
+				,m.level_code
+				,m.member_gender
+				,m.member_address
+				,m.member_email
+				,m.member_phone
+				,m.member_iden_num
+				,m.member_reg_date
+				,m.member_status
+				,l.level_name
+			FROM 
+				tb_member AS m
+			JOIN
+				tb_member_level AS l
+			ON
+			m.level_code = l.level_code
+
+			WHERE m.member_id = 'id001';
+ {executed in 23 msec}
+09:28:03.367 [http-nio-80-exec-4] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. INSERT INTO tb_login
+		(
+
+		 login_member_id
+		, login_date
+		, logout_date
+		)
+		VALUES ('id001', NOW(), NOW())
+ {executed in 7 msec}
+13:53:00.412 [http-nio-80-exec-3] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+121. SELECT 
+				 m.member_id
+				,m.member_pw
+				,m.member_name
+				,m.level_code
+				,m.member_gender
+				,m.member_address
+				,m.member_email
+				,m.member_phone
+				,m.member_iden_num
+				,m.member_reg_date
+				,m.member_status
+				,l.level_name
+			FROM 
+				tb_member AS m
+			JOIN
+				tb_member_level AS l
+			ON
+			m.level_code = l.level_code
+
+			WHERE m.member_id = 'id001';
+ {executed in 8 msec}
+13:53:00.443 [http-nio-80-exec-3] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+121. INSERT INTO tb_login
+		(
+
+		 login_member_id
+		, login_date
+		, logout_date
+		)
+		VALUES ('id001', NOW(), NOW())
+ {executed in 7 msec}
+13:53:10.603 [http-nio-80-exec-1] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+121. SELECT 
+			login_code
+			, login_member_id
+			, login_date
+			, logout_date
+		FROM 
+			tb_login
+		WHERE 
+			login_member_id = 'id001'
+		ORDER BY login_date DESC 
+			LIMIT 1
+ {executed in 7 msec}
+13:53:10.633 [http-nio-80-exec-1] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+121. UPDATE tb_login
+			SET
+				logout_date=NOW()
+			WHERE login_code = '10';
+ {executed in 7 msec}
+13:53:17.600 [http-nio-80-exec-1] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+121. SELECT 
+		c.crop_code,
+		c.crop_cate,
+		c.crop_name,
+		c.use_status,
+		c.reg_member_id,
+		c.reg_date
+	FROM
+		tb_crop	as c
+
+		order by cast(SUBSTRING_INDEX(crop_code,'_',-1)AS UNSIGNED)
+ {executed in 8 msec}
+14:16:01.702 [http-nio-80-exec-2] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+136. SELECT 
+				 m.member_id
+				,m.member_pw
+				,m.member_name
+				,m.level_code
+				,m.member_gender
+				,m.member_address
+				,m.member_email
+				,m.member_phone
+				,m.member_iden_num
+				,m.member_reg_date
+				,m.member_status
+				,l.level_name
+			FROM 
+				tb_member AS m
+			JOIN
+				tb_member_level AS l
+			ON
+			m.level_code = l.level_code
+
+			WHERE m.member_id = 'id006';
+ {executed in 7 msec}
+14:16:01.732 [http-nio-80-exec-2] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+136. INSERT INTO tb_login
+		(
+
+		 login_member_id
+		, login_date
+		, logout_date
+		)
+		VALUES ('id006', NOW(), NOW())
+ {executed in 8 msec}
+14:16:04.799 [http-nio-80-exec-4] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+136. SELECT 
+			f.farm_code, 
+			f.farm_name, 
+			f.ceo_member_id,
+			fm.farm_level_code, 
+			f.farm_area, 
+			f.farm_address, 
+			f.farm_public_status, 
+			f.farm_reg_date
+		FROM 
+			tb_farm f
+			join
+			tb_farm_member fm
+		WHERE
+			f.ceo_member_id ='id006'
+		GROUP BY f.farm_code;
+ {executed in 8 msec}
+14:16:07.363 [http-nio-80-exec-6] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+136. SELECT 
+			f.farm_code, 
+			f.farm_name, 
+			f.ceo_member_id,
+			fm.farm_level_code, 
+			f.farm_area, 
+			f.farm_address, 
+			f.farm_public_status, 
+			f.farm_reg_date
+		FROM 
+			tb_farm_member as fm
+			join
+			tb_farm_member_level AS l
+			join
+			tb_farm as f
+			on
+			fm.farm_code = f.farm_code
+			AND
+			fm.farm_member_id != f.ceo_member_id
+		WHERE
+			fm.farm_member_id = 'id006'
+			AND
+			fm.farm_member_status ='정상'
+		GROUP BY f.farm_code
+ {executed in 8 msec}
+14:16:10.051 [http-nio-80-exec-6] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+136. SELECT 
+			fmj.farm_join_code, 
+			fmj.farm_code, 
+			fmj.farm_join_request_member_id, 
+			fmj.farm_join_request_date, 
+			fmj.farm_join_purpose, 
+			fmj.farm_join_approval, 
+			fmj.farm_join_approval_member_id,
+			f.farm_name,
+			f.ceo_member_id,
+			f.farm_area, 
+			f.farm_address
+		FROM 
+			tb_farm_member_join AS fmj
+			join
+			tb_farm AS f
+			on
+			f.farm_code = fmj.farm_code
+		WHERE
+			fmj.farm_join_approval IS null
+			AND
+			fmj.farm_join_request_member_id = 'id006'
+ {executed in 8 msec}
+14:16:12.100 [http-nio-80-exec-6] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+136. SELECT 
+			f.farm_code, 
+			f.farm_name, 
+			f.ceo_member_id, 
+			f.farm_area, 
+			f.farm_address, 
+			f.farm_public_status, 
+			f.farm_reg_date,
+			sf_farm_member_count(f.farm_code) AS 'farm_member_count'
+		FROM 
+			tb_farm AS f
+		WHERE
+			f.farm_code NOT IN	(SELECT 
+										fm.farm_code 
+									FROM 
+										tb_farm_member AS fm
+									WHERE
+										fm.farm_member_id = 'id006'
+									AND
+									fm.farm_member_status = '정상')
+			AND
+			f.farm_public_status ='y'
+		GROUP BY f.farm_code;
+ {executed in 8 msec}
+14:20:44.937 [http-nio-80-exec-8] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+136. SELECT 
+				 m.member_id
+				,m.member_pw
+				,m.member_name
+				,m.level_code
+				,m.member_gender
+				,m.member_address
+				,m.member_email
+				,m.member_phone
+				,m.member_iden_num
+				,m.member_reg_date
+				,m.member_status
+				,l.level_name
+			FROM 
+				tb_member AS m
+			JOIN
+				tb_member_level AS l
+			ON
+			m.level_code = l.level_code
+
+			WHERE m.member_id = 'id001';
+ {executed in 7 msec}
+14:20:57.288 [http-nio-80-exec-6] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+136. SELECT 
+			login_code
+			, login_member_id
+			, login_date
+			, logout_date
+		FROM 
+			tb_login
+		WHERE 
+			login_member_id = 'id001'
+		ORDER BY login_date DESC 
+			LIMIT 1
+ {executed in 7 msec}
+14:20:57.318 [http-nio-80-exec-6] DEBUG jdbc.sqltiming -  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+136. UPDATE tb_login
+			SET
+				logout_date=NOW()
+			WHERE login_code = '10';
+ {executed in 7 msec}
+17:36:31.400 [RMI TCP Connection(491)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+17:36:31.568 [RMI TCP Connection(491)-127.0.0.1] INFO  o.s.s.c.ThreadPoolTaskScheduler - Shutting down ExecutorService 'taskScheduler'
+17:36:31.568 [RMI TCP Connection(491)-127.0.0.1] INFO  o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+17:36:31.568 [RMI TCP Connection(491)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+17:36:31.568 [RMI TCP Connection(491)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

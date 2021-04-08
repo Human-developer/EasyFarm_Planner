@@ -31,16 +31,36 @@ public class FarmController {
 	private FarmService farmService;
 	
 	
+	@PostMapping("/json/farmMemberLeaver")
+	public @ResponseBody String farmMemberLeaver(HttpSession session,FarmMember farmMember) {
+		String result = "실패";
+		String memberId = (String)session.getAttribute("SID");
+		if(farmMember != null && memberId != null) {
+			result = farmService.deportation(farmMember, memberId);
+		}
+		
+		return result;
+	}
+	
+	
 	
 	@PostMapping("/json/modifyCeoFarm/")
 	public @ResponseBody String modifyCeoFarm(FarmMember farmMember) {
 		String result ="실패";
 		if(farmMember != null) {
-			int modifyCeoResult = farmService.modifyCeoFarm(farmMember);
-
-			if(modifyCeoResult > 0) {
-				result ="성공";
+			try {
+				int modifyCeoResult = farmService.modifyCeoFarm(farmMember);
+				if(modifyCeoResult > 0) {
+					result ="성공";
+				}
 			}
+			catch (Exception e) {
+				if(e.getMessage().equals("불일치")) {
+					result = "다시시도해주세요";
+				}
+				
+			}
+
 		}
 		
 		return result;
@@ -210,10 +230,16 @@ public class FarmController {
 	/* 농가상세보기 */
 	@GetMapping("/farm/detailFarm")
 	public String farmDetailFarm(Model model, Farm farm, HttpSession session) {
+		String memberId = (String)session.getAttribute("SID");
 		
-		if(farm != null && farm.getFarmCode() != null) {						
-			farm.setCeoId((String)session.getAttribute("SID"));
+		if(farm != null && farm.getFarmCode() != null && memberId != null) {						
+			farm.setCeoId(memberId);
 			Farm resultFarm = farmService.detailFarm(farm);			
+			
+			if(resultFarm.getFarmMemberLevel() != null){
+				resultFarm.setFarmMemberLevel(farmService.getFarmMemberLevel(resultFarm.getFarmCode(), memberId));
+			}
+			
 			
 			model.addAttribute("farm", resultFarm);
 			return "views/farm/detailFarm";
@@ -355,8 +381,7 @@ public class FarmController {
 			List<FarmMember> farmMemberList = farmService.getMemberFarm(farmCode);
 			if(farmMemberList != null) {
 				model.addAttribute("farmMemberList", farmMemberList);
-				
-				if(farmMemberLevel!= null) {
+				if(farmMemberLevel== null) {
 					String memberId = (String)session.getAttribute("SID");
 					farmMemberLevel = farmService.getFarmMemberLevel(farmCode,memberId);
 				}
