@@ -381,6 +381,70 @@ $(function(){
 	$('#stockItemTable').DataTable();
 	$('#resourceUsecapacityListTable').DataTable();
 	
+	/*planModals.html 등록버튼 클릭시 ajax로 처리*/
+	$('#addClientBtn').click(function(){
+	
+		var queryString = $("form[name=addClient]").serialize() ;
+		
+		$.ajax({
+			url : "/ajax/addClient",
+			method: "POST",
+			data: queryString,
+			datatype: 'json',
+			success : function(data) {
+				
+				var tbody = $("#clientListTable tbody");
+				var machineClientSelect = $('#machineClientCode');
+				var taxPayClientSelect = $('#taxPayClientCode');
+				var etcPayClientSelect = $('#etcPayClientCode');
+				
+				var tr = "";
+				var option = '<option value=""> :: 거래처선택 :: </option>';
+				
+				tbody.children().remove();
+				machineClientSelect.children().remove();
+				taxPayClientSelect.children().remove();
+				etcPayClientSelect.children().remove();
+				
+				$.each(data, function(index){
+					tr += '<tr>';
+					tr += '<td>' + data[index].clientName + '</td>';
+					tr += '<td>' + data[index].clientPhone + '</td>';
+					tr += '<td>' + data[index].clientAddress + '</td>';
+					tr += '<td>' + data[index].clientAccountBank + '</td>';
+					tr += '<td>' + data[index].clientAccount + '</td>';
+					tr += '<td>' + data[index].clientMemo + '</td>';
+					tr += '</tr>';
+					
+					option += '<option value=';
+					option += data[index].clientCode + '>';
+					option += data[index].clientName;
+					option += '</option>';
+					
+				})
+				
+				tbody.html(tr);
+				console.log(option);
+				machineClientSelect.html(option);
+				taxPayClientSelect.html(option);
+				etcPayClientSelect.html(option);
+				
+				
+			},
+			error : function(xhr, status, error) {
+				console.log('xhr : ' + xhr);
+				console.log('status : ' + status);
+				console.log('error : ' + error);
+			}
+		});
+		
+		$('#planAddClient').modal("hide");
+		
+	});
+	
+	$('#client-justified button').click(function(){
+		$("form[name=addClient] .inputReset").val('');
+	});
 	
 	
 });

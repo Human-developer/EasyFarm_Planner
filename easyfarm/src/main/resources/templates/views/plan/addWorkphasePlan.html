@@ -54,7 +54,7 @@
 	
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
 	<th:block layout:fragment="customContents">
-		<form th:action="@{/plan/addWorkphasePlan}" method="post">
+		<form th:action="@{/plan/addWorkphasePlan}" method="post" autocomplete="off">
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-lg-12">
@@ -82,9 +82,9 @@
 							    	<label for="workPhaseDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
 									<div class="col-md-5">
 										<div class="input-daterange input-group" id="workPhaseDate-range">
-											<input type="text" class="form-control" name="planWorkphaseBegin" />
+											<input type="text" class="form-control" name="planWorkphaseBegin" data-language='kr'/>
 											<span class="input-group-addon bg-primary text-white"> ~ </span>
-											<input type="text" class="form-control" name="planWorkphaseEnd" />
+											<input type="text" class="form-control" name="planWorkphaseEnd" data-language='kr'/>
 										</div>
 									</div>
 								</div>
@@ -101,9 +101,9 @@
 								    <label for="workPhaseCateDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
 									<div class="col-md-5">
 										<div class="input-daterange input-group" id="workPhaseCateDate-range">
-											<input type="text" class="form-control" name="planWorkphaseCateBegin" />
+											<input type="text" class="form-control" name="planWorkphaseCateBegin" data-language='kr'/>
 											<span class="input-group-addon bg-primary text-white"> ~ </span>
-											<input type="text" class="form-control" name="planWorkphaseCateEnd" />
+											<input type="text" class="form-control" name="planWorkphaseCateEnd" data-language='kr'/>
 										</div>
 									</div>
 								</div>
@@ -181,10 +181,100 @@
 				location.href = $(btn).attr('data-value');
 			};
 			
-			$('#workPhaseCateDate-range, #workPhaseDate-range').datepicker({
+			/* $('#workPhaseCateDate-range, #workPhaseDate-range').datepicker({
 				language: 'kr',
 		        autoClose: true,
-			});
+			}); */
+			
+			/* datepicker */
+			var date = new Date();
+			var beginDate = $('[name="planWorkphaseBegin"]').datepicker({
+			  //년-월-일
+			  startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+			  language: 'kr',
+			  autoClose: true,
+			  //선택한 날짜를 가져옴
+			  onSelect: function (date) {
+			      //시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
+			      var endNum 	= new Date(date);
+			      var endDate 	= $('[name="planWorkphaseEnd"]');
+			      
+			      endDate.datepicker({
+			          minDate: new Date(endNum)
+			      });
+			      if(endDate.val() == ""){
+			    	  endDate.val(date);
+			      }
+			      
+			  }
+			}).data('datepicker');
+			var endDate = $('[name="planWorkphaseEnd"]').datepicker({
+			  startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),  // 시간, 분은 00으로 초기 설정
+			  language: 'kr',
+			  autoClose: true,
+			  //선택한 날짜를 가져옴
+			  onSelect: function (date) {
+				  
+			      var startNum 	= new Date(date);
+			      var startDate = $('[name="planWorkphaseBegin"]');
+			      
+			      startDate.datepicker({
+			          //시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
+			          maxDate: new Date(startNum)
+			      });
+			      
+			      if(startDate.val() == ""){
+			    	  startDate.val(date);
+			      }
+			      
+			  }
+			}).data('datepicker');
+			
+			
+			/* datepicker */
+			var date = new Date();
+			var beginDate = $('[name="planWorkphaseCateBegin"]').datepicker({
+			  //년-월-일
+			  startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+			  language: 'kr',
+			  autoClose: true,
+			  //선택한 날짜를 가져옴
+			  onSelect: function (date) {
+			      //시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
+			      var endNum 	= new Date(date);
+			      var endDate 	= $('[name="planWorkphaseCateEnd"]');
+			      
+			      endDate.datepicker({
+			          minDate: new Date(endNum)
+			      });
+			      if(endDate.val() == ""){
+			    	  endDate.val(date);
+			      }
+			      
+			  }
+			}).data('datepicker');
+			var endDate = $('[name="planWorkphaseCateEnd"]').datepicker({
+			  startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),  // 시간, 분은 00으로 초기 설정
+			  language: 'kr',
+			  autoClose: true,
+			  //선택한 날짜를 가져옴
+			  onSelect: function (date) {
+				  
+			      var startNum 	= new Date(date);
+			      var startDate = $('[name="planWorkphaseCateBegin"]');
+			      
+			      startDate.datepicker({
+			          //시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
+			          maxDate: new Date(startNum)
+			      });
+			      
+			      if(startDate.val() == ""){
+			    	  startDate.val(date);
+			      }
+			      
+			  }
+			}).data('datepicker');
+			
 		</script>
 	</th:block>
 

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import easyfarm.domain.plan.Client;
 import easyfarm.domain.plan.CommonMachine;
 import easyfarm.domain.plan.EtcPay;
 import easyfarm.domain.plan.InsurancePay;
@@ -107,5 +108,7 @@ public interface PlanMapper {
 	
 	//단계별 작업계획 max코드 조회
 	public String getPlanWorkphaseMaxCode();
-		
+	
+	//농가별 거래처 등록
+	public int addClient(Client client);
 }

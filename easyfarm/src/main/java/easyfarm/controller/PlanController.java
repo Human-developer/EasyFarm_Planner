@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import easyfarm.domain.plan.Client;
 import easyfarm.domain.plan.CommonMachine;
 import easyfarm.domain.plan.InsurancePay;
 import easyfarm.domain.plan.PlanWorkphase;
@@ -253,6 +254,7 @@ public class PlanController {
 			
 			model.addAttribute("projectPlanN", projectPlanN);
 			model.addAttribute("projectPlanCode", projectPlanCode);
+			model.addAttribute("farmCode", farmCode);
 			
 			/* 작업단계 */
 			List<Map<String, Object>> workphaseNameList = planService.getWorkphaseName(projectData);
@@ -337,8 +339,10 @@ public class PlanController {
 	
 	@PostMapping("/plan/addWorkphasePlan")
 	public String addWorkphasePlan(PlanWorkphase planWorkphase, PlanWorkphaseCate planWorkphaseCate, HttpSession session) {
-		int result = 0;
-		String memberId = (String) session.getAttribute("SID");
+		
+		int result 				= 0;
+		String memberId 		= (String) session.getAttribute("SID");
+		String projectPlanCode  = planWorkphase.getProjectPlanCode();
 		
 		if(planWorkphase.getProjectWorkphaseCode() != null && !"".equals(planWorkphase.getProjectWorkphaseCode().trim())) {
 			planWorkphase.setRegMemberId(memberId);
@@ -347,9 +351,11 @@ public class PlanController {
 			result = planService.addPlanWorkphase(planWorkphase, planWorkphaseCate);
 		}
 		
-		System.out.println(result + " <--------- result");
-		//return "/plan/getSchedule?projectPlanCode=" + projectPlanCode;
-		return null;
+		if(result != 0) {
+			return "redirect:/plan/getSchedule?projectPlanCode=" + projectPlanCode;
+		}else {
+			return "redirect:/plan/addWorkphasePlan?projectPlanCode=" + projectPlanCode;
+		}
 	}
 	
 	@GetMapping("/plan/resultPlan")
@@ -379,13 +385,15 @@ public class PlanController {
 	public List<Map<String, Object>> getCalendarDataList(@RequestParam(value = "projectPlanCode", required = false)String projectPlanCode) {
 		
 		List<Map<String, Object>> workphaseSchedule = null;
+		List<Map<String, Object>> workphaseCateSchedule = null;
 		List<Map<String,Object>> calList = new ArrayList<Map<String,Object>>();
 		Map<String, Object> workphaseData = null;
 		Map<String,Object> data = null;
 		String workphaseName = null;
 		
 		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
-			workphaseSchedule = planService.getPlanWorkphaseSchedule(projectPlanCode);
+			workphaseSchedule 		= planService.getPlanWorkphaseSchedule(projectPlanCode);
+			workphaseCateSchedule	= planService.getPlanWorkphaseCateSchedule(projectPlanCode);
 			
 			for(int i = 0; i < workphaseSchedule.size(); i++) {
 				data = new HashMap<String,Object>();
@@ -400,6 +408,23 @@ public class PlanController {
 				data.put("textColor", 	workphaseData.get("planWorkphaseTextColor"));
 				data.put("planWorkphaseCode", 	workphaseData.get("planWorkphaseCode"));
 				data.put("projectPlanCode", 	projectPlanCode);
+				
+				calList.add(data);
+			}
+			
+			for(int i = 0; i < workphaseCateSchedule.size(); i++) {
+				data = new HashMap<String,Object>();
+				
+				workphaseData = workphaseCateSchedule.get(i);
+				
+				data.put("title", 		workphaseData.get("commonWorkphaseCateName"));
+				data.put("start", 		workphaseData.get("planWorkphaseBegin"));
+				data.put("end", 		workphaseData.get("planWorkphaseEnd"));
+				data.put("color",		workphaseData.get("planWorkphaseColor"));
+				data.put("textColor", 	workphaseData.get("planWorkphaseTextColor"));
+				data.put("planWorkphaseCode", 	workphaseData.get("planWorkphaseCateCode"));
+				data.put("projectPlanCode", 	projectPlanCode);
+				
 				calList.add(data);
 			}
 			
@@ -413,9 +438,22 @@ public class PlanController {
 		return calList;
 	}
 	
-	@GetMapping("/plan/test")
-	public String test() {
-		return "views/plan/test";
+	@PostMapping("/ajax/addClient")
+	@ResponseBody
+	public List<Map<String, Object>> addClient(Client client, HttpSession session) {
+		List<Map<String, Object>> result = null;
+		String memberId = (String) session.getAttribute("SID");
+		
+		if(client.getFarmCode() != null && !"".equals(client.getFarmCode().trim()) && memberId != null) {
+			
+			client.setRegMemberId(memberId);
+			
+			result = planService.addClient(client);
+		}
+		
+		return result;
 	}
+	
+
 	
 }

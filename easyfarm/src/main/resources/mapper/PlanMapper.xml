@@ -90,6 +90,35 @@
 		<result property="runStatus" 				column="run_status"/>
 	</resultMap>
 	
+	<insert id="addClient" parameterType="Client">
+		INSERT INTO tb_client
+		(
+			 client_code
+			,farm_code
+			,client_name
+			,client_phone
+			,client_address
+			,client_account_bank
+			,client_account
+			,client_memo
+			,reg_member_id
+			,reg_date
+		)
+		VALUES 
+		(
+			 sf_client_max_code()
+			,#{farmCode}
+			,#{clientName}
+			,#{clientPhone}
+			,#{clientAddress}
+			,#{clientAccountBank}
+			,#{clientAccount}
+			,#{clientMemo}
+			,#{regMemberId}
+			, NOW()
+		)
+	</insert>
+	
 	<select id="getPlanWorkphaseMaxCode" resultType="String">
 		SELECT sf_plan_workphase_max_code();
 	</select>
@@ -160,13 +189,13 @@
 	<!-- 단계별작업계획 -->
 	<select id="getPlanWorkphaseSchedule" resultType="map" parameterType="String">
 		SELECT
-			 pw.plan_workphase_code		 	AS planWorkphaseCode
-			,cpi.workphase 				 	AS workphase
-			,cpi.workphase_name 		 	AS workphaseName
-			,pw.plan_workphase_begin 	 	AS planWorkphaseBegin
-			,pw.plan_workphase_end		 	AS planWorkphaseEnd
-			,pw.plan_workphase_color 		AS planWorkphaseColor
-			,pw.plan_workphase_text_color 	AS planWorkphaseTextColor
+			 pw.plan_workphase_code		 						AS planWorkphaseCode
+			,cpi.workphase 				 						AS workphase
+			,cpi.workphase_name 		 						AS workphaseName
+			,pw.plan_workphase_begin 	 						AS planWorkphaseBegin
+			,DATE_ADD(pw.plan_workphase_end, INTERVAL 1 DAY)	AS planWorkphaseEnd
+			,pw.plan_workphase_color 							AS planWorkphaseColor
+			,pw.plan_workphase_text_color 						AS planWorkphaseTextColor
 		FROM
 			tb_plan_workphase AS pw
 			LEFT join
@@ -190,14 +219,14 @@
 	<!-- 단계별 상세작업계획 -->
 	<select id="getPlanWorkphaseCateSchedule" resultType="map" parameterType="String">
 		SELECT
-			 pwc.plan_workphase_cate_code 		AS planWorkphaseCateCode
-			,cpi.workphase 						AS workphase
-			,cpi.workphase_name 				AS workphaseName
-			,cwc.common_workphase_cate_name 	AS commonWorkphaseCateName
-			,pwc.plan_workphase_begin 			AS planWorkphaseBegin
-			,pwc.plan_workphase_end 			AS planWorkphaseEnd
-			,pwc.plan_workphase_color 			AS planWorkphaseColor
-			,pwc.plan_workphase_text_color 		AS planWorkphaseTextColor
+			 pwc.plan_workphase_cate_code 						AS planWorkphaseCateCode
+			,cpi.workphase 										AS workphase
+			,cpi.workphase_name 								AS workphaseName
+			,cwc.common_workphase_cate_name 					AS commonWorkphaseCateName
+			,pwc.plan_workphase_begin 							AS planWorkphaseBegin
+			,DATE_ADD(pwc.plan_workphase_end, INTERVAL 1 DAY) 	AS planWorkphaseEnd
+			,pwc.plan_workphase_color 							AS planWorkphaseColor
+			,pwc.plan_workphase_text_color 						AS planWorkphaseTextColor
 		FROM
 			tb_plan_workphase_cate AS pwc
 			INNER join
@@ -460,6 +489,7 @@
   	<select id="getClientName" resultType="map" parameterType="map">
   		SELECT
 			 c.client_code 				AS clientCode
+			,c.farm_code				AS farmCode
 			,c.client_name 				AS clientName
 			,c.client_phone 			AS clientPhone
 			,c.client_address 			AS clientAddress

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import easyfarm.dao.PlanMapper;
+import easyfarm.domain.plan.Client;
 import easyfarm.domain.plan.CommonMachine;
 import easyfarm.domain.plan.EtcPay;
 import easyfarm.domain.plan.InsurancePay;
@@ -210,6 +211,7 @@ public class PlanService {
 	public int addPlanWorkphase(PlanWorkphase planWorkphase, PlanWorkphaseCate planWorkphaseCate) {
 		int result = 0;
 		String maxCode = null;
+		
 		if(planWorkphase.getProjectWorkphaseCode() != null && !"".equals(planWorkphase.getProjectWorkphaseCode().trim())) {
 			
 			maxCode = planMapper.getPlanWorkphaseMaxCode();
@@ -229,13 +231,24 @@ public class PlanService {
 		
 		return result;
 	}
-	
-	//단계별 상세작업계획 등록
-	public int addPlanWorkphaseCate(PlanWorkphaseCate planWorkphaseCate) {
-		int result = 0;
-		if(planWorkphaseCate.getPlanWorkphaseCateCode() != null && !"".equals(planWorkphaseCate.getPlanWorkphaseCateCode().trim())) {
-			result = planMapper.addPlanWorkphaseCate(planWorkphaseCate);
+
+	//농가별 거래처 등록
+	public List<Map<String, Object>> addClient(Client client) {
+		List<Map<String, Object>> result 		= null;
+		Map<String, Object> paramMap 			= null;
+		int addResult 				 			= 0;
+		
+		if(client != null) {
+			addResult = planMapper.addClient(client);
+			
+			if(addResult > 0) {
+				paramMap = new HashMap<String, Object>();
+				paramMap.put("farmCode", client.getFarmCode());
+				
+				result = planMapper.getClientName(paramMap);
+			}
 		}
+		
 		return result;
 	}
 	
