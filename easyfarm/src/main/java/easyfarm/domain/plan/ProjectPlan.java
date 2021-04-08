@@ -1,6 +1,7 @@
 package easyfarm.domain.plan;
 
 public class ProjectPlan {
+	
 	// 프로젝트별계획관리코드 
     private String projectPlanCode;
 
@@ -56,7 +57,7 @@ public class ProjectPlan {
         this.regDate = regDate;
     }
 
-    // TbProjectPlan 모델 복사
+    // ProjectPlan 모델 복사
     public void CopyData(ProjectPlan param)
     {
         this.projectPlanCode = param.getProjectPlanCode();

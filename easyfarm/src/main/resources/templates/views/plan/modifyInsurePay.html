@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>보험 지출계획 수정</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		보험 지출계획 수정
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+
+	</th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+			#btnSize{margin-right: 40px;}
+		</style>
+	</th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+	
+		<div class="container-fluid">
+		    <div class="row">
+				<div class="col-md-8 col-md-offset-2">
+					<div class="box-content">
+						<h3>보험 지출계획 수정</h3>
+						<hr/>
+						<form action="/plan/modifyInsurePay" method="post">
+							<div class="form-horizontal">
+						    	<th:block th:if="${insurancePayList != null && #lists.size(insurancePayList) > 0}" th:each="i : ${insurancePayList}">
+									<div class="form-group">
+										<label for="insureCompany" class="col-sm-2 control-label"><strong>보험사</strong></label>
+									    <div class="col-sm-6">
+									    	<input type="text" class="hidden" name="projectCode" th:value="${i.projectCode}">
+									    	<input type="text" class="hidden" name="insurePayCode" th:value="${i.insurePayCode}">
+									    	<input type="text" class="hidden" name="projectPlanCode" th:value="${projectPlanCode}">
+									    	<input type="text" class="form-control" th:value="${i.insureCompany}" name="insureCompany" id="insureCompany" placeholder="보험사">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="insureName" class="col-sm-2 control-label"><strong>보험명</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" th:value="${i.insureName}" name="insureName" id="insureName" placeholder="보험명">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="insureDatail" class="col-sm-2 control-label"><strong>보장내용</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" th:value="${i.insureDatail}" name="insureDatail" id="insureDatail" placeholder="내용">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="insureArea" class="col-sm-2 control-label"><strong>가입면적</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" th:value="${i.insureArea}" name="insureArea" id="insureArea" placeholder="면적">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="insurePayTotal" class="col-sm-2 control-label"><strong>예상총보험비</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" th:value="${i.insurePayTotal}" name="insurePayTotal" id="insurePayTotal" placeholder="총금액">
+									    </div>
+									</div>
+									<hr>
+									<div class="form-group t-center">
+										<button type="submit" id="btnSize" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btnSize">보험 지출계획 수정</button>
+										<button type="button" th:value="|/plan/insurePayList?projectCode=${i.projectCode}&projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" class="btn btn-success btn-md waves-effect waves-light btn-rounded btnSize">
+											목록 돌아가기
+										</button>
+									</div>
+								</th:block>
+							</div>
+						</form>
+						
+					</div>
+					<!-- /.box-content -->
+				</div>
+			</div>
+		</div>
+		
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+			function moveAddSpend(btn){
+				location.href = btn.value;
+			};
+			
+		</script>		
+	</th:block>
+
+</html>
