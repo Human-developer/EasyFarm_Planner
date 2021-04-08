@@ -18,13 +18,17 @@
 	
 		<link rel="stylesheet" href="/assets/sys/sysStyle.css">
 		<!-- Data Tables -->
-		<link rel="stylesheet" href="assets/plugin/datatables/media/css/dataTables.bootstrap.min.css">
-		<link rel="stylesheet" href="assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css">
+		<link rel="stylesheet" href="/assets/plugin/datatables/media/css/dataTables.bootstrap.min.css">
+		<link rel="stylesheet" href="/assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css">
 		
 	</th:block>
 	
 	<!-- 사용자 정의 css -->
-	<th:block layout:fragment="customCss"></th:block>
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+			#example td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}​
+		</style>
+	</th:block>
 	
 	
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
@@ -44,10 +48,10 @@
 							</th:block>
 						</div>
 						<div class="pull-right">
-							<button id="addProjectPlanBtn" type="button" class="btn btn-primary btn-sm waves-effect waves-light btn-rounded">프로젝트 n번째 통합계획생성</button>
+							<button id="addProjectPlanBtn" type="button" class="btn btn-primary btn-sm waves-effect waves-light btn-rounded">프로젝트 통합계획생성</button>
 						</div>
 						<div style="margin-top: 6px;">
-							<small style="color: red; margin-left: 6px;"><i class="fa fa-lightbulb-o"> 행을 클릭하시면 월간계획으로 이동 합니다.</i></small>
+							<small style="color: red; margin-left: 6px;"></small>
 						</div>
 						<hr/>
 						<div class="table-responsive">
@@ -55,6 +59,7 @@
 								<thead>
 									<tr>
 										<th class="hidden">프로젝트별계획관리코드</th>
+										<th>#</th>
 										<th>계획차수</th>
 										<th>프로젝트이름</th>
 										<th>사용토지면적</th>
@@ -62,12 +67,14 @@
 										<th>종료일자</th>
 										<th>총수입예산</th>
 										<th>총지출예산</th>
+										<th>월간계획</th>
 									</tr>
 								</thead>
 								<tbody>
-									<th:block th:if="${#lists.size(projectPlanNList) > 0}" th:each="pp : ${projectPlanNList}">
+									<th:block th:if="${#lists.size(projectPlanNList) > 0}" th:each="pp,st : ${projectPlanNList}">
 										<tr>
 											<td class="hidden" th:text="${pp.projectPlanCode}"></td>
+											<td th:text="${st.count}"></td>
 											<td th:text="|${pp.projectPlanN} 계획|"></td>
 											<td th:text="${pp.projectName}"></td>
 											<td th:text="${pp.projectArea}"></td>
@@ -75,6 +82,11 @@
 											<td th:text="${pp.projectEnd}"></td>
 											<td th:text="${pp.projectEstimateIncome}"></td>
 											<td th:text="${pp.projectEstimateSpending}"></td>
+											<td>
+												<button type="button" th:value="|/plan/getSchedule?projectPlanCode=${pp.projectPlanCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded btn-bordered btn-block">
+													월간계획
+												</button>
+											</td>
 										</tr>
 									</th:block>
 								</tbody>
@@ -103,11 +115,9 @@
 	<th:block layout:fragment="customJavaScript">
 		<script type="text/javascript">
 			
-			$('#example tbody tr').click(function(){
-				var tr = $(this);
-				var tdText = tr.children().first().text();
-				location.href = '/plan/getSchedule?projectPlanCode=' + tdText;
-			});
+			function moveAddSpend(btn){
+				location.href = btn.value;
+			};
 			
 			var lang_kor = {
 			        "decimal" : "",
