@@ -121,26 +121,31 @@
 		            
 		            
 				if(approval == '승인'){
+					document.addEventListener('keyup',function(t){if(t.key == 'Escape'){location.reload()}})
 					swal({
 						title: "가입 승인",
 						type:'success',
-						confirmButtonColor: '#304ffe'
+						confirmButtonColor: '#304ffe',
+						closeOnEsc: false
 					},function(){
-						location.reload()
+						location.reload();
 					});
 					
 				}
 				else if(approval == '거부'){
+					document.addEventListener('keyup',function(t){if(t.key == 'Escape'){location.reload()}})
 					swal({
 						title: "가입 거부",
 						type:'error',
-						confirmButtonColor: '#304ffe'
+						confirmButtonColor: '#304ffe',
+						closeOnEsc: false
 					},function(){
-						location.reload()
+						location.reload();
 					});
 				}
 			})
 			
+						
 			
 		</script>
 	

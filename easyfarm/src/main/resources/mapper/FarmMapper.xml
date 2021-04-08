@@ -25,6 +25,7 @@
 		<result property="farmLevelName" column="farm_level_name"/>
 		<result property="farmJoinApprovalDate" column="farm_join_approval_date"/>
 		<result property="farmMemberStatus" column="farm_member_status"/>
+		<result property="farmMemberAge" column="member_age"/>
 		<association property="member" javaType ="Member">
 			<id property="memberId" 		column="member_id"/>
 			<result property="memberPw"		column="member_pw"/>
@@ -190,7 +191,8 @@
 			f.farm_area, 
 			f.farm_address, 
 			f.farm_public_status, 
-			f.farm_reg_date
+			f.farm_reg_date,
+			sf_farm_member_count(f.farm_code) AS 'farm_member_count'
 		FROM 
 			tb_farm f
 			join
@@ -235,7 +237,8 @@
 			f.farm_area, 
 			f.farm_address, 
 			f.farm_public_status, 
-			f.farm_reg_date
+			f.farm_reg_date,
+			sf_farm_member_count(f.farm_code) AS 'farm_member_count'
 		FROM 
 			tb_farm_member as fm
 			join
@@ -321,13 +324,20 @@
 			fm.farm_level_code, 
 			fml.farm_level_name,
 			fm.farm_join_approval_date, 
-			fm.farm_member_status
+			fm.farm_member_status,
+			m.member_name,
+			m.member_phone,
+			sf_iden_num_age(m.member_iden_num) AS member_age
 		FROM 
 			tb_farm_member AS fm
 			join
 			tb_farm_member_level AS fml
 			on
 			fm.farm_level_code = fml.farm_level_code
+			join
+			tb_member AS m
+			on
+			m.member_id = fm.farm_member_id
 		WHERE
 			fm.farm_code =#{farmCode}
 			AND
@@ -675,6 +685,37 @@
 	<select id="modifyFarmCeoCheck" resultType="boolean" parameterType="String">
 		SELECT sf_modify_Ceo_Farm_Check(#{ceoMemberCode}, #{memberCode}, #{memberId}, #{farmCode})
 	</select>
+	
+	<update id="deportationFarmMember" parameterType="String">
+		UPDATE tb_farm_member
+		SET
+			farm_member_status='탈퇴'
+		WHERE 
+			farm_member_code=#{farmMemberCode}
+	</update>
+	
+	<insert id="deportationCancelRequest" parameterType="String">
+		INSERT INTO tb_farm_cancel_request
+			(farm_cancel_request_code, 
+			farm_cancel_request_farm_member_code, 
+			farm_code, 
+			farm_cancel_request_reason, 
+			farm_cancel_request_date, 
+			farm_cancel_approval, 
+			farm_cancel_approval_reason, 
+			farm_cancel_approval_date, 
+			farm_cancel_approval_member_id)
+		VALUES 
+			(sf_farm_cancel_request_max_code(), 
+			#{farmMemberCode}, 
+			#{farmCode}, 
+			'추방', 
+			NOW(), 
+			'탈퇴승인', 
+			'추방', 
+			NOW(), 
+			#{memberId})
+	</insert>
 </mapper>
 
 

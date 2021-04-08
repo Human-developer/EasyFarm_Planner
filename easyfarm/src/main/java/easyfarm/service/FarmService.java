@@ -335,16 +335,28 @@ public class FarmService {
 				if(!modifyFarmCeoCheck) {
 					throw new RuntimeException("불일치"); 
 				}
-				
-				
-				
-
-				
 			}
 			
 			
 		}
 		
+		
+		return result;
+	}
+	
+	public String deportation(FarmMember farmMember, String memberId) {
+		String result = "실패";
+		
+		if(farmMember != null && memberId != null) {
+			int deportationResult = 0;
+			deportationResult += farmMapper.deportationCancelRequest(farmMember.getFarmMemberCode(),farmMember.getFarmCode(),memberId);
+			
+			deportationResult += farmMapper.deportationFarmMember(farmMember.getFarmMemberCode());
+			
+			if(deportationResult > 0) {
+				result ="성공";
+			}
+		}
 		
 		return result;
 	}
