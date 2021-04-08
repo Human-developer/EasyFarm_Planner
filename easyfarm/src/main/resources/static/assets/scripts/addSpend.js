@@ -382,6 +382,8 @@ $(function(){
 	$('#resourceUsecapacityListTable').DataTable();
 	
 	/*planModals.html 등록버튼 클릭시 ajax로 처리*/
+	
+	/*거래처등록*/
 	$('#addClientBtn').click(function(){
 	
 		var queryString = $("form[name=addClient]").serialize() ;
@@ -414,6 +416,8 @@ $(function(){
 					tr += '<td>' + data[index].clientAccountBank + '</td>';
 					tr += '<td>' + data[index].clientAccount + '</td>';
 					tr += '<td>' + data[index].clientMemo + '</td>';
+					tr += '<td><a>수정</a></td>';
+					tr += '<td><a>삭제</a></td>';
 					tr += '</tr>';
 					
 					option += '<option value=';
@@ -446,5 +450,32 @@ $(function(){
 		$("form[name=addClient] .inputReset").val('');
 	});
 	
+	var modalClientName 		= $('#clientName');
+	var modalClientPhone 		= $('#clientPhone');
+	var modalClientAddress 		= $('#clientAddress');
+	var modalClientAccountBank  = $('#clientAccountBank');
+	var modalClientAccount 		= $('#clientAccount');
+	var modalClientMemo			= $('#clientMemo');
+	var modalTitle 				= $('#planAddClient h4');
+	var modalBtn				= $('#addClientBtn');
 	
+	/*거래처 정보수정*/
+	$('.modifyClientInfo').click(function(){
+		var clientName 			= $(this).parent().parent().children('.clientName').text();
+		var clientPhone 		= $(this).parent().parent().children('.clientPhone').text();
+		var clientAddress 		= $(this).parent().parent().children('.clientAddress').text();
+		var clientAccountBank 	= $(this).parent().parent().children('.clientAccountBank').text();
+		var clientAccount 		= $(this).parent().parent().children('.clientAccount').text();
+		var clientMemo 			= $(this).parent().parent().children('.clientMemo').text();
+		
+		$('#planAddClient').modal('show');
+		modalClientName.val(clientName);
+		modalClientPhone.val(clientPhone);
+		modalClientAddress.val(clientAddress);
+		modalClientAccountBank.val(clientAccountBank);
+		modalClientAccount.val(clientAccount);
+		modalClientMemo.val(clientMemo);
+		modalTitle.text('거래처 수정');
+		
+	});
 });
