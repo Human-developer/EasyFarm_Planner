@@ -4,11 +4,354 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
 <mapper namespace="easyfarm.dao.PlanMapper">
-
-	<resultMap type="EtcPay" id="resultEtcPay">
-		<id column=""  property=""/>
-		<result column="" property="" />
+	
+	<!-- 보험지출계획 -->
+	<resultMap type="InsurancePay" id="resultInsurancePay">
+		<result property="insurePayCode" 	column="insure_pay_code"/>
+		<result property="projectCode" 		column="project_code"/>
+		<result property="insureCompany" 	column="insure_company"/>
+		<result property="insureName" 		column="insure_name"/>
+		<result property="insureDatail" 	column="insure_datail"/>
+		<result property="insureArea" 		column="insure_area"/>
+		<result property="insurePayTotal" 	column="insure_pay_total"/>
+		<result property="regMemberId" 		column="reg_member_id"/>
+		<result property="regDate" 			column="reg_date"/>
 	</resultMap>
+	
+	<!-- 품목카테고리 -->
+	<resultMap type="StockCate" id="resultStockCate">
+		<result property="stockCateCode"		column="stock_cate_code"/>
+		<result property="stockCateName"		column="stock_cate_name"/>
+		<result property="regMemberId"			column="reg_member_id"/>
+		<result property="regDate"				column="reg_date"/>
+	</resultMap>
+	
+	<!-- 품목 -->
+	<resultMap type="StockItem" id="resultStockItem">
+		<result property="stockItemCode"					column="stock_item_code"/>
+		<result property="farmCode"							column="farm_code"/>
+		<result property="stockCateCode"					column="stock_cate_code"/>
+		<result property="stockItemName"					column="stock_item_name"/>
+		<result property="stockItemQuantity"				column="stock_item_quantity"/>
+		<result property="stockItemQuantityUnit"			column="stock_item_quantity_unit"/>
+		<result property="stockItemQuantityCapacity"		column="stock_item_quantity_capacity"/>
+		<result property="stockItemQuantityCapacityUnit"	column="stock_item_quantity_capacity_unit"/>
+		<result property="regMemberId"						column="reg_member_id"/>
+		<result property="regDate"							column="reg_date"/>
+		<association property="stockCate" 					javaType="StockCate">
+			<id 	 property="stockCateCode" 				column="stock_cate_code"/>
+			<result  property="stockCateName" 				column="stock_cate_name"/>
+		</association>
+	</resultMap>
+	
+	<!-- 공통농기계 -->
+	<resultMap type="CommonMachine" id="resultCommonMachine">
+		<result property="commonMachineCode"	column="common_machine_code"/>
+		<result property="commonMachineName" 	column="common_machine_name"/>
+		<result property="regMemberId" 			column="reg_member_id"/>
+		<result property="regDate" 				column="reg_date"/>
+	</resultMap>
+	
+	<!-- 농기계즐겨찾기 -->
+	<resultMap type="FarmBookmarkMachine" id="resultFarmBookmarkMachine">
+		<result property="farmBookmarkMachineCode"	column="farm_bookmark_machine_code"/>
+		<result property="commonMachineCode" 		column="common_machine_code"/>
+		<result property="farmCode" 				column="farm_code"/>
+		<result property="regMemberId" 				column="reg_member_id"/>
+		<result property="regDate" 					column="reg_date"/>
+	</resultMap>
+	
+	<!-- 기간별작업단계계획 -->
+	<resultMap type="PlanWorkphase" id="resultPlanWorkphase">
+		<result property="planWorkphaseCode" 		column="plan_workphase_code"/>
+		<result property="projectPlanCode" 			column="project_plan_code"/>
+		<result property="projectWorkphaseCode" 	column="project_workphase_code"/>
+		<result property="planWorkphaseBegin" 		column="plan_workphase_begin"/>
+		<result property="planWorkphaseEnd" 		column="plan_workphase_end"/>
+		<result property="planWorkphaseColor" 		column="plan_workphase_color"/>
+		<result property="planWorkphaseTextColor" 	column="plan_workphase_text_color"/>
+		<result property="regMemberId" 				column="reg_member_id"/>
+		<result property="regDate" 					column="reg_date"/>
+		<result property="runStatus" 				column="run_status"/>
+	</resultMap>
+	
+	<!-- 작업단계별상세작업항목 -->
+	<resultMap type="PlanWorkphaseCate" id="resultPlanWorkphaseCate">
+		<result property="planWorkphaseCateCode" 	column="plan_workphase_cate_code"/>
+		<result property="projectPlanCode" 			column="project_plan_code"/>
+		<result property="planWorkphaseCode" 		column="plan_workphase_code"/>
+		<result property="farmWorkphaseCateCode" 	column="farm_workphase_cate_code"/>
+		<result property="planWorkphaseCateBegin" 	column="plan_workphase_begin"/>
+		<result property="planWorkphaseCateEnd" 	column="plan_workphase_end"/>
+		<result property="planWorkphaseColor" 		column="plan_workphase_color"/>
+		<result property="planWorkphaseTextColor" 	column="plan_workphase_text_color"/>
+		<result property="regMemberId" 				column="reg_member_id"/>
+		<result property="regDate" 					column="reg_date"/>
+		<result property="runStatus" 				column="run_status"/>
+	</resultMap>
+	
+	<insert id="addClient" parameterType="Client">
+		INSERT INTO tb_client
+		(
+			 client_code
+			,farm_code
+			,client_name
+			,client_phone
+			,client_address
+			,client_account_bank
+			,client_account
+			,client_memo
+			,reg_member_id
+			,reg_date
+		)
+		VALUES 
+		(
+			 sf_client_max_code()
+			,#{farmCode}
+			,#{clientName}
+			,#{clientPhone}
+			,#{clientAddress}
+			,#{clientAccountBank}
+			,#{clientAccount}
+			,#{clientMemo}
+			,#{regMemberId}
+			, NOW()
+		)
+	</insert>
+	
+	<select id="getPlanWorkphaseMaxCode" resultType="String">
+		SELECT sf_plan_workphase_max_code();
+	</select>
+	
+	<insert id="addPlanWorkphaseCate" parameterType="PlanWorkphaseCate" >
+		INSERT INTO tb_plan_workphase_cate
+		(
+			 plan_workphase_cate_code
+			,project_plan_code
+			,plan_workphase_code
+			,farm_workphase_cate_code
+			,plan_workphase_begin
+			,plan_workphase_end
+			,plan_workphase_color
+			,plan_workphase_text_color
+			,reg_member_id
+			,reg_date
+			,run_status
+		)
+		VALUES 
+		(
+			 sf_plan_workphase_cate_max_code()
+			,#{projectPlanCode}
+			,#{planWorkphaseCode}
+			,#{farmWorkphaseCateCode}
+			,#{planWorkphaseCateBegin}
+			,#{planWorkphaseCateEnd}
+			,#{planWorkphaseColor}
+			,#{planWorkphaseTextColor}
+			,#{regMemberId}
+			,NOW()
+			,#{runStatus}
+		)
+	
+	</insert>
+	
+	<insert id="addPlanWorkphase" parameterType="PlanWorkphase">
+		INSERT INTO tb_plan_workphase
+		(
+			 plan_workphase_code
+			,project_plan_code
+			,project_workphase_code
+			,plan_workphase_begin
+			,plan_workphase_end
+			,plan_workphase_color
+			,plan_workphase_text_color
+			,reg_member_id
+			,reg_date
+			,run_status
+		)
+		VALUES
+		(
+			 #{planWorkphaseCode}
+			,#{projectPlanCode}
+			,#{projectWorkphaseCode}
+			,#{planWorkphaseBegin}
+			,#{planWorkphaseEnd}
+			,#{planWorkphaseColor}
+			,#{planWorkphaseTextColor}
+			,#{regMemberId}
+			,NOW()
+			,#{runStatus}
+		)
+	</insert>
+	
+	<!-- 월켈린더 정보가져오기 시작-->
+	
+	<!-- 단계별작업계획 -->
+	<select id="getPlanWorkphaseSchedule" resultType="map" parameterType="String">
+		SELECT
+			 pw.plan_workphase_code		 						AS planWorkphaseCode
+			,cpi.workphase 				 						AS workphase
+			,cpi.workphase_name 		 						AS workphaseName
+			,pw.plan_workphase_begin 	 						AS planWorkphaseBegin
+			,DATE_ADD(pw.plan_workphase_end, INTERVAL 1 DAY)	AS planWorkphaseEnd
+			,pw.plan_workphase_color 							AS planWorkphaseColor
+			,pw.plan_workphase_text_color 						AS planWorkphaseTextColor
+		FROM
+			tb_plan_workphase AS pw
+			LEFT join
+			tb_plan_workphase_cate AS pwc
+			on
+			pw.plan_workphase_code = pwc.plan_workphase_code
+			INNER join
+			tb_project_workphase AS prw
+			on
+			pw.project_workphase_code = prw.project_workphase_code
+			INNER join
+			tb_crop_phase_info AS cpi
+			on
+			prw.crop_phase_info_code = cpi.crop_phase_info_code
+		WHERE
+			pw.project_plan_code = #{projectPlanCode}
+			and
+			pwc.plan_workphase_code IS NULL
+	</select>
+	
+	<!-- 단계별 상세작업계획 -->
+	<select id="getPlanWorkphaseCateSchedule" resultType="map" parameterType="String">
+		SELECT
+			 pwc.plan_workphase_cate_code 						AS planWorkphaseCateCode
+			,cpi.workphase 										AS workphase
+			,cpi.workphase_name 								AS workphaseName
+			,cwc.common_workphase_cate_name 					AS commonWorkphaseCateName
+			,pwc.plan_workphase_begin 							AS planWorkphaseBegin
+			,DATE_ADD(pwc.plan_workphase_end, INTERVAL 1 DAY) 	AS planWorkphaseEnd
+			,pwc.plan_workphase_color 							AS planWorkphaseColor
+			,pwc.plan_workphase_text_color 						AS planWorkphaseTextColor
+		FROM
+			tb_plan_workphase_cate AS pwc
+			INNER join
+			tb_plan_workphase AS pw
+			on
+			pwc.plan_workphase_code = pw.plan_workphase_code
+			INNER join
+			tb_farm_workphase_cate AS fwc
+			on
+			pwc.farm_workphase_cate_code = fwc.farm_workphase_cate_code
+			INNER join
+			tb_common_workphase_cate AS cwc
+			on
+			fwc.common_workphase_cate_code = cwc.common_workphase_cate_code
+			INNER join
+			tb_project_workphase AS prw
+			on
+			pw.project_workphase_code = prw.project_workphase_code
+			INNER join
+			tb_crop_phase_info AS cpi
+			on
+			prw.crop_phase_info_code = cpi.crop_phase_info_code
+		WHERE
+			pwc.project_plan_code = #{projectPlanCode}
+	</select>
+	<!-- 월켈린더 정보가져오기 끝-->
+	<select id="getStockItemList" resultMap="resultStockItem" parameterType="String">
+		SELECT
+			 sc.stock_cate_name
+			,si.stock_item_name
+			,si.stock_item_quantity
+			,si.stock_item_quantity_unit
+			,si.stock_item_quantity_capacity
+			,si.stock_item_quantity_capacity_unit
+			,si.reg_member_id
+		FROM
+			tb_stock_item AS si
+			INNER join
+			tb_stock_cate AS sc
+			on
+			si.stock_cate_code = sc.stock_cate_code
+		where
+			si.farm_code = #{farmCode}
+	</select>
+	
+	<select id="getCommonMachineList" resultMap="resultCommonMachine">
+		SELECT 
+			 common_machine_code
+			,common_machine_name
+			,reg_member_id
+			,reg_date
+		FROM 
+			tb_common_machine
+	</select>
+	
+	<select id="getStockCateList" resultMap="resultStockCate">
+		SELECT 
+			 stock_cate_code
+			,stock_cate_name
+			,reg_member_id
+			,reg_date
+		FROM
+			tb_stock_cate
+	</select>
+	
+	<update id="modifyInsurePay" parameterType="InsurancePay">
+		UPDATE tb_exp_insure_pay
+		SET
+			 insure_company 	= #{insureCompany}
+			,insure_name 		= #{insureName}
+			,insure_datail 		= #{insureDatail}
+			,insure_area		= #{insureArea}
+			,insure_pay_total	= #{insurePayTotal}
+		WHERE 
+			insure_pay_code		= #{insurePayCode}
+	</update>
+	
+	<insert id="addInsurePay" parameterType="map">
+		INSERT INTO tb_exp_insure_pay
+		(
+			 insure_pay_code
+			,project_code
+			,insure_company
+			,insure_name
+			,insure_datail
+			,insure_area
+			,insure_pay_total
+			,reg_member_id
+			,reg_date
+		)
+		VALUES 
+		(
+			 sf_exp_insure_pay_max_code()
+			,#{insurePay.projectCode} 
+			,#{insurePay.insureCompany} 
+			,#{insurePay.insureName}
+			,#{insurePay.insureDatail} 
+			,#{insurePay.insureArea}
+			,#{insurePay.insurePayTotal}
+			,#{regMemberId}
+			,NOW()
+		)
+	
+	</insert>
+	
+	<select id="getInsurePayList" resultMap="resultInsurancePay" parameterType="map">
+		SELECT 
+			 eip.insure_pay_code
+			,eip.project_code
+			,eip.insure_company
+			,eip.insure_name
+			,eip.insure_datail
+			,eip.insure_area
+			,eip.insure_pay_total
+			,eip.reg_member_id
+			,eip.reg_date
+		FROM 
+			tb_exp_insure_pay AS eip
+		WHERE
+			eip.project_code = #{projectCode}
+		<if test="insurePayCode != null and insurePayCode != ''.toString()">
+			and
+			eip.insure_pay_code = #{insurePayCode}
+		</if>
+	</select>
   	
   	<insert id="addProjectPlan" parameterType="map">
   		INSERT INTO tb_project_plan
@@ -18,7 +361,7 @@
 			,project_plan_n
 			,reg_member_id
 			,reg_date
-						)
+		)
 		VALUES
 		(	
 			 sf_project_plan_max_code()
@@ -26,7 +369,7 @@
 			,#{maxProjectPlanNum}
 			,#{memberId}
 			,NOW()
-						)
+		)
   	</insert>
   	
   	<select id="getTaxPayCateCode" resultType="map">
@@ -67,17 +410,18 @@
   	
   	<select id="getStockItem" resultType="map" parameterType="map">
   		SELECT
-			 si.stock_item_code 					AS stockItemCode
-			,sc.stock_cate_name						AS stockCateName
-			,si.stock_item_name 					AS stockItemName
-			,si.stock_item_quantity 				AS stockItemQuantity
-			,si.stock_item_quantity_unit 			AS stockItemQuantityUnit
-			,si.stock_item_quantity_capacity 		AS stockItemQuantityCapacity
-			,si.stock_item_quantity_capacity_unit 	AS stockItemQuantityCapacityUnit
-			,ru.resource_usecapacity_code AS resourceUsecapacityCode
-			,ru.resource_retain_quantity AS resourceRetainQuantity
+			  c.client_name								AS clientName
+			,si.stock_item_code 						AS stockItemCode
+			,sc.stock_cate_name							AS stockCateName
+			,si.stock_item_name 						AS stockItemName
+			,si.stock_item_quantity 					AS stockItemQuantity
+			,si.stock_item_quantity_unit 				AS stockItemQuantityUnit
+			,si.stock_item_quantity_capacity 			AS stockItemQuantityCapacity
+			,si.stock_item_quantity_capacity_unit 		AS stockItemQuantityCapacityUnit
+			,ru.resource_usecapacity_code 				AS resourceUsecapacityCode
+			,ru.resource_retain_quantity 				AS resourceRetainQuantity
 			,ru.resource_retain_quantity_capacity_extra AS resourceRetainQuantityCapacityExtra
-			,ru.available_status					AS availableStatus
+			,ru.available_status						AS availableStatus
 		FROM
 			tb_stock_item AS si
 			INNER join
@@ -89,19 +433,27 @@
 			on
 			si.stock_item_code = erp.stock_item_code
 			INNER join
+			tb_client AS c
+			on
+			erp.client_code = c.client_code
+			INNER join
 			tb_resource_usecapacity AS ru
 			on
 			erp.resource_pay_code = ru.resource_pay_code
 		WHERE
 			si.farm_code = #{farmCode}
+		<if test="availableStatus != null and availableStatus != ''.toString()">
 			and
 			ru.available_status = 'Y'
+		</if>
   	</select>
   	
   	<select id="getFarmRetainMachine" resultType="map" parameterType="map">
   		SELECT
-			 cm.common_machine_code 		AS commonMachineCode
+			 frm.farm_retain_machine_code	AS farmRetainMachineCode
 			,cm.common_machine_name 		AS commonMachineName
+			,frm.reg_member_id 				AS regMemberId
+			,frm.reg_date 					AS regDate
 		FROM
 			tb_farm_retain_machine AS frm
 			INNER join
@@ -118,8 +470,12 @@
   	
   	<select id="getFarmBookmarkMachine" resultType="map" parameterType="map">
   		SELECT
-			 cm.common_machine_code 		AS commonMachineCode
+			 fbm.farm_bookmark_machine_code	AS farmBookmarkMachineCode
+			,cm.common_machine_code 		AS commonMachineCode
 			,cm.common_machine_name 		AS commonMachineName
+			,fbm.farm_code					AS farmCode
+			,fbm.reg_member_id				AS regMemberId
+			,fbm.reg_date					AS regDate
 		FROM
 			tb_farm_bookmark_machine AS fbm
 			INNER join
@@ -132,8 +488,16 @@
   	
   	<select id="getClientName" resultType="map" parameterType="map">
   		SELECT
-			 c.client_code 		AS clientCode
-			,c.client_name 		AS clientName
+			 c.client_code 				AS clientCode
+			,c.farm_code				AS farmCode
+			,c.client_name 				AS clientName
+			,c.client_phone 			AS clientPhone
+			,c.client_address 			AS clientAddress
+			,c.client_account_bank 		AS clientAccountBank
+			,c.client_account 			AS clientAccount
+			,c.client_memo 				AS clientMemo
+			,c.reg_member_id 			AS regMemberId
+			,CAST(c.reg_date AS DATE) 	AS regDate
 		FROM
 			tb_client AS c
 		WHERE
@@ -142,8 +506,9 @@
   	
   	<select id="getWorkphaseName" resultType="map" parameterType="map">
   		SELECT
-			 cpi.workphase
-			,cpi.workphase_name AS workphaseName
+  			 pw.project_workphase_code 		AS projectWorkphaseCode
+			,cpi.workphase					AS workphase
+			,cpi.workphase_name 			AS workphaseName
 		FROM
 			tb_project_workphase AS pw
 			INNER join
@@ -212,7 +577,8 @@
   	
   	<select id="getWorkphaseCateName" resultType="map" parameterType="map">
   		SELECT
-			cwc.common_workphase_cate_name 	AS commonWorkphaseCateName
+  			 fwc.farm_workphase_cate_code		AS farmWorkphaseCateCode
+			,cwc.common_workphase_cate_name 	AS commonWorkphaseCateName
 		FROM
 			tb_farm_workphase_cate AS fwc
 			INNER join
