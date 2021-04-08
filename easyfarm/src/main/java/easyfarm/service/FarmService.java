@@ -1,5 +1,6 @@
 package easyfarm.service;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,9 +8,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import easyfarm.dao.FarmMapper;
 import easyfarm.domain.Farm;
+import easyfarm.domain.FarmCancelRequest;
 import easyfarm.domain.FarmMember;
 import easyfarm.domain.FarmMemberJoin;
 
@@ -173,9 +176,10 @@ public class FarmService {
 				FarmMember addFarmMember = new FarmMember();
 				addFarmMember.setFarmCode(resultFarmMemberJoin.getFarmCode());
 				addFarmMember.setFarmMemberId(resultFarmMemberJoin.getFarmJoinRequestMemberId());
-				addFarmMember.setFarmLevelName("대표");
 				addFarmMember.setFarmLevelCode("farm_level_3");
 				addFarmMember.setFarmMemberStatus("정상");
+				
+				//이미 가입된 회원이 들어갈경우도있다 조건처리 필요
 				
 				result += farmMapper.joinAddFarmMember(addFarmMember);
 				
@@ -214,5 +218,119 @@ public class FarmService {
 	
 	public String getFarmMemberLevel(String farmCode, String memberId) {
 		return farmMapper.getFarmMemberLevel(farmCode, memberId);
+	}
+	
+	
+	//탈퇴신청
+	public String addCancelMember(String memberId, String farmName,String cancelRequestReason) {
+		String result = "신청실패";
+		if(memberId != null && farmName != null) {
+			FarmCancelRequest cancelRequestResult = farmMapper.addCancelMemberCheck(memberId, farmName);
+			if(cancelRequestResult == null) {
+				int insertResult = 0;
+				insertResult += farmMapper.addCancelMember(memberId, farmName,cancelRequestReason);
+				
+				if(insertResult > 0) {
+					result ="신청완료";
+				}
+			}
+			else {
+				result ="이미 신청 하셨습니다";
+			}
+				
+		}
+		
+		
+		return result;
+	}
+	
+	
+	//농가별 탈퇴신청목록
+	public List<FarmCancelRequest> getLeaverFarm(String farmCode,String memberId){
+		List<FarmCancelRequest> result =null;
+		if(farmCode != null) {			
+			result = farmMapper.getLeaverFarm(farmCode,memberId);
+		}
+		
+		return result;
+	}
+	
+	//탈퇴 처리
+	public int isLeaverFarm(FarmCancelRequest cancelRequest) {
+		int result = 0;
+		if(cancelRequest!= null) {
+			String approval = cancelRequest.getCancelApproval();
+			
+			if("탈퇴승인".equals(approval)) {
+					
+				result += farmMapper.leaverFarmMember(cancelRequest.getCancelRequestCode());
+				result += farmMapper.isLeaverFarm(cancelRequest);
+			}
+			else if("탈퇴거부".equals(approval)) {
+				result += farmMapper.isLeaverFarm(cancelRequest);
+			}
+			
+		}
+		
+		return result;
+	}
+	
+	//내 탈퇴신청목록
+	public List<FarmCancelRequest> myGetLeaverFarm(String memberId){
+		List<FarmCancelRequest> resultLeaverFarmList = null;
+		
+		if(memberId != null) {
+			resultLeaverFarmList = farmMapper.myGetLeaverFarm(memberId);
+		}
+		return resultLeaverFarmList;
+	}
+	
+	//농가탈퇴 취소
+	public String cancelLeaverFarm(String cancelLeaverFarm) {
+		String result ="삭제실패";
+		
+		if(cancelLeaverFarm != null) {
+			int deleteResult = 0;
+			deleteResult += farmMapper.cancelLeaverFarm(cancelLeaverFarm);
+			if(deleteResult > 0) {
+				result = "삭제성공";
+			}
+		}
+		
+		return result;
+	}
+	
+	public List<FarmMember> farmMemeberList(String farmCode){
+		List<FarmMember> result =null;
+		if(farmCode != null) {
+			result = farmMapper.farmMemeberList(farmCode);
+		}
+		return result ;
+	}
+	
+	public int modifyCeoFarm(FarmMember farmMember) {
+		int result = 0;
+		if(farmMember != null) {			
+			String farmCode = farmMember.getFarmCode();
+			String farmMemberCode = farmMember.getFarmMemberCode();
+			String farmMemberId = farmMember.getFarmMemberId();
+
+			if(farmCode != null && farmMemberCode != null && farmMemberId != null) {
+				
+				//농가대표 농가회원코드 필요
+				String ceoFarmMemberCode = farmMapper.farmCeoMemberCode(farmCode);
+				//농가대표 > 회원으로 수정
+				result += farmMapper.modifyFarmMemberLevel(ceoFarmMemberCode, "farm_level_3");
+				//회원 > 농가대표로 수정
+				result += farmMapper.modifyFarmMemberLevel(farmMemberCode, "farm_level_1");
+				//농가대표를 회원으로 수정
+				result += farmMapper.modifyFarmCeo(farmCode,farmMemberId);
+			}
+			
+			
+		}
+		
+		
+		return result;
 	}
 }

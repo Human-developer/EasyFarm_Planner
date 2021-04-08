@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>비밀번호 찾기</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		<a th:href="@{/member/login}">로그인</a>-비밀번호 찾기
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib"></th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+		
+			.modal-content{
+				        display: none;
+				        width: 500px;
+				        height: 200px;
+				        position: absolute;
+				        top:50%;
+				        left: 50%;
+				        margin: -200px 0 0 -250px;
+				        background:white;
+				        z-index: 2;
+				    }
+		</style>
+	</th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+	<form th:action="@{/member/addAuthority}" method="post">
+		
+			<div class="container-fluid">
+				<div class="row" >
+					<div class="
+					col-lg-offset-3 col-lg-6
+					
+					">
+					
+						<div class="box-content" style="border : 2px solid gray">
+							<div class="box-content  t-center important-col" style="border-bottom : 2px solid #3BBD5A">
+							
+								<h3>비밀번호 찾기</h3>
+							</div>
+							<div class="panel-body" >
+						
+								<div class="form-horizontal">
+								<div class="form-group">
+									<label for="memberEmail" class="col-sm-2 control-label"><strong>아이디</strong></label>
+									  <div class="col-sm-9">
+										<input type="text" class="form-control" name="memberId" id="memberId" placeholder="ID">
+									  </div>
+								</div>
+								<div class="form-group">
+										<label for="memberEmail" class="col-sm-2 control-label"><strong>이메일</strong></label>
+									  <div class="col-sm-7">
+									     
+									    <input type="email" class="form-control" name="memberEmail" id="memberEmail" placeholder="test@email.com">
+									    <span class="email-text"></span>
+									  </div>
+									  <div class="col-sm-1">
+									   	<button type="button" class="sendMail btn btn-success btn-rounded btn-bordered waves-effect waves-light">인증</button>
+									  </div>
+									</div>
+									
+									<div class="form-group">	
+										<div class="col-sm-offset-4">
+											<button type="button" style="width: 40%;" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" id="idResult">확인</button>		
+										</div>
+									</div>	
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+			
+		</form>
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib"></th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+	
+	<script>
+		
+		var msg = "";
+		var memberPw = "";
+		
+			  $(".sendMail").click(function() {// 메일 입력 유효성 검사
+					var mail = $("#memberEmail").val(); //사용자의 이메일 입력값. 
+					var memberId = $("#memberId").val();
+					
+					if(memberId == ""){
+						 swal({
+								title: "아이디를 입력해주세요.",
+								confirmButtonColor: '#304ffe',
+							});
+						$("#memberId").focus();
+						return false;
+					}
+					if (mail == "") {
+						 swal({
+								title: "이메일을 입력해주세요.",
+								confirmButtonColor: '#304ffe',
+							});
+					} else {
+					
+						$.ajax({
+							type : 'post',
+							url : '/member/findPw',
+							data : {mail:mail,
+									memberId:memberId},
+							dataType :'json',
+							success: function(data){
+								$(".email-text").text("").css("color", "red");						
+								msg = data.msg;
+								
+								$(".email-text").text(msg).css("color", "red");
+								if(msg == null){
+																		
+									memberPw = data.memberPw;
+									console.log(msg);
+									
+									 swal({
+											title: "비밀번호가 매일로 전송 되었습니다.",
+											confirmButtonColor: '#304ffe',
+									});
+								}
+							}
+							
+		
+						});
+						
+						
+						
+					}
+					
+					
+				});
+			  
+			  
+ 
+					
+					 
+					 
+			
+		
+	</script>
+	
+	
+	
+	
+	</th:block>

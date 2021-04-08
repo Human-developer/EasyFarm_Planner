@@ -58,7 +58,8 @@
 								</tr>
 								<tr>
 									<th>이메일</th>
-									<td th:text="${m.memberEmail}"></td>
+									<td th:text="${m.memberEmail}"> </td> 
+									<td> <a th:href="@{/member/modifyEmail(email=${m.memberEmail})}"><button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">변경</button></a></td>
 								</tr>
 								<tr>
 									<th>주소</th>
