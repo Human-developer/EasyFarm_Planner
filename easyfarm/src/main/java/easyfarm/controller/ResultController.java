@@ -53,12 +53,6 @@ public class ResultController {
 		project = resultService.getProjectNameByFarmName(farmCode);
 		System.out.println(project.toString() + "muyahoooooooooooooooooooooooooooooooooooooo");
 		
-		
-		//[
-		//	{projectCode=project_16, projectName=팜코드4-1}, 
-		//	{projectCode=project_17, projectName=팜코드4-2}, 
-		//	{projectCode=project_18, projectName=팜코드4-3}
-		//]
 		return project;
 	}
 	
@@ -69,37 +63,22 @@ public class ResultController {
 		workPhase = resultService.getWorkPhaseByProjectCode(projectCode);
 		System.out.println(workPhase.toString() + "muyahuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
 		
-		
-		//[
-		//	{projectCode=project_16, projectName=팜코드4-1}, 
-		//	{projectCode=project_17, projectName=팜코드4-2}, 
-		//	{projectCode=project_18, projectName=팜코드4-3}
-		//]
 		return workPhase;
 	}
 	
 	
-	@GetMapping("/result")
-	public String resultMain(Model model,HttpSession session) {
+	
+	@GetMapping(value = "/result/resultData")
+	public String resultMain(Model model,
+			@RequestParam(value = "farmCode",required = false) String farmCode,
+			@RequestParam(value = "projectCode",required = false) String projectCode,
+			@RequestParam(value = "workPhaseCode",required = false) String workPhaseCode) {
 		
+		System.out.println("\n\n\n\n\n\n\n\n"+farmCode+"<<farmCode \n\n\n\n\n\n\n\n\n");
+		System.out.println("\n\n\n\n\n\n\n\n"+workPhaseCode+"<<workPhaseCode \n\n\n\n\n\n\n\n\n");
+		List<EtcPayResult> etcpayResult = resultService.getEtcPayResult(workPhaseCode);
+		System.out.println("\n\n\n\n\n\n\n\n"+etcpayResult+"<<etcpayResult \n\n\n\n\n\n\n\n\n");
 		
-		List<Map<String,Object>> farm = null;
-		
-		 if(session.getAttribute("SID") == null) {
-			 return "views/member/login";
-		 }
-		
-		String memberId = (String) session.getAttribute("SID");
-		
-		if(memberId != null) {
-			
-			farm = resultService.getFarmName(memberId);
-			model.addAttribute("farm", farm);
-			
-		 }
-		
-		
-		List<EtcPayResult> etcpayResult = resultService.getEtcPayResult();
 		List<ResourcePayResult> resourcePayResult = resultService.getResourcePayResult();
 		List<InsurancePayResult> insurancePayResult = resultService.getInsurancePayResult();
 		List<MachineLeasePayResult> machineLeasePayResult = resultService.getMachineLeasePayResult();
@@ -111,15 +90,40 @@ public class ResultController {
 		
 
 		model.addAttribute("etcpayResult", etcpayResult);
-		model.addAttribute("resourcePayResult", resourcePayResult);
-		model.addAttribute("insurancePayResult", insurancePayResult);
-		model.addAttribute("machineLeasePayResult", machineLeasePayResult);
-		model.addAttribute("machineUsePayResult", machineUsePayResult);
-		model.addAttribute("productGainResult", productGainResult);
-		model.addAttribute("resourceUsePlanResult", resourceUsePlanResult);
-		model.addAttribute("taxPayResult", taxPayResult);
-		model.addAttribute("workForcePayResult", workForcePayResult); 
 		
+		 model.addAttribute("resourcePayResult", resourcePayResult);
+		 model.addAttribute("insurancePayResult", insurancePayResult);
+		 model.addAttribute("machineLeasePayResult", machineLeasePayResult);
+		 model.addAttribute("machineUsePayResult", machineUsePayResult);
+		 model.addAttribute("productGainResult", productGainResult);
+		 model.addAttribute("resourceUsePlanResult", resourceUsePlanResult);
+		 model.addAttribute("taxPayResult", taxPayResult);
+		 model.addAttribute("workForcePayResult", workForcePayResult);
+		 
+		
+		
+		return "views/result/resultAlert";
+	}
+	
+	
+	
+	
+	@GetMapping("/result")
+	public String result(Model model,HttpSession session) {
+		
+		
+		List<Map<String,Object>> farm = null;
+		
+		 if(session.getAttribute("SID") == null) {
+			 return "views/member/login";
+		 }
+		
+		String memberId = (String) session.getAttribute("SID");
+		
+		if(memberId != null) {
+			farm = resultService.getFarmName(memberId);
+			model.addAttribute("farm", farm);
+		 }
 		return "views/result/resultMain";
 	}
 	
@@ -129,7 +133,7 @@ public class ResultController {
 		return "views/result/resultCalendar";
 	}
 	
-	@GetMapping("/resultData")
+	@GetMapping("/resultData5464654644")
 	public String resultData(Model model) {
 		
 		

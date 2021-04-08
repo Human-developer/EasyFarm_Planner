@@ -59,10 +59,10 @@ public class ResultService {
 	}	
 	
 	
-	public List<EtcPayResult> getEtcPayResult(){
+	public List<EtcPayResult> getEtcPayResult(String workPhaseCode){
 		/* MemberMapper member = new MemberMapper(); */
 		List<EtcPayResult> etcPayList = null;
-		etcPayList =resultmapper.getEtcPayResult();
+		etcPayList =resultmapper.getEtcPayResult(workPhaseCode);
 		
 		return etcPayList;
 	}

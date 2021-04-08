@@ -21,7 +21,7 @@ import easyfarm.domain.result.WorkForcePayResult;
 @Mapper
 public interface ResultMapper {
 	
-	public List<EtcPayResult> getEtcPayResult();
+	public List<EtcPayResult> getEtcPayResult(String workPhaseCode);
 	
 	public List<ResourcePayResult> getResourcePayResult();
 	

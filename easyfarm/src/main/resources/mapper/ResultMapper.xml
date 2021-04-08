@@ -93,7 +93,7 @@
 		ON
 		r.etc_pay_code=p.etc_pay_code
 		WHERE
-		p.plan_workphase_code='plan_workphase_1'
+		p.plan_workphase_code = #{workPhaseCode}
    </select>
   
     	<resultMap type="ResourcePayResult" id="resultResourcePayMap">
