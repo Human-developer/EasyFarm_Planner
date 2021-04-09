@@ -5,12 +5,12 @@
 	  
 	<!-- 화면 title 설정 -->
 	<th:block layout:fragment="customTitle">
-		<title>아이디 찾기</title>
+		<title>휴면해제</title>
 	</th:block>
 	
 	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
 	<th:block layout:fragment="pageTitle">
-		<a th:href="@{/member/login}">로그인</a>-아이디 찾기
+		<a th:href="@{/member/login}">로그인</a>-휴면해제
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
@@ -49,11 +49,18 @@
 						<div class="box-content" style="border : 2px solid gray">
 							<div class="box-content  t-center important-col" style="border-bottom : 2px solid #3BBD5A">
 							
-								<h3>아이디 찾기</h3><small style="color: red; margin-left: 6px;"><i class="fa fa-lightbulb-o">이메일 인증 완료 후 확인클릭시 아이디가 나옵니다. </i></small>
+								<h3>휴면해제</h3><small style="color: red; margin-left: 6px;"><i class="fa fa-lightbulb-o">휴면상태 아이디와 이메일 인증 완료 후 확인클릭시 해제완료</i></small>
 							</div>
 							<div class="panel-body" >
 						
 								<div class="form-horizontal">
+								<div class="form-group">
+										<label for="memberEmail" class="col-sm-2 control-label"><strong>아이디</strong></label>
+									    <div class="col-sm-9">
+									      <input type="text" class="form-control" name="memberId" id="memberId" placeholder="Id">
+									     
+									    </div>
+								</div>
 								<div class="form-group">
 										<label for="memberEmail" class="col-sm-2 control-label"><strong>이메일</strong></label>
 									    <div class="col-sm-6">
@@ -87,20 +94,7 @@
 					</div>
 				</div>
 			</div>
-			
-			<div class="modal-content"  style = "display: none">
-					<div class="modal-header">
-						<button type="button" class="close" ><span class="close" style="color: black;">X</span></button>
-						<h4 class="modal-title">아이디</h4>
-					</div>
-					<div class="modal-body">
-						<p>아이디 :</p> <p class="text" style="color: black;"></p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn  close  " ><span style="color: black;">Close</span> </button>
-					</div>
-				</div>
-			
+					
 		</form>
 	</th:block>
 	
@@ -117,20 +111,24 @@
 		var msg = "";
 		var memberId = "";
 		var getMail = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
-		  
-		 
 			  $(".sendMail").click(function() {// 메일 입력 유효성 검사
 					var mail = $("#memberEmail").val(); //사용자의 이메일 입력값. 
-					
-					
+					var memberId = $("#memberId").val(); 
+					if(memberId == ""){
+						 swal({
+								title: "아이디를 입력해주세요.",
+								confirmButtonColor: '#304ffe'
+							});
+						$('#memberId').focus();
+					}
 					if(mail == ""){
 						 swal({
-								title: "이메일을 입력 해주세요.",
+								title: "이메일을 입력해주세요.",
 								confirmButtonColor: '#304ffe'
 							});
 						$('#memberEmail').focus();
 						return false;
-					}if(!getMail.test(mail){
+					}if(!getMail.test(mail)){
 						 swal({
 								title: "이메일을 형식에 맞게 입력 해주세요.",
 								confirmButtonColor: '#304ffe'
@@ -142,24 +140,33 @@
 					
 						$.ajax({
 							type : 'post',
-							url : '/member/findId',
-							data : {mail:mail},
+							url : '/member/releaseMember',
+							data : {mail:mail,
+									memberId:memberId},
 							dataType :'json',
-							success: function(data){
-								$(".email-text").text("").css("color", "red");						
+							success: function(data){						
 								key = data.mailAuthKey;
 								msg = data.msg;
 								memberId = data.memberId;
+								console.log(key);
+								swal({
+									title: msg,
+									confirmButtonColor: '#304ffe'
+							  	});
 								
-								
-								$(".email-text").text(msg).css("color", "red");
 								if(key == null && key == ""){
-									alert("등록되지 않은 이메일입니다");
+									 swal({
+											title: "등록되지 않은 이메일입니다.",
+											confirmButtonColor: '#304ffe'
+									  });
 								}else if(key != null && key != ""){
 									$("#certified").attr('style','display: block');
 									$("#certified2").attr('style','display: block');
 									$(".compare").attr('style','display: block');
-									alert("인증번호가 전송되었습니다.");
+									swal({
+										title: msg,
+										confirmButtonColor: '#304ffe'
+								  	});
 								}
 							}
 							
@@ -204,6 +211,7 @@
 					
 			  });
 			  
+					
 			  $("#idResult").on("click",function(){	 
 					
 					if(!isCertification){			
@@ -213,15 +221,12 @@
 							});
 						return false;
 					}			
-					
-				 $('.modal-content').attr('style','display: block');
-				 $('.text').text(memberId);
+				memberId= $('#memberId').val();
+				location.href = "/member/modifyReleaseMembmer?memberId="+memberId;
+				
 			  });
 			  
-			  $('.close').click(function(){
-		  		  
-				 	 $('.modal-content').attr('style','display: none');
-			  })
+			
 	</script>
 	
 	
