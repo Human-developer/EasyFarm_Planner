@@ -126,7 +126,7 @@
 											</tr>
 											
 											
-										</tbody> 	
+										</tbody>
 									</table>
 								</div>
 								
@@ -135,102 +135,102 @@
 								<!-- 단계별 비용계산 테이블 -->
 								
 								
-											<div class="col-xs-12 box-content">
-												<h2>지출항목별 비용</h2>
-												<div class="pull-right">
-													비용결과 합계 : <i class="paytotal"></i>	<br/>
-													<br/>
-												</div>
-												<table id="example-row-grouping-2" class="table table-striped table-bordered display" style="width:100%">
-													<thead>
-														<tr>
-															<th style="text-align: center;">지출항목명</th>
-															<th style="text-align: center;"> 계획 / 실행 </th>
-															<th style="text-align: center;"> 항목명 </th>
-															<th style="text-align: center;"> 금액 </th>
-															<th style="text-align: center;"> 날짜</th>
-															<th style="text-align: center;"> 결과마감여부</th>
-														</tr>
-													</thead>
-													<tbody>
-													
-													
-														<tr th:each="e : ${etcpayResult}">
-															<td>기타비용 <i class="pull-right etctotal"></i></td>
-															<td>계획</td>
-															<td th:text="${e.etcPayPlan.etcPayDetail}"></td>
-															<td th:text="${e.etcPayPlan.etcPay}" style=" background: #F5F6CE;"></td>
-															<td th:text="${e.etcPayPlan.etcPayDate}"></td>
-															<td></td>
-														</tr>
-														<tr th:each="e : ${etcpayResult}">
-															<td>기타비용 <i class="pull-right etctotal"></i></td>
-															<td>실행</td>
-															<td th:text="${e.etcPayRunMemo}"></td>
-															<td th:text="${e.etcPayRunPay}" class="etcpay" style=" background: #F5F6CE;"></td>
-															<td th:text="${e.etcPayRunDate}"></td>
-															<td th:text="${e.completeStatus}"></td>
-														</tr>
-														
-														
-														<tr th:each="r : ${resourcePayResult}">
-															<td>농자재 매입<i class="pull-right resourcetotal"></i></td>
-															<td>계획</td>
-															<td th:text="${r.resourcePayPlan.stockItemCode}"></td>
-															<td th:text="${r.resourcePayPlan.stockItemTotalPay}" style=" background: #F5F6CE;"></td>
-															<td th:text="${r.resourcePayPlan.stockItemIncomeDate}"></td>
-															<td></td>
-														</tr>
-														<tr th:each="r : ${resourcePayResult}">
-															<td>농자재 매입<i class="pull-right resourcetotal"></i></td>
-															<td>실행</td>
-															<td th:text="${r.stockItemCode}"></td>
-															<td th:text="${r.stockItemTotalPay}" class="resourcepay" style=" background: #F5F6CE;"></td>
-															<td th:text="${r.stockItemIncomeDate}"></td>
-															<td th:text="${r.completeStatus}"></td>
-														</tr>
-														
-														
-														<tr th:each="m : ${machineLeasePayResult}">
-															<td>농기계 대여료<i class="pull-right machineleasetotal"></i></td>
-															<td>계획</td>
-															<td th:text="${m.machineLeasePayPlan.farmBookmarkMachineCode}"></td>
-															<td th:text="${m.machineLeasePayPlan.machineLeasePayTotal}" style=" background: #F5F6CE;"></td>
-															<td th:text="${m.machineLeaseRunDate}"></td>
-															<td></td>
-														</tr>
-														<tr th:each="m : ${machineLeasePayResult}">
-															<td>농기계 대여료<i class="pull-right machineleasetotal"></i></td>
-															<td>실행</td>
-															<td th:text="${m.farmBookmarkMachineCode}"></td>
-															<td th:text="${m.machineLeaseRunPay}" class="machineLeasePay" style=" background: #F5F6CE;"></td>
-															<td th:text="${m.machineLeaseRunDate}"></td>
-															<td th:text="${m.completeStatus}"></td>
-														</tr>
-														
-														
-														
-														<tr th:each="w : ${workForcePayResult}">
-															<td>인건비<i class="pull-right humantotal"></i></td>
-															<td>계획</td>
-															<td th:text="${w.workforcePayPlan.planWorkphaseCateCode}"></td>
-															<td th:text="${w.workforcePayPlan.workforcePayTotal}" style=" background: #F5F6CE;"></td>
-															<td th:text="${w.workforceRunDate}"></td>
-															<td></td>
-														</tr>
-														<tr th:each="w : ${workForcePayResult}">
-															<td>인건비<i class="pull-right humantotal"></i></td>
-															<td>실행</td>
-															<td th:text="${w.workforcePayCode}"></td>
-															<td th:text="${w.workforcePayRunTotal}" class="humanpay" style=" background: #F5F6CE;"></td>
-															<td th:text="${w.workforceRunDate}"></td>
-															<td th:text="${w.completeStatus}"></td>
-														</tr>
-														
-														
-													</tbody>
-												</table>
-											</div>
+								<div class="col-xs-12 box-content">
+									<h2>지출항목별 비용</h2>
+									<div class="pull-right">
+										비용결과 합계 : <i class="paytotal"></i>	<br/>
+										<br/>
+									</div>
+									<table id="example-row-grouping-2" class="table table-striped table-bordered display" style="width:100%">
+										<thead>
+											<tr>
+												<th style="text-align: center;">지출항목명</th>
+												<th style="text-align: center;"> 계획 / 실행 </th>
+												<th style="text-align: center;"> 항목명 </th>
+												<th style="text-align: center;"> 금액 </th>
+												<th style="text-align: center;"> 날짜</th>
+												<th style="text-align: center;"> 결과마감여부</th>
+											</tr>
+										</thead>
+										<tbody>
+										
+										
+											<tr th:each="e : ${etcpayResult}">
+												<td>기타비용 <i class="pull-right etctotal"></i></td>
+												<td>계획</td>
+												<td th:text="${e.etcPayPlan.etcPayDetail}"></td>
+												<td th:text="${e.etcPayPlan.etcPay}" style=" background: #F5F6CE;"></td>
+												<td th:text="${e.etcPayPlan.etcPayDate}"></td>
+												<td></td>
+											</tr>
+											<tr th:each="e : ${etcpayResult}">
+												<td>기타비용 <i class="pull-right etctotal"></i></td>
+												<td>실행</td>
+												<td th:text="${e.etcPayRunMemo}"></td>
+												<td th:text="${e.etcPayRunPay}" class="etcpay" style=" background: #F5F6CE;"></td>
+												<td th:text="${e.etcPayRunDate}"></td>
+												<td th:text="${e.completeStatus}"></td>
+											</tr>
+											
+											
+											<tr th:each="r : ${resourcePayResult}">
+												<td>농자재 매입<i class="pull-right resourcetotal"></i></td>
+												<td>계획</td>
+												<td th:text="${r.resourcePayPlan.stockItemCode}"></td>
+												<td th:text="${r.resourcePayPlan.stockItemTotalPay}" style=" background: #F5F6CE;"></td>
+												<td th:text="${r.resourcePayPlan.stockItemIncomeDate}"></td>
+												<td></td>
+											</tr>
+											<tr th:each="r : ${resourcePayResult}">
+												<td>농자재 매입<i class="pull-right resourcetotal"></i></td>
+												<td>실행</td>
+												<td th:text="${r.stockItemCode}"></td>
+												<td th:text="${r.stockItemTotalPay}" class="resourcepay" style=" background: #F5F6CE;"></td>
+												<td th:text="${r.stockItemIncomeDate}"></td>
+												<td th:text="${r.completeStatus}"></td>
+											</tr>
+											
+											
+											<tr th:each="m : ${machineLeasePayResult}">
+												<td>농기계 대여료<i class="pull-right machineleasetotal"></i></td>
+												<td>계획</td>
+												<td th:text="${m.machineLeasePayPlan.farmBookmarkMachineCode}"></td>
+												<td th:text="${m.machineLeasePayPlan.machineLeasePayTotal}" style=" background: #F5F6CE;"></td>
+												<td th:text="${m.machineLeaseRunDate}"></td>
+												<td></td>
+											</tr>
+											<tr th:each="m : ${machineLeasePayResult}">
+												<td>농기계 대여료<i class="pull-right machineleasetotal"></i></td>
+												<td>실행</td>
+												<td th:text="${m.farmBookmarkMachineCode}"></td>
+												<td th:text="${m.machineLeaseRunPay}" class="machineLeasePay" style=" background: #F5F6CE;"></td>
+												<td th:text="${m.machineLeaseRunDate}"></td>
+												<td th:text="${m.completeStatus}"></td>
+											</tr>
+											
+											
+											
+											<tr th:each="w : ${workForcePayResult}">
+												<td>인건비<i class="pull-right humantotal"></i></td>
+												<td>계획</td>
+												<td th:text="${w.workforcePayPlan.planWorkphaseCateCode}"></td>
+												<td th:text="${w.workforcePayPlan.workforcePayTotal}" style=" background: #F5F6CE;"></td>
+												<td th:text="${w.workforceRunDate}"></td>
+												<td></td>
+											</tr>
+											<tr th:each="w : ${workForcePayResult}">
+												<td>인건비<i class="pull-right humantotal"></i></td>
+												<td>실행</td>
+												<td th:text="${w.workforcePayCode}"></td>
+												<td th:text="${w.workforcePayRunTotal}" class="humanpay" style=" background: #F5F6CE;"></td>
+												<td th:text="${w.workforceRunDate}"></td>
+												<td th:text="${w.completeStatus}"></td>
+											</tr>
+											
+											
+										</tbody>
+									</table>
+								</div>
 								    
 										
 										<!-- <div class="col-xs-6">
@@ -684,6 +684,7 @@
 						    		Swal.fire
 						    		({
 						                title: "선택 완료!",
+						                icon: 'success',
 						                confirmButtonText: '확인',
 						            }).then(function()
 						            	{
@@ -707,6 +708,7 @@
 						    		Swal.fire
 						    		({
 						                title: "다시!",
+						                icon: 'warning',
 						                text: "다시 선택해 주세요!",
 						            }).then(function()
 						            {
