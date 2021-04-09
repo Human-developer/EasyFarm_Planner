@@ -368,18 +368,6 @@ public class PlanController {
 		return "views/plan/result";
 	}
 	
-	
-	@PostMapping("/ajax/getStockItemInfo")
-	@ResponseBody
-	public Map<String, Object> getStockItemInfo(@RequestParam(value = "resourceStockItemCode", required = false) String resourceStockItemCode) {
-		
-		Map<String, Object> stockItemInfo = null;
-		if(resourceStockItemCode != null && !"".equals(resourceStockItemCode.trim())) {
-			stockItemInfo = planService.getStockItemInfo(resourceStockItemCode);
-		}
-		return stockItemInfo;
-	}
-	
 	@PostMapping("/plan/calendarDataList")
 	@ResponseBody
 	public List<Map<String, Object>> getCalendarDataList(@RequestParam(value = "projectPlanCode", required = false)String projectPlanCode) {
@@ -438,7 +426,18 @@ public class PlanController {
 		return calList;
 	}
 	
-	@PostMapping("/ajax/addClient")
+	@PostMapping("/plan/ajax/getStockItemInfo")
+	@ResponseBody
+	public Map<String, Object> getStockItemInfo(@RequestParam(value = "resourceStockItemCode", required = false) String resourceStockItemCode) {
+		
+		Map<String, Object> stockItemInfo = null;
+		if(resourceStockItemCode != null && !"".equals(resourceStockItemCode.trim())) {
+			stockItemInfo = planService.getStockItemInfo(resourceStockItemCode);
+		}
+		return stockItemInfo;
+	}
+	
+	@PostMapping("/plan/ajax/addClient")
 	@ResponseBody
 	public List<Map<String, Object>> addClient(Client client, HttpSession session) {
 		List<Map<String, Object>> result = null;
@@ -449,6 +448,20 @@ public class PlanController {
 			client.setRegMemberId(memberId);
 			
 			result = planService.addClient(client);
+		}
+		
+		return result;
+	}
+	
+	@PostMapping("/plan/ajax/modifyClient")
+	@ResponseBody
+	public List<Map<String, Object>> modifyClient(Client client) {
+		
+		List<Map<String, Object>> result = null;
+		System.out.println(client.getClientCode());
+		if(client.getFarmCode() != null && !"".equals(client.getFarmCode().trim())) {
+			
+			result = planService.modifyClient(client);
 		}
 		
 		return result;

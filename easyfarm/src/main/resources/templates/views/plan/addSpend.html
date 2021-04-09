@@ -240,7 +240,7 @@
 															<tbody>
 																<th:block th:if="${#lists.size(clientNameList) > 0}" th:each="c : ${clientNameList}">
 																	<tr>
-																		<td th:text="${c.clientCode}" 		class="hidden"></td>
+																		<td th:text="${c.clientCode}" 		class="hidden clientCode"></td>
 																		<td th:text="${c.clientName}"		class="clientName"></td>
 																		<td th:text="${c.clientPhone}" 		class="clientPhone"></td>
 																		<td th:text="${c.clientAddress}" 	class="clientAddress"></td>
@@ -952,7 +952,10 @@
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
 	<th:block layout:fragment="customScriptLib">
-	
+		
+		<!-- CommonAjax Script -->
+		<script src="/assets/scripts/commonAjax.js"></script>
+		
 		<!-- Flex Datalist -->
 		<script th:src="@{/assets/plugin/flexdatalist/jquery.flexdatalist.min.js}"></script>
 	
@@ -1006,7 +1009,7 @@
 		<script type="text/javascript">
 			function moveAddSpend(btn){
 					location.href = btn.value;
-				};
+			};
 		</script>
 	</th:block>
 

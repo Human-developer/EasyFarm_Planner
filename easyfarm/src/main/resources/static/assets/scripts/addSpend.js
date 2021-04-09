@@ -153,7 +153,7 @@ $(function(){
 		var resourceStockItemCode = $(this).val();
 		
 		$.ajax({
-			url: "/ajax/getStockItemInfo",
+			url: "/plan/ajax/getStockItemInfo",
 			method: "POST",
 			data: { resourceStockItemCode : resourceStockItemCode },
 			success : function(data) {
@@ -375,65 +375,119 @@ $(function(){
 		show: false
 	})
 	
+	var lang_kor = {
+	        "decimal" : "",
+	        "emptyTable" : "등록된 정보가 없습니다",
+	        "info" : "_START_ - _END_",
+	        "infoEmpty" : "0",
+	        "infoFiltered" : "(전체 _MAX_검색결과)",
+	        "infoPostFix" : "",
+	        "thousands" : ",",
+	        "lengthMenu" : "_MENU_ 개씩 보기",
+	        "loadingRecords" : "로딩중...",
+	        "processing" : "처리중...",
+	        "search" : "검색 : ",
+	        "zeroRecords" : "검색된 정보가 없습니다.",
+	        "paginate" : {
+	            "first" : "첫 페이지",
+	            "last" : "마지막 페이지",
+	            "next" : "다음",
+	            "previous" : "이전"
+	        },
+	        "aria" : {
+	            "sortAscending" : " :  오름차순 정렬",
+	            "sortDescending" : " :  내림차순 정렬"
+	        }
+	}
+	
 	$('#commonMachineListTable').DataTable();
 	$('#farmBookmarkMachineListTable').DataTable();
-	$('#clientListTable').DataTable();
+	var table = $('#clientListTable').DataTable({
+		"columnDefs": [
+			 {className: "hidden clientCode", "targets": [ 0 ]}
+			,{className: "clientName", "targets": [ 1 ]}
+			,{className: "clientPhone", "targets": [ 2 ]}
+			,{className: "clientAddress", "targets": [ 3 ]}
+			,{className: "clientAccountBank", "targets": [ 4 ]}
+			,{className: "clientAccount", "targets": [ 5 ]}
+			,{className: "clientMemo", "targets": [ 6 ]}
+		]
+		,language : lang_kor
+	});
 	$('#stockItemTable').DataTable();
 	$('#resourceUsecapacityListTable').DataTable();
 	
-	/*planModals.html 등록버튼 클릭시 ajax로 처리*/
 	
-	/*거래처등록*/
+	/* Modal 등록버튼, 테이블 수정,삭제 버튼 클릭시 ajax로 처리 */
+	
+	//거래처리스트를 테이블과 셀렉트 박스로 만든 후 input
+	function doClientList(data){
+		
+		
+		//var tbody 				= $("#clientListTable tbody");
+		var machineClientSelect = $('#machineClientCode');
+		var taxPayClientSelect  = $('#taxPayClientCode');
+		var etcPayClientSelect  = $('#etcPayClientCode');
+		
+		var tr 		= "";
+		var option  = '<option value=""> :: 거래처선택 :: </option>';
+		
+		table.clear().draw();
+		//tbody.children().remove();
+		machineClientSelect.children().remove();
+		taxPayClientSelect.children().remove();
+		etcPayClientSelect.children().remove();
+		
+		$.each(data, function(index){
+			table.row.add([
+				 data[index].clientCode
+				,data[index].clientName
+				,data[index].clientPhone
+				,data[index].clientAddress
+				,data[index].clientAccountBank
+				,data[index].clientAccount
+				,data[index].clientMemo
+				,'<a class="modifyClientInfo">수정</a>'
+				,'<a>삭제</a>'
+			]).draw()
+			
+			/*tr += '<tr>';
+			tr += '<td>' + data[index].clientName + '</td>';
+			tr += '<td>' + data[index].clientPhone + '</td>';
+			tr += '<td>' + data[index].clientAddress + '</td>';
+			tr += '<td>' + data[index].clientAccountBank + '</td>';
+			tr += '<td>' + data[index].clientAccount + '</td>';
+			tr += '<td>' + data[index].clientMemo + '</td>';
+			tr += '<td><a class="modifyClientInfo">수정</a></td>';
+			tr += '<td><a>삭제</a></td>';
+			tr += '</tr>';*/
+			
+			option += '<option value=';
+			option += data[index].clientCode + '>';
+			option += data[index].clientName;
+			option += '</option>';
+			
+		})
+		
+		//tbody.html(tr);
+		machineClientSelect.html(option);
+		taxPayClientSelect.html(option);
+		etcPayClientSelect.html(option);
+		
+	}
+	
+	//모달 거래처등록버튼 클릭시
 	$('#addClientBtn').click(function(){
 	
-		var queryString = $("form[name=addClient]").serialize() ;
+		var queryString = $("form[name=addClient]").serialize();
 		
 		$.ajax({
-			url : "/ajax/addClient",
+			url : "/plan/ajax/addClient",
 			method: "POST",
 			data: queryString,
 			datatype: 'json',
 			success : function(data) {
-				
-				var tbody = $("#clientListTable tbody");
-				var machineClientSelect = $('#machineClientCode');
-				var taxPayClientSelect = $('#taxPayClientCode');
-				var etcPayClientSelect = $('#etcPayClientCode');
-				
-				var tr = "";
-				var option = '<option value=""> :: 거래처선택 :: </option>';
-				
-				tbody.children().remove();
-				machineClientSelect.children().remove();
-				taxPayClientSelect.children().remove();
-				etcPayClientSelect.children().remove();
-				
-				$.each(data, function(index){
-					tr += '<tr>';
-					tr += '<td>' + data[index].clientName + '</td>';
-					tr += '<td>' + data[index].clientPhone + '</td>';
-					tr += '<td>' + data[index].clientAddress + '</td>';
-					tr += '<td>' + data[index].clientAccountBank + '</td>';
-					tr += '<td>' + data[index].clientAccount + '</td>';
-					tr += '<td>' + data[index].clientMemo + '</td>';
-					tr += '<td><a>수정</a></td>';
-					tr += '<td><a>삭제</a></td>';
-					tr += '</tr>';
-					
-					option += '<option value=';
-					option += data[index].clientCode + '>';
-					option += data[index].clientName;
-					option += '</option>';
-					
-				})
-				
-				tbody.html(tr);
-				console.log(option);
-				machineClientSelect.html(option);
-				taxPayClientSelect.html(option);
-				etcPayClientSelect.html(option);
-				
-				
+				doClientList(data);
 			},
 			error : function(xhr, status, error) {
 				console.log('xhr : ' + xhr);
@@ -450,17 +504,20 @@ $(function(){
 		$("form[name=addClient] .inputReset").val('');
 	});
 	
-	var modalClientName 		= $('#clientName');
-	var modalClientPhone 		= $('#clientPhone');
-	var modalClientAddress 		= $('#clientAddress');
-	var modalClientAccountBank  = $('#clientAccountBank');
-	var modalClientAccount 		= $('#clientAccount');
-	var modalClientMemo			= $('#clientMemo');
-	var modalTitle 				= $('#planAddClient h4');
-	var modalBtn				= $('#addClientBtn');
 	
-	/*거래처 정보수정*/
-	$('.modifyClientInfo').click(function(){
+	
+	/*거래처 테이블 수정 클릭시*/
+	var modalClientCode 		= $('#modifyClientCode');
+	var modalClientName 		= $('#modifyClientName');
+	var modalClientPhone 		= $('#modifyClientPhone');
+	var modalClientAddress 		= $('#modifyClientAddress');
+	var modalClientAccountBank  = $('#modifyClientAccountBank');
+	var modalClientAccount 		= $('#modifyClientAccount');
+	var modalClientMemo			= $('#modifyClientMemo');
+	var modalModifyClient 		= $('#planModifyClient');
+	
+	$(document).on('click', '.modifyClientInfo', function(){
+		var clientCode 			= $(this).parent().parent().children('.clientCode').text();
 		var clientName 			= $(this).parent().parent().children('.clientName').text();
 		var clientPhone 		= $(this).parent().parent().children('.clientPhone').text();
 		var clientAddress 		= $(this).parent().parent().children('.clientAddress').text();
@@ -468,14 +525,38 @@ $(function(){
 		var clientAccount 		= $(this).parent().parent().children('.clientAccount').text();
 		var clientMemo 			= $(this).parent().parent().children('.clientMemo').text();
 		
-		$('#planAddClient').modal('show');
+		$("form[name=modifyClient] .inputReset").val('');
+		
+		modalModifyClient.modal('show');
+		
+		modalClientCode.val(clientCode);
 		modalClientName.val(clientName);
 		modalClientPhone.val(clientPhone);
 		modalClientAddress.val(clientAddress);
 		modalClientAccountBank.val(clientAccountBank);
 		modalClientAccount.val(clientAccount);
 		modalClientMemo.val(clientMemo);
-		modalTitle.text('거래처 수정');
 		
 	});
+	
+	/*모달 거래처 정보수정 버튼 클릭시*/
+	$('#modifyClientBtn').click(function(){
+		
+		var queryString = $("form[name=modifyClient]").serialize();
+		console.log(queryString);
+		var commonAjax = new ksmartAjax();
+		commonAjax.setAjaxUrl('/plan/ajax/modifyClient');
+		commonAjax.setAjaxType('post');
+		commonAjax.putObj(queryString);
+		commonAjax.setResultType('json');
+		commonAjax.action(function(data){
+			doClientList(data);
+			modalModifyClient.modal("hide");
+			
+			
+		});
+		
+	});
+	
+	
 });

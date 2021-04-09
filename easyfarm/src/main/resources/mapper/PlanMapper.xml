@@ -90,6 +90,19 @@
 		<result property="runStatus" 				column="run_status"/>
 	</resultMap>
 	
+	<update id="modifyClient" parameterType="Client">
+		UPDATE tb_client
+		SET
+			 client_name 			= #{clientName}
+			,client_phone 			= #{clientPhone}
+			,client_address			= #{clientAddress}
+			,client_account_bank	= #{clientAccountBank}
+			,client_account			= #{clientAccount}
+			,client_memo			= #{clientMemo}
+		WHERE 
+			client_code				= #{clientCode}
+	</update>
+	
 	<insert id="addClient" parameterType="Client">
 		INSERT INTO tb_client
 		(
