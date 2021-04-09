@@ -67,12 +67,12 @@ public class ResultController {
 	}
 	
 	
-	
 	@GetMapping(value = "/result/resultData")
 	public String resultMain(Model model,
 			@RequestParam(value = "farmCode",required = false) String farmCode,
 			@RequestParam(value = "projectCode",required = false) String projectCode,
-			@RequestParam(value = "workPhaseCode",required = false) String workPhaseCode) {
+			@RequestParam(value = "workPhaseCode",required = false) String workPhaseCode,
+			@RequestParam(value = "projectPlanCode",required = false) String projectPlanCode) {
 		
 		System.out.println("\n\n\n\n\n\n\n\n"+farmCode+"<<farmCode \n\n\n\n\n\n\n\n\n");
 		System.out.println("\n\n\n\n\n\n\n\n"+workPhaseCode+"<<workPhaseCode \n\n\n\n\n\n\n\n\n");
@@ -102,7 +102,7 @@ public class ResultController {
 		 
 		
 		
-		return "views/result/resultAlert";
+		return "views/result/resultData";
 	}
 	
 	
@@ -133,10 +133,22 @@ public class ResultController {
 		return "views/result/resultCalendar";
 	}
 	
-	@GetMapping("/resultData5464654644")
-	public String resultData(Model model) {
+	@GetMapping("/result/select")
+	public String selectOptions(Model model,HttpSession session) {
 		
+		List<Map<String,Object>> farm = null;
 		
+		 if(session.getAttribute("SID") == null) {
+			return "views/member/login";
+		 }else {
+			 String memberId = (String) session.getAttribute("SID");
+				
+				if(memberId != null) {
+					farm = resultService.getFarmName(memberId);
+					model.addAttribute("farm", farm);
+				 }
+			return "views/result/resultSelect";
+		 }
 		
 		/*
 		List<EtcPay> etcPayPlan = planService.getEtcPayPlan();
@@ -160,6 +172,11 @@ public class ResultController {
 		model.addAttribute("workForcePayPlan", workForcePayPlan);
 		*/
 		
-		return "views/result/resultMain";
 	}
+	
+	
+	
+	
+	
+	
 }

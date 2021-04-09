@@ -9,19 +9,26 @@
 		SELECT 
 			pw.project_workphase_code 	AS WorkPhaseCode
 			,cp.workphase_name 			AS WorkPhaseName
-		FROM tb_project_workphase AS pw
+			,pp.project_plan_n			AS ProjectPlanN
+			,pp.project_plan_code		AS ProjectPlanCode
+		FROM 
+			tb_project_workphase 	AS pw
 		INNER JOIN
-		tb_crop_phase_info AS cp
+			tb_crop_phase_info 		AS cp
 		ON
-		pw.crop_phase_info_code = cp.crop_phase_info_code
+			pw.crop_phase_info_code = cp.crop_phase_info_code
+		INNER JOIN
+			tb_project_plan 			AS pp
+		on
+			pw.project_code=pp.project_code
 		WHERE
 			pw.project_code =  #{projectCode} 
   	</select>
   	
   	<select id="getProjectNameByFarmName" resultType="Map" parameterType="String">
 		SELECT
-			p.project_code AS projectCode
-			,p.project_name As projectName
+			p.project_code 	AS projectCode
+			,p.project_name AS projectName
 		FROM
 			tb_farm_project AS p
 		where
