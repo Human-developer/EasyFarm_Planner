@@ -76,9 +76,9 @@
 									   	 </div>
 									</div>		
 									<div class="form-group">	
-										<div class="col-sm-offset-3">
-											<button type="submit" style="width: 20%;" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" id="idResult">확인</button>		
-											<a th:href="@{/member/detailMember(memberId = ${m.memberId})}" style="margin-left: 10px;"><button type="button" style="width: 20%;" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">취소</button>	</a>	
+										<div class="col-sm-offset-4">
+											<button type="submit"  class="btn btn-success btn-rounded waves-effect waves-light" id="idResult">확인</button>		
+											<a th:href="@{/member/detailMember(memberId = ${m.memberId})}" ><button type="button" class="btn btn btn-danger btn-rounded waves-effect waves-light">취소</button>	</a>	
 										</div>
 										
 									</div>	
@@ -105,10 +105,10 @@
 		var msg = "";
 		var memberId = "";
 		
-			  $(".sendMail").click(function() {// 메일 입력 유효성 검사
+			  $(".sendMail").click(function() { // 메일 입력 유효성 검사
 					var mail = $("#memberEmail").val(); //사용자의 이메일 입력값. 
-					
 					if (mail == "") {
+						
 						alert("메일 주소가 입력되지 않았습니다.");
 					} else {
 					
@@ -121,13 +121,11 @@
 								$(".email-text").text("").css("color", "red");						
 								key = data.mailAuthKey;
 								msg = data.msg;
-								memberId = data.memberId;
-								
-								
+								console.log(key);
+								console.log(msg);
+											
 								$(".email-text").text(msg).css("color", "red");
-								if(key == null && key == ""){
-									alert("등록되지 않은 이메일입니다");
-								}else if(key != null && key != ""){
+								if(key != null && key != ""){
 									$("#certified").attr('style','display: block');
 									$("#certified2").attr('style','display: block');
 									$(".compare").attr('style','display: block');
