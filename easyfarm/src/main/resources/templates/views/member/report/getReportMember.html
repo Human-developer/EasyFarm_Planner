@@ -27,7 +27,7 @@
 				        position: absolute;
 				        top:50%;
 				        left: 50%;
-				        margin: -250px 0 0 -250px;
+				        margin: -100px 0 0 -250px;
 				        background:white;
 				        z-index: 2;
 				    }
@@ -50,9 +50,8 @@
 								<th>등록일</th>
 								<th>승인/반려 상태</th>
 								<th>승인/반려 사유</th>
-								<th>수정</th>
-								<th>취소</th>
-								<th>삭제</th>
+								<th>설정</th>
+								
 								
 							</tr>
 						</thead>
@@ -60,19 +59,29 @@
 							<tr th:each="r : ${reportList}">													
 								<td th:text="${r.reportReason}"></td>				
 								<td th:text="${r.reportedMemberId}"></td>													
-								<td><a th:text="내용" th:data-val="${r.reportDetailReason}" href="#" class="contents"></a></td>		
+								<td ><a th:text="내용" th:data-val="${r.reportDetailReason}" href="#" class="contents"></a></td>			
 								<td th:text="${r.reportDate}"></td>													
 								<td th:text="${r.reportApproval}"></td>		
-								<td><a th:text="반려사유" th:data-val="${r.reportApprovalReason}" href="#" class="contents2"></a></td>									
-								<td>
-									<a th:if="${r.reportApproval == null and r.reportApproval == '진행중'}" th:href ="@{/member/modifReasonReport(reportHistoryCode=${r.reportHistoryCode})}">수정</a>
-								</td>
-								<td>
-									<a th:if="${r.reportApproval == null and r.reportApproval == '진행중'}" th:href ="@{/member/cancelReasonReport(reportHistoryCode=${r.reportHistoryCode})}">취소</a>
-								</td>
-								<td>
-									<a th:href ="@{/member/removeReasonReport(reportHistoryCode=${r.reportHistoryCode})}">삭제</a>
-								</td>
+								<td><a th:text="반려사유" th:data-val="${r.reportApprovalReason}" href="#" class="contents2"></a></td>	
+								<td th:if="${r.reportApproval == '진행중'}">
+									<div class="btn-group" >
+										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="fa fa-balance-scale" ></span></button> 
+										<ul class="dropdown-menu">
+										  	<li ><a th:href ="@{/member/modifyReport(reportHistoryCode=${r.reportHistoryCode})}">수정</a></li>
+										  	<li ><a class="remove" th:data-val="${r.reportHistoryCode}" href="#">취소</a></li>
+										  	
+										</ul>
+									</div>
+								</td>								
+								<td th:if="${r.reportApproval != null and r.reportApproval != '진행중'}">
+									<div class="btn-group" >
+										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span class="fa fa-balance-scale" ></span></button> 
+										<ul class="dropdown-menu">
+										  	<li ><a class="remove" th:data-val="${r.reportHistoryCode}" href="#">삭제</a></li>
+										</ul>
+									</div>
+								</td>								
+					
 							
 							</tr>
 						
@@ -89,103 +98,105 @@
 						<p class="text" style="color: black;"></p>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn  close" ><span style="color: black;">Close</span></button>
+						<button type="button" class="btn  close  " ><span style="color: black;">Close</span> </button>
 					</div>
 				</div>
 			</div>
+	</th:block>
+	
+	
+	<th:block layout:fragment="customScriptLib">
+	
+		<div th:replace="fragments/dataTable :: dataTable" th:remove="tag"></div>
 			
 	</th:block>
 	
 		<th:block layout:fragment="customJavaScript">
 		<script>
-		var lang_kor = {
-		        "decimal" : "",
-		        "emptyTable" : "신고목록이 없습니다",
-		        "info" : "_START_ - _END_ (총 _TOTAL_ 명)",
-		        "infoEmpty" : "0명",
-		        "infoFiltered" : "(전체 _MAX_ 신고목록 중 검색결과)",
-		        "infoPostFix" : "",
-		        "thousands" : ",",
-		        "lengthMenu" : "_MENU_ 개씩 보기",
-		        "loadingRecords" : "로딩중...",
-		        "processing" : "처리중...",
-		        "search" : "검색 : ",
-		        "zeroRecords" : "검색된 목록이 없습니다.",
-		        "paginate" : {
-		            "first" : "첫 페이지",
-		            "last" : "마지막 페이지",
-		            "next" : "다음",
-		            "previous" : "이전"
-		        },
-		        "aria" : {
-		            "sortAscending" : " :  오름차순 정렬",
-		            "sortDescending" : " :  내림차순 정렬"
-		        }
-		}
+			var lang_kor = {
+			        "decimal" : "",
+			        "emptyTable" : "신고목록이 없습니다",
+			        "info" : "_START_ - _END_ (총 _TOTAL_ 명)",
+			        "infoEmpty" : "0명",
+			        "infoFiltered" : "(전체 _MAX_ 신고목록 중 검색결과)",
+			        "infoPostFix" : "",
+			        "thousands" : ",",
+			        "lengthMenu" : "_MENU_ 개씩 보기",
+			        "loadingRecords" : "로딩중...",
+			        "processing" : "처리중...",
+			        "search" : "검색 : ",
+			        "zeroRecords" : "검색된 목록이 없습니다.",
+			        "paginate" : {
+			            "first" : "첫 페이지",
+			            "last" : "마지막 페이지",
+			            "next" : "다음",
+			            "previous" : "이전"
+			        },
+			        "aria" : {
+			            "sortAscending" : " :  오름차순 정렬",
+			            "sortDescending" : " :  내림차순 정렬"
+			        }
+			}
+			
+			$('#reportReasonTable').sysDataTable(lang_kor);
+			
+			
+			 $('.contents').click(function(){
+				  $('.text').text("");
+		    	  var contents = $(this).attr("data-val");
+				  $('.modal-content').attr('style','display: block');
+				  $('.text').text(contents);
+				  $('.modal-title').text("신고내용");
+					   
+			 })
+			 
+			 	
+			 $('.close').click(function(){
+			  		  
+			 	 $('.modal-content').attr('style','display: none');
+			 })
+			 
+			 $('.contents2').click(function(){
+				  $('.text').text("");
+		    	  var contents = $(this).attr("data-val");
+				  $('.modal-content').attr('style','display: block');
+				  $('.text').text(contents);
+				  $('.modal-title').text("반려내용");
+			 })
+			 
+			 	
+			 $('.close').click(function(){
+			  		  
+			 	 $('.modal-content').attr('style','display: none');
+			 })
+			 
+			 $('.remove').click(function(){
+		    	  var removeCode = $(this).attr("data-val");
+		   
+					swal({   
+						title: "정말 삭제하시겠습니까?",   
+						text: "삭제시 복구불가",   
+						type: "warning",   
+						showCancelButton: true,   
+						confirmButtonColor: "#DD6B55",   
+						confirmButtonText: "삭제!", 
+						cancelButtonText: "취소!", 
+						closeOnConfirm: false,
+						closeOnCancel: true,
+						confirmButtonColor: '#f60e0e',
+					},function(isConfirm){   
+						if (isConfirm) {     
+							location.href = "/member/removeReport?reportHistoryCode="+removeCode;
+						}
+					});
+				})
+				
 		
-		$('#reportReasonTable').sysDataTable(lang_kor,[0]);
-		
-		
-		 $('.contents').click(function(){
-			  
-	    	  var contents = $(this).attr("data-val");
-			  $('.modal-content').attr('style','display: block');
-			  $('.text').text(contents);
-			  $('.modal-title').text("신고내용");
-				   
-		  })
-		 
-		 	
-		 $('.close').click(function(){
-		  		  
-		 	 $('.modal-content').attr('style','display: none');
-		 })
-		 
-		 $('.contents2').click(function(){
-			  
-	    	  var contents = $(this).attr("data-val");
-			  $('.modal-content').attr('style','display: block');
-			  $('.text').text(contents);
-			  $('.modal-title').text("반려내용");
-		  })
-		 
-		 	
-		 $('.close').click(function(){
-		  		  
-		 	 $('.modal-content').attr('style','display: none');
-		 })
-		 
-		 $('.remove').click(function(){
-	    	  var removeCode = $(this).attr("data-val");
-	   
-				swal({   
-					title: "정말 삭제하시겠습니까?",   
-					text: "삭제시 복구불가",   
-					type: "warning",   
-					showCancelButton: true,   
-					confirmButtonColor: "#DD6B55",   
-					confirmButtonText: "삭제!", 
-					cancelButtonText: "취소!", 
-					closeOnConfirm: false,
-					closeOnCancel: true,
-					confirmButtonColor: '#f60e0e',
-				},function(isConfirm){   
-					if (isConfirm) {     
-						location.href = "/member/removeBaseDate?statusCriteriaCode="+removeCode;
-					}
-				});
-			})
-	
+			 
+			
 		
 		</script>
 	</th:block>
-		<th:block layout:fragment="customScriptLib">
-		<script src="/assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
-		<script src="/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
-		<script src="/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
-		<script src="/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
-		<script src="/assets/scripts/datatables.demo.min.js"></script>
-		
-	</th:block>
+	
 
 </html>

@@ -4,7 +4,6 @@ package easyfarm.controller;
 
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,9 +41,15 @@ public class MemberController {
 	private JavaMailSender javaMailSender;
 	
 
-	
-	
-	
+	 //메일 속도 단축을 위한 쓰레드활용
+	 public Runnable createRunnable(final SimpleMailMessage message) {
+		 return new Runnable() {
+		 	 @Override
+			 public void run() {
+				 javaMailSender.send(message);
+			 }			
+		 };
+	 }
 	
 	
 	 @GetMapping("/member")
@@ -65,12 +70,14 @@ public class MemberController {
 	 }
 
 	 @PostMapping("/member/login")
-	 public String login(
+	 @ResponseBody
+	 public Map<String, Object> login(
 			 @RequestParam(value = "memberId", required = false) String memberId,
 			 @RequestParam(value = "memberPw", required = false) String memberPw, HttpSession session) 	
 	 {
 		
 		 String msg = "로그인실패";
+		 Map<String, Object> map = new HashMap<String, Object>();
 		
 		 if (memberId != null && !"".equals(memberId.trim()) && memberPw != null && !"".equals(memberPw.trim())) 
 		 {
@@ -82,9 +89,10 @@ public class MemberController {
 				 if (member.getMemberPw().equals(memberPw))
 				 {
 					 if(member.getMemberStatus() != "탈퇴" && !"탈퇴".equals(member.getMemberStatus().trim()) && 
-					    member.getMemberStatus() != "정지" &&	 !"정지".equals(member.getMemberStatus().trim())) {
+					    member.getMemberStatus() != "정지" &&	 !"정지".equals(member.getMemberStatus().trim()) &&
+					    member.getMemberStatus() != "휴면" &&	 !"휴면".equals(member.getMemberStatus().trim()) ) {
 						 if(session.getAttribute("SID") == null) {
-							 memberService.updateLogin(memberId);							
+							// memberService.updateLogin(memberId);							
 						 }
 					
 						 // 아이디
@@ -93,29 +101,25 @@ public class MemberController {
 						 session.setAttribute("SNAME", member.getMemberName());
 						 // 이름
 						 session.setAttribute("SLEVEL", member.getLevelName());
-					 
-									
-					 	return "main";
+						msg = "로그인성공";
+						map.put("msg", msg);			
+					 	return map; 					 	 					 	
 					 	
 					 }else if(member.getMemberStatus() == "탈퇴" || "탈퇴".equals(member.getMemberStatus().trim())){
 						 msg = "탈퇴회원입니다";
-						
-						
-						 session.setAttribute("Error", msg);
-						 return "redirect:/member/login";
-					
+						 map.put("msg", msg);
+						 return map;
+				
 					 }else if(member.getMemberStatus() == "정지" || "정지".equals(member.getMemberStatus().trim())){
 						
 						 msg = "정지회원입니다";
-						 session.setAttribute("Error", msg);
-						
-					 	 return "redirect:/member/login";
+						 map.put("msg", msg);
+						 return map;
 					 }else if(member.getMemberStatus() == "휴면" || "휴면".equals(member.getMemberStatus().trim())) {
 						 
 						 msg = "휴면회원입니다";
-						 session.setAttribute("Error", msg);
-						 
-						 return "";				 
+						 map.put("msg", msg);
+						 return map;
 					 }
 					
 				 }
@@ -123,10 +127,78 @@ public class MemberController {
 			 }
 					
 		 }
-		 session.setAttribute("Error", msg);
-		 return "redirect:/member/login";
+		 
+		 map.put("msg", msg);
+		 return map;
 	 }
-	 //로그인기록 조회 34ms
+	 //휴면해제 이메일인증 Ajex
+	 @PostMapping("/member/releaseMember")
+	 @ResponseBody
+	 public Map<String, Object> releaseMember(@RequestParam(value = "memberId", required = false) String memberId,@RequestParam(value = "mail",required = false)String mail) {
+		
+		 Map<String, Object> map = new HashMap<String, Object>();
+		
+		 System.out.println(memberId);
+		 System.out.println(mail);
+		 Member member = memberService.getMemberInfoById(memberId);
+		 if(member != null) {
+				 		
+			 if(member.getMemberStatus() == "휴면" || "휴면".equals(member.getMemberStatus().trim())) {
+			
+				 if(mail.equals(member.getMemberEmail())) {	
+					  Random random=new Random();  //난수 생성을 위한 랜덤 클래스
+					  String key="";  //인증번호 
+					
+					  SimpleMailMessage message = new SimpleMailMessage();
+					  message.setTo(mail); //스크립트에서 보낸 메일을 받을 사용자 이메일 주소 
+					  //입력 키를 위한 코드
+					  for(int i =0; i<3;i++) {
+						  int index=random.nextInt(25)+65; //A~Z까지 랜덤 알파벳 생성
+						  key+=(char)index;
+					  }
+					  int numIndex=random.nextInt(9999)+1000; //4자리 랜덤 정수를 생성
+					  key+=numIndex;
+					  message.setSubject("인증번호 입력을 위한 메일 전송");
+					  message.setText("인증 번호 : "+key);
+					  map.put("mailAuthKey", key);
+					  map.put("msg", "인증번호가 전송되었습니다.");
+					  map.put("memberId", memberId);
+					  Thread thread = new Thread(createRunnable(message));
+					  thread.start();
+					  thread = null;
+					  return map;
+				 }else {
+					 map.put("msg", "아이디와 등록된 이메일이 일치하지 않습니다");
+					 return map;			 
+				 }
+				 
+			 }
+		
+		 }
+		 map.put("msg", "휴면상태인 아이디를 입력해주세요");
+		 return map;			 
+		 
+	 }
+	 //휴면해제
+	 @GetMapping("/member/releaseMember")
+	 public String releaseMember() {
+		 
+		 
+		 return"views/member/releaseMember";
+		 
+	 }
+	 @GetMapping("/member/modifyReleaseMembmer")
+	 public String releaseMember(@RequestParam(value = "memberId", required = false) String memberId) {
+		 System.out.println(memberId + "11111111111111111111111");
+		 if(memberId != null) {
+			 Member member = memberService.getMemberInfoById(memberId);
+			 member.setMemberStatus("정상");
+			 memberService.removeUpdateMember(member);
+		 }
+		 return"views/member/login";
+		 
+	 }
+	
 	 @GetMapping("/member/getLoginHistory")
 	 public String getloginHistory(Model model) {
 		 long start = System.currentTimeMillis();
@@ -203,10 +275,11 @@ public class MemberController {
 	 public @ResponseBody String idChdck(@RequestParam(value = "memberId", required = false) String memberId) {
 	 	 String result = "사용불가능";
 	
-		 if (memberId != null && !"".equals(memberId) && !"".equals(memberId.trim())) {
+		 if(memberId != null && !"".equals(memberId) && !"".equals(memberId.trim())) {
+			 
 			 Member member = memberService.getMemberInfoById(memberId);
 	
-			 if (member != null && member.getMemberId().equals(memberId)) {
+			 if(member != null && member.getMemberId().equals(memberId)) {
 				 result = "사용불가능";
 			 } else {
 				 result = "사용가능";
@@ -214,148 +287,173 @@ public class MemberController {
 		 }
 	
 		 return result;
-	  }
-	  @PostMapping("/checkMail") // AJAX와 URL을 매핑시켜줌 
-	  @ResponseBody  //AJAX후 다시 응답을 보내는게 아니기 때문에 적어줌, 안 적으면 이메일이 가도 개발자 도구에서 404오류가 뜸
-	  public Map<String, Object> SendMail(@RequestParam(name="mail", required = false) String mail) {
-		
-		  System.out.println("화면에서 받은 메일주소: " + mail);
-		
-		  Random random=new Random();  //난수 생성을 위한 랜덤 클래스
-		  String key="";  //인증번호 
-		
-		  SimpleMailMessage message = new SimpleMailMessage();
-		  message.setTo(mail); //스크립트에서 보낸 메일을 받을 사용자 이메일 주소 
-		  //입력 키를 위한 코드
-		  for(int i =0; i<3;i++) {
-			  int index=random.nextInt(25)+65; //A~Z까지 랜덤 알파벳 생성
-			  key+=(char)index;
-		  }
-		  int numIndex=random.nextInt(9999)+1000; //4자리 랜덤 정수를 생성
-		  key+=numIndex;
-		  message.setSubject("인증번호 입력을 위한 메일 전송");
-		  message.setText("인증 번호 : "+key);
-		  Map<String, Object> map = new HashMap<String, Object>();
-		  map.put("mailAuthKey", key);
-		
-		  javaMailSender.send(message);
-	 	  return map;
-	  }
-	 
-	  // 아이디 찾기
-	  @GetMapping("/member/findId")
-	  public String findId() {
-	 	  return "views/member/findId";
-	  }
-	 
-	  @PostMapping("/member/findId") // AJAX와 URL을 매핑시켜줌 
-	  @ResponseBody  //AJAX후 다시 응답을 보내는게 아니기 때문에 적어줌, 안 적으면 이메일이 가도 개발자 도구에서 404오류가 뜸
-	  public Map<String, Object> findId(@RequestParam(name="mail", required = false) String mail) {
+	 }
+	 //메일인증
+	 @PostMapping("/checkMail") // AJAX와 URL을 매핑시켜줌 
+	 @ResponseBody  //AJAX후 다시 응답을 보내는게 아니기 때문에 적어줌, 안 적으면 이메일이 가도 개발자 도구에서 404오류가 뜸
+	 public Map<String, Object> SendMail(@RequestParam(name="mail", required = false) String mail) {
 		
 		 System.out.println("화면에서 받은 메일주소: " + mail);
+		 Member member = memberService.getMemberInfoByEmail(mail);
 		 Map<String, Object> map = new HashMap<String, Object>();
-		 Member member = memberService.getMemberInfoByEmail(mail); 
 		 if(member != null) {
+			 map.put("msg", "이미 등록된이메일입니다");
+		 }else {
+			 
+			  Random random=new Random();  //난수 생성을 위한 랜덤 클래스
+			  String key="";  //인증번호 
 			
-			 Random random=new Random();  //난수 생성을 위한 랜덤 클래스?
-			 String key="";  //인증번호 
-			
-			 SimpleMailMessage message = new SimpleMailMessage();
-			 message.setTo(mail); //스크립트에서 보낸 메일을 받을 사용자 이메일 주소 
-			 //입력 키를 위한 코드
-			 for(int i =0; i<3;i++) {
-				 int index=random.nextInt(25)+65; //A~Z까지 랜덤 알파벳 생성
-				 key+=(char)index;
-			 }
-			 int numIndex=random.nextInt(9999)+1000; //4자리 랜덤 정수를 생성
-			 key+=numIndex;
-			 message.setSubject("인증번호 입력을 위한 메일 전송");
-			 message.setText("인증 번호 : "+key);
+			  SimpleMailMessage message = new SimpleMailMessage();
+			  message.setTo(mail); //스크립트에서 보낸 메일을 받을 사용자 이메일 주소 
+			  //입력 키를 위한 코드
+			  for(int i =0; i<3;i++) {
+				  int index=random.nextInt(25)+65; //A~Z까지 랜덤 알파벳 생성
+				  key+=(char)index;
+			  }
+			  int numIndex=random.nextInt(9999)+1000; //4자리 랜덤 정수를 생성
+			  key+=numIndex;
+			  message.setSubject("인증번호 입력을 위한 메일 전송");
+			  message.setText("인증 번호 : "+key);
+			  map.put("mailAuthKey", key);
+			  map.put("msg", "사용가능한 이메일입니다");
+			  Thread thread = new Thread(createRunnable(message));
+			  thread.start();
+			  thread = null;
+		 }	
+			  
+		 return map;
+		  
+	 }
+	 
+	 // 아이디 찾기
+	 @GetMapping("/member/findId")
+	 public String findId() {
+		 return "views/member/findId";
+	 }
+	 
+	 @PostMapping("/member/findId") // AJAX와 URL을 매핑시켜줌 
+	 @ResponseBody  //AJAX후 다시 응답을 보내는게 아니기 때문에 적어줌, 안 적으면 이메일이 가도 개발자 도구에서 404오류가 뜸
+	 public Map<String, Object> findId(@RequestParam(name="mail", required = false) String mail) {
 		
-			 map.put("mailAuthKey", key);
-			 map.put("memberId", member.getMemberId());
-	
+		System.out.println("화면에서 받은 메일주소: " + mail);
+		Map<String, Object> map = new HashMap<String, Object>();
+		Member member = memberService.getMemberInfoByEmail(mail); 
+		if(member != null) {
 			
-			 javaMailSender.send(message);
+			Random random=new Random();  //난수 생성을 위한 랜덤 클래스?
+			String key="";  //인증번호 
+			
+			SimpleMailMessage message = new SimpleMailMessage();
+			message.setTo(mail); //스크립트에서 보낸 메일을 받을 사용자 이메일 주소 
+			//입력 키를 위한 코드
+			for(int i =0; i<3;i++) {
+				int index=random.nextInt(25)+65; //A~Z까지 랜덤 알파벳 생성
+				key+=(char)index;
+			}
+			int numIndex=random.nextInt(9999)+1000; //4자리 랜덤 정수를 생성
+			key+=numIndex;
+			message.setSubject("인증번호 입력을 위한 메일 전송");
+			message.setText("인증 번호 : "+key);
+		
+			map.put("mailAuthKey", key);
+			map.put("memberId", member.getMemberId());
+				
+			Thread thread = new Thread(createRunnable(message));
+			thread.start();
+			thread = null;
 			 return map;
 		 }
 		 map.put("msg", "등록되지 않은 이메일입니다");
 		 return map;
-	  }
-	  // 비밀번호 찾기
-	  @GetMapping("/member/findPw")
-	  public String findPw() {
+	 }
+	 // 비밀번호 찾기
+	 @GetMapping("/member/findPw")
+	 public String findPw() {
 		 return "views/member/findPw";
-	  }
+	 }
 	  
-	  @PostMapping("/member/findPw") // AJAX와 URL을 매핑시켜줌 
-	  @ResponseBody  //AJAX후 다시 응답을 보내는게 아니기 때문에 적어줌, 안 적으면 이메일이 가도 개발자 도구에서 404오류가 뜸
-	  public Map<String, Object> findPw(@RequestParam(name="mail", required = false) String mail,
-			  							@RequestParam(name="memberId", required = false) String memberId) {
+	 @PostMapping("/member/findPw") // AJAX와 URL을 매핑시켜줌 
+	 @ResponseBody  //AJAX후 다시 응답을 보내는게 아니기 때문에 적어줌, 안 적으면 이메일이 가도 개발자 도구에서 404오류가 뜸
+	 public Map<String, Object> findPw(@RequestParam(name="mail", required = false) String mail,
+			  						@RequestParam(name="memberId", required = false) String memberId) {
 		  long start = System.currentTimeMillis();
-			 try {
-		  System.out.println("화면에서 받은 메일주소: " + mail);
-		  Map<String, Object> map = new HashMap<String, Object>();
-		  Member member = memberService.getMemberInfoByEmail(mail); 
+		  try {
+			  System.out.println("화면에서 받은 메일주소: " + mail);
+			  Map<String, Object> map = new HashMap<String, Object>();
+			  Member member = memberService.getMemberInfoByEmail(mail); 
 		  
-		  
-			  
-		  if(memberId.trim().equals(member.getMemberId())) {
-				
-				  SimpleMailMessage message = new SimpleMailMessage();
-				  message.setTo(mail); //스크립트에서 보낸 메일을 받을 사용자 이메일 주소 
-				  //입력 키를 위한 코드
-				  message.setSubject("easyFarm 비밀번호찾기 ");
-				  message.setText("비밀번호 : "+ member.getMemberPw());
-				  	  
-				  javaMailSender.send(message);
-				  return map;
-		  }else {
-			  
-				  map.put("msg","이메일과 등록된 아이디가 일치하지 않습니다");
-				  return map;		  
-		  }
+			  if(memberId.trim().equals(member.getMemberId())) {
+					
+					  SimpleMailMessage message = new SimpleMailMessage();
+					  message.setTo(mail); //스크립트에서 보낸 메일을 받을 사용자 이메일 주소 
+					  //입력 키를 위한 코드
+					  message.setSubject("easyFarm 비밀번호찾기 ");
+					  message.setText("비밀번호 : "+ member.getMemberPw());
+					  	  
+					  Thread thread = new Thread(createRunnable(message));
+					  thread.start();
+					  thread = null;
+					  return map;
+			  }else {
+				  
+					  map.put("msg","이메일과 등록된 아이디가 일치하지 않습니다");
+					  return map;		  
+			  }
 		
-			 }finally {
+		  }finally {
 				 long finish = System.currentTimeMillis();
 				 long timeMs = finish - start;
 				 System.out.println("findMembers :"+ timeMs + "ms");
-			}
+		  }
 	  }
 
 	  //회원검색&조회
 	  @GetMapping("/member/getMember") 
-	  public String getMember(Model model
-						) {
+	  public String getMember(Model model) {
 		  
 		List<Member> memberList = memberService.getMemberList();
+		for(Member member : memberList) {
+			String regDate = member.getMemberRegDate().substring(0, 10);
+			member.setMemberRegDate(regDate);
+		}
 		model.addAttribute("memberList",memberList);
 		  return "views/member/memberList/getMember";
 	  }
 	  //회원수정
 	  @GetMapping("/member/modifyMember")
 	  public String modifyMember(Model model, 
-								@RequestParam(name = "memberId", required = false, defaultValue = "") String memberId) {
-		  
+								@RequestParam(name = "memberId", required = false, defaultValue = "") String memberId,HttpSession session) {
+		  Member member = null;
+		  List<Member> levelList = null;
 			if(memberId != null && !"".equals(memberId.trim())) {
-				Member member = memberService.getMemberInfoById(memberId);
-				List<Member> levelList = memberService.getAuthority();
-				model.addAttribute("levelList", levelList);
-				model.addAttribute("member", member);
+				member = memberService.getMemberInfoById(memberId);
+				levelList = memberService.getAuthority();
+			}else {
+				memberId = (String)session.getAttribute("SID");
+				member = memberService.getMemberInfoById(memberId);
+				levelList = memberService.getAuthority();
 			}
-			return "views/member/memberList/modifyMember";
+			model.addAttribute("levelList", levelList);
+			model.addAttribute("member", member);
+		  return "views/member/memberList/modifyMember";
 	  }
 	  
 	  @PostMapping("/member/modifyMember")
-	  public String modifyMember(Member member) {
+	  public String modifyMember(Member member,HttpSession session) {
 	
 		  if(member != null && !"".equals(member.getMemberId())) {
 			
 			  memberService.modifyMember(member);
 		  }
+		  if("관리자".equals(session.getAttribute("SLEVEL"))) {
+			  
+			  return "redirect:/member/getMember";
+		  }else {
+			  return "redirect:/member/detailMember";
+		  }
 		
-		  return "redirect:/member/getMember";
 	  }
+	  
 	  //회원 이메일 수정
 	  @GetMapping("/member/modifyEmail")
 	  public String modifyEmail(Model model,
@@ -368,6 +466,7 @@ public class MemberController {
 	  @PostMapping("/member/modifyEmail")
 	  public String modifyEmail(Member member) {
 		   if(member != null) {
+			   
 			   memberService.modifyEmail(member);		   
 		   }
 		   
@@ -418,11 +517,17 @@ public class MemberController {
 	  //회원 상세보기
 	  @GetMapping("/member/detailMember")	  
 	  public String detailMember(Model model,
-				@RequestParam(name = "memberId", required = false, defaultValue = "") String memberId) {
-		  
-		  if(memberId != null && !"".equals(memberId.trim()) ) {
-			  Member member = memberService.getMemberInfoById(memberId);
-			  model.addAttribute("member", member);
+			  @RequestParam(name = "memberId", required = false, defaultValue = "") String memberId, HttpSession session) {
+		  Member member = null;
+		  if(memberId != null && !"".equals(memberId.trim())){
+			  
+			   member = memberService.getMemberInfoById(memberId);
+			   model.addAttribute("member", member);
+		  }else {
+			  
+			   memberId = (String) session.getAttribute("SID");
+			   member = memberService.getMemberInfoById(memberId);
+			   model.addAttribute("member", member);
 		  }
 		  
 		  return"views/member/memberList/detailMember";
@@ -468,9 +573,7 @@ public class MemberController {
 			  				@RequestParam(name = "levelCode" ,required = false,defaultValue = "") String levelCode) {
 		  
 			  Member authorityList = memberService.getAuthorityByCode(levelCode);
-			  model.addAttribute("authorityList", authorityList);
-			  
-			  
+			  model.addAttribute("authorityList", authorityList);		  
 		  
 		  return "views/member/authority/modifyAuthority"; 
 	  }
@@ -800,6 +903,7 @@ public class MemberController {
 		  }
 		  return "redirect:/member/getReport";
 	  }
+	  
 	  //신고목록
 	  @GetMapping("/member/getReport")
 	  public String getReport(HttpSession session,Model model) {
@@ -836,10 +940,29 @@ public class MemberController {
 		  
 		  return "views/member/report/getReportMember";
 	  }
-	  //신고목록 안보이게하기
+	  //신고수정
+	  @GetMapping("/member/modifyReport")
+	  public String modifyReport(Model model,
+			  			@RequestParam(value = "reportHistoryCode",required = false, defaultValue = "")String reportHistoryCode) {
+		  System.out.println(reportHistoryCode+"들어온다아아아ㅏ아아");
+		  Report report = memberService.getModifyReport(reportHistoryCode);
+		  
+		  List<Report> reportReason = memberService.getReasonReport();		  
+		  model.addAttribute("reportReason",reportReason);
+		  model.addAttribute("report", report);
+		  
+		  return "views/member/report/modifyReport";
+	  }
+	  @PostMapping("/member/modifyReport")
+	  public String modifyReport(Report report) {
+		  memberService.modifyReport(report);
+		  return "redirect:/member/getReport";
+	  }
+	  
+	  //신고목록 안보이게하기(관리자)
 	  @GetMapping("/member/removeReportHistoryCode")
 	  public String removeReportHistory(
-			  	@RequestParam(value = "reportHistoryCode",required = false, defaultValue = "")String reportHistoryCode) {
+			  			@RequestParam(value = "reportHistoryCode",required = false, defaultValue = "")String reportHistoryCode) {
 		  if(reportHistoryCode != null && !"".equals(reportHistoryCode.trim())){
 			  memberService.removeReportHistory(reportHistoryCode);	  
 		  }
@@ -848,7 +971,7 @@ public class MemberController {
 	  //신고기록삭제
 	  @GetMapping("/member/removeReport")
 	  public String removeReport(
-			  	@RequestParam(value = "reportHistoryCode",required = false, defaultValue = "")String reportHistoryCode) {
+			  			@RequestParam(value = "reportHistoryCode",required = false, defaultValue = "")String reportHistoryCode) {
 		  if(reportHistoryCode != null) {
 			  memberService.removeReport(reportHistoryCode);
 		  }

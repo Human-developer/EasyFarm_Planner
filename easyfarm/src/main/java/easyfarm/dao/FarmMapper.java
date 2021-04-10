@@ -65,4 +65,10 @@ public interface FarmMapper {
 	
 	public int modifyFarmMemberLevel(String farmMemberCode, String memberLevel);
 	public int modifyFarmCeo(String farmCode,String memberId);
+	public boolean modifyFarmCeoCheck(String ceoMemberCode, String memberCode, String memberId, String farmCode);
+	
+	
+	//농가회원 추방
+	public int deportationFarmMember(String farmMemberCode);
+	public int deportationCancelRequest(String farmMemberCode,String farmCode, String memberId);
 }

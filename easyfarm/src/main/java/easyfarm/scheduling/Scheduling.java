@@ -24,7 +24,7 @@ public class Scheduling {
 	
 	
 		// 매일 00시에 자동실행
-		@Scheduled(cron="0 0 00 * * ?")
+		@Scheduled(cron="1 0 00 * * ?")
 		public void scheduler(){
 			
 		   
@@ -53,7 +53,7 @@ public class Scheduling {
 			}
 			    
 		     
-		   
+		    //휴면탈퇴예정일 관리
 			int restDate = memberService.getStatusDays("휴면");
 			int withdrawalDate = memberService.getStatusDays("탈퇴");
 			List<Member> loginMaxDateList = memberService.getLoginMaxDate();
@@ -66,7 +66,7 @@ public class Scheduling {
 			}
 			   
 		  
-		   
+		    
 			for(Member login : loginMaxDateList) {
 			   
 			   Date logoutDate = login.getLogoutDate();
@@ -86,7 +86,7 @@ public class Scheduling {
 			   if(!idList.contains(loginId)) {
 				   memberService.addStatusSchedule(loginId,autoRestDate,autoWithdrawalDate);
 				  
-			  //아이디가 있을시 예정일 업데이트 
+			   //아이디가 있을시 예정일 업데이트 
 			   }else if(idList.contains(loginId)) {
 					  
 				   memberService.updateStatusSchedule(loginId,autoRestDate,autoWithdrawalDate);
@@ -94,7 +94,7 @@ public class Scheduling {
 				 
 			  
 			}
-		   
+			//자동 휴면&탈퇴처리
 			for(Report expected : expectedList) {
 			   Date RestDay = expected.getAutoRestDate(); //자동휴면일
 			   Date WithdrawalDay = expected.getAutoWithdrawalDate(); //자동탈퇴일
