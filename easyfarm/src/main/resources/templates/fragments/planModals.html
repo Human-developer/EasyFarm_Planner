@@ -143,140 +143,76 @@
 		<!-- 품목등록 모달 시작-->
 		<div class="modal fade" id="planAddStock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">
 			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<div class="box-content card white">
-							<div class="box-title">
-								<div class="row">
-									<div class="col-sm-12">
-										<h4>품목 등록</h4>
+				<form name="addStockItem">
+					<div class="modal-content">
+						<div class="modal-body">
+							<div class="box-content card white">
+								<div class="box-title">
+									<div class="row">
+										<div class="col-sm-12">
+											<h4>품목 등록</h4>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class="card-content">
-								<div class="form-horizontal">
-									<div class="form-group">
-										<label class="col-sm-3 control-label"><strong>품목카테고리</strong></label>
-									    <div class="col-md-6">
-											<select class="form-control" name="stockCateCode" id="stockCateCode">
-												<option value=""> :: 카테고리선택 :: </option>
-												<th:block th:if="${#lists.size(stockCateList) > 0}" th:each="s : ${stockCateList}">
-													<option th:value="${s.stockCateCode}" th:text="${s.stockCateName}"></option>
-												</th:block>
-											</select>
-									    </div>
-									</div>
-									<div class="form-group">
-										<label for="stockItemName" class="col-sm-3 control-label"><strong>품목명</strong></label>
-									    <div class="col-sm-6">
-									      <input type="text" class="form-control" name="stockItemName" id="stockItemName" placeholder="품목명">
-									    </div>
-									</div>
-									<div class="form-group">
-										<label for="stockItemQuantity" class="col-sm-3 control-label"><strong>품목수량</strong></label>
-									    <div class="col-sm-6">
-									      <input type="text" class="form-control" name="stockItemQuantity" id="stockItemQuantity" placeholder="품목수량">
-									    </div>
-									</div>
-									<div class="form-group">
-										<label for="stockItemQuantityUnit" class="col-sm-3 control-label"><strong>수량단위</strong></label>
-									    <div class="col-sm-6">
-									      <input type="text" class="form-control" name="stockItemQuantityUnit" id="stockItemQuantityUnit" placeholder="수량단위">
-									    </div>
-									</div>
-									<div class="form-group">
-										<label for="stockItemQuantityCapacity" class="col-sm-3 control-label"><strong>품목용량</strong></label>
-									    <div class="col-sm-6">
-									      <input type="text" class="form-control" name="stockItemQuantityCapacity" id="stockItemQuantityCapacity" placeholder="품목용량">
-									    </div>
-									</div>
-									<div class="form-group">
-										<label for="stockItemQuantityCapacityUnit" class="col-sm-3 control-label"><strong>용량단위</strong></label>
-									    <div class="col-sm-6">
-									      <input type="text" class="form-control" name="stockItemQuantityCapacityUnit" id="stockItemQuantityCapacityUnit" placeholder="용량단위">
-									    </div>
+								<div class="card-content">
+									<div class="form-horizontal">
+										<div class="form-group">
+											<label class="col-sm-3 control-label"><strong>품목카테고리</strong></label>
+										    <div class="col-sm-6">
+										    	<input class="hidden" th:value="${farmCode}" name="farmCode">
+												<select class="form-control" name="stockCateCode" id="stockCateCode">
+													<option value=""> :: 카테고리선택 :: </option>
+													<th:block th:if="${#lists.size(stockCateList) > 0}" th:each="s : ${stockCateList}">
+														<option th:value="${s.stockCateCode}" th:text="${s.stockCateName}"></option>
+													</th:block>
+												</select>
+										    </div>
+										</div>
+										<div class="form-group">
+											<label for="stockItemName" class="col-sm-3 control-label"><strong>품목명</strong></label>
+										    <div class="col-sm-6">
+										      <input type="text" class="form-control" name="stockItemName" id="stockItemName" placeholder="품목명">
+										    </div>
+										</div>
+										<div class="form-group">
+											<label for="stockItemQuantity" class="col-sm-3 control-label"><strong>품목수량</strong></label>
+										    <div class="col-sm-6">
+										      <input type="text" class="form-control" name="stockItemQuantity" id="stockItemQuantity" placeholder="품목수량">
+										    </div>
+										</div>
+										<div class="form-group">
+											<label for="stockItemQuantityUnit" class="col-sm-3 control-label"><strong>수량단위</strong></label>
+										    <div class="col-sm-6">
+										      <input type="text" class="form-control" name="stockItemQuantityUnit" id="stockItemQuantityUnit" placeholder="수량단위">
+										    </div>
+										</div>
+										<div class="form-group">
+											<label for="stockItemQuantityCapacity" class="col-sm-3 control-label"><strong>품목용량</strong></label>
+										    <div class="col-sm-6">
+										      <input type="text" class="form-control" name="stockItemQuantityCapacity" id="stockItemQuantityCapacity" placeholder="품목용량">
+										    </div>
+										</div>
+										<div class="form-group">
+											<label for="stockItemQuantityCapacityUnit" class="col-sm-3 control-label"><strong>용량단위</strong></label>
+										    <div class="col-sm-6">
+										      <input type="text" class="form-control" name="stockItemQuantityCapacityUnit" id="stockItemQuantityCapacityUnit" placeholder="용량단위">
+										    </div>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
+							<button type="button" id="addStockItemBtn" class="btn btn-primary btn-sm waves-effect waves-light">품목등록</button>
+						</div>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">품목등록</button>
-					</div>
-				</div>
+				</form>
 			</div>
 		</div>
 		<!-- 품목등록 모달 끝-->
 		
-		<!-- 품목수정 모달 시작-->
-		<div class="modal fade" id="planModifyStock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">
-			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<div class="box-content card white">
-							<div class="box-title">
-								<div class="row">
-									<div class="col-sm-12">
-										<h4>품목 등록</h4>
-									</div>
-								</div>
-							</div>
-							<div class="card-content">
-								<div class="form-horizontal">
-									<div class="form-group">
-										<label class="col-sm-3 control-label"><strong>품목카테고리</strong></label>
-									    <div class="col-md-6">
-											<select class="form-control" name="stockCateCode" id="stockCateCode">
-												<option value=""> :: 카테고리선택 :: </option>
-												<th:block th:if="${#lists.size(stockCateList) > 0}" th:each="s : ${stockCateList}">
-													<option th:value="${s.stockCateCode}" th:text="${s.stockCateName}"></option>
-												</th:block>
-											</select>
-									    </div>
-									</div>
-									<div class="form-group">
-										<label for="stockItemName" class="col-sm-3 control-label"><strong>품목명</strong></label>
-									    <div class="col-sm-6">
-									      <input type="text" class="form-control" name="stockItemName" id="stockItemName" placeholder="품목명">
-									    </div>
-									</div>
-									<div class="form-group">
-										<label for="stockItemQuantity" class="col-sm-3 control-label"><strong>품목수량</strong></label>
-									    <div class="col-sm-6">
-									      <input type="text" class="form-control" name="stockItemQuantity" id="stockItemQuantity" placeholder="품목수량">
-									    </div>
-									</div>
-									<div class="form-group">
-										<label for="stockItemQuantityUnit" class="col-sm-3 control-label"><strong>수량단위</strong></label>
-									    <div class="col-sm-6">
-									      <input type="text" class="form-control" name="stockItemQuantityUnit" id="stockItemQuantityUnit" placeholder="수량단위">
-									    </div>
-									</div>
-									<div class="form-group">
-										<label for="stockItemQuantityCapacity" class="col-sm-3 control-label"><strong>품목용량</strong></label>
-									    <div class="col-sm-6">
-									      <input type="text" class="form-control" name="stockItemQuantityCapacity" id="stockItemQuantityCapacity" placeholder="품목용량">
-									    </div>
-									</div>
-									<div class="form-group">
-										<label for="stockItemQuantityCapacityUnit" class="col-sm-3 control-label"><strong>용량단위</strong></label>
-									    <div class="col-sm-6">
-									      <input type="text" class="form-control" name="stockItemQuantityCapacityUnit" id="stockItemQuantityCapacityUnit" placeholder="용량단위">
-									    </div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">품목등록</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- 품목수정 모달 끝-->
+		
 		
 		<!-- 농기계즐겨찾기 모달 시작-->
 		<div class="modal fade" id="planAddBookmarkMachine" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">
@@ -433,25 +369,75 @@
 		<!-- 농자재매입등록 모달 시작-->
 		<div class="modal fade" id="planAddResourcePay" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">
 			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel-1">농자재매입 등록</h4>
-					</div>
-					<div class="modal-body">
-						
-						<div class="form-horizontal">
-							
-							
-							
+				<form name="addResourcePay">
+					<div class="modal-content">
+						<div class="modal-body">
+							<div class="box-content card white">
+								<div class="box-title">
+									<div class="row">
+										<div class="col-sm-12">
+											<h4>농자재 매입 등록</h4>
+										</div>
+									</div>
+								</div>
+								<div class="card-content">
+									<div class="form-horizontal">
+										<div class="form-group">
+											<label class="col-sm-3 control-label"><strong>거래처</strong></label>
+										    <div class="col-sm-6">
+												<select class="form-control" name="clientCode" id="resourcePayClientCode">
+													<option value=""> :: 거래처선택 :: </option>
+													<th:block th:if="${#lists.size(clientNameList) > 0}" th:each="c : ${clientNameList}">
+														<option th:value="${c.clientCode}" th:text="${c.clientName}"></option>
+													</th:block>
+												</select>
+										    </div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3 control-label"><strong>품목</strong></label>
+										    <div class="col-sm-6">
+												<select class="form-control" name="stockItemCode" id="resourcePayStockItemCode">
+													<option value=""> :: 품목선택 :: </option>
+													<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+														<option th:value="${fs.stockItemCode}" th:text="|${fs.stockCate.stockCateName} : ${fs.stockItemName}|"></option>
+													</th:block>
+												</select>
+										    </div>
+										</div>
+										<div class="form-group">
+											<label for="stockItemIncomeQuantity" class="col-sm-3 control-label"><strong>입고수량</strong></label>
+										    <div class="col-sm-6">
+										      <input type="text" class="form-control" name="stockItemIncomeQuantity" id="stockItemIncomeQuantity" placeholder="입고수량">
+										    </div>
+										</div>
+										<div class="form-group">
+											<label for="stockItemIncomeQuantityTotal" class="col-sm-3 control-label"><strong>입고용량</strong></label>
+										    <div class="col-sm-6">
+										      <input type="text" class="form-control" name="stockItemIncomeQuantityTotal" id="stockItemIncomeQuantityTotal" placeholder="입고용량">
+										    </div>
+										</div>
+										<div class="form-group">
+											<label for="stockItemIncomePerPay" class="col-sm-3 control-label"><strong>입고단가</strong></label>
+										    <div class="col-sm-6">
+										      <input type="text" class="form-control" name="stockItemIncomePerPay" id="stockItemIncomePerPay" placeholder="입고단가">
+										    </div>
+										</div>
+										<div class="form-group">
+											<label for="stockItemTotalPay" class="col-sm-3 control-label"><strong>총구매비</strong></label>
+										    <div class="col-sm-6">
+										      <input type="text" class="form-control" name="stockItemTotalPay" id="stockItemTotalPay" placeholder="총구매비">
+										    </div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-						
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
+							<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">농자재 매입등록</button>
+						</div>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">등록</button>
-					</div>
-				</div>
+				</form>
 			</div>
 		</div>
 		<!-- 농자재매입등록 모달 끝-->

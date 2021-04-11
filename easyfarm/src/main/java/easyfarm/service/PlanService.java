@@ -268,68 +268,42 @@ public class PlanService {
 				result = planMapper.getClientName(paramMap);
 			}
 		}
-		
 		return result;
 	}
 	
-	
-	public List<EtcPay> getEtcPayPlan(){
-		List<EtcPay> etcPayPlan = null;
-		System.out.println("getEtcPayPlan !@@@@@@@@@@@@@@@@@@@@@@@@");
-		etcPayPlan =planMapper.getEtcPayPlan();
-		return etcPayPlan;
-	}
-	
-	public List<ResourcePay> getResourcePayPlan(){
-		List<ResourcePay> resourcePayPlan = null;
-		resourcePayPlan =planMapper.getResourcePayPlan();
+	//농가별 거래처 삭제
+	public List<Map<String, Object>> removeClient(Client client) {
+		List<Map<String, Object>> result 		= null;
+		Map<String, Object> paramMap 			= null;
+		int removeResult 				 		= 0;
 		
-		return resourcePayPlan;
+		if(client != null) {
+			removeResult = planMapper.removeClient(client);
+			
+			if(removeResult > 0) {
+				paramMap = new HashMap<String, Object>();
+				paramMap.put("farmCode", client.getFarmCode());
+				
+				result = planMapper.getClientName(paramMap);
+			}
+		}
+		return result;
 	}
 	
-	
-	
-	public List<MachineLeasePay> getMachineLeasePayPlan(){
-		List<MachineLeasePay> machineLeasePayPlan = null;
-		machineLeasePayPlan =planMapper.getMachineLeasePayPlan();
+	//농가별 품목등록
+	public List<StockItem> addStockItem(StockItem stockItem) {
+		List<StockItem> result 		= null;
+		int addResult 				= 0;
 		
-		return machineLeasePayPlan;
+		if(stockItem != null) {
+			addResult = planMapper.addStockItem(stockItem);
+			
+			if(addResult > 0) {
+				result = planMapper.getStockItemList(stockItem.getFarmCode());
+			}
+		}
+		return result;
 	}
-	
-	public List<MachineUsePay> getMachineUsePayPlan(){
-		List<MachineUsePay> machineUsePayPlan = null;
-		machineUsePayPlan =planMapper.getMachineUsePayPlan();
-		
-		return machineUsePayPlan;
-	}
-	
-	public List<ProductGain> getProductGainPlan(){
-		List<ProductGain> productGainPlan = null;
-		productGainPlan =planMapper.getProductGainPlan();
-		
-		return productGainPlan;
-	}
-	
-	public List<ResourceUsePlan> getResourceUsePlanPlan(){
-		List<ResourceUsePlan> resourceUsePlan = null;
-		resourceUsePlan =planMapper.getResourceUsePlan();
-		return resourceUsePlan;
-	}
-	
-	public List<TaxPay> getTaxPayPlan(){
-		List<TaxPay> taxPayPlan = null;
-		taxPayPlan =planMapper.getTaxPayPlan();
-		
-		return taxPayPlan;
-	}
-	
-	public List<WorkForcePay> getWorkForcePayPlan(){
-		List<WorkForcePay> workForcePayPlan = null;
-		workForcePayPlan =planMapper.getWorkForcePayPlan();
-		
-		return workForcePayPlan;
-	}
-	
 	
 	
 }

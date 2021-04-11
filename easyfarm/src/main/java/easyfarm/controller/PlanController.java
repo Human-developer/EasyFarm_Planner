@@ -420,9 +420,6 @@ public class PlanController {
 			
 			System.out.println(calList);
 		}
-		
-		
-		
 		return calList;
 	}
 	
@@ -437,6 +434,7 @@ public class PlanController {
 		return stockItemInfo;
 	}
 	
+	//거래처등록 ajax
 	@PostMapping("/plan/ajax/addClient")
 	@ResponseBody
 	public List<Map<String, Object>> addClient(Client client, HttpSession session) {
@@ -453,20 +451,47 @@ public class PlanController {
 		return result;
 	}
 	
+	//거래처수정 ajax
 	@PostMapping("/plan/ajax/modifyClient")
 	@ResponseBody
 	public List<Map<String, Object>> modifyClient(Client client) {
 		
 		List<Map<String, Object>> result = null;
-		System.out.println(client.getClientCode());
 		if(client.getFarmCode() != null && !"".equals(client.getFarmCode().trim())) {
 			
 			result = planService.modifyClient(client);
 		}
-		
 		return result;
 	}
 	
-
+	//거래처삭제 ajax
+	@PostMapping("/plan/ajax/removeClient")
+	@ResponseBody
+	public List<Map<String, Object>> removeClient(Client client) {
+		
+		List<Map<String, Object>> result = null;
+		if(client.getClientCode() != null && !"".equals(client.getClientCode().trim())) {
+			
+			result = planService.removeClient(client);
+		}
+		return result;
+	}
+	
+	//품목등록 ajax
+	@PostMapping("/plan/ajax/addStockItem")
+	@ResponseBody
+	public List<StockItem> addStockItem(StockItem stockItem, HttpSession session) {
+		
+		String memberId = (String) session.getAttribute("SID");
+		List<StockItem> result = null;
+		
+		if(stockItem.getFarmCode() != null && !"".equals(stockItem.getFarmCode().trim()) && memberId != null) {
+			
+			stockItem.setRegMemberId(memberId);
+			
+			result = planService.addStockItem(stockItem);
+		}
+		return result;
+	}
 	
 }

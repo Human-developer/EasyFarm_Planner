@@ -25,9 +25,6 @@ public class ResourcePay {
     // 총구매비
     private String stockItemTotalPay;
 
-    // 입고일
-    private String stockItemIncomeDate;
-
     // 작성자농가회원코드
 
     private String regMemberId;
@@ -99,15 +96,6 @@ public class ResourcePay {
     public void setStockItemTotalPay(String stockItemTotalPay) {
         this.stockItemTotalPay = stockItemTotalPay;
     }
-
-    public String getStockItemIncomeDate() {
-        return stockItemIncomeDate;
-    }
-
-    public void setStockItemIncomeDate(String stockItemIncomeDate) {
-        this.stockItemIncomeDate = stockItemIncomeDate;
-    }
-
 
     public String getRegDate() {
         return regDate;
