@@ -626,7 +626,7 @@
 			    var farmNameObj = JSON.parse(farm);
 				var farmName = {"":"농가를 선택해주세요"};
 				console.log(farmNameObj);
-				var Data ={"":"프로젝트를 선택해주세요"};
+				var Project ={"":"프로젝트를 선택해주세요"};
 				var WorkPhase = {"":"작업단계를 선택해주세요"};
 			    for(var i=0; i < farmNameObj.length; i++)
 			    {
@@ -656,7 +656,7 @@
 						    preConfirm: function(farmCode)
 						    {
 						    	delete this.inputOptions.농가명;
-							    this.inputOptions.project = Data;
+							    this.inputOptions.project = Project;
 						    },
 						  },
 						  {
@@ -735,7 +735,7 @@
 			            	{
 			            		var code =  data[i].projectCode;
 			            		var value = data[i].projectName;
-			            		Data[code] = value;
+			            		Project[code] = value;
 			            	}
 			            });
 			            request.fail(function( jqXHR, textStatus )
