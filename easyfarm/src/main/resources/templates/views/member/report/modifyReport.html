@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+
+	<th:block layout:fragment="customTitle">
+		<title>신고수정</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		신고목록-신고수정
+	</th:block>
+	
+	<th:block layout:fragment="customCss">
+	<style>
+			button {
+		    border: 0;
+		    border-radius: 0;
+		    padding: 0;
+		    outline: none;
+		    cursor: pointer;
+		    background-color: transparent;
+		    font-family: 'Noto Sans KR', sans-serif;
+		    
+		}
+		.btn {
+		  
+		    width: 100%;
+		 
+		    
+		}
+		
+		  
+	
+	</style>
+	</th:block>
+	<th:block layout:fragment="customJavaScript">
+		
+	
+		<script type="text/javascript">
+		
+			
+				
+			
+
+		
+
+			
+
+
+			
+			$('#check').click(function(){
+							
+				
+				
+				
+				if($('#reportDetailReason').val() == "no"){
+					swal({
+						title: "내용을 입력 해주세요.",
+						confirmButtonColor: '#304ffe'
+					});
+					return false;
+				}
+				
+				
+				
+				return true;
+			})
+
+			
+	
+
+		
+		
+		
+		
+		</script>
+	</th:block>
+	
+	<th:block layout:fragment="customContents" th:with="p = ${report}">
+	
+	
+		<form th:action="@{/member/modifyReport}" method="post" >
+		
+			<div class="container-fluid">
+				<div class="row" >
+					<div class="
+					col-lg-offset-3 col-lg-6
+					
+					">
+					
+						<div class="box-content" style="border : 2px solid #3BBD5A; margin-top: 50px;">
+							<div class="box-content  t-center important-col" style="border-bottom : 2px solid gray;">
+							
+								<h3>신고</h3>
+							</div>
+							<div class="panel-body" >
+								<div class="form-horizontal">
+									     <input type="hidden"  class="form-control" name="reportHistoryCode" th:value="${p.reportHistoryCode}" readonly="readonly">
+									
+									<div class="form-group">
+										<label for="reportReason" class="col-sm-2 control-label"><strong>신고사유</strong></label>
+									    <div class="col-sm-10">
+									   	  <select  name="reportCode" class="form-control" id="reportCode">
+									   	  	<option th:each="r : ${reportReason}" th:text="${r.reportReason}" th:value="${r.reportCode}"></option>
+									   	  </select>
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="reportedMemberId" class="col-sm-2 control-label"><strong>대상 아이디</strong></label>
+									    <div class="col-sm-10">
+									      <input type="text"  class="form-control" name="reportedMemberId" id="reportedMemberId" th:value="${p.reportedMemberId}" readonly="readonly">
+									    </div>
+									</div>
+								
+									<div class="form-group">
+										<label for="reportDetailReason" class="col-sm-2 control-label"><strong>내용</strong></label>
+									    <div class="col-sm-10">
+									        <textarea class="form-control" rows="5" name="reportDetailReason" th:value="${p.reportDetailReason}" id="reportDetailReason"></textarea>
+									    </div>
+									  
+									</div>
+									
+									
+								
+									<div class="form-group">
+										<div class="col-sm-offset-2 col-sm-4 ">
+											<button type="submit" id="check" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px;">수정</button>
+										</div>
+										<div class="col-sm-offset-1 col-sm-4 ">
+											<a th:href="@{/}"><button type="button" id="cancel" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px;">취소</button></a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</th:block>
+	
+	
+
+</html>

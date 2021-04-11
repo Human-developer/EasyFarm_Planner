@@ -214,6 +214,31 @@
 		)	
 	</insert>
 	
+	<select id="getModifyReport" resultMap="reportResultMap">
+		SELECT
+			  report_history_code
+			, reported_member_id
+			, report_member_id
+			, report_code
+			, report_detail_reason
+			, report_date, report_approval
+			, report_approval_reason
+			, report_approval_date
+			, use_status
+		FROM 
+			tb_report_history
+		WHERE report_history_code = #{reportHistoryCode}
+	</select>
+	
+	<update id="modifyReport">
+		UPDATE tb_report_history
+		SET
+			report_code=#{reportCode},
+			report_detail_reason=#{reportDetailReason},
+			report_date=NOW()
+		WHERE report_history_code=#{reportHistoryCode}
+	</update>
+	
 	<select id="getSuspend" resultMap="reportResultMap">
 		SELECT 
 		      b.ban_current_code

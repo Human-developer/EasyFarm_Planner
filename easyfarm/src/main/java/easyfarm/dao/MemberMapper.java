@@ -1,6 +1,7 @@
 package easyfarm.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -105,6 +106,10 @@ public interface MemberMapper {
 	public int removeReasonReport(String report);
 	//신고
 	public int addReport(Report report);
+	//신고수정용 조회
+	public Report getModifyReport(String reportHistoryCode);
+	//신고수정
+	public void modifyReport(Report report);
 	//신고 목록 조회
 	public List<Report> getReport(String memberId);
 	//신고신청 목록 삭제(회원);
@@ -123,6 +128,8 @@ public interface MemberMapper {
 	//정지해제
 	public void removeBan(String banCode);
 	public void updateMemberCancel(String banId);
+
+	public void saveImage(String string, Map<String, Object> hmap);
 	
 	
 }
