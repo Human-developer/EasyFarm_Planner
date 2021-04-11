@@ -189,6 +189,15 @@ public class PlanService {
 		return result;
 	}
 	
+	//농자재매입지출 조회
+	public List<Map<String, Object>> getResourcePayList(String farmCode) {
+		List<Map<String, Object>> result = null;
+		if(farmCode != null && !"".equals(farmCode.trim())) {
+			result = planMapper.getResourcePayList(farmCode);
+		}
+		return result;
+	}
+	
 	//단계별작업계획 월켈린더 리스트
 	public List<Map<String, Object>> getPlanWorkphaseSchedule(String projectPlanCode) {
 		List<Map<String, Object>> result = null;
@@ -239,6 +248,7 @@ public class PlanService {
 		int addResult 				 			= 0;
 		
 		if(client != null) {
+			client.setUseStatus("Y");
 			addResult = planMapper.addClient(client);
 			
 			if(addResult > 0) {
@@ -268,68 +278,75 @@ public class PlanService {
 				result = planMapper.getClientName(paramMap);
 			}
 		}
-		
 		return result;
 	}
 	
-	
-	public List<EtcPay> getEtcPayPlan(){
-		List<EtcPay> etcPayPlan = null;
-		System.out.println("getEtcPayPlan !@@@@@@@@@@@@@@@@@@@@@@@@");
-		etcPayPlan =planMapper.getEtcPayPlan();
-		return etcPayPlan;
-	}
-	
-	public List<ResourcePay> getResourcePayPlan(){
-		List<ResourcePay> resourcePayPlan = null;
-		resourcePayPlan =planMapper.getResourcePayPlan();
+	//농가별 거래처 삭제
+	public List<Map<String, Object>> removeClient(Client client) {
+		List<Map<String, Object>> result 		= null;
+		Map<String, Object> paramMap 			= null;
+		int removeResult 				 		= 0;
 		
-		return resourcePayPlan;
+		if(client != null) {
+			client.setUseStatus("N");
+			removeResult = planMapper.removeClient(client);
+			
+			if(removeResult > 0) {
+				paramMap = new HashMap<String, Object>();
+				paramMap.put("farmCode", client.getFarmCode());
+				
+				result = planMapper.getClientName(paramMap);
+			}
+		}
+		return result;
 	}
 	
-	
-	
-	public List<MachineLeasePay> getMachineLeasePayPlan(){
-		List<MachineLeasePay> machineLeasePayPlan = null;
-		machineLeasePayPlan =planMapper.getMachineLeasePayPlan();
+	//농가별 품목등록
+	public List<StockItem> addStockItem(StockItem stockItem) {
+		List<StockItem> result 		= null;
+		int addResult 				= 0;
 		
-		return machineLeasePayPlan;
+		if(stockItem != null) {
+			stockItem.setUseStatus("Y");
+			addResult = planMapper.addStockItem(stockItem);
+			
+			if(addResult > 0) {
+				result = planMapper.getStockItemList(stockItem.getFarmCode());
+			}
+		}
+		return result;
 	}
 	
-	public List<MachineUsePay> getMachineUsePayPlan(){
-		List<MachineUsePay> machineUsePayPlan = null;
-		machineUsePayPlan =planMapper.getMachineUsePayPlan();
+	//농가별 품목수정
+	public List<StockItem> modifyStockItem(StockItem stockItem) {
+		List<StockItem> result 		= null;
+		int modifyResult 			= 0;
 		
-		return machineUsePayPlan;
+		if(stockItem != null) {
+			modifyResult = planMapper.modifyStockItem(stockItem);
+			
+			if(modifyResult > 0) {
+				result = planMapper.getStockItemList(stockItem.getFarmCode());
+			}
+		}
+		return result;
 	}
 	
-	public List<ProductGain> getProductGainPlan(){
-		List<ProductGain> productGainPlan = null;
-		productGainPlan =planMapper.getProductGainPlan();
+	//농가별 품목삭제
+	public List<StockItem> removeStockItem(StockItem stockItem) {
+		List<StockItem> result 		= null;
+		int removeResult 			= 0;
 		
-		return productGainPlan;
+		if(stockItem != null) {
+			stockItem.setUseStatus("N");
+			removeResult = planMapper.removeStockItem(stockItem);
+			
+			if(removeResult > 0) {
+				result = planMapper.getStockItemList(stockItem.getFarmCode());
+			}
+		}
+		return result;
 	}
-	
-	public List<ResourceUsePlan> getResourceUsePlanPlan(){
-		List<ResourceUsePlan> resourceUsePlan = null;
-		resourceUsePlan =planMapper.getResourceUsePlan();
-		return resourceUsePlan;
-	}
-	
-	public List<TaxPay> getTaxPayPlan(){
-		List<TaxPay> taxPayPlan = null;
-		taxPayPlan =planMapper.getTaxPayPlan();
-		
-		return taxPayPlan;
-	}
-	
-	public List<WorkForcePay> getWorkForcePayPlan(){
-		List<WorkForcePay> workForcePayPlan = null;
-		workForcePayPlan =planMapper.getWorkForcePayPlan();
-		
-		return workForcePayPlan;
-	}
-	
 	
 	
 }

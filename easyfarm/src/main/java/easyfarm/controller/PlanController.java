@@ -297,6 +297,10 @@ public class PlanController {
 			List<StockItem> farmStockItemList = planService.getStockItemList(farmCode);
 			model.addAttribute("farmStockItemList", farmStockItemList);
 			
+			/* 농자재매입지출 조회 */
+			List<Map<String, Object>> resourcePayList = planService.getResourcePayList(farmCode);
+			model.addAttribute("resourcePayList", resourcePayList);
+			
 			/* 농자재소모현황리스트 */
 			Map<String, Object> resourceUsecapacityData = new HashMap<String, Object>();
 			resourceUsecapacityData.put("farmCode", farmCode);
@@ -420,9 +424,6 @@ public class PlanController {
 			
 			System.out.println(calList);
 		}
-		
-		
-		
 		return calList;
 	}
 	
@@ -437,6 +438,7 @@ public class PlanController {
 		return stockItemInfo;
 	}
 	
+	//거래처등록 ajax
 	@PostMapping("/plan/ajax/addClient")
 	@ResponseBody
 	public List<Map<String, Object>> addClient(Client client, HttpSession session) {
@@ -453,20 +455,75 @@ public class PlanController {
 		return result;
 	}
 	
+	//거래처수정 ajax
 	@PostMapping("/plan/ajax/modifyClient")
 	@ResponseBody
 	public List<Map<String, Object>> modifyClient(Client client) {
 		
 		List<Map<String, Object>> result = null;
-		System.out.println(client.getClientCode());
 		if(client.getFarmCode() != null && !"".equals(client.getFarmCode().trim())) {
 			
 			result = planService.modifyClient(client);
 		}
-		
 		return result;
 	}
 	
-
+	//거래처삭제 ajax
+	@PostMapping("/plan/ajax/removeClient")
+	@ResponseBody
+	public List<Map<String, Object>> removeClient(Client client) {
+		
+		List<Map<String, Object>> result = null;
+		if(client.getClientCode() != null && !"".equals(client.getClientCode().trim())) {
+			
+			result = planService.removeClient(client);
+		}
+		return result;
+	}
+	
+	//품목등록 ajax
+	@PostMapping("/plan/ajax/addStockItem")
+	@ResponseBody
+	public List<StockItem> addStockItem(StockItem stockItem, HttpSession session) {
+		
+		String memberId = (String) session.getAttribute("SID");
+		List<StockItem> result = null;
+		
+		if(stockItem.getFarmCode() != null && !"".equals(stockItem.getFarmCode().trim()) && memberId != null) {
+			
+			stockItem.setRegMemberId(memberId);
+			
+			result = planService.addStockItem(stockItem);
+		}
+		return result;
+	}
+	
+	//품목수정 ajax
+	@PostMapping("/plan/ajax/modifyStockItem")
+	@ResponseBody
+	public List<StockItem> modifyStockItem(StockItem stockItem) {
+		
+		List<StockItem> result = null;
+		
+		if(stockItem.getStockItemCode() != null && !"".equals(stockItem.getStockItemCode().trim())) {
+			
+			result = planService.modifyStockItem(stockItem);
+		}
+		return result;
+	}
+	
+	//품목삭제 ajax
+	@PostMapping("/plan/ajax/removeStockItem")
+	@ResponseBody
+	public List<StockItem> removeStockItem(StockItem stockItem) {
+		
+		List<StockItem> result = null;
+		
+		if(stockItem.getStockItemCode() != null && !"".equals(stockItem.getStockItemCode().trim())) {
+			
+			result = planService.removeStockItem(stockItem);
+		}
+		return result;
+	}
 	
 }

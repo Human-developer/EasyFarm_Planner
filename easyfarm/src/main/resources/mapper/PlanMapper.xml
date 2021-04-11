@@ -90,6 +90,66 @@
 		<result property="runStatus" 				column="run_status"/>
 	</resultMap>
 	
+	<update id="removeStockItem" parameterType="StockItem">
+		UPDATE tb_stock_item
+		SET
+			 use_status							= #{useStatus}
+		WHERE
+			stock_item_code						= #{stockItemCode}
+	</update>
+	
+	<update id="modifyStockItem" parameterType="StockItem">
+		UPDATE tb_stock_item
+		SET
+			 stock_cate_code					= #{stockCateCode}
+			,stock_item_name					= #{stockItemName}
+			,stock_item_quantity				= #{stockItemQuantity}
+			,stock_item_quantity_unit			= #{stockItemQuantityUnit}
+			,stock_item_quantity_capacity		= #{stockItemQuantityCapacity}
+			,stock_item_quantity_capacity_unit	= #{stockItemQuantityCapacityUnit}
+		WHERE
+			stock_item_code						= #{stockItemCode}
+	</update>
+	
+	<insert id="addStockItem" parameterType="StockItem">
+		INSERT INTO tb_stock_item
+		(
+			 stock_item_code
+			,farm_code
+			,stock_cate_code
+			,stock_item_name
+			,stock_item_quantity
+			,stock_item_quantity_unit
+			,stock_item_quantity_capacity
+			,stock_item_quantity_capacity_unit
+			,use_status
+			,reg_member_id
+			,reg_date
+		)
+		VALUES
+		(
+			 sf_stock_item_max_code()
+			,#{farmCode}
+			,#{stockCateCode}
+			,#{stockItemName}
+			,#{stockItemQuantity}
+			,#{stockItemQuantityUnit}
+			,#{stockItemQuantityCapacity}
+			,#{stockItemQuantityCapacityUnit}
+			,#{useStatus}
+			,#{regMemberId}
+			, NOW()
+		)
+	</insert>
+	
+	<update id="removeClient" parameterType="Client">
+		UPDATE tb_client
+		SET
+			 use_status 			= #{useStatus}
+		WHERE 
+			client_code				= #{clientCode}
+	</update>
+	
 	<update id="modifyClient" parameterType="Client">
 		UPDATE tb_client
 		SET
@@ -114,6 +174,7 @@
 			,client_account_bank
 			,client_account
 			,client_memo
+			,use_status
 			,reg_member_id
 			,reg_date
 		)
@@ -127,6 +188,7 @@
 			,#{clientAccountBank}
 			,#{clientAccount}
 			,#{clientMemo}
+			,#{useStatus}
 			,#{regMemberId}
 			, NOW()
 		)
@@ -266,9 +328,44 @@
 			pwc.project_plan_code = #{projectPlanCode}
 	</select>
 	<!-- 월켈린더 정보가져오기 끝-->
+	
+	<select id="getResourcePayList" resultType="map" parameterType="String">
+		SELECT
+			 erp.resource_pay_code 					AS resourcePayCode
+			,erp.client_code 						AS clientCode
+			,c.client_name 							AS clientName
+			,sc.stock_cate_code 					AS stockCateCode
+			,sc.stock_cate_name 					AS stockCateName
+			,erp.stock_item_code 					AS stockItemCode
+			,si.stock_item_name 					AS stockItemName
+			,erp.stock_item_income_quantity 		AS stockItemIncomeQuantity
+			,erp.stock_item_income_quantity_total 	AS stockItemIncomeQuantityTotal
+			,erp.stock_item_income_per_pay 			AS stockItemIncomePerPay
+			,erp.stock_item_total_pay 				AS stockItemTotalPay
+		FROM
+			tb_exp_resource_pay AS erp
+			INNER join
+			tb_client AS c
+			on
+			erp.client_code = c.client_code
+			INNER join
+			tb_stock_item AS si
+			on
+			erp.stock_item_code = si.stock_item_code
+			INNER join
+			tb_stock_cate AS sc
+			on
+			si.stock_cate_code = sc.stock_cate_code
+		WHERE
+			erp.farm_code = #{farmCode}
+	</select>
+	
 	<select id="getStockItemList" resultMap="resultStockItem" parameterType="String">
 		SELECT
-			 sc.stock_cate_name
+			 si.stock_item_code
+			,si.farm_code
+			,sc.stock_cate_code
+			,sc.stock_cate_name
 			,si.stock_item_name
 			,si.stock_item_quantity
 			,si.stock_item_quantity_unit
@@ -283,6 +380,8 @@
 			si.stock_cate_code = sc.stock_cate_code
 		where
 			si.farm_code = #{farmCode}
+			and
+			si.use_status = 'Y'
 	</select>
 	
 	<select id="getCommonMachineList" resultMap="resultCommonMachine">
@@ -515,6 +614,8 @@
 			tb_client AS c
 		WHERE
 			c.farm_code = #{farmCode}
+			and
+			c.use_status = 'Y'
   	</select>
   	
   	<select id="getWorkphaseName" resultType="map" parameterType="map">
@@ -615,152 +716,6 @@
 		WHERE
 			fp.project_code = #{projectCode}
 	</select>
-	
-	<select id="getEtcPayPlan" resultType="EtcPay" >
-		SELECT 					
-			etc_pay_code 					AS	etcPayCode	,
-			plan_workphase_code 			AS	planWorkphaseCode	,
-			plan_workphase_cate_code 		AS	planWorkphaseCateCode	,
-			client_code 					AS	clientCode	,
-			etc_pay_date 					AS	etcPayDate	,
-			etc_pay 						AS	etcPay	,
-			etc_pay_detail 					AS	etcPayDetail	,
-			reg_farm_member_code 			AS	regFarmMemberCode	,
-			reg_date 						AS	regDate	,
-			mod_farm_member_code 			AS	modFarmMemberCode	,
-			mod_date						AS	modDate	
-		FROM tb_exp_etc_pay		
-	</select>
-  
-  	<select id="getResourcePayPlan" resultType="ResourcePay" >
-	   	SELECT 
-			resource_pay_code        			AS resourcePayCode, 
-			farm_code        					AS farmCode,
-			client_code        					AS clientCode, 
-			stock_item_code       				AS stockItemCode, 
-			stock_item_income_quantity        	AS stockItemIncomeQuantity, 
-			stock_item_income_quantity_total	AS stockItemIncomeQuantityTotal, 
-			stock_item_income_per_pay       	AS stockItemIncomePerPay, 
-			stock_item_total_pay        		AS stockItemTotalPay, 
-			stock_item_income_date        		AS stockItemIncomeDate, 
-			reg_farm_member_code        		AS regFarmMemberCode, 
-			reg_date        					AS regDate, 
-			mod_farm_member_code        		AS modFarmMemberCode, 
-			mod_date        					AS modDate
-		FROM tb_exp_resource_pay
-   </select>
-   
-  	<select id="getInsurancePayPlan" resultType="InsurancePay" >
-	   SELECT 
-			insure_pay_code            		AS insurePayCode, 
-			project_code           			AS projectCode, 
-			insure_company            		AS insureCompany, 
-			insure_name            			AS insureName, 
-			insure_datail            		AS insureDatail, 
-			insure_area            			AS insureArea, 
-			insure_pay_total            	AS insurePayTotal, 
-			reg_farm_member_code            AS regFarmMemberCode, 
-			reg_date            			AS regDate, 
-			mod_farm_member_code            AS modFarmMemberCode, 
-			mod_date            			AS modDate
-		FROM tb_exp_insure_pay
-   </select>
-   
-  	<select id="getMachineLeasePayPlan" resultType="MachineLeasePay" >
-	   SELECT 
-			machine_lease_code        		AS machineLeaseCode, 
-			plan_workphase_code        		AS planWorkphaseCode, 
-			plan_workphase_cate_code        AS planWorkphaseCateCode, 
-			client_code        				AS clientCode, 
-			common_machine_code        		AS commonMachineCode, 
-			machine_lease_howlong        	AS machineLeaseHowlong, 
-			machine_lease_pay_day        	AS machineLeasePayDay, 
-			machine_lease_pay_total        	AS machineLeasePayTotal,
-			reg_farm_member_code        	AS regFarmMemberCode, 
-			reg_date        				AS regDate, 
-			mod_farm_member_code        	AS modFarmMemberCode, 
-			mod_date       					AS modDate
-		FROM tb_exp_machine_lease
-   </select>
-   
-  	<select id="getMachineUsePayPlan" resultType="MachineUsePay" >
-	   SELECT 
-			machine_use_code        		AS machineUseCode, 
-			plan_workphase_code        		AS planWorkphaseCode, 
-			plan_workphase_cate_code        AS planWorkphaseCateCode, 
-			farm_retain_machine_code        AS farmRetainMachineCode, 
-			reg_farm_member_code        	AS regFarmMemberCode, 
-			reg_date        				AS regDate, 
-			mod_farm_member_code        	AS modFarmMemberCode,
-			mod_date				        AS modDate
-		FROM tb_exp_machine_use
-   </select>
-   
-  	<select id="getProductGainPlan" resultType="ProductGain" >
-		  SELECT 
-			product_gain_code        		AS productGainCode, 
-			project_code        			AS projectCode, 
-			stock_item_code        			AS stockItemCode,
-			gain_quantity        			AS gainQuantity, 
-			gain_quantity_capacity        	AS gainQuantityCapacity,
-			gain_date        				AS gainDate, 
-			reg_farm_member_code        	AS regFarmMemberCode, 
-			reg_date       					AS regDate, 
-			mod_farm_member_code        	AS modFarmMemberCode, 
-			mod_date        				AS modDate
-		FROM tb_product_gain
-   </select>
-   
-  	<select id="getResourceUsePlan" resultType="ResourceUsePlan" >
-		  SELECT 
-			resource_useplan_code        			AS resourceUseplanCode, 
-			resource_usecapacity_code        		AS resourceUsecapacityCode, 
-			plan_workphase_code        				AS planWorkphaseCode, 
-			plan_workphase_cate_code        		AS planWorkphaseCateCode, 
-			stock_item_use_quantity        			AS stockItemUseQuantity, 
-			stock_item_use_quantity_total        	AS stockItemUseQuantityTotal, 
-			stock_item_use_quantity_conversion_pay  AS stockItemUseQuantityConversionPay, 
-			stock_item_use_date        				AS stockItemUseDate, 
-			reg_farm_member_code       				AS regFarmMemberCode, 
-			reg_date        						AS regDate, 
-			mod_farm_member_code        			AS modFarmMemberCode, 
-			mod_date        						AS modDate
-		FROM tb_exp_resource_useplan
-   </select>
-   
-  	<select id="getTaxPayPlan" resultType="TaxPay" >
-		 SELECT 
-			tax_pay_code        		AS taxPayCode, 
-			plan_workphase_code        	AS planWorkphaseCode, 
-			plan_workphase_cate_code    AS planWorkphaseCateCode, 
-			client_code       			AS clientCode, 
-			tax_pay_cate_code        	AS taxPayCateCode, 
-			tax_pay_whatmonth        	AS taxPayWhatmonth, 
-			tax_pay        				AS taxPay, 
-			tax_pay_detail        		AS taxPayDetail, 
-			reg_farm_member_code        AS regFarmMemberCode, 
-			reg_date        			AS regFarmMemberCode, 
-			mod_farm_member_code        AS modFarmMemberCode, 
-			mod_date        			AS modDate
-		FROM tb_exp_tax_pay
-   </select>
-   
-  	<select id="getWorkForcePayPlan" resultType="WorkForcePay" >
-		SELECT 
-			workforce_pay_code        	AS workforcePayCode, 
-			plan_workphase_code        	AS planWorkphaseCode,
-			plan_workphase_cate_code    AS planWorkphaseCateCode, 
-			workforce_count        		AS workforceCount, 
-			workforce_howlong        	AS workforceHowlong, 
-			workforce_require_day       AS workforceRequireDay, 
-			workforce_pay_day        	AS workforcePayDay, 
-			workforce_pay_total        	AS workforcePayTotal, 
-			reg_member_id        		AS regMemberId, 
-			reg_date        			AS regDate, 
-			mod_farm_member_code        AS modFarmMemberCode, 
-			mod_date        			AS modDate
-		FROM tb_exp_workforce_pay
-   </select>
   	
 </mapper>
   

@@ -27,16 +27,6 @@ import easyfarm.domain.plan.WorkForcePay;
 @Mapper
 public interface PlanMapper {
 	
-	public List<EtcPay> getEtcPayPlan();
-	public List<ResourcePay> getResourcePayPlan();
-	public List<InsurancePay> getInsurancePayPlan();
-	public List<MachineLeasePay> getMachineLeasePayPlan();
-	public List<MachineUsePay> getMachineUsePayPlan();
-	public List<ProductGain> getProductGainPlan();
-	public List<ResourceUsePlan> getResourceUsePlan();
-	public List<TaxPay> getTaxPayPlan();
-	public List<WorkForcePay> getWorkForcePayPlan();
-	
 	//농가별 프로젝트 정보조회
 	public Map<String, Object> getFarmProjectInfo(String projectCode);
 	
@@ -94,6 +84,9 @@ public interface PlanMapper {
 	//품목리스트조회
 	public List<StockItem> getStockItemList(String farmCode);
 	
+	//농자재매입지출 조회 
+	public List<Map<String, Object>> getResourcePayList(String farmCode);
+	
 	//단계별작업계획 월켈린더 리스트
 	public List<Map<String, Object>> getPlanWorkphaseSchedule(String projectPlanCode);
 	
@@ -114,4 +107,16 @@ public interface PlanMapper {
 	
 	//농가별 거래처 수정
 	public int modifyClient(Client client);
+	
+	//농가별 거래처 삭제
+	public int removeClient(Client client);
+	
+	//농가별 품목등록
+	public int addStockItem(StockItem stockItem);
+	
+	//농가별 품목수정
+	public int modifyStockItem(StockItem stockItem);
+	
+	//농가별 품목삭제
+	public int removeStockItem(StockItem stockItem);
 }
