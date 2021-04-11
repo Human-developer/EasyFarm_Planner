@@ -563,12 +563,13 @@ $(function(){
 		"columnDefs": [
 			 {className: "hidden stockItemCode", 			"targets": [ 0 ]}
 			,{className: "hidden farmCode", 				"targets": [ 1 ]}
-			,{className: "stockCateName", 					"targets": [ 2 ]}
-			,{className: "stockItemName", 					"targets": [ 3 ]}
-			,{className: "stockItemQuantity",				"targets": [ 4 ]}
-			,{className: "stockItemQuantityUnit", 			"targets": [ 5 ]}
-			,{className: "stockItemQuantityCapacity", 		"targets": [ 6 ]}
-			,{className: "stockItemQuantityCapacityUnit", 	"targets": [ 7 ]}
+			,{className: "hidden stockCateCode", 			"targets": [ 2 ]}
+			,{className: "stockCateName", 					"targets": [ 3 ]}
+			,{className: "stockItemName", 					"targets": [ 4 ]}
+			,{className: "stockItemQuantity",				"targets": [ 5 ]}
+			,{className: "stockItemQuantityUnit", 			"targets": [ 6 ]}
+			,{className: "stockItemQuantityCapacity", 		"targets": [ 7 ]}
+			,{className: "stockItemQuantityCapacityUnit", 	"targets": [ 8 ]}
 		]
 		,language : lang_kor
 	});
@@ -611,6 +612,7 @@ $(function(){
 			stockItemTable.row.add([
 				 data[index].stockItemCode
 				,data[index].farmCode
+				,data[index].stockCate.stockCateCode
 				,data[index].stockCate.stockCateName
 				,data[index].stockItemName
 				,data[index].stockItemQuantity
@@ -631,5 +633,70 @@ $(function(){
 		})
 		resourcePayStockItemSelect.html(option);
 	}
+	
+	/*품목 데이터 테이블 수정 클릭시*/
+	var modalstockItemCode 						= $('#modifyStockItemCode');
+	var modalStockCateCode 						= $('#modifyStockCateCode');
+	var modalStockItemName 						= $('#modifyStockItemName');
+	var modalStockItemQuantity 					= $('#modifyStockItemQuantity');
+	var modalStockItemQuantityUnit 				= $('#modifyStockItemQuantityUnit');
+	var modalStockItemQuantityCapacity  		= $('#modifyStockItemQuantityCapacity');
+	var modalStockItemQuantityCapacityUnit 		= $('#modifyStockItemQuantityCapacityUnit');
+	var modalModifyStock 						= $('#planModifyStock');
+	
+	$(document).on('click', '.modifyStockItemInfo', function(){
+		var stockItemCode 					= $(this).parent().parent().children('.stockItemCode').text();
+		var stockCateCode 					= $(this).parent().parent().children('.stockCateCode').text();
+		var stockCateName 					= $(this).parent().parent().children('.stockCateName').text();
+		var stockItemName 					= $(this).parent().parent().children('.stockItemName').text();
+		var stockItemQuantity 				= $(this).parent().parent().children('.stockItemQuantity').text();
+		var stockItemQuantityUnit 			= $(this).parent().parent().children('.stockItemQuantityUnit').text();
+		var stockItemQuantityCapacity 		= $(this).parent().parent().children('.stockItemQuantityCapacity').text();
+		var stockItemQuantityCapacityUnit 	= $(this).parent().parent().children('.stockItemQuantityCapacityUnit').text();
+		
+		$("form[name=modifyStockItem]")[0].reset();
+		
+		modalModifyStock.modal('show');
+		
+		modalstockItemCode.val(stockItemCode);
+		modalStockCateCode.val(stockCateCode).prop('selected', true);;
+		modalStockItemName.val(stockItemName);
+		modalStockItemQuantity.val(stockItemQuantity);
+		modalStockItemQuantityUnit.val(stockItemQuantityUnit);
+		modalStockItemQuantityCapacity.val(stockItemQuantityCapacity);
+		modalStockItemQuantityCapacityUnit.val(stockItemQuantityCapacityUnit);
+		
+	});
+	
+	/*모달 품목수정버튼 클릭시*/
+	$('#modifyStockItemBtn').click(function(){
+		var queryString = $("form[name=modifyStockItem]").serialize();
+		
+		var commonAjax = new ksmartAjax();
+		commonAjax.setAjaxUrl('/plan/ajax/modifyStockItem');
+		commonAjax.setAjaxType('post');
+		commonAjax.putObj(queryString);
+		commonAjax.setResultType('json');
+		commonAjax.action(function(data){
+			doStockItemList(data);
+			modalModifyStock.modal("hide");
+		});
+	});
+	
+	/*품목 데이터 테이블 삭제 클릭시*/
+	$(document).on('click', '.removeStockItemInfo', function(){
+		var stockItemCode 	= $(this).parent().parent().children('.stockItemCode').text();
+		var farmCode 		= $(this).parent().parent().children('.farmCode').text();
+		
+		var commonAjax = new ksmartAjax();
+		commonAjax.setAjaxUrl('/plan/ajax/removeStockItem');
+		commonAjax.setAjaxType('post');
+		commonAjax.put("stockItemCode", stockItemCode);
+		commonAjax.put("farmCode", farmCode);
+		commonAjax.setResultType('json');
+		commonAjax.action(function(data){
+			doStockItemList(data);
+		});
+	});
 	
 });

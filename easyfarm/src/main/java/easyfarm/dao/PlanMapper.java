@@ -84,6 +84,9 @@ public interface PlanMapper {
 	//품목리스트조회
 	public List<StockItem> getStockItemList(String farmCode);
 	
+	//농자재매입지출 조회 
+	public List<Map<String, Object>> getResourcePayList(String farmCode);
+	
 	//단계별작업계획 월켈린더 리스트
 	public List<Map<String, Object>> getPlanWorkphaseSchedule(String projectPlanCode);
 	
@@ -110,4 +113,10 @@ public interface PlanMapper {
 	
 	//농가별 품목등록
 	public int addStockItem(StockItem stockItem);
+	
+	//농가별 품목수정
+	public int modifyStockItem(StockItem stockItem);
+	
+	//농가별 품목삭제
+	public int removeStockItem(StockItem stockItem);
 }

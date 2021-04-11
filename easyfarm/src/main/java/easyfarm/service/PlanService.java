@@ -189,6 +189,15 @@ public class PlanService {
 		return result;
 	}
 	
+	//농자재매입지출 조회
+	public List<Map<String, Object>> getResourcePayList(String farmCode) {
+		List<Map<String, Object>> result = null;
+		if(farmCode != null && !"".equals(farmCode.trim())) {
+			result = planMapper.getResourcePayList(farmCode);
+		}
+		return result;
+	}
+	
 	//단계별작업계획 월켈린더 리스트
 	public List<Map<String, Object>> getPlanWorkphaseSchedule(String projectPlanCode) {
 		List<Map<String, Object>> result = null;
@@ -239,6 +248,7 @@ public class PlanService {
 		int addResult 				 			= 0;
 		
 		if(client != null) {
+			client.setUseStatus("Y");
 			addResult = planMapper.addClient(client);
 			
 			if(addResult > 0) {
@@ -278,6 +288,7 @@ public class PlanService {
 		int removeResult 				 		= 0;
 		
 		if(client != null) {
+			client.setUseStatus("N");
 			removeResult = planMapper.removeClient(client);
 			
 			if(removeResult > 0) {
@@ -296,9 +307,41 @@ public class PlanService {
 		int addResult 				= 0;
 		
 		if(stockItem != null) {
+			stockItem.setUseStatus("Y");
 			addResult = planMapper.addStockItem(stockItem);
 			
 			if(addResult > 0) {
+				result = planMapper.getStockItemList(stockItem.getFarmCode());
+			}
+		}
+		return result;
+	}
+	
+	//농가별 품목수정
+	public List<StockItem> modifyStockItem(StockItem stockItem) {
+		List<StockItem> result 		= null;
+		int modifyResult 			= 0;
+		
+		if(stockItem != null) {
+			modifyResult = planMapper.modifyStockItem(stockItem);
+			
+			if(modifyResult > 0) {
+				result = planMapper.getStockItemList(stockItem.getFarmCode());
+			}
+		}
+		return result;
+	}
+	
+	//농가별 품목삭제
+	public List<StockItem> removeStockItem(StockItem stockItem) {
+		List<StockItem> result 		= null;
+		int removeResult 			= 0;
+		
+		if(stockItem != null) {
+			stockItem.setUseStatus("N");
+			removeResult = planMapper.removeStockItem(stockItem);
+			
+			if(removeResult > 0) {
 				result = planMapper.getStockItemList(stockItem.getFarmCode());
 			}
 		}

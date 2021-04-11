@@ -86,15 +86,15 @@
 			
 			table a{color: #1d84df !important; cursor: pointer;}
 			
-			#clientListTable td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}​
+			/* #clientListTable td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}​
 			#stockItemTable td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 			#stockItemTable{table-layout:fixed}​
-			#resourceUsecapacityListTable td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+			#resourceUsecapacityListTable td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;} */
 			
-			.table-responsive table td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}​
+			.table-responsive table th, td{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}​
 			.table-responsive table{table-layout:fixed}
 			
-			#accordion{font-size: 20px;}
+			/* #accordion{font-size: 20px;} */
 			.ui-accordion .ui-accordion-header{padding: .8em .8em .8em .8em !important; font-size: 16px;}
 			
 			.p-star{ display:inline; color:red;}
@@ -294,6 +294,7 @@
 																<tr>
 																	<th class="hidden">품목코드</th>
 																	<th class="hidden">농가코드</th>
+																	<th class="hidden">카테고리코드</th>
 																	<th>카테고리명</th>
 																	<th>품목명</th>
 																	<th>품목수량</th>
@@ -309,6 +310,7 @@
 																	<tr>
 																		<td th:text="${fs.stockItemCode}"></td>
 																		<td th:text="${fs.farmCode}"></td>
+																		<td th:text="${fs.stockCate.stockCateCode}"></td>
 																		<td th:text="${fs.stockCate.stockCateName}"></td>
 																		<td th:text="${fs.stockItemName}"></td>
 																		<td th:text="${fs.stockItemQuantity}"></td>
@@ -353,32 +355,44 @@
 												</div>
 												<div class="card-content">
 													<div class="table-responsive">
-														<table id="stockItemTable" class="table table-striped table-bordered display" style="width:100%">
+														<table id="resourcePayTable" class="table table-striped table-bordered display" style="width:100%">
 															<thead>
 																<tr>
 																	<th class="hidden">매입지출계획코드</th>
 																	<th class="hidden">농가코드</th>
+																	<th class="hidden">거래처코드</th>
+																	<th class="hidden">품목코드</th>
 																	<th>거래처명</th>
 																	<th>카테고리명</th>
 																	<th>품목명</th>
-																	<th>품목수량</th>
-																	<th>수량단위</th>
-																	<th>품목용량</th>
-																	<th>용량단위</th>
+																	<th>입고수량</th>
+																	<th>입고용량</th>
+																	<th>입고단가</th>
+																	<th>총구매비</th>
+																	<th>수정</th>
+																	<th>삭제</th>
 																</tr>
 															</thead>
 															<tbody>
-																<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+																<th:block th:if="${#lists.size(resourcePayList) > 0}" th:each="r : ${resourcePayList}">
 																	<tr>
-																		<td class="hidden"></td>
-																		<td class="hidden"></td>
-																		<td th:text="${1}"></td>
-																		<td th:text="${2}"></td>
-																		<td th:text="${3}"></td>
-																		<td th:text="${4}"></td>
-																		<td th:text="${5}"></td>
-																		<td th:text="${6}"></td>
-																		<td th:text="${7}"></td>
+																		<td class="hidden" th:text="${r.resourcePayCode}"></td>
+																		<td class="hidden" th:text="${farmCode}"></td>
+																		<td class="hidden" th:text="${r.clientCode}"></td>
+																		<td class="hidden" th:text="${r.stockItemCode}"></td>
+																		<td th:text="${r.clientName}"></td>
+																		<td th:text="${r.stockCateName}"></td>
+																		<td th:text="${r.stockItemName}"></td>
+																		<td th:text="${r.stockItemIncomeQuantity}"></td>
+																		<td th:text="${r.stockItemIncomeQuantityTotal}"></td>
+																		<td th:text="${r.stockItemIncomePerPay}"></td>
+																		<td th:text="${r.stockItemTotalPay}"></td>
+																		<td>
+																			<a class="modifyResourcePayInfo">수정</a>
+																		</td>
+																		<td>
+																			<a class="removeResourcePayInfo">삭제</a>
+																		</td>
 																	</tr>
 																</th:block>
 															</tbody>

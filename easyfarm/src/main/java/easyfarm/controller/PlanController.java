@@ -297,6 +297,10 @@ public class PlanController {
 			List<StockItem> farmStockItemList = planService.getStockItemList(farmCode);
 			model.addAttribute("farmStockItemList", farmStockItemList);
 			
+			/* 농자재매입지출 조회 */
+			List<Map<String, Object>> resourcePayList = planService.getResourcePayList(farmCode);
+			model.addAttribute("resourcePayList", resourcePayList);
+			
 			/* 농자재소모현황리스트 */
 			Map<String, Object> resourceUsecapacityData = new HashMap<String, Object>();
 			resourceUsecapacityData.put("farmCode", farmCode);
@@ -490,6 +494,34 @@ public class PlanController {
 			stockItem.setRegMemberId(memberId);
 			
 			result = planService.addStockItem(stockItem);
+		}
+		return result;
+	}
+	
+	//품목수정 ajax
+	@PostMapping("/plan/ajax/modifyStockItem")
+	@ResponseBody
+	public List<StockItem> modifyStockItem(StockItem stockItem) {
+		
+		List<StockItem> result = null;
+		
+		if(stockItem.getStockItemCode() != null && !"".equals(stockItem.getStockItemCode().trim())) {
+			
+			result = planService.modifyStockItem(stockItem);
+		}
+		return result;
+	}
+	
+	//품목삭제 ajax
+	@PostMapping("/plan/ajax/removeStockItem")
+	@ResponseBody
+	public List<StockItem> removeStockItem(StockItem stockItem) {
+		
+		List<StockItem> result = null;
+		
+		if(stockItem.getStockItemCode() != null && !"".equals(stockItem.getStockItemCode().trim())) {
+			
+			result = planService.removeStockItem(stockItem);
 		}
 		return result;
 	}
