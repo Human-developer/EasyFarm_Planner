@@ -84,7 +84,7 @@
 			button a:visited { color: white; text-decoration: none;}
 			button a:hover { color: white; text-decoration: none;}
 			
-			#machine-justified a{color: #1d84df !important;}
+			#client-justified a{color: #1d84df !important; cursor: pointer;}
 			
 			#clientListTable td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}​
 			#stockItemTable td, th{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
@@ -226,6 +226,7 @@
 														<table id="clientListTable" class="table table-striped table-bordered display" style="width:100%">
 															<thead>
 																<tr>
+																	<th class="hidden">거래처코드</th>
 																	<th>거래처명</th>
 																	<th>전화번호</th>
 																	<th>주소</th>
@@ -239,17 +240,18 @@
 															<tbody>
 																<th:block th:if="${#lists.size(clientNameList) > 0}" th:each="c : ${clientNameList}">
 																	<tr>
-																		<td th:text="${c.clientName}"></td>
-																		<td th:text="${c.clientPhone}"></td>
-																		<td th:text="${c.clientAddress}"></td>
-																		<td th:text="${c.clientAccountBank}"></td>
-																		<td th:text="${c.clientAccount}"></td>
-																		<td th:text="${c.clientMemo}"></td>
+																		<td th:text="${c.clientCode}" 		class="hidden clientCode"></td>
+																		<td th:text="${c.clientName}"		class="clientName"></td>
+																		<td th:text="${c.clientPhone}" 		class="clientPhone"></td>
+																		<td th:text="${c.clientAddress}" 	class="clientAddress"></td>
+																		<td th:text="${c.clientAccountBank}"class="clientAccountBank"></td>
+																		<td th:text="${c.clientAccount}" 	class="clientAccount"></td>
+																		<td th:text="${c.clientMemo}" 		class="clientMemo"></td>
 																		<td>
-																			<a href="#">수정</a>
+																			<a class="modifyClientInfo">수정</a>
 																		</td>
 																		<td>
-																			<a href="#">삭제</a>
+																			<a>삭제</a>
 																		</td>
 																	</tr>
 																</th:block>
@@ -950,7 +952,10 @@
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
 	<th:block layout:fragment="customScriptLib">
-	
+		
+		<!-- CommonAjax Script -->
+		<script src="/assets/scripts/commonAjax.js"></script>
+		
 		<!-- Flex Datalist -->
 		<script th:src="@{/assets/plugin/flexdatalist/jquery.flexdatalist.min.js}"></script>
 	
@@ -1004,7 +1009,7 @@
 		<script type="text/javascript">
 			function moveAddSpend(btn){
 					location.href = btn.value;
-				};
+			};
 		</script>
 	</th:block>
 

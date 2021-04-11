@@ -252,6 +252,26 @@ public class PlanService {
 		return result;
 	}
 	
+	//농가별 거래처 수정
+	public List<Map<String, Object>> modifyClient(Client client) {
+		List<Map<String, Object>> result 		= null;
+		Map<String, Object> paramMap 			= null;
+		int modifyResult 				 			= 0;
+		
+		if(client != null) {
+			modifyResult = planMapper.modifyClient(client);
+			
+			if(modifyResult > 0) {
+				paramMap = new HashMap<String, Object>();
+				paramMap.put("farmCode", client.getFarmCode());
+				
+				result = planMapper.getClientName(paramMap);
+			}
+		}
+		
+		return result;
+	}
+	
 	
 	public List<EtcPay> getEtcPayPlan(){
 		List<EtcPay> etcPayPlan = null;

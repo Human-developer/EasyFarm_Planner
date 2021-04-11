@@ -11,7 +11,6 @@
 				<form name="addClient">
 					<div class="modal-content">
 						<div class="modal-body">
-							
 							<div class="box-content card white">
 								<div class="box-title">
 									<div class="row">
@@ -72,6 +71,74 @@
 			</div>
 		</div>
 		<!-- 거래처등록 모달 끝-->
+		
+		<!-- 거래처수정 모달 시작-->
+		<div class="modal fade" id="planModifyClient" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">
+			<div class="modal-dialog modal-lg" role="document">
+				<form name="modifyClient">
+					<div class="modal-content">
+						<div class="modal-body">
+							<div class="box-content card white">
+								<div class="box-title">
+									<div class="row">
+										<div class="col-sm-12">
+											<h4>거래처 수정</h4>
+										</div>
+									</div>
+								</div>
+								<div class="card-content">
+									<div class="form-horizontal">
+										<div class="form-group">
+											<label for="clientName" class="col-sm-3 control-label"><strong>거래처명<p class="p-star">*</p></strong></label>
+										    <div class="col-sm-6">
+										      <input class="hidden" th:value="${farmCode}" name="farmCode">
+										      <input class="hidden" name="clientCode" id="modifyClientCode">
+										      <input type="text" class="form-control inputReset" name="clientName" id="modifyClientName" placeholder="거래처명">
+										    </div>
+										</div>
+										<div class="form-group">
+											<label for="clientPhone" class="col-sm-3 control-label"><strong>전화번호</strong></label>
+										    <div class="col-sm-6">
+										      <input type="text" class="form-control inputReset" name="clientPhone" id="modifyClientPhone" placeholder="전화번호">
+										    </div>
+										</div>
+										<div class="form-group">
+											<label for="clientAddress" class="col-sm-3 control-label"><strong>주소</strong></label>
+										    <div class="col-sm-6">
+										      <input type="text" class="form-control inputReset" name="clientAddress" id="modifyClientAddress" placeholder="주소">
+										    </div>
+										</div>
+										<div class="form-group">
+											<label for="clientAccountBank" class="col-sm-3 control-label"><strong>계좌은행</strong></label>
+										    <div class="col-sm-6">
+										      <input type="text" class="form-control inputReset" name="clientAccountBank" id="modifyClientAccountBank" placeholder="계좌은행">
+										    </div>
+										</div>
+										<div class="form-group">
+											<label for="clientAccount" class="col-sm-3 control-label"><strong>계좌</strong></label>
+										    <div class="col-sm-6">
+										      <input type="text" class="form-control inputReset" name="clientAccount" id="modifyClientAccount" placeholder="계좌">
+										    </div>
+										</div>
+										<div class="form-group">
+											<label for="clientMemo" class="col-sm-3 control-label"><strong>간단메모</strong></label>
+										    <div class="col-sm-6">
+										    	<textarea class="form-control inputReset" id="modifyClientMemo" name="clientMemo" rows="3" placeholder="메모를 작성해주세요" style="resize: none;"></textarea>
+										    </div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
+							<button type="button" id="modifyClientBtn" class="btn btn-primary btn-sm waves-effect waves-light">거래처 수정</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- 거래처수정 모달 끝-->
 		
 		<!-- 품목등록 모달 시작-->
 		<div class="modal fade" id="planAddStock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">
@@ -141,6 +208,75 @@
 			</div>
 		</div>
 		<!-- 품목등록 모달 끝-->
+		
+		<!-- 품목수정 모달 시작-->
+		<div class="modal fade" id="planModifyStock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="box-content card white">
+							<div class="box-title">
+								<div class="row">
+									<div class="col-sm-12">
+										<h4>품목 등록</h4>
+									</div>
+								</div>
+							</div>
+							<div class="card-content">
+								<div class="form-horizontal">
+									<div class="form-group">
+										<label class="col-sm-3 control-label"><strong>품목카테고리</strong></label>
+									    <div class="col-md-6">
+											<select class="form-control" name="stockCateCode" id="stockCateCode">
+												<option value=""> :: 카테고리선택 :: </option>
+												<th:block th:if="${#lists.size(stockCateList) > 0}" th:each="s : ${stockCateList}">
+													<option th:value="${s.stockCateCode}" th:text="${s.stockCateName}"></option>
+												</th:block>
+											</select>
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="stockItemName" class="col-sm-3 control-label"><strong>품목명</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="stockItemName" id="stockItemName" placeholder="품목명">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="stockItemQuantity" class="col-sm-3 control-label"><strong>품목수량</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="stockItemQuantity" id="stockItemQuantity" placeholder="품목수량">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="stockItemQuantityUnit" class="col-sm-3 control-label"><strong>수량단위</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="stockItemQuantityUnit" id="stockItemQuantityUnit" placeholder="수량단위">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="stockItemQuantityCapacity" class="col-sm-3 control-label"><strong>품목용량</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="stockItemQuantityCapacity" id="stockItemQuantityCapacity" placeholder="품목용량">
+									    </div>
+									</div>
+									<div class="form-group">
+										<label for="stockItemQuantityCapacityUnit" class="col-sm-3 control-label"><strong>용량단위</strong></label>
+									    <div class="col-sm-6">
+									      <input type="text" class="form-control" name="stockItemQuantityCapacityUnit" id="stockItemQuantityCapacityUnit" placeholder="용량단위">
+									    </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
+						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">품목등록</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 품목수정 모달 끝-->
 		
 		<!-- 농기계즐겨찾기 모달 시작-->
 		<div class="modal fade" id="planAddBookmarkMachine" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">

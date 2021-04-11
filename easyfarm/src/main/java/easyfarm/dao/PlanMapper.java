@@ -111,4 +111,7 @@ public interface PlanMapper {
 	
 	//농가별 거래처 등록
 	public int addClient(Client client);
+	
+	//농가별 거래처 수정
+	public int modifyClient(Client client);
 }
