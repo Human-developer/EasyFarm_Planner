@@ -1,7 +1,8 @@
 package easyfarm.domain.plan;
 
 public class ResourcePay {
-	 // 농가별농자재매입지출계획코드
+	
+	// 농가별농자재매입지출계획코드
     private String resourcePayCode;
 
     // 농가코드
@@ -26,7 +27,6 @@ public class ResourcePay {
     private String stockItemTotalPay;
 
     // 작성자농가회원코드
-
     private String regMemberId;
 
     // 작성일

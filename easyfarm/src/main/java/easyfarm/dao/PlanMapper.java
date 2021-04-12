@@ -119,4 +119,7 @@ public interface PlanMapper {
 	
 	//농가별 품목삭제
 	public int removeStockItem(StockItem stockItem);
+	
+	//농가별 농자재매입등록
+	public int addResourcePay(ResourcePay resourcePay);
 }

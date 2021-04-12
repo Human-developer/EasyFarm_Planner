@@ -458,6 +458,7 @@
 										<div class="form-group">
 											<label class="col-sm-3 control-label"><strong>거래처</strong></label>
 										    <div class="col-sm-6">
+										    	<input class="hidden" th:value="${farmCode}" name="farmCode">
 												<select class="form-control" name="clientCode" id="resourcePayClientCode">
 													<option value=""> :: 거래처선택 :: </option>
 													<th:block th:if="${#lists.size(clientNameList) > 0}" th:each="c : ${clientNameList}">
@@ -507,7 +508,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
-							<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">농자재 매입등록</button>
+							<button type="button" id="addResourcePayBtn" class="btn btn-primary btn-sm waves-effect waves-light">농자재 매입등록</button>
 						</div>
 					</div>
 				</form>

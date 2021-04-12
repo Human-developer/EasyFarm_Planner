@@ -377,7 +377,7 @@
 																<th:block th:if="${#lists.size(resourcePayList) > 0}" th:each="r : ${resourcePayList}">
 																	<tr>
 																		<td class="hidden" th:text="${r.resourcePayCode}"></td>
-																		<td class="hidden" th:text="${farmCode}"></td>
+																		<td class="hidden" th:text="${r.farmCode}"></td>
 																		<td class="hidden" th:text="${r.clientCode}"></td>
 																		<td class="hidden" th:text="${r.stockItemCode}"></td>
 																		<td th:text="${r.clientName}"></td>

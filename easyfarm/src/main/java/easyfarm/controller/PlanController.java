@@ -22,6 +22,7 @@ import easyfarm.domain.plan.InsurancePay;
 import easyfarm.domain.plan.PlanWorkphase;
 import easyfarm.domain.plan.PlanWorkphaseCate;
 import easyfarm.domain.plan.ProjectPlan;
+import easyfarm.domain.plan.ResourcePay;
 import easyfarm.domain.plan.StockCate;
 import easyfarm.domain.plan.StockItem;
 import easyfarm.service.PlanService;
@@ -408,13 +409,18 @@ public class PlanController {
 				data = new HashMap<String,Object>();
 				
 				workphaseData = workphaseCateSchedule.get(i);
+				workphaseName = workphaseData.get("workphase") + " : " + workphaseData.get("workphaseName");
 				
-				data.put("title", 		workphaseData.get("commonWorkphaseCateName"));
-				data.put("start", 		workphaseData.get("planWorkphaseBegin"));
-				data.put("end", 		workphaseData.get("planWorkphaseEnd"));
-				data.put("color",		workphaseData.get("planWorkphaseColor"));
-				data.put("textColor", 	workphaseData.get("planWorkphaseTextColor"));
-				data.put("planWorkphaseCode", 	workphaseData.get("planWorkphaseCateCode"));
+				data.put("workphaseName", 			workphaseName);
+				data.put("title", 					workphaseData.get("commonWorkphaseCateName"));
+				data.put("start", 					workphaseData.get("planWorkphaseCateBegin"));
+				data.put("end", 					workphaseData.get("planWorkphaseCateEnd"));
+				data.put("planWorkphaseBegin", 		workphaseData.get("planWorkphaseBegin"));
+				data.put("planWorkphaseEnd", 		workphaseData.get("planWorkphaseEnd"));
+				data.put("planWorkphaseCode", 		workphaseData.get("planWorkphaseCode"));
+				data.put("color",					workphaseData.get("planWorkphaseColor"));
+				data.put("textColor", 				workphaseData.get("planWorkphaseTextColor"));
+				data.put("planWorkphaseCateCode", 	workphaseData.get("planWorkphaseCateCode"));
 				data.put("projectPlanCode", 	projectPlanCode);
 				
 				calList.add(data);
@@ -524,6 +530,41 @@ public class PlanController {
 			result = planService.removeStockItem(stockItem);
 		}
 		return result;
+	}
+	
+	//농자재매입등록 ajax
+	@PostMapping("/plan/ajax/addResourcePay")
+	@ResponseBody
+	public List<Map<String, Object>> addResourcePay(ResourcePay resourcePay, HttpSession session) {
+		
+		String memberId = (String) session.getAttribute("SID");
+		List<Map<String, Object>> result = null;
+		
+		if(resourcePay.getFarmCode() != null && !"".equals(resourcePay.getFarmCode().trim()) && memberId != null) {
+			resourcePay.setRegMemberId(memberId);
+			result = planService.addResourcePay(resourcePay);
+		}
+		return result;
+	}
+	
+	//계획서간편보기 전체 리스트 조회 ajax
+	@PostMapping("/plan/ajax/getAllPlanSchedule")
+	@ResponseBody
+	public Map<String,List<Object>> getAllPlanSchedule(	 @RequestParam(value = "planWorkphaseCateCode",required = false) String planWorkphaseCateCode
+														,@RequestParam(value = "planWorkphaseCode",required = false) String planWorkphaseCode) {
+		
+		Map<String, List<Object>> result = new HashMap<String, List<Object>>();
+		
+		if(planWorkphaseCateCode == null) {
+			System.out.println(planWorkphaseCateCode + "planWorkphaseCateCode null값");
+			result = planService.getAllPlanSchedule(planWorkphaseCode);
+		}
+		else {
+			System.out.println(planWorkphaseCateCode + "planWorkphaseCateCode");
+		}
+		
+		
+		return null;
 	}
 	
 }

@@ -699,4 +699,136 @@ $(function(){
 		});
 	});
 	
+	/*농자재매입 데이터테이블 셋팅*/
+	var resourcePayTable = $('#resourcePayTable').DataTable({
+		
+		"columnDefs": [
+			 {className: "hidden resourcePayCode", 		 "targets": [ 0 ]}
+			,{className: "hidden farmCode", 			 "targets": [ 1 ]}
+			,{className: "hidden clientCode", 			 "targets": [ 2 ]}
+			,{className: "hidden stockItemCode", 		 "targets": [ 3 ]}
+			,{className: "clientName", 					 "targets": [ 4 ]}
+			,{className: "stockCateName", 				 "targets": [ 5 ]}
+			,{className: "stockItemName",				 "targets": [ 6 ]}
+			,{className: "stockItemIncomeQuantity", 	 "targets": [ 7 ]}
+			,{className: "stockItemIncomeQuantityTotal", "targets": [ 8 ]}
+			,{className: "stockItemIncomePerPay", 		 "targets": [ 9 ]}
+			,{className: "stockItemTotalPay", 			 "targets": [ 10 ]}
+		]
+		,language : lang_kor
+	});
+	
+	/*농자재매입등록모달 초기화*/
+	$('#planResourcePay-justified button').click(function(){
+		$("form[name=addResourcePay]")[0].reset();
+	});
+	
+	/*모달 농자재매입등록버튼 클릭시*/
+	var modalplanAddResourcePay = $('#planAddResourcePay');
+	
+	$('#addResourcePayBtn').click(function(){
+		var queryString = $("form[name=addResourcePay]").serialize();
+		
+		var commonAjax = new ksmartAjax();
+		commonAjax.setAjaxUrl('/plan/ajax/addResourcePay');
+		commonAjax.setAjaxType('post');
+		commonAjax.putObj(queryString);
+		commonAjax.setResultType('json');
+		commonAjax.action(function(data){
+			doResourcePayList(data);
+			modalplanAddResourcePay.modal("hide");
+		});
+	});
+	
+	//품목리스트를 테이블과 셀렉트 박스로 만든 후 input
+	function doResourcePayList(data){
+		
+		resourcePayTable.clear().draw();
+		
+		$.each(data, function(index){
+			
+			resourcePayTable.row.add([
+				 data[index].resourcePayCode
+				,data[index].farmCode
+				,data[index].clientCode
+				,data[index].stockItemCode
+				,data[index].clientName
+				,data[index].stockCateName
+				,data[index].stockItemName
+				,data[index].stockItemIncomeQuantity
+				,data[index].stockItemIncomeQuantityTotal
+				,data[index].stockItemIncomePerPay
+				,data[index].stockItemTotalPay
+				,'<a class="modifyResourcePayInfo">수정</a>'
+				,'<a class="removeResourcePayInfo">삭제</a>'
+			]).draw()
+			
+		})
+	}
+	
+	/*농자재매입 데이터 테이블 수정 클릭시*/
+	var modalstockItemCode 						= $('#modifyStockItemCode');
+	var modalStockCateCode 						= $('#modifyStockCateCode');
+	var modalStockItemName 						= $('#modifyStockItemName');
+	var modalStockItemQuantity 					= $('#modifyStockItemQuantity');
+	var modalStockItemQuantityUnit 				= $('#modifyStockItemQuantityUnit');
+	var modalStockItemQuantityCapacity  		= $('#modifyStockItemQuantityCapacity');
+	var modalStockItemQuantityCapacityUnit 		= $('#modifyStockItemQuantityCapacityUnit');
+	var modalModifyStock 						= $('#planModifyStock');
+	
+	$(document).on('click', '.modifyStockItemInfo', function(){
+		var stockItemCode 					= $(this).parent().parent().children('.stockItemCode').text();
+		var stockCateCode 					= $(this).parent().parent().children('.stockCateCode').text();
+		var stockCateName 					= $(this).parent().parent().children('.stockCateName').text();
+		var stockItemName 					= $(this).parent().parent().children('.stockItemName').text();
+		var stockItemQuantity 				= $(this).parent().parent().children('.stockItemQuantity').text();
+		var stockItemQuantityUnit 			= $(this).parent().parent().children('.stockItemQuantityUnit').text();
+		var stockItemQuantityCapacity 		= $(this).parent().parent().children('.stockItemQuantityCapacity').text();
+		var stockItemQuantityCapacityUnit 	= $(this).parent().parent().children('.stockItemQuantityCapacityUnit').text();
+		
+		$("form[name=modifyStockItem]")[0].reset();
+		
+		modalModifyStock.modal('show');
+		
+		modalstockItemCode.val(stockItemCode);
+		modalStockCateCode.val(stockCateCode).prop('selected', true);;
+		modalStockItemName.val(stockItemName);
+		modalStockItemQuantity.val(stockItemQuantity);
+		modalStockItemQuantityUnit.val(stockItemQuantityUnit);
+		modalStockItemQuantityCapacity.val(stockItemQuantityCapacity);
+		modalStockItemQuantityCapacityUnit.val(stockItemQuantityCapacityUnit);
+		
+	});
+	
+	/*모달 품목수정버튼 클릭시*/
+	$('#modifyStockItemBtn').click(function(){
+		var queryString = $("form[name=modifyStockItem]").serialize();
+		
+		var commonAjax = new ksmartAjax();
+		commonAjax.setAjaxUrl('/plan/ajax/modifyStockItem');
+		commonAjax.setAjaxType('post');
+		commonAjax.putObj(queryString);
+		commonAjax.setResultType('json');
+		commonAjax.action(function(data){
+			doStockItemList(data);
+			modalModifyStock.modal("hide");
+		});
+	});
+	
+	/*품목 데이터 테이블 삭제 클릭시*/
+	$(document).on('click', '.removeStockItemInfo', function(){
+		var stockItemCode 	= $(this).parent().parent().children('.stockItemCode').text();
+		var farmCode 		= $(this).parent().parent().children('.farmCode').text();
+		
+		var commonAjax = new ksmartAjax();
+		commonAjax.setAjaxUrl('/plan/ajax/removeStockItem');
+		commonAjax.setAjaxType('post');
+		commonAjax.put("stockItemCode", stockItemCode);
+		commonAjax.put("farmCode", farmCode);
+		commonAjax.setResultType('json');
+		commonAjax.action(function(data){
+			doStockItemList(data);
+		});
+	});
+	
 });

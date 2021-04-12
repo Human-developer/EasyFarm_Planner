@@ -118,16 +118,8 @@ public class PlanService {
 		Map<String, Object> stockItemInfo = null;
 		
 		if(projectData != null && !"".equals(projectData.toString())) {
+			
 			result = planMapper.getStockItem(projectData);
-			for(int i = 0; i < result.size(); i++) {
-				stockItemInfo = result.get(i);
-				
-				if(stockItemInfo.get("availableStatus") == "Y") {
-				}else if(stockItemInfo.get("availableStatus") == "N"){
-					stockItemInfo.replace("availableStatus", "불가능");
-				}
-				System.out.println(stockItemInfo.get("availableStatus"));
-			}
 		}
 		
 		return result;
@@ -348,5 +340,35 @@ public class PlanService {
 		return result;
 	}
 	
-	
+	//농가별 농자재매입등록
+	public List<Map<String, Object>> addResourcePay(ResourcePay resourcePay) {
+		List<Map<String, Object>> result 	= null;
+		int addResult 						= 0;
+		
+		if(resourcePay != null) {
+			
+			addResult = planMapper.addResourcePay(resourcePay);
+			System.out.println(resourcePay.getResourcePayCode() + " <---- getResourcePayCode");
+			if(addResult > 0) {
+				result = planMapper.getResourcePayList(resourcePay.getFarmCode());
+			}
+		}
+		return result;
+	}
+
+	//계획서 간편보기 전체 리스트 조회
+	public Map<String,List<Object>> getAllPlanSchedule(String planWorkphaseCode) {
+		Map<String,List<Object>> result = null;
+		
+		if(planWorkphaseCode != null) {
+			result = new HashMap<>();
+			
+			
+			
+		}
+		
+		
+		
+		return result;
+	}
 }

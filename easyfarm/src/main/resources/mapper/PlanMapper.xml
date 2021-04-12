@@ -90,6 +90,66 @@
 		<result property="runStatus" 				column="run_status"/>
 	</resultMap>
 	
+	<select id="getExpEtcPayList" resultType="map" parameterType="String">
+		SELECT
+			 plan_workphase_code		AS	
+			,project_plan_code			AS	
+			,project_workphase_code		AS	
+			,plan_workphase_begin		AS	
+			,plan_workphase_end			AS	
+			,plan_workphase_color		AS	
+			,plan_workphase_text_color	AS	
+			,reg_member_id				AS	
+			,reg_date					AS	
+			,run_status					AS	
+		FROM 
+			tb_exp_etc_pay
+		WHERE
+			plan_workphase_code = #{}
+			and
+			<if test="planWorkphaseCateCode == null">
+				plan_workphase_cate_code = ''
+			</if>
+			<if test="planWorkphaseCateCode != null">
+				plan_workphase_cate_code = #{planWorkphaseCateCode}
+			</if>
+	</select>
+	
+	<insert id="addResourcePay" parameterType="ResourcePay">
+		INSERT INTO tb_exp_resource_pay
+		(
+			 resource_pay_code
+			,farm_code
+			,client_code
+			,stock_item_code
+			,stock_item_income_quantity
+			,stock_item_income_quantity_total
+			,stock_item_income_per_pay
+			,stock_item_total_pay
+			,reg_member_id
+			,reg_date
+		)
+		VALUES 
+		(
+			 sf_exp_resource_pay_max_code()
+			,#{farmCode}
+			,#{clientCode}
+			,#{stockItemCode}
+			,#{stockItemIncomeQuantity}
+			,#{stockItemIncomeQuantityTotal}
+			,#{stockItemIncomePerPay}
+			,#{stockItemTotalPay}
+			,#{regMemberId}
+			,NOW()
+		)
+		<selectKey keyProperty="resourcePayCode" resultType="String" order="AFTER">
+			SELECT
+				Max(erp.resource_pay_code)
+			FROM
+				tb_exp_resource_pay AS erp
+		</selectKey>
+	</insert>
+	
 	<update id="removeStockItem" parameterType="StockItem">
 		UPDATE tb_stock_item
 		SET
@@ -268,7 +328,7 @@
 			,cpi.workphase 				 						AS workphase
 			,cpi.workphase_name 		 						AS workphaseName
 			,pw.plan_workphase_begin 	 						AS planWorkphaseBegin
-			,DATE_ADD(pw.plan_workphase_end, INTERVAL 1 DAY)	AS planWorkphaseEnd
+			,pw.plan_workphase_end								AS planWorkphaseEnd
 			,pw.plan_workphase_color 							AS planWorkphaseColor
 			,pw.plan_workphase_text_color 						AS planWorkphaseTextColor
 		FROM
@@ -295,11 +355,14 @@
 	<select id="getPlanWorkphaseCateSchedule" resultType="map" parameterType="String">
 		SELECT
 			 pwc.plan_workphase_cate_code 						AS planWorkphaseCateCode
+			,pw.plan_workphase_code		 						AS planWorkphaseCode
+			,pw.plan_workphase_begin 	 						AS planWorkphaseBegin
+			,pw.plan_workphase_end								AS planWorkphaseEnd
 			,cpi.workphase 										AS workphase
 			,cpi.workphase_name 								AS workphaseName
 			,cwc.common_workphase_cate_name 					AS commonWorkphaseCateName
-			,pwc.plan_workphase_begin 							AS planWorkphaseBegin
-			,DATE_ADD(pwc.plan_workphase_end, INTERVAL 1 DAY) 	AS planWorkphaseEnd
+			,pwc.plan_workphase_begin 							AS planWorkphaseCateBegin
+			,pwc.plan_workphase_end 							AS planWorkphaseCateEnd
 			,pwc.plan_workphase_color 							AS planWorkphaseColor
 			,pwc.plan_workphase_text_color 						AS planWorkphaseTextColor
 		FROM
@@ -332,6 +395,7 @@
 	<select id="getResourcePayList" resultType="map" parameterType="String">
 		SELECT
 			 erp.resource_pay_code 					AS resourcePayCode
+			,erp.farm_code							AS farmCode
 			,erp.client_code 						AS clientCode
 			,c.client_name 							AS clientName
 			,sc.stock_cate_code 					AS stockCateCode
