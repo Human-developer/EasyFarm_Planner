@@ -126,7 +126,6 @@
 	  		<result column="stock_item_income_quantity_total" 	property="stockItemIncomeQuantityTotal" />
 	  		<result column="stock_item_income_per_pay" 			property="stockItemIncomePerPay" />
 	  		<result column="stock_item_total_pay" 				property="stockItemTotalPay" />
-	  		<result column="stock_item_income_date" 			property="stockItemIncomeDate" />
 	  		<result column="reg_member_id" 						property="regMemberId" />
 	  		<result column="reg_date" 							property="regDate" />
 	  	</association>
@@ -155,7 +154,6 @@
 		, p.stock_item_income_quantity_total
 		, p.stock_item_income_per_pay
 		, p.stock_item_total_pay
-		, p.stock_item_income_date
 		, p.reg_member_id
 		, p.reg_date
 		FROM

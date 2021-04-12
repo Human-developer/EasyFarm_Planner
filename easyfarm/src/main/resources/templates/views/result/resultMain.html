@@ -623,6 +623,7 @@
 		<script type="text/javascript" th:inline="javascript">
 				/*<![CDATA[*/
 				var farm = '[[${farm}]]';
+				/*]]>*/
 			    var farmNameObj = JSON.parse(farm);
 				var farmName = {"":"농가를 선택해주세요"};
 				console.log(farmNameObj);
@@ -634,7 +635,6 @@
 			    }
 			    //console.log(farm);
 			    console.log(farmName);
-				/*]]>*/
 				const steps = ['농가', '프로', '작업']
 				const swalQueueStep = Swal.mixin(
 						{
@@ -642,7 +642,6 @@
 							confirmButtonText: '다음 &rarr;',
 							allowOutsideClick: true,
 							showCancelButton: false,
-							validationMessage: 'This field is required',
 							inputOptions: 
 							{
 								'농가명': farmName 
@@ -676,8 +675,8 @@
 						  if (result.value) {
 						    const answers = JSON.stringify(result.value)
 						    console.log(result + "<< result")
-						    if(result.value[0] != '' && result.value[1] != '' && result.value[2] != '' )
-						    {		//유효성(임시)
+						    if(result.value[0] != '' && result.value[1] != '' && result.value[2] != '' )				//유효성(임시)
+						    {		
 							    console.log(result.value[0] + "<< result.value")
 							    setTimeout(function() 
 							    {
@@ -730,7 +729,6 @@
 			            });
 			            request.done(function(data)
 			            {
-			            	
 			            	for(var i=0; i < data.length; i++)
 			            	{
 			            		var code =  data[i].projectCode;
@@ -774,16 +772,17 @@
 			            {
 			               alert( "Request failed : " + textStatus );
 			            });
+			    	$('.swal2-progress-step').css("cursor","Pointer");
 				});
 				
 				$(document).on('click', '.swal2-progress-step', function(){				//동적 바인딩으로 진행 현황 버튼 클릭시 새로고침
 					location.reload();
 				})
-				$(document).on('mouseover', '.swal2-progress-step', function()
+				$(document).on('mouseover','.swal2-progress-step', function()
 				{																		//동적 바인딩으로 진행 현황 버튼 클릭시 새로고침 표시 부여 
-					$('#swal2-title').addClass("glyphicon glyphicon-refresh")
-					$('#swal2-title').text("")
-					
+					$('.swal2-progress-step').attr('title','새로고침');
+					$('.swal2-progress-step').tooltip();
+					$('.swal2-progress-step').css("cursor","Pointer");
 				})
 			</script>
 		
