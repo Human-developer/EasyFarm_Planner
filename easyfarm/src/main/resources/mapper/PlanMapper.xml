@@ -90,9 +90,62 @@
 		<result property="runStatus" 				column="run_status"/>
 	</resultMap>
 	
+	<resultMap type="Client" id="resultClient">
+		<result property="clientCode" 		 column="client_code"/>
+		<result property="farmCode" 		 column="farm_code"/>
+		<result property="clientName" 		 column="client_name"/>
+		<result property="clientPhone" 		 column="client_phone"/>
+		<result property="clientAddress" 	 column="client_address"/>
+		<result property="clientAccountBank" column="client_account_bank"/>
+		<result property="clientAccount" 	 column="client_account"/>
+		<result property="clientMemo" 		 column="client_memo"/>
+		<result property="useStatus" 		 column="use_status"/>
+		<result property="regMemberId" 		 column="reg_member_id"/>
+		<result property="regDate" 			 column="reg_date"/>
+	</resultMap>
+	
+	<select id="getStockItemInfoByCode" parameterType="String" resultMap="resultStockItem">
+		SELECT
+			stock_item_code
+			,farm_code
+			,stock_cate_code
+			,stock_item_name
+			,stock_item_quantity
+			,stock_item_quantity_unit
+			,stock_item_quantity_capacity
+			,stock_item_quantity_capacity_unit
+			,use_status
+			,reg_member_id
+			,reg_date
+		FROM
+			tb_stock_item
+		where
+			stock_item_code = #{stockItemCode}
+	</select>
+	
+	<select id="getClientInfo" parameterType="String" resultMap="resultClient">
+		SELECT
+			 client_code
+			,farm_code
+			,client_name
+			,client_phone
+			,client_address
+			,client_account_bank
+			,client_account
+			,client_memo
+			,use_status
+			,reg_member_id
+			,reg_date
+		FROM
+			tb_client
+		WHERE
+			client_code = #{clientCode}
+	
+	</select>
+	
 	<select id="getExpEtcPayList" resultType="map" parameterType="String">
 		SELECT
-			 plan_workphase_code		AS	
+			 plan_workphase_code		AS	planWorkphaseCode
 			,project_plan_code			AS	
 			,project_workphase_code		AS	
 			,plan_workphase_begin		AS	
@@ -202,10 +255,10 @@
 		)
 	</insert>
 	
-	<update id="removeClient" parameterType="Client">
+	<update id="removeClient" parameterType="String">
 		UPDATE tb_client
 		SET
-			 use_status 			= #{useStatus}
+			 use_status 			= 'N'
 		WHERE 
 			client_code				= #{clientCode}
 	</update>
@@ -324,13 +377,13 @@
 	<!-- 단계별작업계획 -->
 	<select id="getPlanWorkphaseSchedule" resultType="map" parameterType="String">
 		SELECT
-			 pw.plan_workphase_code		 						AS planWorkphaseCode
-			,cpi.workphase 				 						AS workphase
-			,cpi.workphase_name 		 						AS workphaseName
-			,pw.plan_workphase_begin 	 						AS planWorkphaseBegin
-			,pw.plan_workphase_end								AS planWorkphaseEnd
-			,pw.plan_workphase_color 							AS planWorkphaseColor
-			,pw.plan_workphase_text_color 						AS planWorkphaseTextColor
+			 pw.plan_workphase_code		 	AS planWorkphaseCode
+			,cpi.workphase 				 	AS workphase
+			,cpi.workphase_name 		 	AS workphaseName
+			,pw.plan_workphase_begin 	 	AS planWorkphaseBegin
+			,pw.plan_workphase_end			AS planWorkphaseEnd
+			,pw.plan_workphase_color 		AS planWorkphaseColor
+			,pw.plan_workphase_text_color 	AS planWorkphaseTextColor
 		FROM
 			tb_plan_workphase AS pw
 			LEFT join

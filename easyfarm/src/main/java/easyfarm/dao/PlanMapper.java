@@ -109,7 +109,7 @@ public interface PlanMapper {
 	public int modifyClient(Client client);
 	
 	//농가별 거래처 삭제
-	public int removeClient(Client client);
+	public int removeClient(String clientCode);
 	
 	//농가별 품목등록
 	public int addStockItem(StockItem stockItem);
@@ -122,4 +122,10 @@ public interface PlanMapper {
 	
 	//농가별 농자재매입등록
 	public int addResourcePay(ResourcePay resourcePay);
+	
+	//거래처 코드별 정보 조회
+	public Client getClientInfo(String clientCode);
+	
+	//품목 코드별 정보 조회
+	public StockItem getStockItemInfoByCode(String stockItemCode);
 }

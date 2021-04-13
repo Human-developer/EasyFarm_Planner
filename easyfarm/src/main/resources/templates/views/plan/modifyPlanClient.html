@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>거래처 수정</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		거래처 수정
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+
+	</th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+			.btnSize{margin-right: 40px;}
+			.p-star{ display:inline; color:red;}
+		</style>
+	</th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents" th:with="c = ${client}">
+	
+		<div class="container-fluid">
+		    <div class="row">
+				<div class="col-md-8 col-md-offset-2">
+					<div class="box-content">
+						<h3>거래처 수정</h3>
+						<hr/>
+						<form action="/plan/modifyPlanClient" method="post">
+							<div class="form-horizontal">
+								<div class="form-group">
+									<label for="clientName" class="col-sm-3 control-label"><strong>거래처명<p class="p-star">*</p></strong></label>
+								    <div class="col-sm-6">
+								      <input class="hidden" th:value="${farmCode}" name="farmCode">
+								      <input class="hidden" th:value="${c.clientCode}" name="clientCode">
+								      <input type="text" class="form-control inputReset" name="clientName" th:value="${c.clientName}" placeholder="거래처명">
+								    </div>
+								</div>
+								<div class="form-group">
+									<label for="clientPhone" class="col-sm-3 control-label"><strong>전화번호</strong></label>
+								    <div class="col-sm-6">
+								      <input type="text" class="form-control inputReset" name="clientPhone" th:value="${c.clientPhone}" placeholder="전화번호">
+								    </div>
+								</div>
+								<div class="form-group">
+									<label for="clientAddress" class="col-sm-3 control-label"><strong>주소</strong></label>
+								    <div class="col-sm-6">
+								      <input type="text" class="form-control inputReset" name="clientAddress" th:value="${c.clientAddress}" placeholder="주소">
+								    </div>
+								</div>
+								<div class="form-group">
+									<label for="clientAccountBank" class="col-sm-3 control-label"><strong>계좌은행</strong></label>
+								    <div class="col-sm-6">
+								      <input type="text" class="form-control inputReset" name="clientAccountBank" th:value="${c.clientAccountBank}" placeholder="계좌은행">
+								    </div>
+								</div>
+								<div class="form-group">
+									<label for="clientAccount" class="col-sm-3 control-label"><strong>계좌</strong></label>
+								    <div class="col-sm-6">
+								      <input type="text" class="form-control inputReset" name="clientAccount" th:value="${c.clientAccount}" placeholder="계좌">
+								    </div>
+								</div>
+								<div class="form-group">
+									<label for="clientMemo" class="col-sm-3 control-label"><strong>간단메모</strong></label>
+								    <div class="col-sm-6">
+								    	<textarea class="form-control inputReset" th:text="${c.clientMemo}" name="clientMemo" rows="3" placeholder="메모를 작성해주세요" style="resize: none;"></textarea>
+								    </div>
+								</div>
+								<hr>
+								<div class="form-group t-center">
+									<button type="submit" class="btn btn-primary btn-md waves-effect btn-rounded waves-light btnSize">거래처 수정</button>
+									<button type="button" th:value="|/plan/planClientList?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-success btn-md waves-effect waves-light btn-rounded btnSize">
+										목록 돌아가기
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+					<!-- /.box-content -->
+				</div>
+			</div>
+		</div>
+		
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+			function moveAddSpend(btn){
+				location.href = btn.value;
+			};
+			
+		</script>		
+	</th:block>
+
+</html>

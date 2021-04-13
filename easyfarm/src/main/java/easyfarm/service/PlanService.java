@@ -234,78 +234,69 @@ public class PlanService {
 	}
 
 	//농가별 거래처 등록
-	public List<Map<String, Object>> addClient(Client client) {
-		List<Map<String, Object>> result 		= null;
-		Map<String, Object> paramMap 			= null;
-		int addResult 				 			= 0;
+	public int addClient(Client client) {
+		int addResult = 0;
 		
 		if(client != null) {
 			client.setUseStatus("Y");
 			addResult = planMapper.addClient(client);
-			
-			if(addResult > 0) {
-				paramMap = new HashMap<String, Object>();
-				paramMap.put("farmCode", client.getFarmCode());
-				
-				result = planMapper.getClientName(paramMap);
-			}
+		}
+		
+		return addResult;
+	}
+	
+	//거래처 코드별 정보 조회
+	public Client getClientInfo(String clientCode) {
+		
+		Client result = null;
+		
+		if(clientCode != null && !"".equals(clientCode.trim())) {
+			result = planMapper.getClientInfo(clientCode);
 		}
 		
 		return result;
 	}
 	
 	//농가별 거래처 수정
-	public List<Map<String, Object>> modifyClient(Client client) {
-		List<Map<String, Object>> result 		= null;
-		Map<String, Object> paramMap 			= null;
-		int modifyResult 				 			= 0;
+	public int modifyClient(Client client) {
+		int modifyResult = 0;
 		
 		if(client != null) {
 			modifyResult = planMapper.modifyClient(client);
-			
-			if(modifyResult > 0) {
-				paramMap = new HashMap<String, Object>();
-				paramMap.put("farmCode", client.getFarmCode());
-				
-				result = planMapper.getClientName(paramMap);
-			}
 		}
-		return result;
+		return modifyResult;
 	}
 	
 	//농가별 거래처 삭제
-	public List<Map<String, Object>> removeClient(Client client) {
-		List<Map<String, Object>> result 		= null;
-		Map<String, Object> paramMap 			= null;
-		int removeResult 				 		= 0;
+	public int removeClient(String clientCode) {
+		int removeResult = 0;
 		
-		if(client != null) {
-			client.setUseStatus("N");
-			removeResult = planMapper.removeClient(client);
-			
-			if(removeResult > 0) {
-				paramMap = new HashMap<String, Object>();
-				paramMap.put("farmCode", client.getFarmCode());
-				
-				result = planMapper.getClientName(paramMap);
-			}
+		if(clientCode != null) {
+			removeResult = planMapper.removeClient(clientCode);
 		}
-		return result;
+		return removeResult;
 	}
 	
 	//농가별 품목등록
-	public List<StockItem> addStockItem(StockItem stockItem) {
-		List<StockItem> result 		= null;
-		int addResult 				= 0;
+	public int addStockItem(StockItem stockItem) {
+		int addResult = 0;
 		
 		if(stockItem != null) {
 			stockItem.setUseStatus("Y");
 			addResult = planMapper.addStockItem(stockItem);
-			
-			if(addResult > 0) {
-				result = planMapper.getStockItemList(stockItem.getFarmCode());
-			}
 		}
+		return addResult;
+	}
+	
+	//품목 코드별 정보 조회
+	public StockItem getStockItemInfoByCode(String stockItemCode) {
+		
+		StockItem result = null;
+		
+		if(stockItemCode != null && !"".equals(stockItemCode.trim())) {
+			result = planMapper.getStockItemInfoByCode(stockItemCode);
+		}
+		
 		return result;
 	}
 	
@@ -357,10 +348,11 @@ public class PlanService {
 	}
 
 	//계획서 간편보기 전체 리스트 조회
-	public Map<String,List<Object>> getAllPlanSchedule(String planWorkphaseCode) {
+	public Map<String,List<Object>> getAllPlanSchedule(String planWorkphaseCode, String planWorkphaseCateCode) {
+		
 		Map<String,List<Object>> result = null;
 		
-		if(planWorkphaseCode != null) {
+		if(planWorkphaseCode != null && planWorkphaseCateCode == null) {
 			result = new HashMap<>();
 			
 			
