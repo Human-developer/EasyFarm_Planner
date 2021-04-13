@@ -1,5 +1,7 @@
 package easyfarm.domain.inventory;
 
+import easyfarm.domain.plan.StockItem;
+
 public class FarmResourcePayRun {
 	private String farmResourcePayRunCode;
 	private String farmResourcePayCode;
