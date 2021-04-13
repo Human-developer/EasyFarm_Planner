@@ -70,6 +70,10 @@ public class MemberService {
 				
 			return loginList;
 	 }
+	 //로그인기록 삭제
+	 public void removeLoginDate(String loginCode) {
+		 memberMapper.removeLoginDate(loginCode);
+	 }
 	 //최근 로그인 기록조회
 	 public List<Member> getLoginMaxDate(){
 		 List<Member> loginMaxDate = memberMapper.getLoginMaxDate();

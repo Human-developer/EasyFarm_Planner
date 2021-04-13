@@ -22,10 +22,7 @@ public class CropService {
 	public CropService(CropMapper cropMapper) {
 		this.cropMapper = cropMapper;
 	}
-/**
- * @param searchValue 
- * @param searchKey **********************************************/
-	
+ 
 	//작물 리스트
 	public List<Crop> getCropCode(Map<String, Object> map){
 		List<Crop> cropList = cropMapper.getCropCode(map);

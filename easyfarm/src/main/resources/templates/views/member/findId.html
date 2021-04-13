@@ -43,6 +43,7 @@
 				<div class="row" >
 					<div class="
 					col-lg-offset-3 col-lg-6
+				
 					
 					">
 					
@@ -77,7 +78,7 @@
 									<div class="form-group">	
 										<div class="col-sm-offset-4">
 											<button type="button"  class="btn btn-success btn-rounded waves-effect waves-light" id="idResult">확인</button>		
-											<a th:href="@{/member/login}"><button type="button"  class="btn btn-danger btn-rounded waves-effect waves-light">취소</button></a>	
+											<a th:href="@{/member/login}"  class="btn btn-danger btn-rounded waves-effect waves-light">취소</a>	
 										</div>
 									</div>	
 									
@@ -94,7 +95,7 @@
 						<h4 class="modal-title">아이디</h4>
 					</div>
 					<div class="modal-body">
-						<p>아이디 :</p> <p class="text" style="color: black;"></p>
+						<p>가입된 아이디 :</p> <p class="text" style="color: black;"></p>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn  close  " ><span style="color: black;">Close</span> </button>
@@ -130,7 +131,7 @@
 							});
 						$('#memberEmail').focus();
 						return false;
-					}if(!getMail.test(mail){
+					}if(!getMail.test(mail)){
 						 swal({
 								title: "이메일을 형식에 맞게 입력 해주세요.",
 								confirmButtonColor: '#304ffe'
@@ -150,6 +151,7 @@
 								key = data.mailAuthKey;
 								msg = data.msg;
 								memberId = data.memberId;
+								console.log(key);
 								
 								
 								$(".email-text").text(msg).css("color", "red");
@@ -175,7 +177,7 @@
 			  
 			  
 			  
-			  $(".compare").on("click", function() {
+				$(".compare").on("click", function() {
 					 
 					
 					 if($("#certified").val() != ""){
@@ -194,7 +196,7 @@
 					
 				});
 			  
-			  $("#memberEmail").on("keyup",function(){
+				$("#memberEmail").on("keyup",function(){
 					isCertification = false;
 					key ="";
 					$("#certified").attr('style','display: none');
@@ -202,21 +204,21 @@
 					$(".compare").attr('style','display: none');
 					$(".compare-text").text("").css("color", "red");
 					
-			  });
+			  	});
 			  
-			  $("#idResult").on("click",function(){	 
+			 	 $("#idResult").on("click",function(){	 
 					
 					if(!isCertification){			
 						 swal({
-								title: "메일 인증이 완료되지않았습니다.",
-								confirmButtonColor: '#304ffe'
-							});
-						return false;
+							title: "메일 인증이 완료되지않았습니다.",
+							confirmButtonColor: '#304ffe'
+						});
+							return false;
 					}			
-					
-				 $('.modal-content').attr('style','display: block');
-				 $('.text').text(memberId);
-			  });
+						
+					 $('.modal-content').attr('style','display: block');
+					 $('.text').text(memberId);
+			  	});
 			  
 			  $('.close').click(function(){
 		  		  

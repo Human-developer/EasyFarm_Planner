@@ -13,7 +13,7 @@
 	
 	<!-- 사용자 정의 css 라이브러리 -->
 	<th:block layout:fragment="customCssLib">
-		<!-- Data Tables -->
+	<!-- Data Tables -->
 		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/media/css/dataTables.bootstrap.min.css}">
 		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css}">
 		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
@@ -34,54 +34,43 @@
 			</ul>
 			<!-- /.sub-menu -->
 		</div>
-		<table id="test" class="table" style="width:100%">
+		<table id="test">
 			<thead>
 				<tr>
 					<th scope="col" class="text-center">번호</th>
 					<th scope="col" class="text-center">제목</th>
-					<th scope="col" class="text-center">글쓴이</th>
+					<th scope="col" class="text-center">작성자</th>
 					<th scope="col" class="text-center">작성일</th>
-					<th scope="col" class="text-center">조회수</th>
+					<th th:if = "${session.SLEVEL == '관리자'}">삭제</th>
+					<th>상태</th>
 				</tr>		
 			</thead>
 			<tbody>
-				<tr>
-					<td >st.카운트</td>
-					<td ><a th:href="@{/board/qnaDetail}">기본을비밀글로 설정, 관리자답변은 RE:리플로달리게, 관리자는 모든글을 볼수있고 관리자가 아니라면 비밀번호를 입력하여 글보기</a></td>
-					<td  class="text-center">이름받아오기</td>   
-					<td  class="text-center">등록날짜</td>     
-					<td class="text-center">조회수 자동카운트</td>
-					
-				</tr>
-				<tr>
-					<td>st.카운트</td>
-					<td>
-						<!-- 게시물 제목, 답글에 대한 인덴트 적용 -->
-						<a class="text-reset" href="">@{/board/qnaDetail(code=${detail.code})}</a><br><br>
-						if (list[i].getBdIndent() > 0) {<br>
-							for (int j = 0; j < list[i].getBdIndent(); j++) {<br>
-							& nbsp & nbsp & nbsp & nbsp<br>
-							}<br>
-						└ re:& nbsp<br>
-						}<br>
+			<!--DB에서 리스트 불러오기 연결  -->
+				<tr th:if="${#lists.size(selectBoardList)} > 0" th:each="l,index:${selectBoardList}">
+					<td th:text="${l.code}"class ="code"></td>
+					<td class = "test3" >
+					 <span class="glyphicon glyphicon-lock" aria-hidden="true"></span> [[${l.title}]]
+                    </td>
+					<td th:text="${l.regMemberId}"></td>
+					<td th:text="${l.regDate}"></td>
+					<td th:if = "${session.SLEVEL == '관리자'}">
+						<a th:href="@{/#}">삭제</a>		
 					</td>
-					<!-- 작성자, 작성일, 조회수 -->
-					<td class="">%=list[i].getBdUserID()%>		</td>
-					<td class="">%=list[i].getBdDate()%>		</td>
-					<td class="">%=list[i].getBdViewCount()%>	</td>
+					<td th:if ="${l.conAnswer == null}" style="color: red">
+						답변대기
+					</td>
+					<td th:if ="${l.conAnswer != null}" style="color: blue">
+						답변완료
+					</td>
 				</tr>
-		<!-- 	<tr th:if="${#lists.size()} > 0" th:each="l, st:${}">
-					<td th:text="${st.count}"></td>
-				</tr>
-				<tr th:unless="${#lists.size()} != 0">
-					<td colspan="10" style="text-align: center;">조회된 내용이 없습니다.</td>
-				</tr> -->
 			</tbody>
 		</table>
 		</div>
 	<div class="box-content">
 		<ul class="list-inline">
-			<li ><a th:href="@{/board/qnaInsert}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>글쓰기, @{/컨트롤러경로(글코드=${list.글코드 /*겟방식전달*/})}</strong></button></a> </li></br>
+<!-- 		, @{/컨트롤러경로(글코드=${list.글코드 /*겟방식전달*/})} -->
+			<li ><a th:href="@{/board/qnaInsert}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>글쓰기</strong></button></a> </li></br>
 		</ul>		
 	</div>
 	</th:block>
@@ -93,7 +82,7 @@
 	
 	<!-- 사용자 정의 자바스크립트 -->
 	<th:block layout:fragment="customJavaScript">
-		<script type="text/javascript">
+	<script type="text/javascript">
 		var lang_kor = {
 		        "decimal" : "",
 		        "emptyTable" : "내 농가가 없습니다",
@@ -120,6 +109,50 @@
 		}
 		
 		$('#test').sysDataTable(lang_kor);
+		
+		$('.test3').click(function(){
+			var userLevel = '[[${session.SLEVEL}]]';
+			var code=$(this).parent().children('.code').text();
+			
+			if(userLevel == '관리자'){
+				location.href = "/board/qnaboarddetail?code="+code;	
+			}else{
+				
+				swal({
+					title:"비밀번호 확인",
+					type: "input",   
+					showCancelButton: true,
+					inputPlaceholder: "비밀번호를 입력해주세요" ,
+					confirmButtonText: "확인", 
+					cancelButtonText: "취소",	
+					closeOnConfirm: false,
+					closeOnCancel: true
+				},function(inputValue){
+					$.ajax({
+						url : "/ajax/passCheck",
+						method : "POST",
+						data : {
+							code : code,
+							password:inputValue
+						},
+						success : function(data) {
+							if(data){
+								location.href = "/board/qnaboarddetail?code="+code;		
+							}
+							else{
+								swal({title:'비밀번호가 올바르지 않습니다.'});
+							}
+						},
+						error : function(xhr, status, error) {
+							console.log('xhr : ' + xhr);
+							console.log('status : ' + status);
+							console.log('error : ' + error);
+						}
+					});
+				})
+			}
+			
+		})
 		
 		</script>
 	</th:block>
