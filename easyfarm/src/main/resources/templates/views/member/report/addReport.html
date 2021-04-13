@@ -13,22 +13,7 @@
 	
 	<th:block layout:fragment="customCss">
 	<style>
-			button {
-		    border: 0;
-		    border-radius: 0;
-		    padding: 0;
-		    outline: none;
-		    cursor: pointer;
-		    background-color: transparent;
-		    font-family: 'Noto Sans KR', sans-serif;
-		    
-		}
-		.btn {
-		  
-		    width: 100%;
-		 
-		    
-		}
+		
 		
 		  
 	
@@ -129,13 +114,14 @@
 									
 								
 									<div class="form-group">
-										<div class="col-sm-offset-2 col-sm-4 ">
-											<button type="submit" id="check" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px;">등록</button>
-										</div>
-										<div class="col-sm-offset-1 col-sm-4 ">
-											<a th:href="@{/}"><button type="button" id="cancel" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px;">취소</button></a>
+										<div class="col-sm-offset-4  ">
+											<button type="submit" id="check" class="btn btn-success btn-rounded waves-effect waves-light" style="margin-top: 10px;">등록</button>
+										
+											<a th:href="@{/}"><button type="button" id="cancel" class="btn btn-danger btn-rounded waves-effect waves-light" style="margin-top: 10px;">취소</button></a>
+										
 										</div>
 									</div>
+										
 								</div>
 							</div>
 						</div>

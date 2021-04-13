@@ -14,16 +14,6 @@
 	</th:block>
 	
 	
-	<!-- 사용자 정의 css -->
-	<th:block layout:fragment="customCss">
-		<style>
-		.btn-success{
-			 width: 100%;
-		}
-		
-		</style>
-	</th:block>
-	
 	
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
 	<th:block layout:fragment="customContents">
@@ -65,13 +55,12 @@
 									      <input type="text" name="memberId"  th:value="${session.SID}" readonly="readonly"  id="memberId" hidden="">
 
 									
-										<div class="col-sm-offset-2 col-sm-4 ">
-											<button type="submit" id="Check" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px;">등록</button>
+										<div class="col-sm-offset-4">
+											<button type="submit" id="Check" class="btn btn-success btn-rounded waves-effect waves-light ">등록</button>
+											<a th:href="@{/member/getAuthority}"  class="btn btn-danger btn-rounded waves-effect waves-light">취소</a>	
+											
 										</div>
-										<div class="col-sm-4 ">
-											<a th:href="@{/member/getAuthority}"><button type="button" id="addCheck" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px;">취소</button></a>
-										</div>
-									
+
 								</div>
 							</div>
 						</div>

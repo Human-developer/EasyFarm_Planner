@@ -14,11 +14,7 @@
 	<th:block layout:fragment="customCss">
 	<style>
 			
-		
-		.btn{ 
-			width: 100%;
-		   }
-		   
+
 		 
 	
 	</style>
@@ -108,12 +104,12 @@
 									    </div>
 									</div>
 								
-									<div class="form-group">
+								
 										
-									    <div class="col-sm-10">
-									      <input type="text" class="" name="memberId" hidden="" readonly="readonly" id="memberId" th:value="${session.SID}">
-									    </div>
-									</div>
+									
+									      <input type="hidden" class="" name="memberId" readonly="readonly" id="memberId" th:value="${session.SID}">
+								
+									
 									
 									<div class="form-group ">
 										<div class="">
@@ -129,14 +125,14 @@
 										</div>
 									</div>
 								
-								
-								
-									
-									<div class="form-group">
-										<div class="col-sm-10 col-sm-offset-1">
-											<button type="submit" id="addCheck" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px;">신고사유 등록</button>
+							
+									<div class="form-group">	
+										<div class="col-sm-offset-4">
+											<button type="submit"  class="btn btn-success btn-rounded waves-effect waves-light" id="addCheck">등록</button>		
+											<a th:href="@{/}"><button type="button"  class="btn btn-danger btn-rounded waves-effect waves-light">취소</button></a>	
 										</div>
-									</div>
+									</div>	
+									
 								</div>
 							</div>
 						</div>
