@@ -1,12 +1,20 @@
 package easyfarm.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import easyfarm.domain.Farm;
+import easyfarm.domain.Member;
 import easyfarm.domain.plan.EtcPay;
 import easyfarm.domain.plan.InsurancePay;
 import easyfarm.domain.plan.MachineLeasePay;
@@ -37,22 +45,40 @@ public class ResultController {
 	@Autowired
 	PlanService planService;
 	
-	@GetMapping("/result")
-	public String resultMain(Model model) {
+	
+	@PostMapping(value = "/result/getProjectNameByFarmCode", produces = "application/json")
+	public @ResponseBody List<Map<String,Object>> test( @RequestParam(value = "farmCode",required = false) String farmCode,Model model) {
+		List<Map<String,Object>> project = null;
 		
-		return "views/result/resultMain";
+		project = resultService.getProjectNameByFarmName(farmCode);
+		System.out.println(project.toString() + "muyahoooooooooooooooooooooooooooooooooooooo");
+		
+		return project;
 	}
 	
-	@GetMapping("/resultCalendar")
-	public String resultTable(Model model) {
+	@PostMapping(value = "/result/getWorkPhaseByFarmCode", produces = "application/json")
+	public @ResponseBody List<Map<String,Object>> getWorkPhaseByProjectCode( @RequestParam(value = "projectCode",required = false) String projectCode) {
+		List<Map<String,Object>> workPhase = null;
 		
-		return "views/result/resultCalendar";
+		workPhase = resultService.getWorkPhaseByProjectCode(projectCode);
+		System.out.println(workPhase.toString() + "muyahuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+		
+		return workPhase;
 	}
 	
-	@GetMapping("/resultData")
-	public String resultData(Model model) {
+	
+	
+	@GetMapping(value = "/result/resultData")
+	public String resultMain(Model model,
+			@RequestParam(value = "farmCode",required = false) String farmCode,
+			@RequestParam(value = "projectCode",required = false) String projectCode,
+			@RequestParam(value = "workPhaseCode",required = false) String workPhaseCode) {
 		
-		List<EtcPayResult> etcpayResult = resultService.getEtcPayResult();
+		System.out.println("\n\n\n\n\n\n\n\n"+farmCode+"<<farmCode \n\n\n\n\n\n\n\n\n");
+		System.out.println("\n\n\n\n\n\n\n\n"+workPhaseCode+"<<workPhaseCode \n\n\n\n\n\n\n\n\n");
+		List<EtcPayResult> etcpayResult = resultService.getEtcPayResult(workPhaseCode);
+		System.out.println("\n\n\n\n\n\n\n\n"+etcpayResult+"<<etcpayResult \n\n\n\n\n\n\n\n\n");
+		
 		List<ResourcePayResult> resourcePayResult = resultService.getResourcePayResult();
 		List<InsurancePayResult> insurancePayResult = resultService.getInsurancePayResult();
 		List<MachineLeasePayResult> machineLeasePayResult = resultService.getMachineLeasePayResult();
@@ -64,14 +90,53 @@ public class ResultController {
 		
 
 		model.addAttribute("etcpayResult", etcpayResult);
-		model.addAttribute("resourcePayResult", resourcePayResult);
-		model.addAttribute("insurancePayResult", insurancePayResult);
-		model.addAttribute("machineLeasePayResult", machineLeasePayResult);
-		model.addAttribute("machineUsePayResult", machineUsePayResult);
-		model.addAttribute("productGainResult", productGainResult);
-		model.addAttribute("resourceUsePlanResult", resourceUsePlanResult);
-		model.addAttribute("taxPayResult", taxPayResult);
-		model.addAttribute("workForcePayResult", workForcePayResult);
+		
+		 model.addAttribute("resourcePayResult", resourcePayResult);
+		 model.addAttribute("insurancePayResult", insurancePayResult);
+		 model.addAttribute("machineLeasePayResult", machineLeasePayResult);
+		 model.addAttribute("machineUsePayResult", machineUsePayResult);
+		 model.addAttribute("productGainResult", productGainResult);
+		 model.addAttribute("resourceUsePlanResult", resourceUsePlanResult);
+		 model.addAttribute("taxPayResult", taxPayResult);
+		 model.addAttribute("workForcePayResult", workForcePayResult);
+		 
+		
+		
+		return "views/result/resultAlert";
+	}
+	
+	
+	
+	
+	@GetMapping("/result")
+	public String result(Model model,HttpSession session) {
+		
+		
+		List<Map<String,Object>> farm = null;
+		
+		 if(session.getAttribute("SID") == null) {
+			 return "views/member/login";
+		 }
+		
+		String memberId = (String) session.getAttribute("SID");
+		
+		if(memberId != null) {
+			farm = resultService.getFarmName(memberId);
+			model.addAttribute("farm", farm);
+		 }
+		return "views/result/resultMain";
+	}
+	
+	@GetMapping("/resultCalendar")
+	public String resultTable(Model model) {
+		
+		return "views/result/resultCalendar";
+	}
+	
+	@GetMapping("/resultData5464654644")
+	public String resultData(Model model) {
+		
+		
 		
 		/*
 		List<EtcPay> etcPayPlan = planService.getEtcPayPlan();

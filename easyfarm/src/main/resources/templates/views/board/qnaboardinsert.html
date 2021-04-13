@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	
+	<th:block layout:fragment="customTitle">
+		<title>문의게시판</title>
+	</th:block>
+	<th:block layout:fragment="pageTitle">
+		문의
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+<!-- 	TinyMCE -->
+	<link rel="stylesheet" href="/assets/plugin/tinymce/skins/lightgray/skin.min.css">
+<!-- 	Must include this script FIRST -->
+	<script src="/assets/plugin/tinymce/tinymce.min.js"></script>
+	</th:block>
+	
+	<th:block layout:fragment="customContents">
+		<div class="box-content">
+			<h3 class="box-title">1:1 문의</h3>
+			<hr>
+			<!-- /.box-title -->
+			<table cellpadding="0" cellspacing="0" class="table_02">
+				<!-- 내용 -->
+				<tr height='30' class='board'>
+					<td class="board_bgcolor">
+						작성자
+					</td>
+					<td class="board_desc">
+						<input title="input" type="text" id='border' name="writer" maxlength="50" size="50" value="">
+					</td>
+				</tr>
+				<tr height='30' class='board'>
+					<td class="board_bgcolor">
+						휴대전화
+					</td>
+					<td class="board_desc">
+						<!-- 휴대전화 --> 
+						<input title="input" type='text' id='border' name='mobile_no1' size='4' maxlength='4' value="" /> - 
+						<input title="input" type='text' id='border' name='mobile_no2' size='4' maxlength='4' value="" /> - 
+						<input title="input" type='text' id='border' name='mobile_no3' size='4' maxlength='4' value="" />
+					</td>
+				</tr>
+				<tr height='30' class='board'>
+					<td class="board_bgcolor">
+						이메일
+					</td>
+					<td class="board_desc">
+						<input title="input" type='text' id='border' name='receiver_email' size='70' value="" />
+					</td>
+				</tr>
+				<tr height='30' class='board'>
+					<td class="board_bgcolor">
+						제목
+					</td>
+					<td class="board_desc">
+						<input title="input" type='text' class='public_input input_form' id='border' name="subject" maxlength="100" size="70" value="" />
+					</td>
+				</tr>
+				<tr height='30'>
+					<td colspan='2' align='center' width='100%'>
+						<textarea id="tinymce">
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa ad consequatur illum unde! Sapiente accusantium, officiis ab velit sunt, perspiciatis ducimus expedita voluptates corrupti hic eligendi iusto ad error id!</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab sapiente ratione quidem aut rerum asperiores tenetur, minus eveniet porro! Quo, quos harum accusamus sapiente perspiciatis dicta ratione tempore officia.</p>
+							<ul>
+								<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
+								<li>Culpa ad consequatur illum unde! Sapiente accusantium.</li>
+								<li>A ab sapiente ratione quidem aut rerum asperiores tenetur</li>
+								<li>Quo, quos harum accusamus sapiente perspiciatis</li>
+								<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
+							</ul>
+						</textarea>
+					</td>
+				</tr>
+				<tr height='30' class='board'>
+					<td class="board_bgcolor">
+						비밀번호
+					</td>
+					<td class="board_desc"> 
+						<input title="input" type='password' id='border' name='password' maxlength='20' size='20' />
+					</td>
+				</tr>
+	
+				<input type="hidden" id="board_id" value="2" />
+				<input title="input" type="text" name="maybe" style="display: none" />
+				<!-- //내용 -->
+			</table>
+			
+		</div>
+		<div class="box-content">
+			<ul class="list-inline">
+				<li class="margin-bottom-10"><a th:href="@{/board/qnaList}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>목록</strong></button></a> </li>
+				<li ><a th:href="@{/#}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>등록</strong></button></a> </li></br>
+			</ul>		
+		</div>
+		
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+		<div th:replace="fragments/dataTable :: dataTable" th:remove="tag"></div>
+		<!-- TinyMCE -->
+<!-- 	Plugin Files DON'T INCLUDES THESES FILES IF YOU USE IN THE HOST -->
+	<link rel="stylesheet" href="/assets/plugin/tinymce/skins/lightgray/skin.min.css">
+	<script src="/assets/plugin/tinymce/plugins/advlist/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/anchor/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/autolink/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/autoresize/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/autosave/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/bbcode/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/charmap/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/code/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/codesample/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/colorpicker/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/contextmenu/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/directionality/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/emoticons/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/example/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/example_dependency/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/fullpage/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/fullscreen/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/hr/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/image/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/imagetools/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/importcss/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/insertdatetime/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/layer/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/legacyoutput/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/link/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/lists/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/media/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/nonbreaking/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/noneditable/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/pagebreak/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/paste/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/preview/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/print/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/save/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/searchreplace/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/spellchecker/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/tabfocus/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/table/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/template/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/textcolor/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/textpattern/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/visualblocks/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/visualchars/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/plugins/wordcount/plugin.min.js "></script>
+	<script src="/assets/plugin/tinymce/themes/modern/theme.min.js"></script>
+<!-- 	Plugin Files DON'T INCLUDES THESES FILES IF YOU USE IN THE HOST -->
+
+	<script src="/assets/scripts/tinymce.init.min.js"></script>	
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+		
+	</th:block>
+
+</html>

@@ -1,6 +1,7 @@
 package easyfarm.domain.plan;
 
 public class InsurancePay {
+	
 	// 보험료지출계획코드
     private String insurePayCode;
 
@@ -22,8 +23,13 @@ public class InsurancePay {
     // 예상총보험비
     private String insurePayTotal;
 
+<<<<<<< HEAD
     // 작성자농가회원코드
 
+=======
+    // 작성자농가회원아이디
+
+>>>>>>> develop
     private String regMemberId;
 
     // 작성일

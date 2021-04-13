@@ -9,7 +9,8 @@ public class FarmMember {
 	private String farmLevelName;
 	private String farmJoinApprovalDate;
 	private String farmMemberStatus;
-	
+	private String farmMemberAge;
+	private Member member;	
 	
 	public String getFarmMemberCode() {
 		return farmMemberCode;
@@ -59,7 +60,19 @@ public class FarmMember {
 	public void setFarmMemberStatus(String farmMemberStatus) {
 		this.farmMemberStatus = farmMemberStatus;
 	}
+	public Member getMember() {
+		return member;
+	}
+	public void setMember(Member member) {
+		this.member = member;
+	}
 	
+	public String getFarmMemberAge() {
+		return farmMemberAge;
+	}
+	public void setFarmMemberAge(String farmMemberAge) {
+		this.farmMemberAge = farmMemberAge;
+	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -67,6 +80,8 @@ public class FarmMember {
 		builder.append(farmMemberCode);
 		builder.append(", farmCode=");
 		builder.append(farmCode);
+		builder.append(", farmName=");
+		builder.append(farmName);
 		builder.append(", farmMemberId=");
 		builder.append(farmMemberId);
 		builder.append(", farmLevelCode=");
@@ -77,9 +92,15 @@ public class FarmMember {
 		builder.append(farmJoinApprovalDate);
 		builder.append(", farmMemberStatus=");
 		builder.append(farmMemberStatus);
+		builder.append(", farmMemberAge=");
+		builder.append(farmMemberAge);
+		builder.append(", member=");
+		builder.append(member);
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	
 	
 	
 	

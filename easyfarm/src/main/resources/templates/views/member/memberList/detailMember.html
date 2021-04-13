@@ -20,8 +20,6 @@
 	<th:block layout:fragment="customCss">
 		<style>
 		
-		
-
 		</style>
 	</th:block>
 	
@@ -38,14 +36,9 @@
 					<h3>회원 상세보기</h3>
 					<hr>
 						<div class=" col-sm-3 ">
-						
-							<!-- <a href="" class="avatar"><img th:src="@{/assets/images/avatar-sm-5.jpg}"  style="width: 50%;" alt=""><span class="status online"></span></a> -->
-				<input type=file name='file1' style='display: none;'> 
-
-
 
 						</div>
-					<div class="col-sm-6 col-sm-offset-2" style="margin-left: 0px;">
+					<div class=" col-sm-6 " style="margin-left: 0px;">
 						<table class="table"  th:with="m = ${member}">
 							<tbody>
 								<tr>
@@ -58,7 +51,8 @@
 								</tr>
 								<tr>
 									<th>이메일</th>
-									<td th:text="${m.memberEmail}"></td>
+									<td th:text="${m.memberEmail}"> </td> 
+									<td> <a th:href="@{/member/modifyEmail(email=${m.memberEmail})}"><button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">변경</button></a></td>
 								</tr>
 								<tr>
 									<th>주소</th>

@@ -25,6 +25,28 @@
 		<result property="farmLevelName" column="farm_level_name"/>
 		<result property="farmJoinApprovalDate" column="farm_join_approval_date"/>
 		<result property="farmMemberStatus" column="farm_member_status"/>
+		<result property="farmMemberAge" column="member_age"/>
+		<association property="member" javaType ="Member">
+			<id property="memberId" 		column="member_id"/>
+			<result property="memberPw"		column="member_pw"/>
+			<result property="memberName" 	column="member_name"/>
+			<result property="levelCode"	 	column="level_code"/>
+			<result property="memberGender" 	column="member_gender"/>
+			<result property="memberAddress" 	column="member_address"/>
+			<result property="memberEmail" 	column="member_email"/>
+			<result property="memberPhone" 	column="member_phone"/>
+			<result property="memberIdenNum" 	column="member_iden_num"/>
+			<result property="memberRegDate"	column="member_reg_date"/>
+			<result property="memberStatus" 	column="member_status"/>
+			<result property="levelName" 		column="level_name"/>
+			<result property="useStatus" 		column="use_status"/>
+			<result property="memberRegDate" 	column="reg_date"/>
+			
+			<result property="loginCode" 		column="login_code"/>
+			<result property="loginMemberId" 	column="login_member_id"/>
+			<result property="loginDate" 		column="login_date"/>
+			<result property="logoutDate" 	column="logout_date"/>
+		</association>
 	</resultMap>
 	
 	<resultMap type="FarmMemberJoin" id="farmJoinResultMap">
@@ -50,6 +72,59 @@
 		</association>
 	</resultMap>
 	
+	
+	<resultMap type="FarmCancelRequest" id="farmCancelMemberResultMap">
+		<id property="cancelRequestCode" column="farm_cancel_request_code" />
+		<result property="cancelRequestMemberCode" column="farm_cancel_request_farm_member_code"/>
+		<result property="farmCode" column="farm_code"/>
+		<result property="cancelRequestReason" column="farm_cancel_request_reason"/>
+		<result property="cancelRequestDate" column="farm_cancel_request_date"/>
+		<result property="cancelApproval" column="farm_cancel_approval"/>
+		<result property="cancelApprovalReason" column="farm_cancel_approval_reason"/>
+		<result property="cancelApprovalDate" column="farm_cancel_approval_date"/>
+		<result property="cancelApprovalMemberId" column="farm_cancel_approval_member_id"/>
+		<association property="farmMember" javaType="FarmMember">
+			<id property="farmMemberCode" column="farm_member_code" />
+			<result property="farmCode" column="farm_code"/>
+			<result property="farmMemberId" column="farm_member_id"/>
+			<result property="farmLevelCode" column="farm_level_code"/>
+			<result property="farmLevelName" column="farm_level_name"/>
+			<result property="farmJoinApprovalDate" column="farm_join_approval_date"/>
+			<result property="farmMemberStatus" column="farm_member_status"/>
+		</association>
+		<association property="member" javaType ="Member">
+			<id property="memberId" 		column="member_id"/>
+			<result property="memberPw"		column="member_pw"/>
+			<result property="memberName" 	column="member_name"/>
+			<result property="levelCode"	 	column="level_code"/>
+			<result property="memberGender" 	column="member_gender"/>
+			<result property="memberAddress" 	column="member_address"/>
+			<result property="memberEmail" 	column="member_email"/>
+			<result property="memberPhone" 	column="member_phone"/>
+			<result property="memberIdenNum" 	column="member_iden_num"/>
+			<result property="memberRegDate"	column="member_reg_date"/>
+			<result property="memberStatus" 	column="member_status"/>
+			<result property="levelName" 		column="level_name"/>
+			<result property="useStatus" 		column="use_status"/>
+			<result property="memberRegDate" 	column="reg_date"/>
+			
+			<result property="loginCode" 		column="login_code"/>
+			<result property="loginMemberId" 	column="login_member_id"/>
+			<result property="loginDate" 		column="login_date"/>
+			<result property="logoutDate" 	column="logout_date"/>
+		</association>
+		<association property="farm" javaType="Farm">
+			<id property="farmCode" column="farm_code" />
+			<result property="farmName" column="farm_name"/>
+			<result property="ceoId" column="ceo_member_id"/>
+			<result property="farmMemberLevel" column="farm_level_code"/>
+			<result property="farmArea" column="farm_area"/>
+			<result property="farmAddress" column="farm_address"/>
+			<result property="farmPublicStatus" column="farm_public_status"/>
+			<result property="farmRegDate" column="farm_reg_date"/>
+			<result property="farmMemberCount" column="farm_member_count"/>
+		</association>
+	</resultMap>
 	
 	<select id="farmByName" resultMap="farmResultMap" parameterType="String" >
 		SELECT 
@@ -99,7 +174,7 @@
 		VALUES 
 			( 
 			sf_farm_member_max_code(),
-			sf_addmember_farm_code(#{farmCode}), 
+			sf_add_member_farm_code(#{farmCode}), 
 			#{farmMemberId}, 
 			#{farmLevelCode}, 
 			NOW(), 
@@ -116,7 +191,8 @@
 			f.farm_area, 
 			f.farm_address, 
 			f.farm_public_status, 
-			f.farm_reg_date
+			f.farm_reg_date,
+			sf_farm_member_count(f.farm_code) AS 'farm_member_count'
 		FROM 
 			tb_farm f
 			join
@@ -161,7 +237,8 @@
 			f.farm_area, 
 			f.farm_address, 
 			f.farm_public_status, 
-			f.farm_reg_date
+			f.farm_reg_date,
+			sf_farm_member_count(f.farm_code) AS 'farm_member_count'
 		FROM 
 			tb_farm_member as fm
 			join
@@ -247,13 +324,20 @@
 			fm.farm_level_code, 
 			fml.farm_level_name,
 			fm.farm_join_approval_date, 
-			fm.farm_member_status
+			fm.farm_member_status,
+			m.member_name,
+			m.member_phone,
+			sf_iden_num_age(m.member_iden_num) AS member_age
 		FROM 
 			tb_farm_member AS fm
 			join
 			tb_farm_member_level AS fml
 			on
 			fm.farm_level_code = fml.farm_level_code
+			join
+			tb_member AS m
+			on
+			m.member_id = fm.farm_member_id
 		WHERE
 			fm.farm_code =#{farmCode}
 			AND
@@ -412,15 +496,226 @@
 	
 	
 	<select id="getFarmMemberLevel" resultType="String" parameterType="String">
+		SELECT sf_code_id_by_level(#{farmCode},#{memberId});
+	</select>
+	
+	
+	<select id="addCancelMemberCheck" resultMap="farmCancelMemberResultMap" parameterType="String">
 		SELECT 
-			farm_level_code
+				fcr.farm_cancel_request_code, 
+				fcr.farm_cancel_request_farm_member_code, 
+				fcr.farm_code, 
+				fcr.farm_cancel_request_reason, 
+				fcr.farm_cancel_request_date, 
+				fcr.farm_cancel_approval, 
+				fcr.farm_cancel_approval_reason, 
+				fcr.farm_cancel_approval_date, 
+				fcr.farm_cancel_approval_member_id
+			FROM 
+				tb_farm_cancel_request AS fcr
+			WHERE
+				fcr.farm_cancel_approval_member_id IS null
+				AND
+				fcr.farm_code = sf_add_member_farm_code(#{farmName})
+				AND
+				fcr.farm_cancel_request_farm_member_code = sf_id_farm_code_by_farm_member_code(#{memberId}, sf_add_member_farm_code(#{farmName}))
+	
+	</select>
+	<insert id="addCancelMember" parameterType="String">
+		INSERT INTO tb_farm_cancel_request
+			(
+			farm_cancel_request_code, 
+			farm_cancel_request_farm_member_code, 
+			farm_code, 
+			farm_cancel_request_reason, 
+			farm_cancel_request_date
+			)
+		VALUES 
+			(
+			sf_farm_cancel_request_max_code(),
+			sf_id_farm_code_by_farm_member_code(#{memberId}, sf_add_member_farm_code(#{farmName})), 
+			sf_add_member_farm_code(#{farmName}), 
+			#{cancelRequestReason}, 
+			NOW()
+			)
+	</insert>
+	
+	<select id="getLeaverFarm" resultMap="farmCancelMemberResultMap" parameterType="String">
+		SELECT 
+			fcr.farm_cancel_request_code, 
+			fcr.farm_cancel_request_farm_member_code, 
+			fcr.farm_code, 
+			fcr.farm_cancel_request_reason, 
+			fcr.farm_cancel_request_date, 
+			fcr.farm_cancel_approval, 
+			fcr.farm_cancel_approval_reason, 
+			fcr.farm_cancel_approval_date, 
+			fcr.farm_cancel_approval_member_id,
+			fm.farm_member_id,
+			fm.farm_join_approval_date,
+			m.member_name
+		FROM 
+			tb_farm_cancel_request AS fcr
+			join
+			tb_farm_member AS fm
+			ON
+			fm.farm_member_code = fcr.farm_cancel_request_farm_member_code
+			join
+			tb_member AS m
+			on
+			m.member_id = fm.farm_member_id
+		WHERE
+			fcr.farm_cancel_approval_member_id IS null
+			AND
+			fcr.farm_code = #{farmCode}
+			AND
+			fcr.farm_cancel_request_farm_member_code != sf_id_farm_code_by_farm_member_code(#{memberId}, #{farmCode})
+	</select>
+			
+	<update id="isLeaverFarm" parameterType="FarmCancelRequest">
+		UPDATE tb_farm_cancel_request
+		SET
+			farm_cancel_approval=#{cancelApproval},
+			farm_cancel_approval_reason=#{cancelApprovalReason},
+			farm_cancel_approval_date=NOW(),
+			farm_cancel_approval_member_id=#{cancelApprovalMemberId}
+		WHERE 
+			farm_cancel_request_code=#{cancelRequestCode}
+	
+	</update>
+	
+	<update id="leaverFarmMember" parameterType="String">
+		UPDATE tb_farm_member
+		SET
+			farm_member_status='탈퇴'
+		WHERE 
+			farm_member_code = sf_farm_cancel_request_code_is_member_code(#{cancelRequestCode})
+	</update>
+	
+	<select id="myGetLeaverFarm" resultMap="farmCancelMemberResultMap" parameterType="String">
+		SELECT 
+			fcr.farm_cancel_request_code, 
+			fcr.farm_cancel_request_farm_member_code, 
+			fcr.farm_code, farm_cancel_request_reason, 
+			fcr.farm_cancel_request_date, 
+			fcr.farm_cancel_approval, 
+			fcr.farm_cancel_approval_reason, 
+			fcr.farm_cancel_approval_date, 
+			fcr.farm_cancel_approval_member_id,
+			f.farm_name,
+			f.ceo_member_id,
+			f.farm_area,
+			f.farm_address
+		FROM 
+			tb_farm_cancel_request AS fcr
+			join
+			tb_farm_member AS fm
+			on
+			fm.farm_member_code = fcr.farm_cancel_request_farm_member_code
+			join
+			tb_farm AS f
+			on
+			f.farm_code = fcr.farm_code
+		WHERE
+			fm.farm_member_id =#{memberId}
+	</select>
+	
+	<delete id="cancelLeaverFarm" parameterType="String">
+		DELETE 
+		FROM 
+			tb_farm_cancel_request 
+		WHERE 
+			farm_cancel_request_code=#{cancelLeaverFarm};
+	</delete>
+	
+	<select id="farmMemeberList" resultMap="farmMemberResultMap" parameterType="String">
+		SELECT 
+			fm.farm_member_code, 
+			fm.farm_member_id, 
+			fm.farm_level_code,
+			m.member_name
+		FROM 
+			tb_farm_member AS fm
+			JOIN
+			tb_member AS m
+			on
+			fm.farm_member_id = m.member_id
+		WHERE
+			fm.farm_code =  #{farmCode}
+			AND
+			fm.farm_member_status = '정상'
+			AND
+			fm.farm_level_code != 'farm_level_1';
+	</select>
+	
+	<update id="modifyCeoFarmProcedure" parameterType="String">
+		CALL sp_farm_member_code_by_farm_ceo_modify(#{farmMemberCode});
+	</update>
+	
+	<select id="farmCeoMemberCode" resultType="String" parameterType="String">
+		SELECT 
+			farm_member_code
 		FROM 
 			tb_farm_member
 		WHERE
-			farm_member_id = #{memberId}
+			farm_member_status = '정상'
 			AND
-			farm_code = #{farmCode}
+			farm_level_code = 'farm_level_1'
+			AND
+			farm_code = #{farmCode};
 	</select>
+	
+	<update id="modifyFarmMemberLevel" parameterType="String">
+		UPDATE tb_farm_member
+		SET
+			farm_level_code=#{memberLevel}
+		WHERE 
+			farm_member_code=#{farmMemberCode};
+	</update>
+	
+	<update id="modifyFarmCeo" parameterType="String">
+		UPDATE tb_farm
+		SET
+			ceo_member_id=#{memberId}
+		WHERE 
+			farm_code=#{farmCode};
+	</update>
+	
+	
+	<select id="modifyFarmCeoCheck" resultType="boolean" parameterType="String">
+		SELECT sf_modify_Ceo_Farm_Check(#{ceoMemberCode}, #{memberCode}, #{memberId}, #{farmCode})
+	</select>
+	
+	<update id="deportationFarmMember" parameterType="String">
+		UPDATE tb_farm_member
+		SET
+			farm_member_status='탈퇴'
+		WHERE 
+			farm_member_code=#{farmMemberCode}
+	</update>
+	
+	<insert id="deportationCancelRequest" parameterType="String">
+		INSERT INTO tb_farm_cancel_request
+			(farm_cancel_request_code, 
+			farm_cancel_request_farm_member_code, 
+			farm_code, 
+			farm_cancel_request_reason, 
+			farm_cancel_request_date, 
+			farm_cancel_approval, 
+			farm_cancel_approval_reason, 
+			farm_cancel_approval_date, 
+			farm_cancel_approval_member_id)
+		VALUES 
+			(sf_farm_cancel_request_max_code(), 
+			#{farmMemberCode}, 
+			#{farmCode}, 
+			'추방', 
+			NOW(), 
+			'탈퇴승인', 
+			'추방', 
+			NOW(), 
+			#{memberId})
+	</insert>
 </mapper>
 
 

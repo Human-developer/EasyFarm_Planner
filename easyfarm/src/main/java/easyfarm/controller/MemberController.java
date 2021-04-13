@@ -4,15 +4,18 @@ package easyfarm.controller;
 
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,120 +29,32 @@ import easyfarm.domain.Member;
 import easyfarm.domain.Report;
 import easyfarm.service.MemberService;
 
+
 @Controller
 public class MemberController {
+	
 	
 	@Autowired
 	MemberService memberService;
 	
-	 
-	// 매일 00시에 자동실행
-	@Scheduled(cron="0 0 00 * * ?")
-	public void scheduler(){
-		
-	   
-		Date today = new Date();
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
-		Calendar cal = Calendar.getInstance();
-		 
-		List<Report> reportMember = memberService.getSuspend();
-		 
-		//정지해제
-		for(Report report : reportMember) {
-				 
-		    Date banEndDate = report.getBanEndDate();
-		    String banCode = report.getBanCurrentCode();
-		    String banId = report.getBanMemberId();
+	@Autowired
+	private JavaMailSender javaMailSender;
+	
 
-		    String toDay= simpleDate.format(today);
-		    String banEndDay = simpleDate.format(banEndDate);
-		    
-		    int compare = toDay.compareTo(banEndDay);
-		    	
-		    if(compare > 0) {
-		      memberService.removeBan(banCode,banId);
-		    }
-		}
-		    
-	     
-	   
-		int restDate = memberService.getStatusDays("휴면");
-		int withdrawalDate = memberService.getStatusDays("탈퇴");
-		List<Member> loginMaxDateList = memberService.getLoginMaxDate();
-		List<Report> expectedList = memberService.getExpectedDate();
-		List<String> idList = new ArrayList<String>();
-		   
-		for(Report expected : expectedList ) {
-			   
-			idList.add(expected.getLoginMemberId());
-		}
-		   
-	  
-	   
-	   for(Member login : loginMaxDateList) {
-		   
-		   Date logoutDate = login.getLogoutDate();
-		   String loginId = login.getLoginMemberId();
-		   
-		   cal.setTime(logoutDate);
-		   cal.add(cal.DATE, restDate); // 셋팅된 날에 기준일을 더해준다
-		   Date restDay = cal.getTime();
-		   String autoRestDate = format.format(restDay);//자동휴면일
-		   
-		   cal.setTime(logoutDate);
-		   cal.add(cal.DATE, withdrawalDate); // 셋팅된 날에 기준일을 더해준다 
-		   Date withdrawalDay = cal.getTime();
-		   String autoWithdrawalDate = format.format(withdrawalDay); //자동탈퇴일
-		   
-		  //자동휴면|탈퇴 예정일조회 테이블에 아이디없을시 등록
-		  if(!idList.contains(loginId)) {
-			  memberService.addStatusSchedule(loginId,autoRestDate,autoWithdrawalDate);
-			  
-		  //아이디가 있을시 예정일 업데이트 
-		  }else if(idList.contains(loginId)) {
-				  
-				  memberService.updateStatusSchedule(loginId,autoRestDate,autoWithdrawalDate);
-		  }
-			 
-		  
-	   }
-	   
-	   for(Report expected : expectedList) {
-		 Date RestDay = expected.getAutoRestDate(); //자동휴면일
-		 Date WithdrawalDay = expected.getAutoWithdrawalDate(); //자동탈퇴일
-		 String memberId = expected.getLoginMemberId(); //로그인아이디
-		   
-		   int compare = today.compareTo(RestDay);
-		   int Comparison = today.compareTo(WithdrawalDay);
-		   
-		   if(compare > 0) {
-			   Member member = memberService.getMemberInfoById(memberId);
-			   System.out.println(" 탈퇴히ㅗ원 발생wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
-			   String useStatus = member.getUseStatus();
-			   //상태 휴면으로 변경
-			   memberService.removeUpdateMember(memberId,useStatus);
-		   }
-		   
-		   if(Comparison > 0) {
-			   System.out.println(" 탈퇴히ㅗ원 발생wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
-			   Member member = memberService.getMemberInfoById(memberId);
-			   member.setUseStatus("탈퇴");
-			   //회원목록에서는 상태탈퇴로 변경
-			   memberService.removeUpdateMember(member);
-			   //탈퇴회원등록
-			   member.setCancelMemberReason("자동탈퇴");
-			   memberService.addCancelMember(member);
-		   }
-		   
-	   }
-	   
-	   
-	   
+	 //메일 속도 단축을 위한 쓰레드활용
+	 public Runnable createRunnable(final SimpleMailMessage message) {
+		 return new Runnable() {
+		 	 @Override
+			 public void run() {
+				 javaMailSender.send(message);
+			 }			
+		 };
 	 }
+	
 	
 	 @GetMapping("/member")
 	 public String member() {
+	
 		 return "views/member/member";
 	 }
 
@@ -155,12 +70,14 @@ public class MemberController {
 	 }
 
 	 @PostMapping("/member/login")
-	 public String login(
+	 @ResponseBody
+	 public Map<String, Object> login(
 			 @RequestParam(value = "memberId", required = false) String memberId,
 			 @RequestParam(value = "memberPw", required = false) String memberPw, HttpSession session) 	
 	 {
 		
 		 String msg = "로그인실패";
+		 Map<String, Object> map = new HashMap<String, Object>();
 		
 		 if (memberId != null && !"".equals(memberId.trim()) && memberPw != null && !"".equals(memberPw.trim())) 
 		 {
@@ -172,9 +89,10 @@ public class MemberController {
 				 if (member.getMemberPw().equals(memberPw))
 				 {
 					 if(member.getMemberStatus() != "탈퇴" && !"탈퇴".equals(member.getMemberStatus().trim()) && 
-					    member.getMemberStatus() != "정지" &&	 !"정지".equals(member.getMemberStatus().trim())) {
+					    member.getMemberStatus() != "정지" &&	 !"정지".equals(member.getMemberStatus().trim()) &&
+					    member.getMemberStatus() != "휴면" &&	 !"휴면".equals(member.getMemberStatus().trim()) ) {
 						 if(session.getAttribute("SID") == null) {
-							 //memberService.updateLogin(memberId);							
+							// memberService.updateLogin(memberId);							
 						 }
 					
 						 // 아이디
@@ -183,29 +101,25 @@ public class MemberController {
 						 session.setAttribute("SNAME", member.getMemberName());
 						 // 이름
 						 session.setAttribute("SLEVEL", member.getLevelName());
-					 
-									
-					 	return "main";
+						msg = "로그인성공";
+						map.put("msg", msg);			
+					 	return map; 					 	 					 	
 					 	
 					 }else if(member.getMemberStatus() == "탈퇴" || "탈퇴".equals(member.getMemberStatus().trim())){
 						 msg = "탈퇴회원입니다";
-						
-						
-						 session.setAttribute("Error", msg);
-						 return "redirect:/member/login";
-					
+						 map.put("msg", msg);
+						 return map;
+				
 					 }else if(member.getMemberStatus() == "정지" || "정지".equals(member.getMemberStatus().trim())){
 						
 						 msg = "정지회원입니다";
-						 session.setAttribute("Error", msg);
-						
-					 	 return "redirect:/member/login";
+						 map.put("msg", msg);
+						 return map;
 					 }else if(member.getMemberStatus() == "휴면" || "휴면".equals(member.getMemberStatus().trim())) {
 						 
 						 msg = "휴면회원입니다";
-						 session.setAttribute("Error", msg);
-						 
-						 return "";				 
+						 map.put("msg", msg);
+						 return map;
 					 }
 					
 				 }
@@ -213,10 +127,78 @@ public class MemberController {
 			 }
 					
 		 }
-		 session.setAttribute("Error", msg);
-		 return "redirect:/member/login";
+		 
+		 map.put("msg", msg);
+		 return map;
 	 }
-	 //로그인기록 조회 34ms
+	 //휴면해제 이메일인증 Ajex
+	 @PostMapping("/member/releaseMember")
+	 @ResponseBody
+	 public Map<String, Object> releaseMember(@RequestParam(value = "memberId", required = false) String memberId,@RequestParam(value = "mail",required = false)String mail) {
+		
+		 Map<String, Object> map = new HashMap<String, Object>();
+		
+		 System.out.println(memberId);
+		 System.out.println(mail);
+		 Member member = memberService.getMemberInfoById(memberId);
+		 if(member != null) {
+				 		
+			 if(member.getMemberStatus() == "휴면" || "휴면".equals(member.getMemberStatus().trim())) {
+			
+				 if(mail.equals(member.getMemberEmail())) {	
+					  Random random=new Random();  //난수 생성을 위한 랜덤 클래스
+					  String key="";  //인증번호 
+					
+					  SimpleMailMessage message = new SimpleMailMessage();
+					  message.setTo(mail); //스크립트에서 보낸 메일을 받을 사용자 이메일 주소 
+					  //입력 키를 위한 코드
+					  for(int i =0; i<3;i++) {
+						  int index=random.nextInt(25)+65; //A~Z까지 랜덤 알파벳 생성
+						  key+=(char)index;
+					  }
+					  int numIndex=random.nextInt(9999)+1000; //4자리 랜덤 정수를 생성
+					  key+=numIndex;
+					  message.setSubject("인증번호 입력을 위한 메일 전송");
+					  message.setText("인증 번호 : "+key);
+					  map.put("mailAuthKey", key);
+					  map.put("msg", "인증번호가 전송되었습니다.");
+					  map.put("memberId", memberId);
+					  Thread thread = new Thread(createRunnable(message));
+					  thread.start();
+					  thread = null;
+					  return map;
+				 }else {
+					 map.put("msg", "아이디와 등록된 이메일이 일치하지 않습니다");
+					 return map;			 
+				 }
+				 
+			 }
+		
+		 }
+		 map.put("msg", "휴면상태인 아이디를 입력해주세요");
+		 return map;			 
+		 
+	 }
+	 //휴면해제
+	 @GetMapping("/member/releaseMember")
+	 public String releaseMember() {
+		 
+		 
+		 return"views/member/releaseMember";
+		 
+	 }
+	 @GetMapping("/member/modifyReleaseMembmer")
+	 public String releaseMember(@RequestParam(value = "memberId", required = false) String memberId) {
+		 System.out.println(memberId + "11111111111111111111111");
+		 if(memberId != null) {
+			 Member member = memberService.getMemberInfoById(memberId);
+			 member.setMemberStatus("정상");
+			 memberService.removeUpdateMember(member);
+		 }
+		 return"views/member/login";
+		 
+	 }
+	
 	 @GetMapping("/member/getLoginHistory")
 	 public String getloginHistory(Model model) {
 		 long start = System.currentTimeMillis();
@@ -287,15 +269,17 @@ public class MemberController {
 
 		 return "main";
 	 }
+	 
 	 //아이디 중복체크
 	 @PostMapping("/ajax/idCheck")
 	 public @ResponseBody String idChdck(@RequestParam(value = "memberId", required = false) String memberId) {
 	 	 String result = "사용불가능";
 	
-		 if (memberId != null && !"".equals(memberId) && !"".equals(memberId.trim())) {
+		 if(memberId != null && !"".equals(memberId) && !"".equals(memberId.trim())) {
+			 
 			 Member member = memberService.getMemberInfoById(memberId);
 	
-			 if (member != null && member.getMemberId().equals(memberId)) {
+			 if(member != null && member.getMemberId().equals(memberId)) {
 				 result = "사용불가능";
 			 } else {
 				 result = "사용가능";
@@ -303,42 +287,192 @@ public class MemberController {
 		 }
 	
 		 return result;
+	 }
+	 //메일인증
+	 @PostMapping("/checkMail") // AJAX와 URL을 매핑시켜줌 
+	 @ResponseBody  //AJAX후 다시 응답을 보내는게 아니기 때문에 적어줌, 안 적으면 이메일이 가도 개발자 도구에서 404오류가 뜸
+	 public Map<String, Object> SendMail(@RequestParam(name="mail", required = false) String mail) {
+		
+		 System.out.println("화면에서 받은 메일주소: " + mail);
+		 Member member = memberService.getMemberInfoByEmail(mail);
+		 Map<String, Object> map = new HashMap<String, Object>();
+		 if(member != null) {
+			 map.put("msg", "이미 등록된이메일입니다");
+		 }else {
+			 
+			  Random random=new Random();  //난수 생성을 위한 랜덤 클래스
+			  String key="";  //인증번호 
+			
+			  SimpleMailMessage message = new SimpleMailMessage();
+			  message.setTo(mail); //스크립트에서 보낸 메일을 받을 사용자 이메일 주소 
+			  //입력 키를 위한 코드
+			  for(int i =0; i<3;i++) {
+				  int index=random.nextInt(25)+65; //A~Z까지 랜덤 알파벳 생성
+				  key+=(char)index;
+			  }
+			  int numIndex=random.nextInt(9999)+1000; //4자리 랜덤 정수를 생성
+			  key+=numIndex;
+			  message.setSubject("인증번호 입력을 위한 메일 전송");
+			  message.setText("인증 번호 : "+key);
+			  map.put("mailAuthKey", key);
+			  map.put("msg", "사용가능한 이메일입니다");
+			  Thread thread = new Thread(createRunnable(message));
+			  thread.start();
+			  thread = null;
+		 }	
+			  
+		 return map;
+		  
+	 }
+	 
+	 // 아이디 찾기
+	 @GetMapping("/member/findId")
+	 public String findId() {
+		 return "views/member/findId";
+	 }
+	 
+	 @PostMapping("/member/findId") // AJAX와 URL을 매핑시켜줌 
+	 @ResponseBody  //AJAX후 다시 응답을 보내는게 아니기 때문에 적어줌, 안 적으면 이메일이 가도 개발자 도구에서 404오류가 뜸
+	 public Map<String, Object> findId(@RequestParam(name="mail", required = false) String mail) {
+		
+		System.out.println("화면에서 받은 메일주소: " + mail);
+		Map<String, Object> map = new HashMap<String, Object>();
+		Member member = memberService.getMemberInfoByEmail(mail); 
+		if(member != null) {
+			
+			Random random=new Random();  //난수 생성을 위한 랜덤 클래스?
+			String key="";  //인증번호 
+			
+			SimpleMailMessage message = new SimpleMailMessage();
+			message.setTo(mail); //스크립트에서 보낸 메일을 받을 사용자 이메일 주소 
+			//입력 키를 위한 코드
+			for(int i =0; i<3;i++) {
+				int index=random.nextInt(25)+65; //A~Z까지 랜덤 알파벳 생성
+				key+=(char)index;
+			}
+			int numIndex=random.nextInt(9999)+1000; //4자리 랜덤 정수를 생성
+			key+=numIndex;
+			message.setSubject("인증번호 입력을 위한 메일 전송");
+			message.setText("인증 번호 : "+key);
+		
+			map.put("mailAuthKey", key);
+			map.put("memberId", member.getMemberId());
+				
+			Thread thread = new Thread(createRunnable(message));
+			thread.start();
+			thread = null;
+			 return map;
+		 }
+		 map.put("msg", "등록되지 않은 이메일입니다");
+		 return map;
+	 }
+	 // 비밀번호 찾기
+	 @GetMapping("/member/findPw")
+	 public String findPw() {
+		 return "views/member/findPw";
+	 }
+	  
+	 @PostMapping("/member/findPw") // AJAX와 URL을 매핑시켜줌 
+	 @ResponseBody  //AJAX후 다시 응답을 보내는게 아니기 때문에 적어줌, 안 적으면 이메일이 가도 개발자 도구에서 404오류가 뜸
+	 public Map<String, Object> findPw(@RequestParam(name="mail", required = false) String mail,
+			  						@RequestParam(name="memberId", required = false) String memberId) {
+		  long start = System.currentTimeMillis();
+		  try {
+			  System.out.println("화면에서 받은 메일주소: " + mail);
+			  Map<String, Object> map = new HashMap<String, Object>();
+			  Member member = memberService.getMemberInfoByEmail(mail); 
+		  
+			  if(memberId.trim().equals(member.getMemberId())) {
+					
+					  SimpleMailMessage message = new SimpleMailMessage();
+					  message.setTo(mail); //스크립트에서 보낸 메일을 받을 사용자 이메일 주소 
+					  //입력 키를 위한 코드
+					  message.setSubject("easyFarm 비밀번호찾기 ");
+					  message.setText("비밀번호 : "+ member.getMemberPw());
+					  	  
+					  Thread thread = new Thread(createRunnable(message));
+					  thread.start();
+					  thread = null;
+					  return map;
+			  }else {
+				  
+					  map.put("msg","이메일과 등록된 아이디가 일치하지 않습니다");
+					  return map;		  
+			  }
+		
+		  }finally {
+				 long finish = System.currentTimeMillis();
+				 long timeMs = finish - start;
+				 System.out.println("findMembers :"+ timeMs + "ms");
+		  }
 	  }
 
 	  //회원검색&조회
 	  @GetMapping("/member/getMember") 
-	  public String getMember(Model model
-						) {
+	  public String getMember(Model model) {
 		  
 		List<Member> memberList = memberService.getMemberList();
+		for(Member member : memberList) {
+			String regDate = member.getMemberRegDate().substring(0, 10);
+			member.setMemberRegDate(regDate);
+		}
 		model.addAttribute("memberList",memberList);
 		  return "views/member/memberList/getMember";
 	  }
 	  //회원수정
 	  @GetMapping("/member/modifyMember")
 	  public String modifyMember(Model model, 
-								@RequestParam(name = "memberId", required = false, defaultValue = "") String memberId) {
-		  
+								@RequestParam(name = "memberId", required = false, defaultValue = "") String memberId,HttpSession session) {
+		  Member member = null;
+		  List<Member> levelList = null;
 			if(memberId != null && !"".equals(memberId.trim())) {
-				Member member = memberService.getMemberInfoById(memberId);
-				List<Member> levelList = memberService.getAuthority();
-				model.addAttribute("levelList", levelList);
-				model.addAttribute("member", member);
+				member = memberService.getMemberInfoById(memberId);
+				levelList = memberService.getAuthority();
+			}else {
+				memberId = (String)session.getAttribute("SID");
+				member = memberService.getMemberInfoById(memberId);
+				levelList = memberService.getAuthority();
 			}
-			return "views/member/memberList/modifyMember";
+			model.addAttribute("levelList", levelList);
+			model.addAttribute("member", member);
+		  return "views/member/memberList/modifyMember";
 	  }
 	  
 	  @PostMapping("/member/modifyMember")
-	  public String modifyMember(Member member) {
+	  public String modifyMember(Member member,HttpSession session) {
 	
 		  if(member != null && !"".equals(member.getMemberId())) {
 			
 			  memberService.modifyMember(member);
 		  }
+		  if("관리자".equals(session.getAttribute("SLEVEL"))) {
+			  
+			  return "redirect:/member/getMember";
+		  }else {
+			  return "redirect:/member/detailMember";
+		  }
 		
-		  return "redirect:/member/getMember";
+	  }
+	  
+	  //회원 이메일 수정
+	  @GetMapping("/member/modifyEmail")
+	  public String modifyEmail(Model model,
+			  					@RequestParam(name = "email",required = false,defaultValue = "")String email) {
+		Member member =  memberService.getMemberInfoByEmail(email);
+		  model.addAttribute("member",member);
+		  return "views/member/memberList/modifyEmail";
 	  }
 		
+	  @PostMapping("/member/modifyEmail")
+	  public String modifyEmail(Member member) {
+		   if(member != null) {
+			   
+			   memberService.modifyEmail(member);		   
+		   }
+		   
+		  return "main";
+	  }
+	  
 	  //회원 탈퇴
 	  @GetMapping("/member/removeMember")
 	  public String removeMember(Model model,
@@ -383,11 +517,17 @@ public class MemberController {
 	  //회원 상세보기
 	  @GetMapping("/member/detailMember")	  
 	  public String detailMember(Model model,
-				@RequestParam(name = "memberId", required = false, defaultValue = "") String memberId) {
-		  
-		  if(memberId != null && !"".equals(memberId.trim()) ) {
-			  Member member = memberService.getMemberInfoById(memberId);
-			  model.addAttribute("member", member);
+			  @RequestParam(name = "memberId", required = false, defaultValue = "") String memberId, HttpSession session) {
+		  Member member = null;
+		  if(memberId != null && !"".equals(memberId.trim())){
+			  
+			   member = memberService.getMemberInfoById(memberId);
+			   model.addAttribute("member", member);
+		  }else {
+			  
+			   memberId = (String) session.getAttribute("SID");
+			   member = memberService.getMemberInfoById(memberId);
+			   model.addAttribute("member", member);
 		  }
 		  
 		  return"views/member/memberList/detailMember";
@@ -433,9 +573,7 @@ public class MemberController {
 			  				@RequestParam(name = "levelCode" ,required = false,defaultValue = "") String levelCode) {
 		  
 			  Member authorityList = memberService.getAuthorityByCode(levelCode);
-			  model.addAttribute("authorityList", authorityList);
-			  
-			  
+			  model.addAttribute("authorityList", authorityList);		  
 		  
 		  return "views/member/authority/modifyAuthority"; 
 	  }
@@ -765,6 +903,7 @@ public class MemberController {
 		  }
 		  return "redirect:/member/getReport";
 	  }
+	  
 	  //신고목록
 	  @GetMapping("/member/getReport")
 	  public String getReport(HttpSession session,Model model) {
@@ -801,10 +940,29 @@ public class MemberController {
 		  
 		  return "views/member/report/getReportMember";
 	  }
-	  //신고목록 안보이게하기
+	  //신고수정
+	  @GetMapping("/member/modifyReport")
+	  public String modifyReport(Model model,
+			  			@RequestParam(value = "reportHistoryCode",required = false, defaultValue = "")String reportHistoryCode) {
+		  System.out.println(reportHistoryCode+"들어온다아아아ㅏ아아");
+		  Report report = memberService.getModifyReport(reportHistoryCode);
+		  
+		  List<Report> reportReason = memberService.getReasonReport();		  
+		  model.addAttribute("reportReason",reportReason);
+		  model.addAttribute("report", report);
+		  
+		  return "views/member/report/modifyReport";
+	  }
+	  @PostMapping("/member/modifyReport")
+	  public String modifyReport(Report report) {
+		  memberService.modifyReport(report);
+		  return "redirect:/member/getReport";
+	  }
+	  
+	  //신고목록 안보이게하기(관리자)
 	  @GetMapping("/member/removeReportHistoryCode")
 	  public String removeReportHistory(
-			  	@RequestParam(value = "reportHistoryCode",required = false, defaultValue = "")String reportHistoryCode) {
+			  			@RequestParam(value = "reportHistoryCode",required = false, defaultValue = "")String reportHistoryCode) {
 		  if(reportHistoryCode != null && !"".equals(reportHistoryCode.trim())){
 			  memberService.removeReportHistory(reportHistoryCode);	  
 		  }
@@ -813,7 +971,7 @@ public class MemberController {
 	  //신고기록삭제
 	  @GetMapping("/member/removeReport")
 	  public String removeReport(
-			  	@RequestParam(value = "reportHistoryCode",required = false, defaultValue = "")String reportHistoryCode) {
+			  			@RequestParam(value = "reportHistoryCode",required = false, defaultValue = "")String reportHistoryCode) {
 		  if(reportHistoryCode != null) {
 			  memberService.removeReport(reportHistoryCode);
 		  }

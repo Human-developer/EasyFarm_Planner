@@ -19,6 +19,13 @@
 	
 	<!-- 사용자 정의 css -->
 	<th:block layout:fragment="customCss">
+		
+	<style type="text/css">
+		.swal2-popup{
+	         font-size: small !important;
+	         }
+	</style>
+
 	</th:block>
 	
 	<th:block layout:fragment="customContents">
@@ -601,16 +608,169 @@
 			</div>
 		</div>
 	
-	
-	
-	
-	
 	</th:block>	
 	
 	
 	
+	
+		
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+		<script src="assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+		<script src="assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+		<script src="assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+		<script src="assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+		<script src="assets/scripts/datatables.demo.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+	</th:block>
+	
+	
 	<!-- 사용자 정의 자바스크립트 -->
 	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript" th:inline="javascript">
+				/*<![CDATA[*/
+				var farm = '[[${farm}]]';
+			    var farmNameObj = JSON.parse(farm);
+				var farmName = {"":"농가를 선택해주세요"};
+				console.log(farmNameObj);
+				var Data ={"":"프로젝트를 선택해주세요"};
+				var WorkPhase = {"":"작업단계를 선택해주세요"};
+			    for(var i=0; i < farmNameObj.length; i++){
+			    	
+			    	farmName[farmNameObj[i].farmCode] = farmNameObj[i].farmName;
+			    }
+			    //console.log(farm);
+			    console.log(farmName);
+				/*]]>*/
+				const steps = ['1', '2', '3']
+				const swalQueueStep = Swal.mixin({
+						  input: 'select',
+						  confirmButtonText: '다음 &rarr;',
+						  reverseButtons: true,
+						  allowOutsideClick: false,
+						  validationMessage: 'This field is required',
+						  inputAttributes: {
+							    required: true
+							  },
+						  inputOptions: {
+							    '농가명': farmName 
+							  },
+						  progressSteps: steps
+						}).queue([
+						  {
+						    title: '농가 선택',
+						    text: '농가를 선택해 주세요',
+							showLoaderOnConfirm: true,
+						    preConfirm: function(farmCode)
+						    {
+						    	delete this.inputOptions.농가명;
+							    this.inputOptions.project = Data;
+						    },
+						  },
+						  {
+							title: '프로젝트 선택',
+							text: '프로젝트를 선택해 주세요',
+							preConfirm: function(projectCode)
+							{
+						    	delete this.inputOptions.project;
+							    this.inputOptions.WorkPhase = WorkPhase;
+						    },
+						  },
+						  {
+							title: '작업단계 선택',
+							text: '작업단계를 선택해 주세요'
+						  },
+						]).then((result) => {
+						  if (result.value) {
+						    const answers = JSON.stringify(result.value)
+						    console.log(result + "<< result")
+						    if(result.value[0] != '' && result.value[1] != '' && result.value[2] != '' ){		//유효성(임시)
+							    console.log(result.value[0] + "<< result.value")
+							    
+							    setTimeout(function() {
+						    		Swal.fire({
+						                title: "선택 완료!",
+						                confirmButtonText: '제출',
+						            }).then(function(){
+						            	console.log("muyahooooooooooooooooooooooooooooooooooooooooooooooooooooo")
+						            	location.href ="/result/resultData?farmCode="+ result.value[0] +"&projectCode=" + result.value[1] + "&workPhaseCode=" + result.value[2];
+						            	/* var request = $.ajax({
+								               url:"/result/resultMain",
+								               method:"post", 
+								               data : {"farmCode":result.value[0], "projectCode":result.value[1],"workPhaseCode":result.value[2]},
+								               datatype: "json",
+								            });
+						            	request.done(function(data){
+						            		console.log(data + "clearrrrrrrrrrrrrrr")
+						            		location.replace("/result/resultMain");
+							            	}); */
+							            });
+						        }, 1000);
+						    }else{
+						    	setTimeout(function() {
+						    		Swal.fire({
+						                title: "다시!",
+						                text: "다시 선택해 주세요!",
+						                type: "error"
+						            }).then(function(){
+						            	location.reload();
+						            });
+						        }, 1000);
+						    }
+						  }
+						})
+				$('.swal2-select').change(function(){								//농가코드를 선택할 경우 해당 농가코드의 프로젝트를 검색
+					var farmCode = $(this).val();
+					Data ={"":"프로젝트를 선택해주세요"};	//change가 바뀌었을 경우 초기화 해주기 위함
+					var request = $.ajax({
+			               url:"/result/getProjectNameByFarmCode",
+			               method:"post", 
+			               data : {"farmCode":farmCode},
+			               datatype: "json",
+			            });
+			            request.done(function(data){
+			            	
+			            	for(var i=0; i < data.length; i++){
+			            		var code =  data[i].projectCode;
+			            		var value = data[i].projectName;
+			            		Data[code] = value;
+			            	}
+			            });
+			            request.fail(function( jqXHR, textStatus ){
+			               alert( "Request failed : " + textStatus );
+			            });
+				});
+				
+				$('.swal2-confirm').click(function(){								//1페이지와 2페이지 구분을 위한 클래스 추가
+					$('.swal2-select').addClass("project-select");
+				})
+				
+			
+				$(document).on('change', '.project-select', function(){					//동적바인딩으로 2번째 페이지에 이벤트 걸기
+					var projectCode = $(this).val();
+					var request = $.ajax({
+			               url:"/result/getWorkPhaseByFarmCode",
+			               method:"post", 
+			               data : {"projectCode":projectCode},
+			               datatype: "json",
+			            });
+			            request.done(function(data){
+			            	console.log(data + "project data");
+			            	for(var i=0; i < data.length; i++){
+			            		var code =  data[i].WorkPhaseCode;
+			            		var name = data[i].WorkPhaseName;
+			            		WorkPhase[code] = name;
+			            	}
+			            });
+			            request.fail(function( jqXHR, textStatus ){
+			               alert( "Request failed : " + textStatus );
+			            });
+				});
+			</script>
+		
+	
 	
 		<script type="text/javascript">
 			$(function(){
@@ -638,7 +798,7 @@
 				$('.machineleasetotal').text("비용 : "+machineLeaseSum);
 				$('.humantotal').text("비용 : "+humanSum);
 				$('.resourcetotal').text("비용 : "+resourceSum);
-				$('.paytotal').text(resourceSum+humanSum+machineLeaseSum+etcSum);
+				$('.paytotal').text(resourceSum + humanSum + machineLeaseSum + etcSum);
 			})
 			
 			$('#example2, #example3, #example4, #example5, #example6').DataTable();
@@ -680,25 +840,12 @@
 				return false;
 			} );
 			
-			$(document).ready(function(){
-				alert("야옹");
-			})
 			
-		</script>
-		
-		<script>
+			
 			
 			
 		</script>
-	</th:block>
 	
-	<!-- 사용자 정의 자바스크립트 라이브러리 -->
-	<th:block layout:fragment="customScriptLib">
-		<script src="assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
-		<script src="assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
-		<script src="assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
-		<script src="assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
-		<script src="assets/scripts/datatables.demo.min.js"></script>
 	
-	</th:block>
+	
 </html>

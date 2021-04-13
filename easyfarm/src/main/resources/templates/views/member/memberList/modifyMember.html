@@ -23,12 +23,7 @@
 		    font-family: 'Noto Sans KR', sans-serif;
 		    
 		}
-		.btn {
-		    
-		    width: 100%;
-		  
-		    
-		}
+	
 		
 		   
 	
@@ -105,23 +100,6 @@
 					return false;
 				}
 								
-				if($('#memberEmail').val() == ""){
-					swal({
-						title: "이메일을 입력 해주세요.",
-						confirmButtonColor: '#304ffe'
-					});
-					$('#memberEmail').focus();
-					return false;
-				}
-				if(!getMail.test($('#memberEmail').val())){
-					swal({
-						title: "이메일을 형식에맞게 입력 해주세요.",
-						confirmButtonColor: '#304ffe'
-					});
-					$('#memberEmail').val("");
-					$('#memberEmail').focus();
-					return false;
-				}
 				if($('#memberAddress').val() == ""){
 					swal({
 						title: "주소를 입력 해주세요.",
@@ -147,10 +125,11 @@
 	
 	
 		<form th:action="@{/member/modifyMember}" method="post">
+		
 			<div class="container-fluid">
 				<div class="row" >
 					<div class="
-					col-lg-offset-3 col-lg-6
+					col-lg-offset-2 col-lg-7
 					
 					">
 					
@@ -188,25 +167,18 @@
 									</div>
 									<div class="form-group" th:if="${session.SLEVEL == '관리자'}">
 										<label  class="col-sm-2 control-label"><strong>권한</strong></label>
-									    <div class="col-sm-10">
-									      <select id="levelCode" name="levelCode" class="form-control">
+									    <div class="col-sm-10" >
+									      <select  id="levelCode" name="levelCode" class="form-control" >
 									      	<option th:each="l : ${levelList}" th:value="${l.levelCode}" th:text="${l.levelName}"></option>
 									      	
 									      </select>
 									    </div>
 									</div>
 									<div class="form-group" th:if="${session.SLEVEL != '관리자'}">
-									   	 <input type="text" class="form-control" name="levelCode" id="levelCode" th:value="${m.levelCode}" hidden="">
+									   	 <input type="hidden" class="form-control" name="levelCode" id="levelCode" th:value="${m.levelCode}">
 									   
 									</div>
 								
-					
-									<div class="form-group">
-										<label for="memberEmail" class="col-sm-2 control-label"><strong>이메일</strong></label>
-									    <div class="col-sm-10">
-									      <input type="email" class="form-control" name="memberEmail" id="memberEmail" th:value="${m.memberEmail}" placeholder="test@email.com">
-									    </div>
-									</div>
 									<div class="form-group">
 										<label for="memberAddress" class="col-sm-2 control-label"><strong>주소</strong></label>
 									    <div class="col-sm-10">
@@ -225,14 +197,14 @@
 									    </div>
 									</div>
 									<div class="form-group" th:if="${session.SLEVEL != '관리자'}">
-									   	 <input type="text" class="form-control" name="memberStatus" id="memberStatus" th:value="${m.memberStatus}" hidden="">
+									   	 <input type="hidden" class="form-control" name="memberStatus" id="memberStatus" th:value="${m.memberStatus}" >
 									   
 									</div>
 									<hr>
 									<div class="form-group">
-										<div class="col-sm-10 col-sm-offset-1">
-											<button type="submit" id="addCheck" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px; margin-bottom: 15px;">수정완료</button>
-											<a th:href="@{/member/getMember}" ><button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">수정취소</button></a>
+										<div class="col-sm-offset-4">			
+											<button type="submit" id="addCheck" class="btn btn-success btn-rounded waves-effect waves-light">수정완료</button>
+											<a th:href="@{/}" ><button type="button" class="btn btn-danger btn-rounded waves-effect waves-light">수정취소</button></a>
 										</div>
 									</div>
 								</div>

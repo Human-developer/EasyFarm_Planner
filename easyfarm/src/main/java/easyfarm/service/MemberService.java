@@ -24,8 +24,13 @@ public class MemberService {
 	 public Member getMemberInfoById(String memberId) {
 		 
 		 Member member = memberMapper.getMemberInfoById(memberId);
+		 if(member != null) {
+			 
 			return member;
-		 
+		 }else {
+			 
+			 return null; 
+		 }
 		
 	 }
 	 //회원등록
@@ -33,6 +38,15 @@ public class MemberService {
 		
 		memberMapper.addMember(member);
 		 
+	 }
+	 public Member getMemberInfoByEmail(String email) {
+		 Member member = null;
+		 member = memberMapper.getMemberInfoByEmail(email);
+		 
+		 if(member == null) {
+			 member = null;
+		 }
+		return member;
 	 }
 	 
 	 public List<Member> getMemberList(){
@@ -73,11 +87,17 @@ public class MemberService {
 		 if(member != null)  memberMapper.modifyMember(member);
 		 
 	 }
+	 //회원 이메일수정
+	 public void modifyEmail(Member member) {
+		 if(member != null) memberMapper.modifyEmail(member);
+	 }
 	 //회원탈퇴시 상태변경
 	 public void removeUpdateMember(Member member) {
 		 if(member != null)  memberMapper.removeUpdateMember(member);
 	 }
 	 public void removeUpdateMember(String useStatus ,String memberId) {
+		 System.out.println(useStatus + "22222222222222222222222222222");
+		 System.out.println(memberId);
 		 memberMapper.removeUpdateMember(useStatus,memberId);
 	 }
 	 //회원탈퇴시 탈퇴회원등록
@@ -202,6 +222,7 @@ public class MemberService {
 		 List<Report> reportReasonList = memberMapper.getReasonReport();
 		 return reportReasonList;
 	 }
+	
 	 // 신고사유 수정을위한 조회
 	 public Report getReasonReport(String reportCode){
 		 Report reportReasonList = memberMapper.getReasonReport(reportCode);
@@ -224,6 +245,16 @@ public class MemberService {
 	 public void addReport(Report report) {
 		 memberMapper.addReport(report);
 	 }
+	 // 신고수정용 조회
+	 public Report getModifyReport(String reportHistoryCode) {
+		 Report report = memberMapper.getModifyReport(reportHistoryCode);
+		 return report;
+	 }
+	 // 신고수정
+	 public void modifyReport(Report report) {
+		 memberMapper.modifyReport(report);
+	 }
+	 
 	 // 신고목록 조회
 	 public List<Report> getReport(String memberId){
 		 List<Report> reportList = memberMapper.getReport(memberId);

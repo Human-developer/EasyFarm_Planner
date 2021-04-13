@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>내탈퇴신청목록</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		<a th:href="@{/farm}">농가관리</a>>내탈퇴신청목록
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
+	</th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss"></th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+		<div class ="container-fluid">
+			<div class ="row">
+				<div class ="box-content">
+					<h3>내탈퇴신청목록</h3>
+					<hr>
+					<table id = "leaverFarmMemberTable">
+						<thead>
+							<tr>
+								<th>탈퇴신청코드</th>
+								<th>농가명</th>
+								<th>농가대표</th>
+								<th>탈퇴사유</th>
+								<th>탈퇴신청일</th>
+								<th>승인/거부</th>
+								<th>처리일</th>
+								<th>탈퇴취소</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="farmLeaverFarm : ${myLeaverFarmList}">
+								<td th:text = "${farmLeaverFarm.cancelRequestCode}"></td>
+								<td th:text = "${farmLeaverFarm.farm.farmName}"></td>
+								<td th:text = "${farmLeaverFarm.farm.ceoId}"></td>
+								<td th:text = "${farmLeaverFarm.cancelRequestReason}"></td>
+								<td th:text = "${farmLeaverFarm.cancelRequestDate}"></td>
+								<td th:text = "${farmLeaverFarm.cancelApproval.replace('탈퇴','')}"></td>
+								<td th:text = "${farmLeaverFarm.cancelApprovalDate}"></td>
+								<td><button th:if ="${farmLeaverFarm.cancelApproval == null}" type="button" class ="leaverFarmLemoveBtn btn btn-xs btn-danger waves-effect waves-light" th:value ="${farmLeaverFarm.cancelRequestCode}">취소</button></td>
+							</tr>
+						</tbody>
+					</table> 
+				</div>
+			</div>
+		</div>
+		
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+		<div th:replace="fragments/dataTable :: dataTable" th:remove="tag"></div>	
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+			var lang_kor = {
+			        "decimal" : "",
+			        "emptyTable" : "가입신청한 농가 없습니다",
+			        "info" : "_START_ - _END_ (총 _TOTAL_ 명)",
+			        "infoEmpty" : "0명",
+			        "infoFiltered" : "(전체 _MAX_ 농가 중 검색결과)",
+			        "infoPostFix" : "",
+			        "thousands" : ",",
+			        "lengthMenu" : "_MENU_ 개씩 보기",
+			        "loadingRecords" : "로딩중...",
+			        "processing" : "처리중...",
+			        "search" : "검색 : ",
+			        "zeroRecords" : "검색된 신청목록이 없습니다",
+			        "paginate" : {
+			            "first" : "첫 페이지",
+			            "last" : "마지막 페이지",
+			            "next" : "다음",
+			            "previous" : "이전"
+			        },
+			        "aria" : {
+			            "sortAscending" : " :  오름차순 정렬",
+			            "sortDescending" : " :  내림차순 정렬"
+			        }
+			}
+			
+			$('#leaverFarmMemberTable').sysDataTable(lang_kor,[0]);
+			
+			$('.leaverFarmLemoveBtn').click(function(){
+				var removeTr = $(this).parent().parent();
+				var cancelRequestCode = $(this).val(); 
+				
+				swal({
+					  title: "정말로 취소 하시겠습니까",
+					  type: "warning",
+					  showCancelButton: true,
+					  confirmButtonText:"예",
+					  cancelButtonText:"아니오",
+					  closeOnConfirm: true
+					}, function (btn) {
+						if(btn){
+							var request = $.ajax({
+					               url:"/json/cancelLeaverFarm",
+					               method:"post", 
+					               data : {"cancelRequestCode":cancelRequestCode},
+					            });
+					            request.done(function(data){
+					            	if('삭제실패' == data){
+					            		
+					            	}
+					            	else if('삭제성공' == data){
+					            		location.reload();	
+					            	}
+					            });
+					            request.fail(function( jqXHR, textStatus ){
+					               alert( "Request failed : " + textStatus );
+					            });
+						}
+							
+					});
+			})
+		</script>
+	</th:block>
+
+</html>
