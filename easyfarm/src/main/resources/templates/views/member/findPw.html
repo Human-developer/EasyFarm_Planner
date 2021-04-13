@@ -39,41 +39,41 @@
 	<th:block layout:fragment="customContents">
 	<form th:action="@{/member/addAuthority}" method="post">
 		
-			<div class="container-fluid">
+			<div class="box-content">
 				<div class="row" >
 					<div class="
-					col-lg-offset-3 col-lg-6
+					col-sm-offset-3 col-sm-6
 					
 					">
 					
 						<div class="box-content" style="border : 2px solid gray">
-							<div class="box-content  t-center important-col" style="border-bottom : 2px solid #3BBD5A">
+							<div class="box-content  t-center important-col" style="border-bottom : 2px solid gray;">
 							
 								<h3>비밀번호 찾기</h3>
 							</div>
 							<div class="panel-body" >
 						
 								<div class="form-horizontal">
-								<div class="form-group">
-									<label for="memberEmail" class="col-sm-2 control-label"><strong>아이디</strong></label>
-									  <div class="col-sm-9">
-										<input type="text" class="form-control" name="memberId" id="memberId" placeholder="ID">
-									  </div>
-								</div>
-								<div class="form-group">
-										<label for="memberEmail" class="col-sm-2 control-label"><strong>이메일</strong></label>
-									  <div class="col-sm-9">
-									     
-									    <input type="email" class="form-control" name="memberEmail" id="memberEmail" placeholder="test@email.com">
-									    <span class="email-text"></span>
-									  </div>
-									  
+									<div class="form-group">
+										<label for="memberEmail" class="col-sm-2 control-label"><strong>아이디</strong></label>
+										  <div class="col-sm-9">
+											<input type="text" class="form-control" name="memberId" id="memberId" placeholder="ID">
+										  </div>
 									</div>
-									
+									<div class="form-group">
+											<label for="memberEmail" class="col-sm-2 control-label"><strong>이메일</strong></label>
+										  <div class="col-sm-9">
+										     
+										    <input type="email" class="form-control" name="memberEmail" id="memberEmail" placeholder="test@email.com">
+										    <span class="email-text"></span>
+										  </div>
+										  
+									</div>
+										
 									<div class="form-group">	
 										<div class="col-sm-offset-4">
-											<button type="button" class="sendMail btn btn-success btn-rounded waves-effect waves-light">비밀번호찾기</button>
-											<a th:href="@{/member/login}"><button type="button"  class="btn btn-danger btn-rounded waves-effect waves-light">취소</button></a>											
+											<button type="button" class="sendMail btn btn-success btn-rounded waves-effect waves-light">홧인</button>
+											<a th:href="@{/member/login}"  class="btn btn-danger btn-rounded waves-effect waves-light">취소</a>												
 										</div>
 									</div>	
 									

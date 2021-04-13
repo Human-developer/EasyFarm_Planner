@@ -14,17 +14,6 @@
 	</th:block>
 	
 	
-	<!-- 사용자 정의 css -->
-	<th:block layout:fragment="customCss">
-		<style>
-		
-	
-		.btn {
-		    
-		    width: 100%;
-		  
-		</style>
-	</th:block>
 	
 	
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
@@ -76,12 +65,11 @@
 									</div>
 									      <input type="text" name="memberId"  th:value="${session.SID}" readonly="readonly"  id="memberId" hidden="">
 
-									
-										<div class="col-sm-offset-2 col-sm-4 ">
-											<button type="submit" id="modify" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px;">수정</button>
-										</div>
-										<div class="col-sm-offset-1 col-sm-4 ">
-											<a th:href="@{/member/getBaseDate}"><button type="button" id="cancel" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" style="margin-top: 10px;">취소</button></a>
+
+										<div class="col-sm-offset-4">
+											<button type="submit" id="modify" class="btn btn-success btn-rounded waves-effect waves-light ">수정</button>
+											<a th:href="@{/member/getBaseDate}"  class="btn btn-danger btn-rounded waves-effect waves-light">취소</a>	
+											
 										</div>
 									
 								</div>

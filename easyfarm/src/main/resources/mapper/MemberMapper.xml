@@ -49,20 +49,20 @@
    
 	
 	<select id="getMemberInfoByEmail" resultMap="memberResultMap">
-	SELECT 
-		  member_id
-		, member_pw
-		, member_name
-		, level_code
-		, member_gender
-		, member_address
-		, member_email
-		, member_phone
-		, member_iden_num
-		, member_reg_date
-		, member_status
-	FROM tb_member
-	WHERE member_email = #{email}
+		SELECT 
+			  member_id
+			, member_pw
+			, member_name
+			, level_code
+			, member_gender
+			, member_address
+			, member_email
+			, member_phone
+			, member_iden_num
+			, member_reg_date
+			, member_status
+		FROM tb_member
+		WHERE member_email = #{email}
 	</select>
 	
 	<select id="getLoginCode" resultMap="memberResultMap" >
