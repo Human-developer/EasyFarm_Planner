@@ -34,7 +34,6 @@ public class ProjectController {
 	public String projectMain(Model model,
 								@RequestParam(value = "farmCode", required = false) String farmCode,
 								HttpSession session) {
-		
 		if(farmCode == null) {
 			farmCode = "farm_1";		
 		}
@@ -66,13 +65,11 @@ public class ProjectController {
 	@PostMapping("/projectAddByProjectObject")
 	public String projectAddByProjectObject(Project project,
 											@RequestParam String farmCode,
-											HttpServletRequest request,
+											HttpSession session,
 											@RequestParam List<String> checkWorkphase) {
 		// 세션에서 멤버아이디 받아옴
-		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("SID");
 		
-		//String memberId = (String) session.getAttribute("memberId");
-		String memberId = "id002";
 		project.setFarmCode(farmCode);
 		project.setRegMemberId(memberId);
 		projectService.projectAddService(project, checkWorkphase);
