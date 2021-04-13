@@ -49,14 +49,14 @@
 					<form th:action="@{/member/login}" method="post">
 						<input type="hidden" name="memberId" th:value="${'id001'}">
 						<input type="hidden" name="memberPw" th:value="${'pw001'}">
-						<button class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light" type="submit">관리자 자동 로그인</button> 
+						<button class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light manager" type="submit">관리자 자동 로그인</button> 
 					</form>
 				</li>
 				<li class="margin-bottom-10">
 					<form th:action="@{/member/login}" method="post">
 						<input type="hidden" name="memberId" th:value="${'id006'}">
 						<input type="hidden" name="memberPw" th:value="${'pw006'}">
-						<button class="btn btn-success btn-rounded btn-bordered waves-effect waves-light" type="submit">회원 자동 로그인</button>
+						<button class="btn btn-success btn-rounded btn-bordered waves-effect waves-light member" type="submit">회원 자동 로그인</button>
 					</form>
 				</li>
 			</ul>
@@ -69,6 +69,45 @@
 	<th:block layout:fragment="customScriptLib"></th:block>
 	
 	<!-- 사용자 정의 자바스크립트 -->
-	<th:block layout:fragment="customJavaScript"></th:block>
+	<th:block layout:fragment="customJavaScript">
+		<script>
+		  $('.manager').click(function(){
+					  $.ajax({
+							type : 'post',
+							url : '/member/login',
+							data : {memberId:"id001",
+									memberPw:"pw001"},
+							dataType :'json',
+							success: function(data){
+								msg = data.msg;
+								
+								console.log(msg);
+								if("로그인성공" == msg.trim()){
+									location.href = "/";
+								}
+								
+							}
+				  		})
+				  });
+				  $('.member').click(function(){
+					  $.ajax({
+							type : 'post',
+							url : '/member/login',
+							data : {memberId:"id006",
+									memberPw:"pw006"},
+							dataType :'json',
+							success: function(data){
+								msg = data.msg;
+								
+								console.log(msg);
+								if("로그인성공" == msg.trim()){
+									location.href = "/";
+								}
+								
+							}
+				  	   })
+				  });
+		</script>
+	</th:block>
 
 </html>

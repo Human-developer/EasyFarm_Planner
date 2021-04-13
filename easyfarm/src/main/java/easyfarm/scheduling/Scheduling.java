@@ -91,9 +91,10 @@ public class Scheduling {
 					  
 				   memberService.updateStatusSchedule(loginId,autoRestDate,autoWithdrawalDate);
 			   }
-				 
+			   
 			  
 			}
+		
 			//자동 휴면&탈퇴처리
 			for(Report expected : expectedList) {
 			   Date RestDay = expected.getAutoRestDate(); //자동휴면일

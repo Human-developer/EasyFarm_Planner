@@ -25,6 +25,8 @@ public interface MemberMapper {
 	public List<Member> getLogin();
 	// 최근 로그인 기록 조회
 	public List<Member> getLoginMaxDate();
+	// 로그인기록삭제
+	public void removeLoginDate(String loginCode);
 	
 	// 회원가입
 	public int addMember(Member member);

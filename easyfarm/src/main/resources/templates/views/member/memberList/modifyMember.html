@@ -10,26 +10,7 @@
 	<th:block layout:fragment="pageTitle">
 		회원조회 - 회원수정
 	</th:block>
-	
-	<th:block layout:fragment="customCss">
-	<style>
-			button {
-		    border: 0;
-		    border-radius: 0;
-		    padding: 0;
-		    outline: none;
-		    cursor: pointer;
-		    background-color: transparent;
-		    font-family: 'Noto Sans KR', sans-serif;
-		    
-		}
-	
-		
-		   
-	
-		
-	</style>
-	</th:block>
+
 	<th:block layout:fragment="customJavaScript">
 		
 	
@@ -129,7 +110,7 @@
 			<div class="container-fluid">
 				<div class="row" >
 					<div class="
-					col-lg-offset-2 col-lg-7
+					col-lg-offset-3 col-lg-6
 					
 					">
 					
@@ -203,8 +184,8 @@
 									<hr>
 									<div class="form-group">
 										<div class="col-sm-offset-4">			
-											<button type="submit" id="addCheck" class="btn btn-success btn-rounded waves-effect waves-light">수정완료</button>
-											<a th:href="@{/}" ><button type="button" class="btn btn-danger btn-rounded waves-effect waves-light">수정취소</button></a>
+											<button type="submit" id="addCheck" class="btn btn-success btn-rounded waves-effect waves-light">수정</button>
+											<a th:href="@{/}" class="btn btn-danger btn-rounded waves-effect waves-light">취소</a>
 										</div>
 									</div>
 								</div>
