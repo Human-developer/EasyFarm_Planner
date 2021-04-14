@@ -51,6 +51,7 @@ public class MemberController {
 		 return new Runnable() {
 		 	 @Override
 			 public void run() {
+		 		 
 				 javaMailSender.send(message);
 			 }			
 		 };
