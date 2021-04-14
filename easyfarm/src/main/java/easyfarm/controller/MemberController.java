@@ -25,8 +25,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import easyfarm.domain.FreeBoard;
 import easyfarm.domain.Member;
 import easyfarm.domain.Report;
+import easyfarm.service.FreeBoardService;
 import easyfarm.service.MemberService;
 
 
@@ -36,6 +38,9 @@ public class MemberController {
 	
 	@Autowired
 	MemberService memberService;
+	
+	@Autowired
+	FreeBoardService freeBoardService;
 	
 	@Autowired
 	private JavaMailSender javaMailSender;
@@ -51,6 +56,127 @@ public class MemberController {
 		 };
 	 }
 	
+	//전체 게시판조회
+	@GetMapping("/member/getFreeBoard")
+	public String getFreeBoard(Model model) {
+		
+		List<FreeBoard> boardList = freeBoardService.getFreeBoard(null);
+		
+		model.addAttribute("boardList",boardList);
+		
+		return "views/member/board/getFreeBoard";
+	}
+	//개인의 게시판조회
+	@GetMapping("/member/getMyFreeBoard")
+	public String getMyFreeBoard(HttpSession session,Model model) {
+		String boardId = (String) session.getAttribute("SID");
+		if(boardId != null && !"".equals(boardId.trim())) {
+			List<FreeBoard> boardList = freeBoardService.getFreeBoard(boardId);
+			model.addAttribute("boardList",boardList);
+			System.out.println(boardList  +"11111111111111111111111111111111111111111111");
+		}
+		return "views/member/board/getMyFreeBoard";
+	}
+	//게시판조회
+	@GetMapping("/member/getBoard")
+	public String getBoard(Model model,
+						@RequestParam(value = "boardNum", required = false)int boardNum,
+						@RequestParam(value = "boardGetNum", required = false)int boardGetNum) {
+		
+		
+		boardGetNum = boardGetNum+1;//게시판 조회수 증가
+		freeBoardService.updateBoardGetNum(boardNum,boardGetNum);//게시판 조회수 증가
+		FreeBoard board = freeBoardService.getBoard(boardNum);//1개의 게시판조회
+		List<FreeBoard> commentList = freeBoardService.getCommentList(boardNum);//그게시판의 댓글리스트
+		System.out.println(board);
+		System.out.println(commentList);
+		model.addAttribute("board",board);
+		model.addAttribute("commentList",commentList);
+		
+		
+		return "views/member/board/getBoard";
+	}
+	//게시판등록
+	@GetMapping("/member/addFreeBoard")
+	public String addFreeBoard() {
+		return "views/member/board/addFreeBoard";
+	}
+	@PostMapping("/member/addFreeBoard")
+	public String addFreeBoard(FreeBoard board) {
+		if(board != null) {			
+			freeBoardService.addFreeBoard(board);
+		}
+		return "redirect:/member/getFreeBoard";
+	}
+	//게시판수정
+	@GetMapping("/member/modifyFreeBoard")
+	public String modifyFreeBoard(Model model,
+						@RequestParam(value = "boardNum", required = false)int boardNum) {
+		
+		FreeBoard board = freeBoardService.getBoard(boardNum);//1개의 게시판조회
+		model.addAttribute("board",board);
+		
+		return "views/member/board/modifyFreeBoard";
+	}
+	@PostMapping("/member/modifyFreeBoard")
+	public String modifyFreeBoard(FreeBoard board) {
+		if(board != null) {
+			
+			freeBoardService.modifyFreeBoard(board);
+		}
+		
+		return "redirect:/member/getFreeBoard";
+	}
+	//게시판 삭제
+	@GetMapping("/member/removeFreeBoard")
+	public String removeFreeBoard(@RequestParam(value = "boardNum",required = false)int boardNum) {
+		if(boardNum != 0) {
+			freeBoardService.removeFreeBoard(boardNum);
+		}
+		return "redirect:/member/getFreeBoard";
+	}
+	//게시판 댓글등록
+	@PostMapping("/member/addComment")
+	@ResponseBody
+	public Map<String, Object> addComment(
+					@RequestParam(value = "comment",required = false)String comment,
+					@RequestParam(value = "boardNum",required = false)int boardNum,
+					HttpSession session) {
+		Map<String, Object> map = new HashMap<String, Object>(); 
+		String msg = "실패";
+		map.put("msg", msg);
+
+		 if(comment != null && boardNum != 0) { 
+			 String memberId = (String)session.getAttribute("SID");
+			 freeBoardService.addComment(comment,boardNum,memberId); 
+			 msg = "성공"; 
+			 map.put("msg", msg);
+		 }
+		 
+		 
+		
+		return map;
+	}
+	//게시판 댓글 삭제
+	@PostMapping("/member/removeComment")
+	@ResponseBody
+	public Map<String, Object> removeComment(@RequestParam(value = "commentsNum",required = false)int commentsNum){
+		Map<String, Object> map = new HashMap<String, Object>(); 
+		String msg = "실패";
+		map.put("msg", msg);
+		
+			if(commentsNum != 0) {
+				
+				freeBoardService.removeComment(commentsNum);
+				msg = "성공"; 
+				map.put("msg", msg);
+			}
+		
+		
+		return map;
+	}
+	
+	
 	
 	 @GetMapping("/member")
 	 public String member() {
@@ -65,6 +191,7 @@ public class MemberController {
 					
 			 return "views/member/login";
 		 }
+		 
 		
 		 return "main";
 	 }
@@ -111,8 +238,11 @@ public class MemberController {
 						 return map;
 				
 					 }else if(member.getMemberStatus() == "정지" || "정지".equals(member.getMemberStatus().trim())){
+						 Report reportMember = memberService.getSuspend(member.getMemberId());
 						
+						 SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
 						 msg = "정지회원입니다";
+						 map.put("date",simpleDate.format(reportMember.getBanEndDate()));
 						 map.put("msg", msg);
 						 return map;
 					 }else if(member.getMemberStatus() == "휴면" || "휴면".equals(member.getMemberStatus().trim())) {
