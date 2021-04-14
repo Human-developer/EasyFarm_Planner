@@ -76,6 +76,7 @@
 					memberId = $('#memberId').val();
 					memberPw = $('#memberPw').val();
 					msg = "";
+					date = "";
 					if (memberId == "") {
 						
 						swal({
@@ -101,6 +102,7 @@
 							dataType :'json',
 							success: function(data){
 								msg = data.msg;
+								date = data.date;
 								swal({
 									title: msg,
 									confirmButtonColor: '#304ffe'
@@ -124,6 +126,11 @@
 										if (isConfirm) {     
 											location.href = "/member/releaseMember";
 										}
+									});
+								}else if(msg == "정지회원입니다"){
+									swal({
+										title: msg + ".\n 정지해제일 : " + date,
+										confirmButtonColor: '#304ffe'
 									});
 								}
 								
