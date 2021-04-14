@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	
+	<th:block layout:fragment="customTitle">
+		<title>자유게시판</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		<a th:href="@{/member/getFreeBoard}">자유게시판</a>-게시물보기
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+		<style>
+			
+			
+			.blockquote {
+			    background: #eee;
+			    border-radius: 5px;
+			    margin: 10px 0;
+			}
+			
+			.blockquote p {
+			    padding: 20px;
+			}
+
+			
+			[contenteditable='true'] {
+			    caret-color: red;
+			}
+								
+		</style>
+		
+	</th:block>
+	
+	<th:block layout:fragment="customContents" th:with="b = ${board}">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-offset-2 col-lg-8">
+				<div class="box-content" >
+						<div  class="dropdown js__drop_down">
+							<a href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
+							<ul class="sub-menu">
+								<li><a th:if="${b.boardId != session.SID}" th:href="@{/member/addReport(memberId=${b.boardId})}">신고</a></li>
+								<li><a th:if="${b.boardId == session.SID}" th:href="@{/member/modifyFreeBoard(boardNum=${b.boardNum})}">수정</a></li>
+								<li><a th:if="${b.boardId == session.SID}" class="removeFreeBoard" th:data-boardNum="${b.boardNum}" th:href="@{#}">삭제</a></li>
+							</ul>
+						</div>
+						
+						<div style="text-align: center;" class="data" th:data-val="${b.boardNum}">
+							<h3 th:text="${b.boardTitle}"></h3>	
+							<div style="text-align: left; border-bottom : solid 1px;" >
+							작성자:<span th:text="${b.memberName}" ></span>	
+							</div>
+						</div>
+						
+						<div style="text-align: right; margin-bottom: 10px;" >
+							조회수:<span th:text="${b.boardGetNum}"></span>
+						</div>
+						
+						<div style="text-align: center;">
+							<h2 th:text="${b.boardContent}"></h2>
+						</div>
+						<div style="margin-top: 300px; border-bottom : solid 1px;"> 
+							 등록일:<span th:text="${b.boardDate}"></span>
+						</div>
+						<div>
+						<div class="box-content" th:each="c : ${commentList}">
+							<ul>
+								<li>
+									<div >
+										<div style="margin-top : 10px;">
+											<span th:text="${c.memberId}"></span> 
+										</div>
+										<div style="margin-top: 5px;">								
+											<span th:text="${c.commentsContent}"></span> 
+										</div>
+										<div style="margin-bottom : 5px;" >
+											<small th:text="${c.commentsDate}"></small> 
+										</div>
+						
+										<div th:if="${session.SID != null}" class="dropdown js__drop_down">
+											<a href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
+											<ul class="sub-menu">
+												<li><a th:if="${session.SID != c.memberId}" th:href="@{/member/addReport(memberId=${c.memberId})}">신고</a></li>
+												<li><a th:if="${session.SID == c.memberId or session.SID == b.boardId}" class="removeComment" th:data-val="${c.commentsNum}">삭제</a></li>
+											</ul>
+										</div>
+									</div>
+								</li>																			
+							</ul>		
+						</div>
+						</div>
+						
+						<div th:if="${session.SID != null}" class="box-content" >
+						<strong >댓글 입력</strong>
+							<div >
+								<div class="blockquote" contenteditable="true" >
+								    <p class="comment"></p>
+								</div>
+								<div style="text-align: right;">
+									<button type="button" class="btn" id="commentBtn" >입력</button>
+								</div>
+							</div>
+						</div>
+						
+						<a class="btn btn-success btn-rounded waves-effect waves-light" th:href="@{/member/getFreeBoard}" >목록</a>
+						
+				</div>
+			</div>				
+		</div>
+	</div>
+
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+		
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+		
+		 $("#commentBtn").click(function() {
+			 var comment = $('.comment').text();
+		 	 var boardNum = $('.data').attr('data-val');
+							
+		 		 if (comment == "") {
+				 swal({
+						title: "내용을 입력해주세요.",
+						confirmButtonColor: '#304ffe',
+					});
+				 }else {		
+					$.ajax({
+						type : 'post',
+						url : '/member/addComment',
+						data : 	{comment:comment,
+								boardNum:boardNum},
+						dataType :'json',
+						success: function(data){
+							
+							swal({
+								title: "댓글등록 "+data.msg,
+								confirmButtonColor: '#304ffe',
+							});
+					
+							location.reload();
+						}
+					});						
+				} 
+			});
+		 
+		 $(".removeComment").click(function() {
+			
+		 	 var commentsNum = $(this).attr('data-val');
+		 	 var boardNum = $('.data').attr('data-val');
+		 	 console.log(commentsNum);
+				$.ajax({
+					type : 'post',
+					url : '/member/removeComment',
+					data : {commentsNum:commentsNum},
+					dataType :'json',
+					success: function(data){
+		
+							swal({
+									title: "댓글삭제 "+data.msg,
+									confirmButtonColor: '#304ffe',
+							});
+						
+							location.reload();
+						
+					}
+				});						
+
+			});
+		 
+		
+		 $('.removeFreeBoard').click(function(){
+	    	  var boardNum = $(this).attr("data-boardNum");
+	   
+				swal({   
+					title: "정말 삭제하시겠습니까?",   
+					text: "삭제시 복구불가",   
+					type: "warning",   
+					showCancelButton: true,   
+					confirmButtonColor: "#DD6B55",   
+					confirmButtonText: "삭제!", 
+					cancelButtonText: "취소!", 
+					closeOnConfirm: false,
+					closeOnCancel: true,
+					confirmButtonColor: '#f60e0e',
+				},function(isConfirm){   
+					if (isConfirm) {     
+						location.href = "/member/removeFreeBoard?boardNum="+boardNum;
+					}
+				});
+		 })
+			
+		</script>
+	</th:block>
+
+</html>
