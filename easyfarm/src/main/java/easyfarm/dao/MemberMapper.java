@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import easyfarm.domain.FreeBoard;
 import easyfarm.domain.Member;
 import easyfarm.domain.Report;
 
@@ -25,6 +26,8 @@ public interface MemberMapper {
 	public List<Member> getLogin();
 	// 최근 로그인 기록 조회
 	public List<Member> getLoginMaxDate();
+	// 로그인기록삭제
+	public void removeLoginDate(String loginCode);
 	
 	// 회원가입
 	public int addMember(Member member);
@@ -129,7 +132,22 @@ public interface MemberMapper {
 	public void removeBan(String banCode);
 	public void updateMemberCancel(String banId);
 
-	public void saveImage(String string, Map<String, Object> hmap);
-	
-	
+	//자유게시판 조회
+	public List<FreeBoard> getFreeBoard(String boardId);
+	//자유게시판 등록
+	public void addFreeBoard(FreeBoard board);
+	//개인 게시판 조회
+	public FreeBoard getBoard(int boardNum);
+	//개인 게시판 댓글리스트
+	public List<FreeBoard> getCommentList(int boardNum);
+	//게시판 댓글등록
+	public void addComment(String comment,int boardNum,String memberId);
+	//게시판 댓글삭제
+	public void removeComment(int commentsNum);
+	//게시판 조회수증가
+	public void updateBoardGetNum(int boardNum,int boardGetNum);
+	//게시판 수정
+	public void modifyFreeBoard(FreeBoard board);
+	//게시판 삭제
+	public void removeFreeBoard(int boardNum);
 }

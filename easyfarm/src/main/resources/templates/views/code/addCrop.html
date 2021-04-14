@@ -128,9 +128,17 @@ button {
 		<div class="row">
 			<div class="col-sm-offset-2 col-sm-8">
 				<div class="box-content">
-					<h3>
-						<strong>작물등록</strong>
-					</h3>
+					<div class="pull-left">
+						<div style="font-size: 24px;">작물등록</div>
+					</div>
+					<div class="pull-right">
+						<a th:href="@{/code/getCropCode}"  class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
+							리스트로 돌아가기
+						</a>
+					</div>
+					<div style="margin-top: 6px;">
+						<small style="color: red; margin-left: 6px;"></small>
+					</div>
 					<hr>
 
 					<form th:action="@{/code/addCrop}" method="post">
@@ -185,12 +193,6 @@ button {
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="box-content">
-		<ul class="list-inline">
-			<li class="margin-bottom-10"><a th:href="@{/code}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>코드관리로 돌아가기</strong></button></a> </li>
-			<li ><a th:href="@{/code/getCropCode}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>작물 리스트</strong></button></a> </li>		
-		</ul>		
 	</div>
 </th:block>
 

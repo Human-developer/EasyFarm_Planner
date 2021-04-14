@@ -19,84 +19,68 @@
 	</th:block>
 	
 	<th:block layout:fragment="customContents">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-sm-offset-2 col-sm-8">
-				<div class="box-content">
-					<h3>
-						<strong>작물정보 수정</strong>
-					</h3>
-					<hr>
 
-					<form th:action="@{/code/modifyCrop}" method="post">
-						<div class="panel-body" style="padding-top: 0">
-							<div class="form-horizontal">
-								<div class="form-group margin-bottom-20">
-									<label for="cropcate" class="col-sm-3 control-label"><strong>작물
-											카테고리</strong></label>
-									<div class="col-sm-6">
-										<div class="card-content">
-											<select class="form-control" name="cropCate" id="cropcate">
-												<option th:value="기타" th:selected="${crop.cropCate == '기타'}">기타</option>
-												<option th:value="과수" th:selected="${crop.cropCate == '과수'}">과수</option>
-												<option th:value="채소" th:selected="${crop.cropCate == '채소'}">채소</option>
-												<option th:value="축산" th:selected="${crop.cropCate == '축산'}">축산</option>
-												<option th:value="특용" th:selected="${crop.cropCate == '특용'}">특용</option>
-												<option th:value="화훼" th:selected="${crop.cropCate == '화훼'}">화훼</option>
-												<option th:value="과채" th:selected="${crop.cropCate == '과채'}">과채</option>
-												<option th:value="버섯" th:selected="${crop.cropCate == '버섯'}">버섯</option>
-												<option th:value="식량" th:selected="${crop.cropCate == '식량'}">식량</option>
-												<option th:value="약용" th:selected="${crop.cropCate == '약용'}">약용</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<input id="cropname" name="cropCode" type="hidden"
-									class="form-control" th:value="${crop.cropCode}" />
-
-								<div class="form-group margin-bottom-20">
-									<label for="cropname" class="col-sm-3 control-label"><strong>작물명</strong></label>
-									<div class="col-sm-6">
-										<input id="cropname" name="cropName" type="text"
-											class="form-control" th:value="${crop.cropName}" />
-									</div>
-								</div>
-								<div class="form-group margin-bottom-20">
-									<label for="usestatus" class="col-sm-3 control-label"><strong>사용가능여부</strong></label>
-									<div class="col-sm-6">
-										<ul class="list-inline">
-											<li>
-												<div class="radio info">
-													<input type="radio" name="useStatus" id="radio-10"
-														th:value="O"> <label for="radio-10">O</label>
-												</div>
-											</li>
-											<li>
-												<div class="radio pink">
-													<input type="radio" name="useStatus" id="radio-11"
-														th:value="X"> <label for="radio-11">X</label>
-												</div>
-											</li>
-										</ul>
-									</div>
-								</div>
-
-								<hr>
-
-								<div class="form-group">
-									<div class="col-sm-10 col-sm-offset-1">
-										<button type="submit"
-											class="btn btn-success btn-rounded waves-effect waves-light"
-											style="width: 100%">작물정보 수정</button>
-									</div>
-								</div>
-							</div>
+	<div class="box-content" style="margin-top: 20px">
+		<h3>1:1 문의</h3>
+		<hr>
+		<form th:action="@{/board/qnaModify}" method="post" >
+			<input class="form-control" type="text" th:value="${BoardVO.code}" name ="code"readonly >
+			<input type="hidden" th:value="${BoardVO.title}" name ="title">
+			<input type="hidden" th:value="${BoardVO.email}" name ="email">
+			<input type="hidden" th:value="${BoardVO.content}" name ="content">
+			<table class="table">
+				<tr>
+					<td class="">제목</td>
+					<td th:text="${BoardVO.title}"></td>
+				</tr>
+				<tr height="30">
+					<td class="">작성자</td>
+					<td th:text="${BoardVO.regMemberId}"></td>
+				</tr>
+				<tr height="30">
+					<td class="">연락처</td>
+					<td th:text="${BoardVO.phoneNum}"></td>
+				</tr>
+				<tr height="30">
+					<td class="">이메일</td>
+					<td><a th:href="@{mailto:${BoardVO.email}}">[[${BoardVO.email}]]</a></td>
+				</tr>
+				<tr height="30">
+					<td class="">작성일자</td>
+					<td th:text="${BoardVO.regDate}"></td>
+				</tr>
+				<!-- 글 내용 -->
+				<tr height="180">
+					<td colspan="2" class="" width="100%" >
+						<h3 style="text-align: center;">문의</h3>
+						<div th:text="${BoardVO.content}">
+							
 						</div>
-					</form>
-				</div>
-			</div>
-		</div>
+					</td>
+				</tr>
+				
+				<tr height="180">
+					<td colspan="2" class="" width="100%" >
+						<h3 style="text-align: center;">답변</h3>
+						<textarea class="form-control" id="content" name="conAnswer" th:text = "${BoardVO.conAnswer}"style="resize: none;  height: 500px; width: 100%;" >
+						</textarea>
+					</td>
+				</tr>
+			</table >
+			<ul class="list-inline">
+				<li class="margin-bottom-10">
+					<a th:href="@{/board/qnaList}" class="btn btn-success btn-bordered waves-effect waves-light">
+						<strong>목록</strong>
+					</a>
+				</li>
+				<li>
+						<button type="submit" class="btn btn-success btn-bordered waves-effect waves-light">
+							<strong>확인</strong>
+						</button>
+				</li>
+			</ul>
+		</form>
 	</div>
-</th:block>
+	</th:block>
 
 </html>
