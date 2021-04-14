@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	
+	<th:block layout:fragment="customTitle">
+		<title>게시글 수정</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		<a th:href="@{/member/getFreeBoard}">자유게시판</a>-게시글수정
+	</th:block>
+	
+	
+	<th:block layout:fragment="customContents">
+		<div class="box-content">
+			<h3>게시글 수정</h3>
+			<hr>
+		
+			
+			<div class="card-content">
+						<form data-toggle="validator" class="form-horizontal" method="post" th:action="@{/member/modifyFreeBoard}" th:with=" b = ${board}">
+							<div class="form-group">
+								<label for="writer" class="col-sm-2 control-label">작성자</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="boardId" name="boardId" readonly="readonly" th:value="${session.SID}">
+									<input type="hidden" id="boardNum" name="boardNum" readonly="readonly" th:value="${b.boardNum}">
+								</div>
+							</div>
+					
+							<div class="form-group">
+								<label for="title" class="col-sm-2 control-label">제목</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="boardTitle" th:value="${b.boardTitle}"  name="boardTitle" placeholder="제목을 입력해주세요" required>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="content" class="col-sm-2 control-label">내용</label>
+								<div class="col-sm-9">											
+									<textarea class="form-control" id="boardContent" th:text="${b.boardContent}"  name="boardContent" placeholder="내용을 입력해주세요" style="resize: none;  height: 350px; width: 100%;" required></textarea>
+								</div>
+							</div>
+					
+							<div class ="form-group t-center">
+								<button type="submit" id="btn" class="btn btn-success btn-bordered waves-effect waves-light">수정</button>
+								<a th:href="@{/member/getFreeBoard}" class="btn btn-success btn-bordered waves-effect waves-light">목록</a>
+							</div>
+						</form>
+					</div>
+		</div>
+		
+
+	</th:block>
+	
+
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+	
+	</th:block>
+
+</html>
