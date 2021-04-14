@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +26,11 @@ public class BoardController {
 
 	 @Autowired
 	 private BoardService boardService;
+	 @Autowired
+	 private JavaMailSender javaMailSender;
 	
-	
+	 
+	 
 	
 	@PostMapping("/ajax/passCheck")
 	public @ResponseBody boolean passCheck(
@@ -78,19 +83,43 @@ public class BoardController {
 		
 	}
     
+    public Runnable createRunnable(final SimpleMailMessage message) {
+		 return new Runnable() {
+			 
+		 	 @Override
+			 public void run() {
+				 javaMailSender.send(message);
+			 }			
+		 };
+	 }
+    
     @GetMapping("/board/qnaModify")
 	public String boardModify(Model model, @RequestParam(value = "code",required = false) String code) {
     	BoardVO BoardVO = boardService.selectBoardByCode(code);
 		model.addAttribute("BoardVO", BoardVO);
 		return"views/board/qnaboardmodify";
 	}
+    
     @PostMapping("/board/qnaModify")
     public String boardModify(Model model, BoardVO boardVo) {
-    	boardService.updateBoard(boardVo);
+    	int result = boardService.updateBoard(boardVo);
+    	
     	System.out.println("\n\n\n\n\n\n\n\n\n\n\n"+boardVo.getConAnswer() + boardVo.getCode());
+    	
+    	if(result > 0) {    		
+    		SimpleMailMessage message = new SimpleMailMessage();
+    		message.setTo(boardVo.getEmail());  
+    		message.setSubject("고객님께서 문의하신 "+boardVo.getTitle() + "에 대한 답변입니다.");
+    		message.setText("문의내용  : "+boardVo.getContent()+"\n답변  : "+ boardVo.getConAnswer());
+    		Thread thread = new Thread(createRunnable(message));
+			thread.start();
+			thread = null;
+    	}
     	return "redirect:/board/qnaList";
     }
- 
+    
+    
+	
 
 	
 	

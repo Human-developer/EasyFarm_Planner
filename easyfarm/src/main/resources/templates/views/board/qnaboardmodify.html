@@ -23,8 +23,11 @@
 	<div class="box-content" style="margin-top: 20px">
 		<h3>1:1 문의</h3>
 		<hr>
-		<form th:action="@{/board/qnaModify}" method="post">
-			<input type="text" th:value="${BoardVO.code}" name ="code">
+		<form th:action="@{/board/qnaModify}" method="post" >
+			<input class="form-control" type="text" th:value="${BoardVO.code}" name ="code"readonly >
+			<input type="hidden" th:value="${BoardVO.title}" name ="title">
+			<input type="hidden" th:value="${BoardVO.email}" name ="email">
+			<input type="hidden" th:value="${BoardVO.content}" name ="content">
 			<table class="table">
 				<tr>
 					<td class="">제목</td>
