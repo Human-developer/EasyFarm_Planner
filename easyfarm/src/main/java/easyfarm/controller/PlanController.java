@@ -132,7 +132,7 @@ public class PlanController {
 			model.addAttribute("projectPlanCode", projectPlanCode);
 			model.addAttribute("insurancePayList", insurancePayList);
 		}
-		return "views/plan/insurePayList";
+		return "views/plan/insurePay/insurePayList";
 	}
 	
 	/* 프로젝트별 보험료지출계획 등록화면 */
@@ -144,7 +144,7 @@ public class PlanController {
 			model.addAttribute("projectCode", projectCode);
 			model.addAttribute("projectPlanCode", projectPlanCode);
 		}
-		return "views/plan/addInsurePay";
+		return "views/plan/insurePay/addInsurePay";
 	}
 	
 	/* 프로젝트별 보험지출계획 등록 */
@@ -196,7 +196,7 @@ public class PlanController {
 			model.addAttribute("projectPlanCode", projectPlanCode);
 		}
 		
-		return "views/plan/modifyInsurePay";
+		return "views/plan/insurePay/modifyInsurePay";
 	}
 	
 	/* 프로젝트별 보험지출계획 수정 */
@@ -539,7 +539,7 @@ public class PlanController {
 				model.addAttribute("farmCode", farmCode);
 			}
 		
-		return"views/plan/planClientList";
+		return"views/plan/client/planClientList";
 	}
 	
 	//거래처등록
@@ -551,7 +551,7 @@ public class PlanController {
 			model.addAttribute("projectPlanCode", projectPlanCode);
 			model.addAttribute("farmCode", farmCode);
 		}
-		return "views/plan/addPlanClient";
+		return "views/plan/client/addPlanClient";
 	}
 	
 	//거래처등록
@@ -589,7 +589,7 @@ public class PlanController {
 			model.addAttribute("farmCode", farmCode);
 			model.addAttribute("client", client);
 		}
-		return "views/plan/modifyPlanClient";
+		return "views/plan/client/modifyPlanClient";
 	}
 	
 	//거래처수정
@@ -636,7 +636,7 @@ public class PlanController {
 				model.addAttribute("farmCode", farmCode);
 			}
 		
-		return"views/plan/planStockItemList";
+		return"views/plan/stockItem/planStockItemList";
 	}
 	
 	//품목등록
@@ -652,7 +652,7 @@ public class PlanController {
 			model.addAttribute("projectPlanCode", projectPlanCode);
 			model.addAttribute("farmCode", farmCode);
 		}
-		return "views/plan/addPlanStockItem";
+		return "views/plan/stockItem/addPlanStockItem";
 	}
 	
 	//품목등록
@@ -685,39 +685,228 @@ public class PlanController {
 			
 			stockItem = planService.getStockItemInfoByCode(stockItemCode);
 			
+			/* 품목카테고리조회 */
+			List<StockCate> stockCateList = planService.getStockCateList();
+			model.addAttribute("stockCateList", stockCateList);
+			
 			model.addAttribute("projectPlanCode", projectPlanCode);
 			model.addAttribute("farmCode", farmCode);
 			model.addAttribute("stockItem", stockItem);
 		}
-		return "views/plan/modifyPlanStockItem";
+		return "views/plan/stockItem/modifyPlanStockItem";
 	}
 	
-	//품목수정 ajax
-	@PostMapping("/plan/ajax/modifyStockItem")
-	@ResponseBody
-	public List<StockItem> modifyStockItem(StockItem stockItem) {
-		
-		List<StockItem> result = null;
+	//품목수정
+	@PostMapping("/plan/modifyPlanStockItem")
+	public String modifyPlanStockItem(StockItem stockItem
+							      	 ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode
+							      	 ,@RequestParam(value = "farmCode", required = false) String farmCode) {
+		int result = 0;
 		
 		if(stockItem.getStockItemCode() != null && !"".equals(stockItem.getStockItemCode().trim())) {
 			
 			result = planService.modifyStockItem(stockItem);
 		}
-		return result;
+		return "redirect:/plan/planStockItemList?projectPlanCode=" + projectPlanCode + "&farmCode=" + farmCode;
 	}
 	
-	//품목삭제 ajax
-	@PostMapping("/plan/ajax/removeStockItem")
-	@ResponseBody
-	public List<StockItem> removeStockItem(StockItem stockItem) {
+	//품목삭제
+	@GetMapping("/plan/removePlanStockItem")
+	public String removePlanStockItem(@RequestParam(value = "stockItemCode", required = false) String stockItemCode
+							         ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode
+							         ,@RequestParam(value = "farmCode", required = false) String farmCode) {
+		int result = 0;
 		
-		List<StockItem> result = null;
-		
-		if(stockItem.getStockItemCode() != null && !"".equals(stockItem.getStockItemCode().trim())) {
+		if(stockItemCode != null && !"".equals(stockItemCode.trim())) {
 			
-			result = planService.removeStockItem(stockItem);
+			result = planService.removeStockItem(stockItemCode);
 		}
-		return result;
+		return "redirect:/plan/planStockItemList?projectPlanCode=" + projectPlanCode + "&farmCode=" + farmCode;
+	}
+	
+	//농자재매입 조회
+	@GetMapping("/plan/planResourcePayList")
+	public String planResourcePayList(Model model
+									,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode
+									,@RequestParam(value = "farmCode", required = false) String farmCode) {
+		
+			if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
+				
+				/* 농자재매입지출 조회 */
+				List<Map<String, Object>> resourcePayList = planService.getResourcePayList(farmCode);
+				model.addAttribute("resourcePayList", resourcePayList);
+				
+				model.addAttribute("projectPlanCode", projectPlanCode);
+				model.addAttribute("farmCode", farmCode);
+			}
+		
+		return"views/plan/resourcePay/planResourcePayList";
+	}
+	
+	//농자재매입 등록
+	@GetMapping("/plan/addPlanResourcePay")
+	public String addPlanResourcePay(Model model
+							      ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode
+							      ,@RequestParam(value = "farmCode", required = false) String farmCode) {
+		
+		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
+			
+			Map<String, Object> projectData = new HashMap<String, Object>();
+			projectData.put("farmCode", farmCode);
+			
+			/* 거래처항목조회 */
+			List<Map<String, Object>> clientNameList = planService.getClientName(projectData);
+			model.addAttribute("clientNameList", clientNameList);
+			
+			/* 품목리스트조회 */
+			List<StockItem> farmStockItemList = planService.getStockItemList(farmCode);
+			model.addAttribute("farmStockItemList", farmStockItemList);
+			
+			model.addAttribute("projectPlanCode", projectPlanCode);
+			model.addAttribute("farmCode", farmCode);
+		}
+		return "views/plan/resourcePay/addPlanResourcePay";
+	}
+	
+	//농자재매입 등록
+	@PostMapping("/plan/addPlanResourcePay")
+	public String addPlanResourcePay(ResourcePay resourcePay, HttpSession session
+								  ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode
+								  ,@RequestParam(value = "farmCode", required = false) String farmCode) {
+		
+		String memberId = (String) session.getAttribute("SID");
+		int result = 0;
+		
+		if(resourcePay.getFarmCode() != null && !"".equals(resourcePay.getFarmCode().trim()) && memberId != null) {
+			
+			resourcePay.setRegMemberId(memberId);
+			
+			result = planService.addResourcePay(resourcePay);
+		}
+		return "redirect:/plan/planResourcePayList?projectPlanCode=" + projectPlanCode + "&farmCode=" + farmCode;
+	}
+	
+	//농자재매입 수정
+	@GetMapping("/plan/modifyPlanResourcePay")
+	public String modifyPlanResourcePay(Model model
+							   	  ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode
+							      ,@RequestParam(value = "farmCode", required = false) String farmCode
+							      ,@RequestParam(value = "resourcePayCode", required = false) String resourcePayCode) {
+		ResourcePay resourcePay = null;
+		
+		if(resourcePayCode != null && !"".equals(resourcePayCode.trim())) {
+			
+			resourcePay = planService.getResourcePayInfo(resourcePayCode);
+			
+			Map<String, Object> projectData = new HashMap<String, Object>();
+			projectData.put("farmCode", farmCode);
+			
+			/* 거래처항목조회 */
+			List<Map<String, Object>> clientNameList = planService.getClientName(projectData);
+			model.addAttribute("clientNameList", clientNameList);
+			
+			/* 품목리스트조회 */
+			List<StockItem> farmStockItemList = planService.getStockItemList(farmCode);
+			model.addAttribute("farmStockItemList", farmStockItemList);
+			
+			model.addAttribute("projectPlanCode", projectPlanCode);
+			model.addAttribute("farmCode", farmCode);
+			model.addAttribute("resourcePay", resourcePay);
+		}
+		return "views/plan/resourcePay/modifyPlanResourcePay";
+	}
+	
+	//농자재매입 수정
+	@PostMapping("/plan/modifyPlanResourcePay")
+	public String modifyPlanResourcePay(ResourcePay resourcePay
+							      	 ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode
+							      	 ,@RequestParam(value = "farmCode", required = false) String farmCode) {
+		int result = 0;
+		
+		if(resourcePay.getResourcePayCode() != null && !"".equals(resourcePay.getResourcePayCode().trim())) {
+			
+			result = planService.modifyPlanResourcePay(resourcePay);
+		}
+		return "redirect:/plan/planResourcePayList?projectPlanCode=" + projectPlanCode + "&farmCode=" + farmCode;
+	}
+	
+	//농자재매입 삭제
+	/*@GetMapping("/plan/removePlanStockItem")
+	public String removePlanStockItem(@RequestParam(value = "stockItemCode", required = false) String stockItemCode
+							         ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode
+							         ,@RequestParam(value = "farmCode", required = false) String farmCode) {
+		int result = 0;
+		
+		if(stockItemCode != null && !"".equals(stockItemCode.trim())) {
+			
+			result = planService.removeStockItem(stockItemCode);
+		}
+		return "redirect:/plan/planStockItemList?projectPlanCode=" + projectPlanCode + "&farmCode=" + farmCode;
+	}*/
+	
+	//농기계 즐겨찾기 조회
+	@GetMapping("/plan/planFarmBookmarkMachineList")
+	public String planFarmBookmarkMachineList(Model model
+									,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode
+									,@RequestParam(value = "farmCode", required = false) String farmCode) {
+		
+			if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
+				
+				Map<String, Object> projectData = new HashMap<String, Object>();
+				projectData.put("farmCode", farmCode);
+				
+				/* 농기계즐겨찾기조회 */
+				List<Map<String, Object>> farmBookmarkMachineList = planService.getFarmBookmarkMachine(projectData);
+				model.addAttribute("farmBookmarkMachineList", farmBookmarkMachineList);
+				
+				model.addAttribute("projectPlanCode", projectPlanCode);
+				model.addAttribute("farmCode", farmCode);
+			}
+		
+		return"views/plan/farmBookmarkMachine/planFarmBookmarkMachineList";
+	}
+	
+	//농기계 즐겨찾기 등록
+	@GetMapping("/plan/addFarmBookmarkMachine")
+	public String addFarmBookmarkMachine(Model model
+							      ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode
+							      ,@RequestParam(value = "farmCode", required = false) String farmCode) {
+		
+		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
+			
+			/* 공통농기계목록조회 */
+			List<CommonMachine> commonMachineList = planService.getCommonMachineList();
+			model.addAttribute("commonMachineList", commonMachineList);
+			
+			model.addAttribute("projectPlanCode", projectPlanCode);
+			model.addAttribute("farmCode", farmCode);
+		}
+		return "views/plan/farmBookmarkMachine/addFarmBookmarkMachine";
+	}
+	
+	//농자재매입 등록
+	@PostMapping("/plan/addFarmBookmarkMachine")
+	public String addFarmBookmarkMachine(HttpSession session
+								  ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode
+								  ,@RequestParam(value = "farmCode", required = false) String farmCode
+								  ,@RequestParam(value = "commonMachineCode", required = false) List<String> commonMachineCode) {
+		
+		String memberId = (String) session.getAttribute("SID");
+		int result = 0;
+		
+		if(commonMachineCode.size() > 0 && memberId != null) {
+			
+			resourcePay.setRegMemberId(memberId);
+			
+			
+			
+			result = planService.addResourcePay(resourcePay);
+		}
+		return "redirect:/plan/planResourcePayList?projectPlanCode=" + projectPlanCode + "&farmCode=" + farmCode;
+		
+		
+		
+		return null;
 	}
 	
 	@GetMapping("/plan/resultPlan")
@@ -795,21 +984,6 @@ public class PlanController {
 			stockItemInfo = planService.getStockItemInfo(resourceStockItemCode);
 		}
 		return stockItemInfo;
-	}
-	
-	//농자재매입등록 ajax
-	@PostMapping("/plan/ajax/addResourcePay")
-	@ResponseBody
-	public List<Map<String, Object>> addResourcePay(ResourcePay resourcePay, HttpSession session) {
-		
-		String memberId = (String) session.getAttribute("SID");
-		List<Map<String, Object>> result = null;
-		
-		if(resourcePay.getFarmCode() != null && !"".equals(resourcePay.getFarmCode().trim()) && memberId != null) {
-			resourcePay.setRegMemberId(memberId);
-			result = planService.addResourcePay(resourcePay);
-		}
-		return result;
 	}
 	
 	//계획서간편보기 전체 리스트 조회 ajax

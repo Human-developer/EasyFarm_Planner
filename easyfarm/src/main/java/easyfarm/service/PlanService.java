@@ -27,6 +27,7 @@ import easyfarm.domain.plan.PlanWorkphaseCate;
 import easyfarm.domain.plan.ProductGain;
 import easyfarm.domain.plan.ResourcePay;
 import easyfarm.domain.plan.ResourceUsePlan;
+import easyfarm.domain.plan.ResourceUsecapacity;
 import easyfarm.domain.plan.StockCate;
 import easyfarm.domain.plan.StockItem;
 import easyfarm.domain.plan.TaxPay;
@@ -301,50 +302,62 @@ public class PlanService {
 	}
 	
 	//농가별 품목수정
-	public List<StockItem> modifyStockItem(StockItem stockItem) {
-		List<StockItem> result 		= null;
+	public int modifyStockItem(StockItem stockItem) {
+		
 		int modifyResult 			= 0;
 		
 		if(stockItem != null) {
 			modifyResult = planMapper.modifyStockItem(stockItem);
-			
-			if(modifyResult > 0) {
-				result = planMapper.getStockItemList(stockItem.getFarmCode());
-			}
 		}
-		return result;
+		return modifyResult;
 	}
 	
 	//농가별 품목삭제
-	public List<StockItem> removeStockItem(StockItem stockItem) {
-		List<StockItem> result 		= null;
-		int removeResult 			= 0;
+	public int removeStockItem(String stockItemCode) {
 		
-		if(stockItem != null) {
-			stockItem.setUseStatus("N");
-			removeResult = planMapper.removeStockItem(stockItem);
-			
-			if(removeResult > 0) {
-				result = planMapper.getStockItemList(stockItem.getFarmCode());
-			}
+		int removeResult = 0;
+		
+		if(stockItemCode != null) {
+			removeResult = planMapper.removeStockItem(stockItemCode);
 		}
-		return result;
+		return removeResult;
 	}
 	
 	//농가별 농자재매입등록
-	public List<Map<String, Object>> addResourcePay(ResourcePay resourcePay) {
-		List<Map<String, Object>> result 	= null;
-		int addResult 						= 0;
+	public int addResourcePay(ResourcePay resourcePay) {
+		ResourceUsecapacity resourceUsecapacity = null;
+		int addResult = 0;
 		
 		if(resourcePay != null) {
+			resourceUsecapacity = new ResourceUsecapacity();
 			
-			addResult = planMapper.addResourcePay(resourcePay);
-			System.out.println(resourcePay.getResourcePayCode() + " <---- getResourcePayCode");
-			if(addResult > 0) {
-				result = planMapper.getResourcePayList(resourcePay.getFarmCode());
-			}
+			addResult += planMapper.addResourcePay(resourcePay);
+			addResult += planMapper.addResourceUsecapacity(resourcePay);
 		}
+		return addResult;
+	}
+	
+	//농자재매입 코드별 정보 조회
+	public ResourcePay getResourcePayInfo(String resourcePayCode) {
+		
+		ResourcePay result = null;
+		
+		if(resourcePayCode != null && !"".equals(resourcePayCode.trim())) {
+			result = planMapper.getResourcePayInfo(resourcePayCode);
+		}
+		
 		return result;
+	}
+	
+	//농가별 농자재매입수정
+	public int modifyPlanResourcePay(ResourcePay resourcePay) {
+		
+		int modifyResult = 0;
+		
+		if(resourcePay != null) {
+			modifyResult = planMapper.modifyPlanResourcePay(resourcePay);
+		}
+		return modifyResult;
 	}
 
 	//계획서 간편보기 전체 리스트 조회

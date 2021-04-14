@@ -5,12 +5,12 @@
 	  
 	<!-- 화면 title 설정 -->
 	<th:block layout:fragment="customTitle">
-		<title>품목 등록</title>
+		<title>품목 수정</title>
 	</th:block>
 	
 	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
 	<th:block layout:fragment="pageTitle">
-		품목 등록
+		품목 수정
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
@@ -28,24 +28,26 @@
 	
 	
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
-	<th:block layout:fragment="customContents">
+	<th:block layout:fragment="customContents" th:with="si = ${stockItem}">
 	
 		<div class="container-fluid">
 		    <div class="row">
 				<div class="col-md-8 col-md-offset-2">
 					<div class="box-content">
-						<h3>품목 등록</h3>
+						<h3>품목 수정</h3>
 						<hr/>
-						<form action="/plan/addPlanStockItem" method="post">
+						<form action="/plan/modifyPlanStockItem" method="post">
 							<div class="form-horizontal">
 								<div class="form-group">
 									<label class="col-sm-3 control-label"><strong>품목카테고리</strong></label>
 								    <div class="col-sm-6">
 								    	<input class="hidden" th:value="${farmCode}" name="farmCode">
+								    	<input class="hidden" th:value="${projectPlanCode}" name="projectPlanCode">
+								    	<input class="hidden" th:value="${si.stockItemCode}" name="stockItemCode">
 										<select class="form-control" name="stockCateCode" id="stockCateCode">
 											<option value=""> :: 카테고리선택 :: </option>
 											<th:block th:if="${#lists.size(stockCateList) > 0}" th:each="s : ${stockCateList}">
-												<option th:value="${s.stockCateCode}" th:text="${s.stockCateName}"></option>
+												<option th:value="${s.stockCateCode}" th:text="${s.stockCateName}" th:selected="${s.stockCateCode} == ${si.stockCateCode}"></option>
 											</th:block>
 										</select>
 								    </div>
@@ -53,36 +55,36 @@
 								<div class="form-group">
 									<label for="stockItemName" class="col-sm-3 control-label"><strong>품목명</strong></label>
 								    <div class="col-sm-6">
-								      <input type="text" class="form-control" name="stockItemName" id="stockItemName" placeholder="품목명">
+								      <input type="text" class="form-control" name="stockItemName" th:value="${si.stockItemName}" placeholder="품목명">
 								    </div>
 								</div>
 								<div class="form-group">
 									<label for="stockItemQuantity" class="col-sm-3 control-label"><strong>품목수량</strong></label>
 								    <div class="col-sm-6">
-								      <input type="text" class="form-control" name="stockItemQuantity" id="stockItemQuantity" placeholder="품목수량">
+								      <input type="text" class="form-control" name="stockItemQuantity" th:value="${si.stockItemQuantity}" placeholder="품목수량">
 								    </div>
 								</div>
 								<div class="form-group">
 									<label for="stockItemQuantityUnit" class="col-sm-3 control-label"><strong>수량단위</strong></label>
 								    <div class="col-sm-6">
-								      <input type="text" class="form-control" name="stockItemQuantityUnit" id="stockItemQuantityUnit" placeholder="수량단위">
+								      <input type="text" class="form-control" name="stockItemQuantityUnit" th:value="${si.stockItemQuantityUnit}" placeholder="수량단위">
 								    </div>
 								</div>
 								<div class="form-group">
 									<label for="stockItemQuantityCapacity" class="col-sm-3 control-label"><strong>품목용량</strong></label>
 								    <div class="col-sm-6">
-								      <input type="text" class="form-control" name="stockItemQuantityCapacity" id="stockItemQuantityCapacity" placeholder="품목용량">
+								      <input type="text" class="form-control" name="stockItemQuantityCapacity" th:value="${si.stockItemQuantityCapacity}" placeholder="품목용량">
 								    </div>
 								</div>
 								<div class="form-group">
 									<label for="stockItemQuantityCapacityUnit" class="col-sm-3 control-label"><strong>용량단위</strong></label>
 								    <div class="col-sm-6">
-								      <input type="text" class="form-control" name="stockItemQuantityCapacityUnit" id="stockItemQuantityCapacityUnit" placeholder="용량단위">
+								      <input type="text" class="form-control" name="stockItemQuantityCapacityUnit" th:value="${si.stockItemQuantityCapacityUnit}" placeholder="용량단위">
 								    </div>
 								</div>
 								<hr>
 								<div class="form-group t-center">
-									<button type="submit" class="btn btn-primary btn-md waves-effect btn-rounded waves-light btnSize">품목 등록</button>
+									<button type="submit" class="btn btn-primary btn-md waves-effect btn-rounded waves-light btnSize">품목 수정</button>
 									<button type="button" th:value="|/plan/planStockItemList?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-success btn-md waves-effect waves-light btn-rounded btnSize">
 										목록 돌아가기
 									</button>

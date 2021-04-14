@@ -19,6 +19,7 @@ import easyfarm.domain.plan.PlanWorkphaseCate;
 import easyfarm.domain.plan.ProductGain;
 import easyfarm.domain.plan.ResourcePay;
 import easyfarm.domain.plan.ResourceUsePlan;
+import easyfarm.domain.plan.ResourceUsecapacity;
 import easyfarm.domain.plan.StockCate;
 import easyfarm.domain.plan.StockItem;
 import easyfarm.domain.plan.TaxPay;
@@ -118,7 +119,7 @@ public interface PlanMapper {
 	public int modifyStockItem(StockItem stockItem);
 	
 	//농가별 품목삭제
-	public int removeStockItem(StockItem stockItem);
+	public int removeStockItem(String stockItemCode);
 	
 	//농가별 농자재매입등록
 	public int addResourcePay(ResourcePay resourcePay);
@@ -128,4 +129,13 @@ public interface PlanMapper {
 	
 	//품목 코드별 정보 조회
 	public StockItem getStockItemInfoByCode(String stockItemCode);
+	
+	//농자재매입 코드별 정보 조회
+	public ResourcePay getResourcePayInfo(String resourcePayCode);
+	
+	//농가별 농자재매입수정
+	public int modifyPlanResourcePay(ResourcePay resourcePay);
+	
+	//농가별 농자재소모현황 등록
+	public int addResourceUsecapacity(ResourcePay resourcePay);
 }

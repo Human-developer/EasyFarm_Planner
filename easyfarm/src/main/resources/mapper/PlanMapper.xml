@@ -90,6 +90,7 @@
 		<result property="runStatus" 				column="run_status"/>
 	</resultMap>
 	
+	<!-- 거래처 -->
 	<resultMap type="Client" id="resultClient">
 		<result property="clientCode" 		 column="client_code"/>
 		<result property="farmCode" 		 column="farm_code"/>
@@ -103,6 +104,95 @@
 		<result property="regMemberId" 		 column="reg_member_id"/>
 		<result property="regDate" 			 column="reg_date"/>
 	</resultMap>
+	
+	<!-- 농자재매입 -->
+	<resultMap type="ResourcePay" id="resultResourcePay">
+		<result property="resourcePayCode" 				column="resource_pay_code" />
+		<result property="farmCode" 					column="farm_code" />
+		<result property="clientCode" 					column="client_code" />
+		<result property="stockItemCode" 				column="stock_item_code" />
+		<result property="stockItemIncomeQuantity" 		column="stock_item_income_quantity" />
+		<result property="stockItemIncomeQuantityTotal" column="stock_item_income_quantity_total" />
+		<result property="stockItemIncomePerPay" 		column="stock_item_income_per_pay" />
+		<result property="stockItemTotalPay" 			column="stock_item_total_pay" />
+		<result property="regMemberId" 					column="reg_member_id" />
+		<result property="regDate" 						column="reg_date" />
+	</resultMap>
+	
+	<select id="getFarmCommonMachineList" parameterType="String" resultType="map">
+		SELECT
+			 common.common_machine_code AS commonMachineCode
+			,common.common_machine_name AS commonMachineName
+			,common.reg_member_id 		AS regMemberId
+			,common.reg_date 			AS regDate
+		FROM
+			tb_common_machine AS common
+		where	
+			common.common_machine_code NOT IN (SELECT
+			fbm.common_machine_code AS commonCode
+		FROM
+			tb_farm_bookmark_machine AS fbm
+			INNER join
+			tb_common_machine AS cm
+			on
+			fbm.common_machine_code = cm.common_machine_code
+		WHERE
+			 fbm.farm_code = #{farmCode})
+	</select>
+	
+	<insert id="addResourceUsecapacity" parameterType="ResourcePay">
+		INSERT INTO tb_resource_usecapacity
+		(
+			 resource_usecapacity_code
+			,resource_pay_code
+			,resource_retain_quantity
+			,resource_retain_quantity_capacity_extra
+			,available_status
+			,reg_member_id
+			,reg_date
+		)
+		VALUES 
+		(
+			 sf_resource_usecapacity_max_code()
+			, #{resourcePayCode}
+			, #{stockItemIncomeQuantity}
+			, #{stockItemIncomeQuantityTotal}
+			, "Y"
+			, #{regMemberId}
+			, NOW()
+		)
+	</insert>
+	
+	<update id="modifyPlanResourcePay" parameterType="ResourcePay">
+		UPDATE tb_exp_resource_pay
+		SET
+			client_code							= #{clientCode},
+			stock_item_code						= #{stockItemCode},
+			stock_item_income_quantity			= #{stockItemIncomeQuantity},
+			stock_item_income_quantity_total	= #{stockItemIncomeQuantityTotal},
+			stock_item_income_per_pay			= #{stockItemIncomePerPay},
+			stock_item_total_pay				= #{stockItemTotalPay}
+		WHERE 
+			resource_pay_code					= #{resourcePayCode}
+	</update>
+	
+	<select id="getResourcePayInfo" parameterType="String" resultMap="resultResourcePay">
+		SELECT 
+			 resource_pay_code
+			,farm_code
+			,client_code
+			,stock_item_code
+			,stock_item_income_quantity
+			,stock_item_income_quantity_total
+			,stock_item_income_per_pay
+			,stock_item_total_pay
+			,reg_member_id
+			,reg_date
+		FROM 
+			tb_exp_resource_pay
+		where
+			resource_pay_code = #{resourcePayCode}
+	</select>
 	
 	<select id="getStockItemInfoByCode" parameterType="String" resultMap="resultStockItem">
 		SELECT
@@ -197,7 +287,7 @@
 		)
 		<selectKey keyProperty="resourcePayCode" resultType="String" order="AFTER">
 			SELECT
-				Max(erp.resource_pay_code)
+				CONCAT('resource_pay_', Max(cast(SUBSTRING_INDEX(erp.resource_pay_code,'_',-1) AS UNSIGNED)))
 			FROM
 				tb_exp_resource_pay AS erp
 		</selectKey>
@@ -206,7 +296,7 @@
 	<update id="removeStockItem" parameterType="StockItem">
 		UPDATE tb_stock_item
 		SET
-			 use_status							= #{useStatus}
+			 use_status							= 'N'
 		WHERE
 			stock_item_code						= #{stockItemCode}
 	</update>

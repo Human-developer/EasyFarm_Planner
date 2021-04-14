@@ -5,12 +5,12 @@
 	  
 	<!-- 화면 title 설정 -->
 	<th:block layout:fragment="customTitle">
-		<title>품목 수정</title>
+		<title>품목 등록</title>
 	</th:block>
 	
 	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
 	<th:block layout:fragment="pageTitle">
-		품목 수정
+		품목 등록
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
@@ -28,13 +28,13 @@
 	
 	
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
-	<th:block layout:fragment="customContents" th:with="s = ${stockItem}">
+	<th:block layout:fragment="customContents">
 	
 		<div class="container-fluid">
 		    <div class="row">
 				<div class="col-md-8 col-md-offset-2">
 					<div class="box-content">
-						<h3>품목 수정</h3>
+						<h3>품목 등록</h3>
 						<hr/>
 						<form action="/plan/addPlanStockItem" method="post">
 							<div class="form-horizontal">
@@ -42,6 +42,7 @@
 									<label class="col-sm-3 control-label"><strong>품목카테고리</strong></label>
 								    <div class="col-sm-6">
 								    	<input class="hidden" th:value="${farmCode}" name="farmCode">
+								    	<input class="hidden" th:value="${projectPlanCode}" name="projectPlanCode">
 										<select class="form-control" name="stockCateCode" id="stockCateCode">
 											<option value=""> :: 카테고리선택 :: </option>
 											<th:block th:if="${#lists.size(stockCateList) > 0}" th:each="s : ${stockCateList}">
@@ -82,7 +83,7 @@
 								</div>
 								<hr>
 								<div class="form-group t-center">
-									<button type="submit" class="btn btn-primary btn-md waves-effect btn-rounded waves-light btnSize">품목 수정</button>
+									<button type="submit" class="btn btn-primary btn-md waves-effect btn-rounded waves-light btnSize">품목 등록</button>
 									<button type="button" th:value="|/plan/planStockItemList?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-success btn-md waves-effect waves-light btn-rounded btnSize">
 										목록 돌아가기
 									</button>
