@@ -51,17 +51,17 @@ public class ResultController {
 		List<Map<String,Object>> project = null;
 		
 		project = resultService.getProjectNameByFarmName(farmCode);
-		System.out.println(project.toString() + "muyahoooooooooooooooooooooooooooooooooooooo");
+		System.out.println(project.toString() + "muyahooooo");
 		
 		return project;
 	}
 	
-	@PostMapping(value = "/result/getWorkPhaseByFarmCode", produces = "application/json")
+	@PostMapping(value = "/result/getWorkPhaseByProjectCode", produces = "application/json")
 	public @ResponseBody List<Map<String,Object>> getWorkPhaseByProjectCode( @RequestParam(value = "projectCode",required = false) String projectCode) {
 		List<Map<String,Object>> workPhase = null;
 		
 		workPhase = resultService.getWorkPhaseByProjectCode(projectCode);
-		System.out.println(workPhase.toString() + "muyahuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+		System.out.println(workPhase.toString() + "muyahuuu");
 		
 		return workPhase;
 	}
@@ -111,7 +111,6 @@ public class ResultController {
 	@GetMapping("/result")
 	public String result(Model model,HttpSession session) {
 		
-		
 		List<Map<String,Object>> farm = null;
 		
 		 if(session.getAttribute("SID") == null) {
@@ -127,11 +126,70 @@ public class ResultController {
 		return "views/result/resultMain";
 	}
 	
-	@GetMapping("/resultCalendar")
-	public String resultTable(Model model) {
+	//캘린더 들어가기전 선택화면
+	@GetMapping("/result/beforeCalendar")
+	public String resultCalendar(Model model,HttpSession session) {
 		
+		List<Map<String,Object>> farm = null;
+		
+		 if(session.getAttribute("SID") == null) {
+			return "views/member/login";
+		 }
+		 String memberId = (String) session.getAttribute("SID");
+			
+			if(memberId != null) {
+				farm = resultService.getFarmName(memberId);
+				model.addAttribute("farm", farm);
+			 }
+			return "views/result/dummyCalendar";
+	}
+	
+	//실행캘린더 화면
+	@GetMapping("/result/resultCalendar")
+	public String loadCalendar(Model model,
+			@RequestParam(value = "projectPlanCode",required = false) String projectPlanCode) {
+		
+		
+		if(projectPlanCode == null) {
+			projectPlanCode = "project_plan_1";
+		}
+		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
+			/* 계획정보조회 */
+			Map<String, Object> projectPlanInfo = planService.getProjectPlanInfo(projectPlanCode);
+			String projectPlanN = (String)projectPlanInfo.get("projectPlanN");
+			String projectCode =  (String)projectPlanInfo.get("projectCode");
+			
+			/* 계획차수 리스트 조회 */
+			List<Map<String, Object>> projectPlanNList = planService.getProjectPlanNList(projectCode);
+			
+			model.addAttribute("projectPlanCode", projectPlanCode);
+			model.addAttribute("projectPlanN", projectPlanN);
+			model.addAttribute("projectCode", projectCode);
+			model.addAttribute("projectPlanNList", projectPlanNList);
+		}
 		return "views/result/resultCalendar";
 	}
+	
+	
+	//캘린더 들어가기전 선택화면
+		@GetMapping("/result/addWorkphaseResult")
+		public String addWorkphaseResult(Model model,
+				@RequestParam(value = "projectPlanCode",required = false) String projectPlanCode) {
+			
+			
+			
+			 
+				return "views/result/addWorkphaseResult";
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@GetMapping("/result/select")
 	public String selectOptions(Model model,HttpSession session) {

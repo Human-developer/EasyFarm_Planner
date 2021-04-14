@@ -35,7 +35,7 @@
 				<div class="box-content" style="overflow: auto;">
 					<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs" style="overflow: auto;">
 					
-					<a th:href="@{/resultCalendar}"> :: 캘린더 :: </a>
+					<a th:href="@{/result/beforeCalendar}"> :: 캘린더 :: </a>
 					    <ul id="myTab" class="nav nav-tabs" role="tablist">
 					      <li role="presentation" class=" active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false">실행 종합</a></li>
 					      <li role="presentation" class="dropdown">
@@ -395,12 +395,11 @@
 					      </div>
 					      <div role="tabpanel" class="tab-pane fade" id="dropdown3" aria-labelledby="dropdown3-tab">
 					      	<div class="col-xs-12 box-content " style="border: none; overflow: auto;">
-								<div th:each="e : ${etcpayResult}">
+									
 									<h2>기타비용 실행결과</h2>
+									
 									<div class="pull-right">
-										기타비용  실행코드 : <i th:text="${e.etcPayRunCode}"></i>	<br/>
-										기타비용  계획코드 : <i th:text="${e.etcPayPlan.etcPayCode}"></i>	<br/>
-										해당작업단계 : <i th:text="${e.etcPayPlan.planWorkphaseCateCode}"></i>	<br/>
+									
 										기타비용  합계 : <i class="total"></i><br/>
 										<br/>
 									</div>
@@ -419,7 +418,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr style="text-align: center;">
+											<tr style="text-align: center;" th:each="e : ${etcpayResult}">
 												<td>계획</td>
 												<td th:text="${e.etcPayPlan.planWorkphaseCateCode}"></td>
 												<td th:text="${e.etcPayPlan.etcPayDetail}"></td>
@@ -441,7 +440,7 @@
 												<td> 납부대상 </td>
 												<td> 결과마감여부 </td>
 											</tr>
-											<tr style="text-align: center;">
+											<tr style="text-align: center;" th:each="e : ${etcpayResult}">
 												<td>실행</td>
 												<td></td>
 												<td th:text="${e.etcPayRunMemo}"></td>
@@ -454,7 +453,6 @@
 											</tr>
 										</tbody> 	
 									</table>
-								</div>
 							</div>
 					      </div>
 					      <div role="tabpanel" class="tab-pane fade" id="dropdown4" aria-labelledby="dropdown4-tab">
@@ -689,16 +687,6 @@
 						            	{
 						            	console.log("muyahooooooooooooooooooooooooooooooooooooooooooooooooooooo")
 						            	location.href ="/result/resultData?farmCode="+ result.value[0] +"&projectCode=" + result.value[1] + "&workPhaseCode=" + result.value[2];
-						            	/* var request = $.ajax({
-								               url:"/result/resultMain",
-								               method:"post", 
-								               data : {"farmCode":result.value[0], "projectCode":result.value[1],"workPhaseCode":result.value[2]},
-								               datatype: "json",
-								            });
-						            	request.done(function(data){
-						            		console.log(data + "clearrrrrrrrrrrrrrr")
-						            		location.replace("/result/resultMain");
-							            	}); */
 							            });
 						        }, 100);
 						    }else{
@@ -752,7 +740,7 @@
 					WorkPhase ={"":"작업단계를 선택해주세요"};
 					var request = $.ajax
 						({
-			               url:"/result/getWorkPhaseByFarmCode",
+			               url:"/result/getWorkPhaseByProjectCode",
 			               method:"post", 
 			               data : {"projectCode":projectCode},
 			               datatype: "json",
