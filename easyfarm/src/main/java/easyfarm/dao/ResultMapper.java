@@ -46,5 +46,5 @@ public interface ResultMapper {
 	
 	public List<Map<String,Object>> getWorkPhaseByProjectCode(String projectCode);
 	
-	public List<PlanWorkphaseCate> getPlanWorkphaseCate();
+	public List<PlanWorkphaseCate> getPlanWorkphaseCate(String selectedDate,String projectCode);
 }
