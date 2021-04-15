@@ -23,6 +23,4 @@ public class FreeBoard {
 	private String boardId; 		//게시판 작성자 아이디
 	private String boardGetNum; 	//게시판 조회수
 	private String memberName; 		//게시판 작성자 이름
-	
-	
 }
