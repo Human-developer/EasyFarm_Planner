@@ -55,7 +55,7 @@
 					<td th:text="${l.regMemberId}"></td>
 					<td th:text="${l.regDate}"></td>
 					<td th:if = "${session.SLEVEL == '관리자'}">
-						<a th:href="@{/#}">삭제</a>		
+						<a th:href="@{/board/removeQnaList}">삭제</a>		
 					</td>
 					<td th:if ="${l.conAnswer == null}" style="color: red">
 						답변대기

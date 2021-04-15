@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="easyfarm.dao.MemberMapper">
+
+	<resultMap type="FreeBoard" id="freeBoardResultMap">   
+      <result property="commentsNum" 		column="comments_num"/>
+      <result property="commentsBoard"		column="comments_board"/>
+      <result property="memberId" 			column="member_id"/>
+      <result property="commentsContent"	column="comments_content"/>
+      <result property="commentsDate" 		column="comments_date"/>
+      <result property="boardNum" 			column="board_num"/>
+      <result property="boardId" 			column="board_id"/>
+      <result property="boardTitle" 		column="board_title"/>
+      <result property="boardContent" 		column="board_content"/>
+      <result property="boardGetNum"		column="board_get_num"/>
+      <result property="boardDate" 			column="board_date"/>
+      <result property="memberName" 			column="member_name"/>
+    
+   </resultMap>
+ 
+	<select id="getFreeBoard" resultMap="freeBoardResultMap">
+		SELECT 	
+			  board_num
+			, board_id
+			, board_title
+			, board_content
+			, board_get_num
+			, board_date
+			, member_name
+		FROM 
+			tb_free_board
+		join
+			tb_member
+		on
+			board_id = member_id
+		<if test="boardId != null and !''.toString()">
+			where board_id = #{boardId}
+		</if>
+			
+	</select>
+	<select id="getBoard" resultMap="freeBoardResultMap">
+		SELECT 	
+			  board_num
+			, board_id
+			, board_title
+			, board_content
+			, board_get_num
+			, board_date
+			, member_name
+		FROM 
+			tb_free_board
+		join
+			tb_member
+		on
+			board_id = member_id
+		WHERE board_num = #{boardNum}
+			
+	</select>
+	<select id="getCommentList" resultMap="freeBoardResultMap">
+		SELECT 
+		  c.comments_num
+		, c.comments_board
+		, c.member_id
+		, c.comments_content
+		, c.comments_date
+		, m.member_name
+		FROM 
+			tb_board_comments as c
+		join
+			tb_member as m
+		on
+			c.member_id = m.member_id
+		where c.comments_board = #{boardNum}
+			
+	</select>
+	<insert id="addComment">
+		INSERT INTO tb_board_comments
+		(
+		  comments_board
+		, member_id
+		, comments_content
+		, comments_date
+		)
+		VALUES 
+		(
+		  #{boardNum}
+		, #{memberId}
+		, #{comment}
+		, NOW()
+		)
+	</insert>
+	<insert id="addFreeBoard">
+		INSERT INTO tb_free_board
+		(
+		  board_id
+		, board_title
+		, board_content
+		, board_get_num
+		, board_date
+		)
+		VALUES
+		(
+		  #{boardId}
+		, #{boardTitle}
+		, #{boardContent}
+		, 0
+		, NOW()
+		)
+	</insert>
+   	<delete id="removeComment" parameterType="int">
+   		DELETE FROM tb_board_comments WHERE comments_num=#{commentsNum}
+   	</delete>
+   	<update id="updateBoardGetNum">
+   		UPDATE tb_free_board
+		SET
+			board_get_num=#{boardGetNum}
+		WHERE board_num=#{boardNum}
+   	</update>
+   	<update id="modifyFreeBoard">
+   		UPDATE tb_free_board
+		SET
+			board_title=#{boardTitle},
+			board_content=#{boardContent},
+			board_date=NOW()
+		WHERE board_num=#{boardNum}
+   	</update>
+   	<delete id="removeFreeBoard">
+   		DELETE FROM tb_free_board WHERE board_num=#{boardNum}
+   	</delete>
+	
+	
+	
+</mapper>

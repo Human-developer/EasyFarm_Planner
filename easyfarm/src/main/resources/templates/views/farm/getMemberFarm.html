@@ -17,6 +17,8 @@
 	<th:block layout:fragment="customCssLib">
 		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
 		<link rel="stylesheet" th:href="@{/assets/fonts/fontello/fontello.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/media/css/dataTables.bootstrap.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css}">
 	</th:block>
 		
 	<!-- 사용자 정의 css -->
@@ -45,45 +47,48 @@
 				<div class ="box-content">
 					<h3>농가 회원 조회</h3>
 					<hr>
-					<table id="dataFarmTable">
-						<thead>
-							<tr>
-								<th th:text = "${'농가회원코드'}"/>
-								<th th:text = "${'농가코드'}"/>
-								<th th:text ="${'회원아이디'}"/>
-								<th th:text ="${'회원이름'}"/>
-								<th th:text ="${'회원나이'}"/>
-								<th th:text ="${'회원휴대폰'}"/>
-								<th th:text ="${'권한코드'}"/>
-								<th th:text ="${'권한'}"/>
-								<th th:if ="${myMemberLevel == 'farm_level_1'}" th:text ="${'권한 수정'}"/>
-								<th th:if ="${myMemberLevel == 'farm_level_1' OR myMemberLevel == 'farm_level_2'}" th:text ="${'추방'}"/>
-							</tr>
-						</thead>
-						
-						<tbody>
-							<tr th:each="farmMember : ${farmMemberList}" class ="farmList">
-								<td th:text = "${farmMember.farmMemberCode}"/>
-								<td th:text = "${farmMember.farmCode}"/>
-								<td th:text = "${farmMember.farmMemberId}"/>
-								<td th:text = "${farmMember.member.memberName}"/>
-								<td th:text = "${farmMember.farmMemberAge + '세'}"/>
-								<td th:text = "${farmMember.member.memberPhone}"/>
-								<td th:text = "${farmMember.farmLevelCode}"/>
-								<td th:text = "${farmMember.farmLevelName}"/>
-								<td th:if ="${myMemberLevel == 'farm_level_1'}"> 
-									<button th:if="${farmMember.farmMemberId != session.SID}" type="button" th:href="@{#}" class ="btn btn-xs levelBtn levelBtnUp"><i class ="ico icon-up-big"></i></button>
-									<button th:if="${farmMember.farmMemberId != session.SID}" type="button" th:href="@{#}" class ="btn btn-xs levelBtn levelBtnDown"><i class ="ico icon-down-big"></i></button>
-								</td>
-								<td th:if ="${myMemberLevel == 'farm_level_1' OR myMemberLevel == 'farm_level_2'}">
-									<div th:if ="${farmMember.farmLevelCode != 'farm_level_1' AND farmMember.farmMemberId != session.SID AND farmMember.farmLevelCode != myMemberLevel}">
-										<button th:if="${farmMember.farmMemberId != session.SID}" type="button" class ="btn btn-xs btn-danger leaverBtn" th:data-memberCode ="${farmMember.farmMemberCode}" th:data-farmCode ="${farmMember.farmCode}">추방</button>
-									</div>
-								</td>
-							</tr>
+					<div class ="table-responsive">
+					
+						<table id="dataFarmTable">
+							<thead>
+								<tr>
+									<th th:text = "${'농가회원코드'}"/>
+									<th th:text = "${'농가코드'}"/>
+									<th th:text ="${'회원아이디'}"/>
+									<th th:text ="${'회원이름'}"/>
+									<th th:text ="${'회원나이'}"/>
+									<th th:text ="${'회원휴대폰'}"/>
+									<th th:text ="${'권한코드'}"/>
+									<th th:text ="${'권한'}"/>
+									<th th:if ="${myMemberLevel == 'farm_level_1'}" th:text ="${'권한 수정'}"/>
+									<th th:if ="${myMemberLevel == 'farm_level_1' OR myMemberLevel == 'farm_level_2'}" th:text ="${'추방'}"/>
+								</tr>
+							</thead>
 							
-						</tbody>
-					</table>
+							<tbody>
+								<tr th:each="farmMember : ${farmMemberList}" class ="farmList">
+									<td th:text = "${farmMember.farmMemberCode}"/>
+									<td th:text = "${farmMember.farmCode}"/>
+									<td th:text = "${farmMember.farmMemberId}"/>
+									<td th:text = "${farmMember.member.memberName}"/>
+									<td th:text = "${farmMember.farmMemberAge + '세'}"/>
+									<td th:text = "${farmMember.member.memberPhone}"/>
+									<td th:text = "${farmMember.farmLevelCode}"/>
+									<td th:text = "${farmMember.farmLevelName}"/>
+									<td th:if ="${myMemberLevel == 'farm_level_1'}"> 
+										<button th:if="${farmMember.farmMemberId != session.SID}" type="button" th:href="@{#}" class ="btn btn-xs levelBtn levelBtnUp"><i class ="ico icon-up-big"></i></button>
+										<button th:if="${farmMember.farmMemberId != session.SID}" type="button" th:href="@{#}" class ="btn btn-xs levelBtn levelBtnDown"><i class ="ico icon-down-big"></i></button>
+									</td>
+									<td th:if ="${myMemberLevel == 'farm_level_1' OR myMemberLevel == 'farm_level_2'}">
+										<div th:if ="${farmMember.farmLevelCode != 'farm_level_1' AND farmMember.farmMemberId != session.SID AND farmMember.farmLevelCode != myMemberLevel}">
+											<button th:if="${farmMember.farmMemberId != session.SID}" type="button" class ="btn btn-xs btn-danger leaverBtn" th:data-memberCode ="${farmMember.farmMemberCode}" th:data-farmCode ="${farmMember.farmCode}">추방</button>
+										</div>
+									</td>
+								</tr>
+								
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
