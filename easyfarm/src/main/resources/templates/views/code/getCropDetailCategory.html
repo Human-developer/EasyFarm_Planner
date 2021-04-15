@@ -40,7 +40,6 @@
 			<thead>
 				<tr>
 					<th class="hidden">공통상세작업항목코드</th>
-					<th>공통상세작업항목코드</th>
 					<th>공통상세작업항목명 </th>
 					<th>작성자아이디 </th>
 					<th>작성일자</th>
@@ -51,7 +50,6 @@
 			<tbody>
 				<tr th:if="${#lists.size(cropDetailCategory)} > 0" th:each="l:${cropDetailCategory}">
 					<td th:hidden="${l.commonWorkphaseCateCode}"></td>
-					<td th:text="${l.commonWorkphaseCateCode}"></td>
 					<td th:text="${l.commonWorkphaseCateName}"></td>
 					<td th:text="${l.regMemberId}"></td>
 					<td th:text="${l.regDate}"></td>

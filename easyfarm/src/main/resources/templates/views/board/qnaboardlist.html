@@ -23,24 +23,13 @@
 		<div class="box-content" style="margin-top: 20px">
 		<h3>1:1 문의</h3>
 		<hr>
-		<div class="dropdown js__drop_down">
-			<a href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
-			<ul class="sub-menu">
-				<li><a href="#">Action</a></li>
-				<li><a href="#">Another action</a></li>
-				<li><a href="#">Something else there</a></li>
-				<li class="split"></li>
-				<li><a href="#">Separated link</a></li>
-			</ul>
-			<!-- /.sub-menu -->
-		</div>
 		<table id="test">
 			<thead>
 				<tr>
-					<th scope="col" class="text-center">번호</th>
-					<th scope="col" class="text-center">제목</th>
-					<th scope="col" class="text-center">작성자</th>
-					<th scope="col" class="text-center">작성일</th>
+					<th class="text-center">코드</th>
+					<th class="text-center">제목</th>
+					<th class="text-center">작성자</th>
+					<th class="text-center">작성일</th>
 					<th th:if = "${session.SLEVEL == '관리자'}">삭제</th>
 					<th>상태</th>
 				</tr>		
@@ -48,7 +37,7 @@
 			<tbody>
 			<!--DB에서 리스트 불러오기 연결  -->
 				<tr th:if="${#lists.size(selectBoardList)} > 0" th:each="l,index:${selectBoardList}">
-					<td th:text="${l.code}"class ="code"></td>
+					<td th:text="${l.code}"class ="code" ></td>
 					<td class = "test3" >
 					 <span class="glyphicon glyphicon-lock" aria-hidden="true"></span> [[${l.title}]]
                     </td>
@@ -83,32 +72,8 @@
 	<!-- 사용자 정의 자바스크립트 -->
 	<th:block layout:fragment="customJavaScript">
 	<script type="text/javascript">
-		var lang_kor = {
-		        "decimal" : "",
-		        "emptyTable" : "내 농가가 없습니다",
-		        "info" : "_START_ - _END_ (총 _TOTAL_ 명)",
-		        "infoEmpty" : "0명",
-		        "infoFiltered" : "(전체 _MAX_ 농가 중 검색결과)",
-		        "infoPostFix" : "",
-		        "thousands" : ",",
-		        "lengthMenu" : "_MENU_ 개씩 보기",
-		        "loadingRecords" : "로딩중...",
-		        "processing" : "처리중...",
-		        "search" : "검색 : ",
-		        "zeroRecords" : "검색된 농가가 없습니다.",
-		        "paginate" : {
-		            "first" : "첫 페이지",
-		            "last" : "마지막 페이지",
-		            "next" : "다음",
-		            "previous" : "이전"
-		        },
-		        "aria" : {
-		            "sortAscending" : " :  오름차순 정렬",
-		            "sortDescending" : " :  내림차순 정렬"
-		        }
-		}
 		
-		$('#test').sysDataTable(lang_kor);
+		
 		
 		$('.test3').click(function(){
 			var userLevel = '[[${session.SLEVEL}]]';
@@ -153,6 +118,34 @@
 			}
 			
 		})
+		
+		var lang_kor = {
+		        "decimal" : "",
+		        "emptyTable" : "내 문의가 없습니다",
+		        "info" : "_START_ - _END_ (총 _TOTAL_ 명)",
+		        "infoEmpty" : "0명",
+		        "infoFiltered" : "(전체 _MAX_ 문의 중 검색결과)",
+		        "infoPostFix" : "",
+		        "thousands" : ",",
+		        "lengthMenu" : "_MENU_ 개씩 보기",
+		        "loadingRecords" : "로딩중...",
+		        "processing" : "처리중...",
+		        "search" : "검색 : ",
+		        "zeroRecords" : "검색된 문의가 없습니다.",
+		        "paginate" : {
+		            "first" : "첫 페이지",
+		            "last" : "마지막 페이지",
+		            "next" : "다음",
+		            "previous" : "이전"
+		        },
+		        "aria" : {
+		            "sortAscending" : " :  오름차순 정렬",
+		            "sortDescending" : " :  내림차순 정렬"
+		        }
+		}
+		
+		$('#test').sysDataTable(lang_kor);
+		
 		
 		</script>
 	</th:block>

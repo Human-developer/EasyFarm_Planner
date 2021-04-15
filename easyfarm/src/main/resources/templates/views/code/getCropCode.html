@@ -42,7 +42,6 @@
 			<thead>
 				<tr>
 					<th class="hidden">작물코드 			</th>
-					<th>작물코드 			</th>
 					<th>작물카테고리		</th>
 					<th>작물명			</th>
 					<th>사용유무			</th>
@@ -55,7 +54,6 @@
 			<tbody>
 				<tr th:if="${#lists.size(cropList)} > 0" th:each="l, st:${cropList}">
 					<td th:hidden="${l.cropCode}"></td>
-					<td th:text="${l.cropCode}"></td>
 					<td th:text="${l.cropCate}"></td>
 					<td th:text="${l.cropName}"></td>
 					<td th:text="${l.useStatus}"></td>

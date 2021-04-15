@@ -28,6 +28,7 @@
 			tq.con_answer
 		FROM 
 			tb_qnaboard as tq
+		order by tq.code desc;
     </select>
     
     <insert id="insertBoard" parameterType="BoardVO">
