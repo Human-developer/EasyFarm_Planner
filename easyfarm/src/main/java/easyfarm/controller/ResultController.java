@@ -45,7 +45,7 @@ public class ResultController {
 	@Autowired
 	PlanService planService;
 	
-	
+	//프로젝트명 리스트 가져오기
 	@PostMapping(value = "/result/getProjectNameByFarmCode", produces = "application/json")
 	public @ResponseBody List<Map<String,Object>> test( @RequestParam(value = "farmCode",required = false) String farmCode,Model model) {
 		List<Map<String,Object>> project = null;
@@ -56,6 +56,7 @@ public class ResultController {
 		return project;
 	}
 	
+	//작업단계 가져오기
 	@PostMapping(value = "/result/getWorkPhaseByProjectCode", produces = "application/json")
 	public @ResponseBody List<Map<String,Object>> getWorkPhaseByProjectCode( @RequestParam(value = "projectCode",required = false) String projectCode) {
 		List<Map<String,Object>> workPhase = null;
@@ -66,7 +67,7 @@ public class ResultController {
 		return workPhase;
 	}
 	
-	
+	//선택한 대상의 결과데이터 출력
 	@GetMapping(value = "/result/resultData")
 	public String resultMain(Model model,
 			@RequestParam(value = "farmCode",required = false) String farmCode,
@@ -107,7 +108,7 @@ public class ResultController {
 	
 	
 	
-	
+	//기본 매핑
 	@GetMapping("/result")
 	public String result(Model model,HttpSession session) {
 		
@@ -126,61 +127,22 @@ public class ResultController {
 		return "views/result/resultMain";
 	}
 	
-	//캘린더 들어가기전 선택화면
-	@GetMapping("/result/beforeCalendar")
-	public String resultCalendar(Model model,HttpSession session) {
+	//계획캘린더에서 실행버튼 클릭시
+	@GetMapping("/result/addResult")
+	public String resultCalendar(Model model,HttpSession session,
+			@RequestParam(value = "projectCode",required = false) String projectCode,
+			@RequestParam(value = "selectedDate",required = false) String selectedDate) {
 		
-		List<Map<String,Object>> farm = null;
-		
-		 if(session.getAttribute("SID") == null) {
+		if(session.getAttribute("SID") == null) {
 			return "views/member/login";
-		 }
-		 String memberId = (String) session.getAttribute("SID");
-			
-			if(memberId != null) {
-				farm = resultService.getFarmName(memberId);
-				model.addAttribute("farm", farm);
-			 }
-			return "views/result/dummyCalendar";
-	}
-	
-	//실행캘린더 화면
-	@GetMapping("/result/resultCalendar")
-	public String loadCalendar(Model model,
-			@RequestParam(value = "projectPlanCode",required = false) String projectPlanCode) {
-		
-		
-		if(projectPlanCode == null) {
-			projectPlanCode = "project_plan_1";
 		}
-		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
-			/* 계획정보조회 */
-			Map<String, Object> projectPlanInfo = planService.getProjectPlanInfo(projectPlanCode);
-			String projectPlanN = (String)projectPlanInfo.get("projectPlanN");
-			String projectCode =  (String)projectPlanInfo.get("projectCode");
-			
-			/* 계획차수 리스트 조회 */
-			List<Map<String, Object>> projectPlanNList = planService.getProjectPlanNList(projectCode);
-			
-			model.addAttribute("projectPlanCode", projectPlanCode);
-			model.addAttribute("projectPlanN", projectPlanN);
-			model.addAttribute("projectCode", projectCode);
-			model.addAttribute("projectPlanNList", projectPlanNList);
-		}
-		return "views/result/resultCalendar";
+		model.addAttribute("test",resultService.getPlanWorkphaseCate());
+		System.out.println(resultService.getPlanWorkphaseCate());
+		
+			return "views/result/addResult";
 	}
 	
 	
-	//캘린더 들어가기전 선택화면
-		@GetMapping("/result/addWorkphaseResult")
-		public String addWorkphaseResult(Model model,
-				@RequestParam(value = "projectPlanCode",required = false) String projectPlanCode) {
-			
-			
-			
-			 
-				return "views/result/addWorkphaseResult";
-		}
 	
 	
 	
@@ -190,7 +152,7 @@ public class ResultController {
 	
 	
 	
-	
+	//쓸데없는거 처리장소
 	@GetMapping("/result/select")
 	public String selectOptions(Model model,HttpSession session) {
 		
