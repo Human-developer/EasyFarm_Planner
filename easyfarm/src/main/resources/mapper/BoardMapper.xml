@@ -1,6 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="easyfarm.dao.BoardMapper">
+     <resultMap type="BoardVO" id="BoardVOResultMap">
+	    <result property="code"			column="code"/>
+		<result property="title"		column="title"/>
+		<result property="content"		column="content"/>
+		<result property="regMemberId"	column="reg_member"/>
+		<result property="regDate"		column="reg_date"/>
+		<result property="originNo"		column="originNo"/>
+		<result property="groupOrd"		column="groupOrd"/>
+		<result property="groupLayer"	column="groupLayer"/>
+		<result property="phoneNum"	column="phone_num"/>
+		<result property="email"	column="email"/>
+		<result property="password"	column="qna_password"/>
+		<result property="conAnswer"	column="con_answer"/>
+     </resultMap>
 	            
-	
+	            
+	            
+	 <select id="selectBoardList" parameterType="BoardVO" resultMap="BoardVOResultMap">
+        SELECT 
+        	tq.code, 
+        	tq.title, 
+        	tq.reg_member, 
+        	tq.reg_date, 
+        	tq.qna_password,
+			tq.con_answer
+		FROM 
+			tb_qnaboard as tq
+    </select>
+    
+    <insert id="insertBoard" parameterType="BoardVO">
+        insert into
+        tb_qnaboard(
+        	title,
+			content,
+			reg_member,
+			reg_date,
+			phone_num,
+			email,
+			qna_password)
+        values(
+            #{title}
+            , #{content}
+            , #{regMemberId}
+            , now()
+            , #{phoneNum}
+            , #{email}
+            , #{password}
+            )
+            
+    </insert>
+    
+    <update id="updateBoard" parameterType="BoardVO">
+        update tb_qnaboard set
+             con_answer = #{conAnswer}
+            , reg_date = now()
+        where
+            code = #{code}
+    </update>
+    
+    <delete id="deleteBoard" parameterType="BoardVO">
+        delete from tb_qnaboard
+        where
+            code = #{code}
+    </delete>
+    
+    <select id="selectBoardByCode" parameterType="String" resultMap="BoardVOResultMap">
+        select * from tb_qnaboard
+        where
+            code = #{code}
+    </select>
+    <select id="passCheck" parameterType="String" resultType="boolean">
+       SELECT 
+	if(tq.qna_password = #{password},true,false)
+FROM 
+	tb_qnaboard as tq
+WHERE
+	tq.code  = #{code}
+    </select>
+    
 </mapper>

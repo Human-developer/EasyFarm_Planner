@@ -89,9 +89,17 @@ button {
 		<div class="row">
 			<div class="col-sm-offset-2 col-sm-8">
 				<div class="box-content">
-					<h3>
-						<strong>상세작업항목 등록</strong>
-					</h3>
+					<div class="pull-left">
+						<div style="font-size: 24px;">상세작업항목 등록</div>
+					</div>
+					<div class="pull-right">
+						<a th:href="@{/code/getCropDetailCategory}"  class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
+							리스트로 돌아가기
+						</a>
+					</div>
+					<div style="margin-top: 6px;">
+						<small style="color: red; margin-left: 6px;"></small>
+					</div>
 					<hr>
 
 					<form th:action="@{/code/addCropDetailCategory}" method="post">

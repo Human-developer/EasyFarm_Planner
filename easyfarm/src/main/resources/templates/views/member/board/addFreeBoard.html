@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	
+	<th:block layout:fragment="customTitle">
+		<title>글쓰기</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		<a th:href="@{/member/getFreeBoard}">자유게시판</a>-글쓰기
+	</th:block>
+	
+	
+	<th:block layout:fragment="customContents">
+		<div class="box-content">
+			<h3>자유게시판</h3>
+			<hr>
+		
+			
+			<div class="card-content">
+						<form data-toggle="validator" class="form-horizontal" method="post" th:action="@{/member/addFreeBoard}">
+							<div class="form-group">
+								<label for="writer" class="col-sm-2 control-label">작성자</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="boardId" name="boardId" readonly="readonly" th:value="${session.SID}">
+								</div>
+							</div>
+					
+							<div class="form-group">
+								<label for="title" class="col-sm-2 control-label">제목</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="boardTitle"  name="boardTitle" placeholder="제목을 입력해주세요" required>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="content" class="col-sm-2 control-label">내용</label>
+								<div class="col-sm-9">
+									<textarea class="form-control" id="boardContent"  name="boardContent" placeholder="내용을 입력해주세요" style="resize: none;  height: 350px; width: 100%;" required></textarea>
+								</div>
+							</div>
+					
+							<div class ="form-group t-center">
+								<button type="submit" id="btn" class="btn btn-success btn-bordered waves-effect waves-light">등록</button>
+								<a th:href="@{/member/getFreeBoard}" class="btn btn-success btn-bordered waves-effect waves-light">목록</a>
+							</div>
+						</form>
+					</div>
+		</div>
+		
+
+	</th:block>
+	
+
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+	
+	</th:block>
+
+</html>
