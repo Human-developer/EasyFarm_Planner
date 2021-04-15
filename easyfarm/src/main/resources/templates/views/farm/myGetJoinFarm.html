@@ -16,6 +16,8 @@
 	<!-- 사용자 정의 css 라이브러리 -->
 	<th:block layout:fragment="customCssLib">
 		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/media/css/dataTables.bootstrap.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css}">
 	</th:block>
 	
 	<!-- 사용자 정의 css -->
@@ -29,30 +31,32 @@
 				<div class ="box-content">
 					<h3>내가입신청목록</h3>
 					<hr>
-					<table id ="getJoinFarm">
-						<thead>
-							<tr>
-								<th>농가가입신청코드(숨김)</th>
-								<th>농가명</th>
-								<th>대표자아이디</th>
-								<th>토지면적</th>
-								<th>주소</th>
-								<th>가입목적</th>
-								<th>가입취소</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="getJoinFarm : ${myGetJoinFarmList}">
-								<td th:text ="${getJoinFarm.farmJoinCode}">농가가입신청코드(숨김)</td>
-								<td th:text ="${getJoinFarm.farm.farmName}">농가명</td>
-								<td th:text ="${getJoinFarm.farm.ceoId}">아이디</td>
-								<td th:text ="${getJoinFarm.farm.farmArea}">토지면적</td>
-								<td th:text ="${getJoinFarm.farm.farmAddress}">주소</td>
-								<td th:text ="${getJoinFarm.farmJoinPurpose}">목적</td>
-								<td><button class ="btn btn-xs btn-danger joinFarmCancelBtn" th:value="${getJoinFarm.farmJoinCode}">취소</button></td>
-							</tr>
-						</tbody>
-					</table> 
+					<div class ="table-responsive">
+						<table id ="getJoinFarm">
+							<thead>
+								<tr>
+									<th>농가가입신청코드(숨김)</th>
+									<th>농가명</th>
+									<th>대표자아이디</th>
+									<th>토지면적</th>
+									<th>주소</th>
+									<th>가입목적</th>
+									<th>가입취소</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="getJoinFarm : ${myGetJoinFarmList}">
+									<td th:text ="${getJoinFarm.farmJoinCode}">농가가입신청코드(숨김)</td>
+									<td th:text ="${getJoinFarm.farm.farmName}">농가명</td>
+									<td th:text ="${getJoinFarm.farm.ceoId}">아이디</td>
+									<td th:text ="${getJoinFarm.farm.farmArea}">토지면적</td>
+									<td th:text ="${getJoinFarm.farm.farmAddress}">주소</td>
+									<td th:text ="${getJoinFarm.farmJoinPurpose}">목적</td>
+									<td><button class ="btn btn-xs btn-danger joinFarmCancelBtn" th:value="${getJoinFarm.farmJoinCode}">취소</button></td>
+								</tr>
+							</tbody>
+						</table> 
+					</div>
 				</div>
 			</div>
 		</div>

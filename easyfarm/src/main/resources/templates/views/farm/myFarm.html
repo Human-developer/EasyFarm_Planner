@@ -15,7 +15,10 @@
 	
 	<!-- 사용자 정의 css 라이브러리 -->
 	<th:block layout:fragment="customCssLib">
+		<!-- Data Tables -->
 		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/media/css/dataTables.bootstrap.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css}">
 	</th:block>
 	
 	<!-- 사용자 정의 css -->
@@ -38,6 +41,7 @@
 				<div class ="box-content">
 					<h3>내농가</h3>
 					<hr>
+					<div class ="table-responsive">
 						<table id="myFarmTable">
 							<thead>
 								<tr>
@@ -89,9 +93,10 @@
 							</tbody>
 						</table>
 					</div>
-					
 				</div>
+					
 			</div>
+		</div>
 					
 					
 					
@@ -133,8 +138,10 @@
 			            "sortDescending" : " :  내림차순 정렬"
 			        }
 			}
+			$('#myFarmTable').sysTable({vTarget:[0,1]});
 			
-			$('#myFarmTable').sysDataTable(lang_kor,[0,1]);
+
+			
 			
 			$('.ceoBtn').click(function(){
 				var farmCode = $(this).val(); 

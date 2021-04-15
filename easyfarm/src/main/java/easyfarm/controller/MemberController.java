@@ -318,9 +318,10 @@ public class MemberController {
 		 return"views/member/releaseMember";
 		 
 	 }
+	 //휴면해제
 	 @GetMapping("/member/modifyReleaseMembmer")
 	 public String releaseMember(@RequestParam(value = "memberId", required = false) String memberId) {
-		 System.out.println(memberId + "11111111111111111111111");
+		
 		 if(memberId != null) {
 			 Member member = memberService.getMemberInfoById(memberId);
 			 member.setMemberStatus("정상");
@@ -471,12 +472,12 @@ public class MemberController {
 		Member member = memberService.getMemberInfoByEmail(mail); 
 		if(member != null) {
 			
-			Random random=new Random();  //난수 생성을 위한 랜덤 클래스?
+			Random random=new Random();  //난수 생성을 위한 랜덤 클래스
 			String key="";  //인증번호 
 			
 			SimpleMailMessage message = new SimpleMailMessage();
 			message.setTo(mail); //스크립트에서 보낸 메일을 받을 사용자 이메일 주소 
-			//입력 키를 위한 코드
+			
 			for(int i =0; i<3;i++) {
 				int index=random.nextInt(25)+65; //A~Z까지 랜덤 알파벳 생성
 				key+=(char)index;
@@ -506,7 +507,7 @@ public class MemberController {
 	 @PostMapping("/member/findPw") // AJAX와 URL을 매핑시켜줌 
 	 @ResponseBody  //AJAX후 다시 응답을 보내는게 아니기 때문에 적어줌, 안 적으면 이메일이 가도 개발자 도구에서 404오류가 뜸
 	 public Map<String, Object> findPw(@RequestParam(name="mail", required = false) String mail,
-			  						@RequestParam(name="memberId", required = false) String memberId) {
+			  						   @RequestParam(name="memberId", required = false) String memberId) {
 		  long start = System.currentTimeMillis();
 		  try {
 			  System.out.println("화면에서 받은 메일주소: " + mail);
@@ -558,7 +559,7 @@ public class MemberController {
 		  List<Member> levelList = null;
 			if(memberId != null && !"".equals(memberId.trim())) {
 				member = memberService.getMemberInfoById(memberId);
-				levelList = memberService.getAuthority();
+				levelList = memberService.getAuthority();//권한목록
 			}else {
 				memberId = (String)session.getAttribute("SID");
 				member = memberService.getMemberInfoById(memberId);
@@ -607,11 +608,8 @@ public class MemberController {
 	  //회원 탈퇴
 	  @GetMapping("/member/removeMember")
 	  public String removeMember(Model model,
-			  					@RequestParam(name = "memberId", required = false, defaultValue = "") String memberId
-			  				
-			  					) {
-		
-			 
+			  				@RequestParam(name = "memberId", required = false, defaultValue = "") String memberId) {
+				 
 			  if(memberId != null && !"".equals(memberId.trim()) ) {
 				  Member member = memberService.getMemberInfoById(memberId);
 				  model.addAttribute("member", member);
@@ -621,15 +619,11 @@ public class MemberController {
 	  }
 	  
 	  @PostMapping("/member/removeMember") 
-	  public String removeMember(Member member) { 
-		  
-		 
+	  public String removeMember(Member member) { 	 
 			  
 			  if(member != null && !"".equals(member.getMemberId())) 
 			  {
-	 
-				 
-				  
+	   
 				  memberService.removeUpdateMember(member);
 				  Member memberUpdate = memberService.getMemberInfoById(member.getMemberId());
 				  memberUpdate.setCancelMemberReason(member.getCancelMemberReason());
@@ -806,7 +800,8 @@ public class MemberController {
 	  @PostMapping("/member/addBaseDate")
 	  public String addBaseDate(Report report) {
 		  
-		  
+		  if(report != null) {
+			  
 			  if("휴면".equals(report.getStatusCriteriaName())) {
 				  List<Report> reportList = memberService.getBaseDate();
 				  for(int i=0; i < reportList.size(); i++) {
@@ -816,8 +811,7 @@ public class MemberController {
 						  String statusName = "휴면"; 
 						  memberService.modifyBaseDateStatus(statusCode,statusName);
 					  }
-				  }
-				  
+				  }				  
 			  }
 			  else if("탈퇴".equals(report.getStatusCriteriaName())) {
 				  List<Report> reportList = memberService.getBaseDate();
@@ -829,9 +823,9 @@ public class MemberController {
 						  String statusName = "탈퇴"; 
 						  memberService.modifyBaseDateStatus(statusCode,statusName);
 					  }
-				  }
-			  
+				  }		  
 			  }
+		  }
 			  memberService.addBaseDate(report);		  
 		  
 		  return "redirect:/member/getBaseDate";
@@ -853,34 +847,35 @@ public class MemberController {
 	  
 	  @PostMapping("/member/modifyBaseDate")
 	  public String modifyBaseDate(Report report) {
-		 
-		  if("Y".equals(report.getUseStatus())) {
-			  
-			  List<Report> reportList = memberService.getBaseDate();
-			  
-			  if("휴면".equals(report.getStatusCriteriaName())) {
-				  for(int i=0; i < reportList.size(); i++) {
-					  String status = reportList.get(i).getUseStatus();
-					  String statusCode = reportList.get(i).getStatusCriteriaCode();
-					  if("Y".equals(status)) {
-						  String statusName = "휴면"; 
-						  memberService.modifyBaseDateStatus(statusCode,statusName);
+		  if(report != null) {
+			 
+			  if("Y".equals(report.getUseStatus())) {
+				  
+				  List<Report> reportList = memberService.getBaseDate();
+				  
+				  if("휴면".equals(report.getStatusCriteriaName())) { //기준상태가 휴면인 기준일리스트들을 전부체크해 상태가 Y인 것을 N으로 수정
+					  for(int i=0; i < reportList.size(); i++) {
+						  String status = reportList.get(i).getUseStatus();
+						  String statusCode = reportList.get(i).getStatusCriteriaCode();
+						  if("Y".equals(status)) {
+							  String statusName = "휴면"; 
+							  memberService.modifyBaseDateStatus(statusCode,statusName);
+						  }
 					  }
+					  
 				  }
-				  
-			  }
-			  else if("탈퇴".equals(report.getStatusCriteriaName())) {
-				  
-				  
-				  for(int i=0; i < reportList.size(); i++) {
-					  String status = reportList.get(i).getUseStatus();
-					  String statusCode = reportList.get(i).getStatusCriteriaCode();
-					  if("Y".equals(status)) {
-						  String statusName = "탈퇴"; 
-						  memberService.modifyBaseDateStatus(statusCode,statusName);
-					  }
+				  else if("탈퇴".equals(report.getStatusCriteriaName())) {//기준상태가 탈퇴인 기준일리스트들을 전부체크해 상태가 Y인 것을 N으로 수정
+					  
+					  
+					  for(int i=0; i < reportList.size(); i++) {
+						  String status = reportList.get(i).getUseStatus();
+						  String statusCode = reportList.get(i).getStatusCriteriaCode();
+						  if("Y".equals(status)) {
+							  String statusName = "탈퇴"; 
+							  memberService.modifyBaseDateStatus(statusCode,statusName);
+						  }
+					  }		  
 				  }
-			  
 			  }
 		  }
 		  memberService.modifyBaseDate(report);
