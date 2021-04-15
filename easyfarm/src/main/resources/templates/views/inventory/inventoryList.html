@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+
+	<th:block layout:fragment="customTitle">
+		<title>재고조사</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		재고조사
+	</th:block>
+	
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+		<!-- Data Tables -->
+		<link rel="stylesheet" href="assets/plugin/datatables/media/css/dataTables.bootstrap.min.css">
+		<link rel="stylesheet" href="assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css">
+	</th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss">
+		
+	</th:block>
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents">
+		<!-- 작물 조회 연결해서 작물 리스트 보여주고 선택하게 -->
+		<div class="box-content">
+			<h3>프로젝트 등록</h3>
+			<hr>
+			<!-- 재고 조사 등록 폼 시작 -->
+			<!-- 작물 선택 탭 -->
+			<table th:if="${stockStatusList!=null}" id="example" class="table table-striped table-bordered display" style="width:100%">
+				<thead>
+					<tr>
+						<th>품목명</th>
+						<th>수량당용량</th>
+						<th>현재재고 수량</th>
+						<th>재고조사 수량</th>
+						<th>오차 수량</th>
+						<th>오차 수정</th>
+					</tr>
+				</thead>
+				<tbody>
+					<form action="#" method="post">
+						<tr th:each="stl:${stockStatusList}">
+							<input type="hidden" class="stockStatusCode" th:value="${stl.stockStatusCode}"/>
+							<td th:text="${stl.farmResourcePayRun.stockItem.stockItemName}"></td>
+							<td class="stockQtyCapUnit" th:text="${stl.farmResourcePayRun.stockItem.stockItemQuantityCapacity}+' '+${stl.farmResourcePayRun.stockItem.stockItemQuantityCapacityUnit}"></td>
+							<td class="td-stockRemainQty"><input th:value="${stl.stockRemainQuantity}" class="stockRemainQty" readonly="readonly"/></td>
+							<td class="td-searchRemainQty"><input class="searchRemainQty"/></td>
+							<td class="td-errorQty"><input class="errorQty" readonly="readonly"/></td>
+							<td><button type="button" class="modifyBtn btn btn-success">오차 수정</td>
+						</tr>
+					</form>
+				</tbody>
+			</table>
+			<input type="hidden" id="farmCode" th:value="${farmCode}">
+			<button type="button" id="searchInventoryBtn" class="btn btn-success">재고조사 등록</button>
+		</div>
+
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+		<!-- Data Tables -->
+		<script src="assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+		<script src="assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+		<script src="assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+		<script src="assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+		<script src="assets/scripts/datatables.demo.min.js"></script>
+	
+		<script src="assets/scripts/main.min.js"></script>
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+			$(".searchRemainQty").on("change", function(){
+				var box2 = $(this);
+				var box1 = box2.parent().prev().children();
+				var box3 = box2.parent().next().children();
+				box3.val(box2.val()-box1.val());
+			})
+			
+			$(".modifyBtn").on("click", function(){
+				var stockStatusCode = $(this).parent().prevAll(".stockStatusCode").val();
+				console.log(stockStatusCode);
+				var farmCode = $('#farmCode').val();
+				console.log(farmCode);
+				var searchRemainQty= $(this).parent().prevAll(".td-searchRemainQty").children().val();
+				console.log(searchRemainQty);
+				var errorRemainQty = $(this).parent().prevAll(".td-errorQty").children();
+				console.log(errorRemainQty);
+				var stockQtyCapUnit = $(this).parent().prevAll(".stockQtyCapUnit").text().split(" ")[0];
+				console.log(stockQtyCapUnit);
+				var stockRemainQty = $(this).parent().prevAll(".td-stockRemainQty").children();
+				
+				if(errorRemainQty == 0) return;
+				var request = $.ajax({
+					url : "modifyStockError",
+					method : "post",
+					data : {"stockStatusCode":stockStatusCode,
+						"farmCode":farmCode,
+						"errorRemainQty":errorRemainQty.val(),
+						"searchRemainQty":searchRemainQty,
+						"stockQtyCapUnit":stockQtyCapUnit},
+					dataType : "json"
+				});
+				request.done(function(data){
+					if(data!=0){
+						stockRemainQty.val(searchRemainQty);
+						errorRemainQty.val(0);
+					}
+				});
+			})
+			
+		</script>
+	</th:block>
+
+</html>
