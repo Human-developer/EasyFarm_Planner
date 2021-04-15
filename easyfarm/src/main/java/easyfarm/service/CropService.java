@@ -13,6 +13,7 @@ import easyfarm.domain.Crop;
 import easyfarm.domain.CropDetailCategory;
 import easyfarm.domain.CropWorkStage;
 import easyfarm.domain.Machine;
+import easyfarm.domain.plan.StockCate;
 
 @Service
 @Transactional
@@ -159,6 +160,12 @@ public class CropService {
 	public List<Crop> getCropListByCropCategory(String cropCategory){
 		List<Crop> cropList = cropMapper.getCropListByCropCategory(cropCategory);
 		return cropList;
+	}
+
+	//품목 카테고리 
+	public int addStockCate(StockCate stockCate, String memberId) {
+		return cropMapper.addStockCate(stockCate,memberId);
+		
 	}
 	
 	

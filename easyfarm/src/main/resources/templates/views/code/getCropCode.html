@@ -8,7 +8,7 @@
 	</th:block>
 	
 	<th:block layout:fragment="pageTitle">
-		작물 코드
+		작물
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
@@ -27,11 +27,6 @@
 		<div class="pull-right">
 			<a th:href="@{/code/addCrop}"  class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
 				작물 등록
-			</a>
-		</div>
-		<div style="margin-right: 10px" class="pull-right">
-			<a  th:href="@{/code}"  class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
-				돌아가기
 			</a>
 		</div>
 		<div style="margin-top: 6px;">
@@ -72,12 +67,6 @@
 			</tbody>
 		</table>
 		</div>
-	<div class="box-content">
-		<ul class="list-inline">
-			<li class="margin-bottom-10"><a th:href="@{/code}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>코드관리로 돌아가기</strong></button></a> </li>
-			<li ><a  th:if="${session.SLEVEL == '관리자'}" th:href="@{/code/addCrop}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>작물 등록</strong></button></a> </li></br>
-		</ul>		
-	</div>
 	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
