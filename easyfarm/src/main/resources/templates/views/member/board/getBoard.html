@@ -22,7 +22,7 @@
 			    margin: 10px 0;
 			}
 			
-			.blockquote p {
+			.blockquote {
 			    padding: 20px;
 			}
 
@@ -30,7 +30,17 @@
 			[contenteditable='true'] {
 			    caret-color: red;
 			}
-								
+			
+			.dropdown-menu{
+			
+				left: 87% !important;
+				top: 20px !important;
+				min-width :0px !important ;
+			}
+			textarea{
+			 width: 100%;
+			 height: 20px;
+			}			
 		</style>
 		
 	</th:block>
@@ -41,7 +51,7 @@
 			<div class="col-lg-offset-2 col-lg-8">
 				<div class="box-content" >
 						<div  class="dropdown js__drop_down">
-							<a href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
+							<a th:if="${session.SID != null}" href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
 							<ul class="sub-menu">
 								<li><a th:if="${b.boardId != session.SID}" th:href="@{/member/addReport(memberId=${b.boardId})}">신고</a></li>
 								<li><a th:if="${b.boardId == session.SID}" th:href="@{/member/modifyFreeBoard(boardNum=${b.boardNum})}">수정</a></li>
@@ -67,29 +77,31 @@
 							 등록일:<span th:text="${b.boardDate}"></span>
 						</div>
 						<div>
-						<div class="box-content" th:each="c : ${commentList}">
-							<ul>
-								<li>
-									<div >
-										<div style="margin-top : 10px;">
-											<span th:text="${c.memberId}"></span> 
-										</div>
-										<div style="margin-top: 5px;">								
-											<span th:text="${c.commentsContent}"></span> 
-										</div>
-										<div style="margin-bottom : 5px;" >
-											<small th:text="${c.commentsDate}"></small> 
-										</div>
-						
-										<div th:if="${session.SID != null}" class="dropdown js__drop_down">
-											<a href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
-											<ul class="sub-menu">
-												<li><a th:if="${session.SID != c.memberId}" th:href="@{/member/addReport(memberId=${c.memberId})}">신고</a></li>
-												<li><a th:if="${session.SID == c.memberId or session.SID == b.boardId}" class="removeComment" th:data-val="${c.commentsNum}">삭제</a></li>
-											</ul>
-										</div>
+						<div class="box-content" >
+							<ul th:each="c : ${commentList}">
+								<li class ="col-xs-12" style = "margin-bottom: 15px;" >
+							
+								
+									<div class="col-sm-11 col-xs-11" >
+									<span class ="" th:text="${c.memberId}"></span>
+									<small class ="" th:text="${'('+c.commentsDate+')'}"></small>
+									
 									</div>
+									<div>
+										<a th:if="${session.SID != null}" href="#" class="dropdown-toggle glyphicon glyphicon-option-vertical " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></a>
+										<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+											<li><a th:if="${session.SID != c.memberId }" th:href="@{/member/addReport(memberId=${c.memberId})}">신고</a></li>
+											<li><a th:if="${session.SID == c.memberId and session.SID == b.boardId}" class="removeComment" th:data-val="${c.commentsNum}">삭제</a></li>
+										</ul> 
+									</div>
+									
+									<span class ="col-sm-12 col-xs-12" style="margin-top: 5px;" th:text="${c.commentsContent}"></span> 
+									
+									
+									
+								
 								</li>																			
+																								
 							</ul>		
 						</div>
 						</div>
@@ -97,11 +109,11 @@
 						<div th:if="${session.SID != null}" class="box-content" >
 						<strong >댓글 입력</strong>
 							<div >
-								<div class="blockquote" contenteditable="true" >
-								    <p class="comment"></p>
+								<div class="blockquote comment" contenteditable="true">
+								    
 								</div>
 								<div style="text-align: right;">
-									<button type="button" class="btn" id="commentBtn" >입력</button>
+									<button type="button" class="btn btn-success btn-rounded waves-effect waves-light" id="commentBtn" >댓글등록</button>
 								</div>
 							</div>
 						</div>
@@ -113,11 +125,6 @@
 		</div>
 	</div>
 
-	</th:block>
-	
-	<!-- 사용자 정의 자바스크립트 라이브러리 -->
-	<th:block layout:fragment="customScriptLib">
-		
 	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 -->
@@ -133,6 +140,7 @@
 						title: "내용을 입력해주세요.",
 						confirmButtonColor: '#304ffe',
 					});
+				 
 				 }else {		
 					$.ajax({
 						type : 'post',
