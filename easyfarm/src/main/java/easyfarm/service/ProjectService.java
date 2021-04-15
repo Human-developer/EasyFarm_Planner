@@ -28,16 +28,16 @@ public class ProjectService {
 		return projectMapper.getCropPhaseByCropCode(cropCode);
 	}
 	// 등록 2 - 프로젝트, 프로젝트별 작업단계 insert
-	public void projectAddService(Project project) {
-		// 프로젝트 insert
-		String max = projectMapper.getMaxProjectCode();
+	public void projectAddService(Project project, List<String> checkWorkphase) {
 		
-		if(max == null) {
+		// 프로젝트 insert
+		String maxProjectCode = projectMapper.getMaxProjectCode();
+		if(maxProjectCode == null) {
 			project.setProjectCode("project_1");
 		}
 		else {
-			max="project_"+(Integer.parseInt(max.substring(8))+1);
-			project.setProjectCode(max);
+			maxProjectCode="project_"+(Integer.parseInt(maxProjectCode)+1);
+			project.setProjectCode(maxProjectCode);
 		}
 		int result1 = projectMapper.projectAddByProjectObject(project);
 		if(result1!=0) System.out.println("프로젝트 등록 1단계 성공 --------- 프로젝트 서비스");
@@ -46,21 +46,30 @@ public class ProjectService {
 		ProjectWorkphase projectWorkphase = new ProjectWorkphase();
 		projectWorkphase.setCropCode(project.getCropCode());
 		projectWorkphase.setRegMemberId(project.getRegMemberId());
-		projectWorkphase.setProjectCode(max);
+		projectWorkphase.setProjectCode(maxProjectCode);
 		
-		for(int i = 0; i<project.getCheckWorkphase().size(); i++) {
-			String max2 = projectMapper.getMaxProjectWorkphaseCode();
-			if(max2 == null) {
+		
+		List<String> cropWorkphaseList = projectMapper.getCropPhaseCodeByCropCode(project.getCropCode());
+		for(int i = 0; i<cropWorkphaseList.size(); i++) {
+			String maxProjectWorkphaseCode = projectMapper.getMaxProjectWorkphaseCode();
+			if(maxProjectWorkphaseCode == null) {
 				projectWorkphase.setProjectWorkphaseCode("project_workphase_1");
 			}
 			else {
-				max2="project_workphase_"+(Integer.parseInt(max2.substring(18))+1);
-				projectWorkphase.setProjectWorkphaseCode(max2);
+				maxProjectWorkphaseCode="project_workphase_"+(Integer.parseInt(maxProjectWorkphaseCode)+1);
+				projectWorkphase.setProjectWorkphaseCode(maxProjectWorkphaseCode);
 			}
-			projectWorkphase.setCropPhaseInfoCode(project.getCheckWorkphase().get(i));
-			// 프로젝트별 작업단계 insert
+			
+			String cropPhaseInfoCode = cropWorkphaseList.get(i);
+			projectWorkphase.setCropPhaseInfoCode(cropPhaseInfoCode);
+			projectWorkphase.setUseStatus("N");
+			for(int j = 0; j<checkWorkphase.size(); j++) {
+				if(cropPhaseInfoCode.equals(checkWorkphase.get(j))) {
+					projectWorkphase.setUseStatus("Y");
+				}
+			}
 			int result2 = projectMapper.projectWorkphaseAddByProjectWorkphase(projectWorkphase);
-			if(result2!=0) System.out.println("프로젝트 등록 2단계 성공 "+i+"번째 --------------  프로젝트 서비스");
+			if(result2 !=0) System.out.println("프로젝트 등록 2단계 성공"+i+"번째 --------- 프로젝트 서비스");
 		}
 	}
 	

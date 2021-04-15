@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="easyfarm.dao.InventoryMapper">
+	<!-- StockStatus 도메인 리절트맵 -->
+	<resultMap type="StockStatus" id="stockStatusResultMap">
+		<result property="stockStatusCode" column="stock_status_code"/>
+		<result property="farmResourcePayRunCode" column="farm_resource_pay_run_code"/>
+		<result property="stockRemainQuantity" column="stock_remain_quantity"/>
+		<result property="stockRemainQuantityCapacityExtra" column="stock_remain_quantity_capacity_extra"/>
+		<result property="availableStatus" column="available_status"/>
+		<result property="regMemberId" column="reg_member_id"/>
+		<result property="regDate" column="reg_date"/>
+		<association property="farmResourcePayRun">
+			<id property="farmResourcePayRunCode" column="farm_resource_pay_run_code"/>
+			<result property="farmCode" column="farm_code"/>
+			<result property="clientCode" column="client_code"/>
+			<result property="stockItemCode" column="stock_item_code"/>
+			<result property="stockItemIncomeQuantity" column="stock_item_income_quantity"/>
+			<result property="stockItemIncomeQuantityTotal" column="stock_item_income_quantity_total"/>
+			<result property="stockItemIncomePerPay" column="stock_item_income_per_pay"/>
+			<result property="stockItemTotalPay" column="stock_item_total_pay"/>
+			<result property="stockItemIncomeDate" column="stock_item_income_date"/>
+			<result property="completeStatus" column="complete_status"/>
+			<association property="stockItem">
+				<id property="stockItemCode" column="stock_item_code"/>
+				<result property="farmCode" column="farm_code"/>
+				<result property="stockCateCode" column="stock_cate_code"/>
+				<result property="stockItemName" column="stock_item_name"/>
+				<result property="stockItemQuantity" column="stock_item_quantity"/>
+				<result property="stockItemQuantityUnit" column="stock_item_quantity_unit"/>
+				<result property="stockItemQuantityCapacity" column="stock_item_quantity_capacity"/>
+				<result property="stockItemQuantityCapacityUnit" column="stock_item_quantity_capacity_unit"/>
+				<association property="stockCate">
+					<id property="stockCateCode" column="stock_cate_code"/>
+					<result property="stockCateName" column="stock_cate_name"/>
+				</association>
+			</association>
+		</association>
+	</resultMap>
+
+	<select id="getStockStatusList" parameterType="String" resultMap="stockStatusResultMap">
+		SELECT
+			stat.stock_status_code,
+			stat.farm_resource_pay_run_code,
+			stat.stock_remain_quantity,
+			stat.stock_remain_quantity_capacity_extra,
+			stat.reg_date,
+			payRun.farm_code,
+			payRun.client_code,
+			payRun.stock_item_code,
+			item.stock_item_name,
+			item.stock_item_quantity_capacity,
+			item.stock_item_quantity_capacity_unit,
+			payRun.stock_item_income_per_pay
+		FROM
+			tb_stock_status AS stat
+			JOIN tb_farm_resource_pay_run AS payRun
+			ON stat.farm_resource_pay_run_code = payRun.farm_resource_pay_run_code
+			JOIN tb_stock_item AS item
+			ON payRun.stock_item_code = item.stock_item_code
+		WHERE stat.available_status = 'Y'
+	</select>
+	
+	<update id="modifyStockStatus" parameterType="String">
+		UPDATE tb_stock_status
+		SET
+			stock_remain_quantity = #{searchRemainQty},
+			stock_remain_quantity_capacity_extra = #{stockQtyCapUnitExtra},
+			available_status = #{availableStatus}
+			
+		WHERE
+			stock_status_code = #{stockStatusCode}
+		
+	</update>
+	
+</mapper>

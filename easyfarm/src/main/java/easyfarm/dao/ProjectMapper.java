@@ -17,7 +17,7 @@ public interface ProjectMapper {
 	public int projectWorkphaseAddByProjectWorkphase(ProjectWorkphase projectWorkphase); 	// 등록 - 프로젝트작업단계 테이블 insert
 	public String getMaxProjectCode();
 	public String getMaxProjectWorkphaseCode();
-	
+	public List<String> getCropPhaseCodeByCropCode(String cropCode);
 	// 프로젝트 리스트 조회
 	public List<Project> getProjectListByFarmCode(String farmCode); // 조회 - 프로젝트 리스트 조회
 	
