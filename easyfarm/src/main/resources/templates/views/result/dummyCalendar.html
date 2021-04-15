@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+
+	<th:block layout:fragment="customTitle">
+		<title>월간 계획 간편보기</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		월간 계획 간편보기
+	</th:block>
+	
+	<th:block layout:fragment="customCssLib">
+		<!-- FullCalendar -->
+		<link rel="stylesheet" th:href="@{/assets/plugin/fullcalendar/fullcalendar.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/fullcalendar/fullcalendar.print.css}" media='print'>
+		
+		<!-- Jquery UI -->
+		<link rel="stylesheet" th:href="@{/assets/plugin/jquery-ui/jquery-ui.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/jquery-ui/jquery-ui.structure.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/jquery-ui/jquery-ui.theme.min.css}">
+	</th:block>
+	
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+			.fc-sat, .fc-day-top.fc-sat.fc-past .fc-day-number, .fc-day-top.fc-sat.fc-future .fc-day-number { color:#0000FF; }	/* 토요일 */
+			.fc-sun, .fc-day-top.fc-sun.fc-past .fc-day-number, .fc-day-top.fc-sun.fc-future .fc-day-number { color:#FF0000; }	/* 일요일 */
+			.fc-day:hover {
+			  background: #EEF7FF;
+			  cursor: pointer;
+			}
+			
+			.box-content.card.white .box-title{background-color: #F5F5F5;}
+			hr{border-bottom: 1px solid grey;};
+			.pl-0{padding-right: 0px;}
+			
+			/* 모달css */
+			.modal {text-align: center;}
+			.modal:before {
+	            display: inline-block;
+	            vertical-align: middle;
+	            content: " ";
+	            height: 100%;
+			}
+			.modal-dialog {
+		        display: inline-block;
+		        text-align: left;
+		        vertical-align: middle;
+			}
+			/* .modal-wd85{width: 85%;} */
+			small{font-size: 100%;}
+		</style>
+	</th:block>
+	
+	<th:block layout:fragment="customContents">
+		<div class="container-fluid">
+		    <div class="row">
+				<div class="col-md-12">
+					<div class="box-content">
+						<div class="row">
+							<div class="form-group col-sm-2">
+								<select class="form-control" name="projectPlanNList" id="projectPlanNList">
+									<th:block th:if="${#lists.size(projectPlanNList) > 0}" th:each="p : ${projectPlanNList}">
+										<option th:value="${p.projectPlanCode}" th:text="${p.projectPlanN}" th:selected="${p.projectPlanN} == ${projectPlanN}"></option>
+									</th:block>
+								</select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="box-content">
+								<ul class="list-inline" style="margin-bottom: 30px;">
+									<li>
+										<th:block th:if="${projectPlanN != null}">
+												<div style="font-size: 24px;" th:text="|${projectPlanN} 월간 계획 간편보기|"></div>
+										</th:block>
+										<th:block th:unless="${projectPlanN != null}">
+											<div style="font-size: 24px;">월간 계획 간편보기</div>
+										</th:block>
+									</li>
+									<li>
+										<small style="color: red; margin-left: 6px;"><i class="fa fa-lightbulb-o"> 일정을 클릭하면 상세보기가 가능합니다.</i></small>
+									</li>
+								</ul>
+								<ul class="list-inline">
+									<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">계획서</button></li>
+									<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
+									<li class="margin-bottom-10">
+										<button type="button" th:value="|/plan/addWorkphasePlan?projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" id="planAddBtn" class="btn btn-primary btn-rounded btn-bordered waves-effect waves-light">
+											계획 등록
+										</button>
+									</li>
+									<li class="margin-bottom-10">
+										<button type="button" id="planAciveBtn" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light">
+											계획서 실행
+										</button>
+									</li>
+								</ul>
+								<ul class="list-inline">
+									<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">관리화면</button></li>
+									<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
+									<li class="margin-bottom-10">
+										<button type="button" th:value="|/plan/insurePayList?projectCode=${projectCode}&projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" class="btn btn-violet btn-rounded btn-bordered waves-effect waves-light">
+											프로젝트 보험료지출계획 관리
+										</button>
+									</li>
+									<li class="margin-bottom-10">
+										<button type="button" th:value="|/plan/resultPlan|" onclick="moveAddSpend(this)" class="btn btn-violet btn-rounded btn-bordered waves-effect waves-light">
+											프로젝트 통합계획별 수입/지출 조회
+										</button>
+									</li>
+									<li class="margin-bottom-10">
+										<button type="button" th:value="|/plan/result|" onclick="moveAddSpend(this)" class="btn btn-violet btn-rounded btn-bordered waves-effect waves-light">
+											작업중페이지
+										</button>
+									</li>
+								</ul>
+							</div>
+						</div>
+						
+						<hr/>
+						<div id="calendar"></div>
+						<!-- /#calendar -->
+					</div>
+					<!-- /.box-content -->
+				</div>
+			</div>
+		</div>
+		
+	</th:block>
+	
+	<th:block layout:fragment="customModals">
+		<div class="modal fade" id="planModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">
+			<div class="modal-dialog modal-lg modal-wd85" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel-1">계획서간편보기</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-horizontal">
+							<div class="form-group form-group-sm">
+								<label for="workPhase" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>작업단계</strong></label>
+							    <div class="col-sm-4">
+									<input type="text" class="form-control" name="workPhase" id="workPhase"/>
+							    </div>
+						    	<label for="workPhaseDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
+								<div class="col-sm-5">
+									<div class="input-daterange input-group" id="date-range">
+										<input type="text" class="form-control" name="start" />
+										<span class="input-group-addon bg-primary text-white"> ~ </span>
+										<input type="text" class="form-control" name="end" />
+									</div>
+								</div>
+							</div>
+							<div class="form-group form-group-sm">
+								<label for="workPhaseCate" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>상세항목</strong></label>
+							    <div class="col-sm-4">
+									<input type="text" class="form-control" name="workPhaseCate" id="workPhaseCate"/>
+							    </div>
+							    
+							    <label for="workPhaseCateDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
+								<div class="col-sm-5">
+									<div class="input-daterange input-group" id="date-range">
+										<input type="text" class="form-control" name="start" />
+										<span class="input-group-addon bg-primary text-white"> ~ </span>
+										<input type="text" class="form-control" name="end" />
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="box-content card white">
+							<div class="box-title">인건비 지출계획</div>
+							<div class="card-content">
+								<div class="table-responsive">
+									<table class="table table-hover" style="width:100%">
+										<thead>
+											<tr>
+												<th>근무인원</th>
+												<th>근무일수</th>
+												<th>일일인건비</th>
+												<th>인건비합계</th>
+											</tr>
+										</thead>
+										<tbody>
+											<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+												<tr>
+													<td th:text="${1}"></td>
+													<td th:text="${2}"></td>
+													<td th:text="${3}"></td>
+													<td th:text="${4}"></td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="box-title">농기계 대여 지출계획</div>
+							<div class="card-content">
+								<div class="table-responsive">
+									<table class="table table-hover" style="width:100%">
+										<thead>
+											<tr>
+												<th>거래처</th>
+												<th>농기계종류</th>
+												<th>대여일수</th>
+												<th>일일대여료</th>
+												<th>총대여료합계</th>
+											</tr>
+										</thead>
+										<tbody>
+											<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+												<tr>
+													<td th:text="${1}"></td>
+													<td th:text="${2}"></td>
+													<td th:text="${3}"></td>
+													<td th:text="${4}"></td>
+													<td th:text="${5}"></td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="box-title">보유 농기계 지출계획</div>
+							<div class="card-content">
+								<div class="table-responsive">
+									<table class="table table-hover" style="width:100%">
+										<thead>
+											<tr>
+												<th>농기계종류</th>
+												<th>작성자</th>
+												<th>작성일</th>
+											</tr>
+										</thead>
+										<tbody>
+											<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+												<tr>
+													<td th:text="${1}"></td>
+													<td th:text="${2}"></td>
+													<td th:text="${3}"></td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							
+							<div class="box-title">농자재사용 지출계획</div>
+							<div class="card-content">
+								<div class="table-responsive">
+									<table class="table table-hover" style="width:100%">
+										<thead>
+											<tr>
+												<th class="hidden">농자재소모현황코드</th>
+												<th>카테고리</th>
+												<th>품목명</th>
+												<th>사용수량</th>
+												<th>수량단위</th>
+												<th>사용용량</th>
+												<th>용량단위</th>
+												<th>사용량금액환산</th>
+											</tr>
+										</thead>
+										<tbody>
+											<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+												<tr>
+													<td th:text="${1}" class="hidden"></td>
+													<td th:text="${2}"></td>
+													<td th:text="${3}"></td>
+													<td th:text="${4}"></td>
+													<td th:text="${5}"></td>
+													<td th:text="${6}"></td>
+													<td th:text="${7}"></td>
+													<td th:text="${8}"></td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							
+							<div class="box-title">공과금 지출계획</div>
+							<div class="card-content">
+								<div class="table-responsive">
+									<table class="table table-hover" style="width:100%">
+										<thead>
+											<tr>
+												<th class="hidden">공과금지출계획코드</th>
+												<th>거래처명</th>
+												<th>공과금항목</th>
+												<th>납부월</th>
+												<th>납부금액</th>
+												<th>추가메모</th>
+											</tr>
+										</thead>
+										<tbody>
+											<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+												<tr>
+													<td th:text="${1}" class="hidden"></td>
+													<td th:text="${2}"></td>
+													<td th:text="${3}"></td>
+													<td th:text="${4}"></td>
+													<td th:text="${5}"></td>
+													<td th:text="${6}"></td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							
+							<div class="box-title">생산물 수확계획</div>
+							<div class="card-content">
+								<div class="table-responsive">
+									<table class="table table-hover" style="width:100%">
+										<thead>
+											<tr>
+												<th class="hidden">생산물수확계획코드</th>
+												<th>카테고리</th>
+												<th>품목명</th>
+												<th>수확수량</th>
+												<th>수확용량</th>
+												<th>추가메모</th>
+											</tr>
+										</thead>
+										<tbody>
+											<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+												<tr>
+													<td th:text="${1}" class="hidden"></td>
+													<td th:text="${2}"></td>
+													<td th:text="${3}"></td>
+													<td th:text="${4}"></td>
+													<td th:text="${5}"></td>
+													<td th:text="${6}"></td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							
+							<div class="box-title">기타비용 지출계획</div>
+							<div class="card-content">
+								<div class="table-responsive">
+									<table class="table table-hover" style="width:100%">
+										<thead>
+											<tr>
+												<th class="hidden">기타비용지출계획코드</th>
+												<th>거래처명</th>
+												<th>지출금액</th>
+												<th>추가메모</th>
+											</tr>
+										</thead>
+										<tbody>
+											<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+												<tr>
+													<td th:text="${1}" class="hidden"></td>
+													<td th:text="${2}"></td>
+													<td th:text="${3}"></td>
+													<td th:text="${4}"></td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
+						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light"
+							th:value="|/plan/addSpend?projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)">수정</button>
+						<button type="button" class="btn btn-success btn-sm waves-effect waves-light">실행</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+	
+	<th:block layout:fragment="customScriptLib">
+		<!-- FullCalendar -->
+		<script th:src="@{/assets/plugin/moment/moment.js}"></script>
+		<script th:src="@{/assets/plugin/fullcalendar/fullcalendar.min.js}"></script>
+		<script th:src="@{/assets/scripts/fullcalendar.custom.SDH.js}"></script>
+		<script th:src="@{/assets/plugin/fullcalendar/ko.js}"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+	</th:block>
+	
+	<th:block layout:fragment="customJavaScript">
+	<script type="text/javascript" th:inline="javascript">
+		/*<![CDATA[*/
+		var farm = '[[${farm}]]';
+	    var farmNameObj = JSON.parse(farm);
+		var farmName = {"":"농가를 선택해주세요"};
+		console.log(farmNameObj);
+		var Data ={"":"프로젝트를 선택해주세요"};
+		var PlanN = {"":"차수를 선택해주세요"};
+	    for(var i=0; i < farmNameObj.length; i++)
+	    {
+	    	farmName[farmNameObj[i].farmCode] = farmNameObj[i].farmName;
+	    }
+	    console.log(farmName);
+		/*]]>*/
+		const steps = ['농가', '프로', '차수']
+		const swalQueueStep = Swal.mixin(
+				{
+				  input: 'select',
+				  confirmButtonText: '다음 &rarr;',
+				  reverseButtons: true,
+				  allowOutsideClick: true,
+				  validationMessage: 'This field is required',
+				  inputAttributes: 
+					{
+						required: true
+					},
+				  inputOptions: 
+				  	{
+					    '농가명': farmName 
+					},
+				  progressSteps: steps
+				}).queue([
+				  {
+				    title: '농가 선택',
+				    text: '농가를 선택해 주세요',
+					showLoaderOnConfirm: true,
+				    preConfirm: function(farmCode)
+				    {
+				    	delete this.inputOptions.농가명;
+					    this.inputOptions.project = Data;
+				    },
+				  },
+				  {
+					title: '프로젝트 선택',
+					text: '프로젝트를 선택해 주세요',
+					preConfirm: function(projectCode)
+					{
+				    	delete this.inputOptions.project;
+					    this.inputOptions.PlanN = PlanN;
+				    },
+				  },
+				  {
+					title: '차수 선택',
+					text: '차수를 선택해 주세요'
+				  },
+				]).then((result) => {
+				  if (result.value) {
+				    const answers = JSON.stringify(result.value)
+				    console.log(result + "<< result")
+				    if(result.value[0] != '' && result.value[1] != '' && result.value[2] != '' ){		//유효성(임시)
+					    console.log(result.value[0] + "<< result.value")
+					    setTimeout(function() 
+					    {
+				    		Swal.fire
+				    		({
+				                title: "선택 완료!",
+				                confirmButtonText: '확인',
+				            }).then(function()
+				            	{
+				            	console.log("muyahooooooooooooooooooooooooooooooooooooooooooooooooooooo")
+				            	location.href ="/result/resultCalendar?farmCode="+ result.value[0] +"&projectCode=" + result.value[1] + "&projectPlanCode=" + result.value[2];
+					            });
+				        }, 100);
+				    }else{
+				    	setTimeout(function() 
+				    	{
+				    		Swal.fire({
+				                title: "다시!",
+				                text: "다시 선택해 주세요!",
+				            }).then(function(){
+				            	location.reload();
+				            });
+				        }, 100);
+				    }
+				  }
+				})
+		$('.swal2-select').change(function()
+		{																	//농가코드를 선택할 경우 해당 농가코드의 프로젝트를 검색
+			var farmCode = $(this).val();
+			Data ={"":"프로젝트를 선택해주세요"};	//change가 바뀌었을 경우 초기화 해주기 위함
+			var request = $.ajax({
+	               url:"/result/getProjectNameByFarmCode",
+	               method:"post", 
+	               data : {"farmCode":farmCode},
+	               datatype: "json",
+	            });
+	            request.done(function(data)
+	            {
+	            	
+	            	for(var i=0; i < data.length; i++)
+	            	{
+	            		var code =  data[i].projectCode;
+	            		var value = data[i].projectName;
+	            		Data[code] = value;
+	            	}
+	            });
+	            request.fail(function( jqXHR, textStatus )
+	            {
+	               alert( "Request failed : " + textStatus );
+	            });
+		});
+		
+		$('.swal2-confirm').click(function(){								//1페이지와 2페이지 구분을 위한 클래스 추가
+			$('.swal2-select').addClass("project-select");
+		})
+		
+	
+		$(document).on('change', '.project-select', function(){					//동적바인딩으로 2번째 페이지에 이벤트 걸기
+			var projectCode = $(this).val();
+			PlanN ={"":"차수를 선택해주세요"};
+			var request = $.ajax
+				({
+	               url:"/result/getWorkPhaseByProjectCode",
+	               method:"post", 
+	               data : {"projectCode":projectCode},
+	               datatype: "json",
+	            });
+	            request.done(function(data)
+	            {
+		            	console.log(data + "project data");
+		            	for(var i=0; i < data.length; i++)
+		            	{
+		            		var planN =  data[i].ProjectPlanN;
+		            		var code =  data[i].ProjectPlanCode;
+		            		console.log(code + "<< code" );
+		            		PlanN[code] = planN;
+	            		}
+	            });
+	            request.fail(function( jqXHR, textStatus )
+	            {
+	               alert( "Request failed : " + textStatus );
+	            });
+		});
+		
+		$(document).on('click', '.swal2-progress-step', function(){				//동적 바인딩으로 진행 현황 버튼 클릭시 새로고침
+			location.reload();
+		})
+		$(document).on('mouseover', '.swal2-progress-step', function(){				//동적 바인딩으로 진행 현황 버튼 클릭시 새로고침
+			$('#swal2-title').addClass("glyphicon glyphicon-refresh")
+			$('#swal2-title').text("")
+			
+		})
+	</script>
+	
+			<script type="text/javascript">
+			function onChangeDateStart(yy,mm,dd){
+				var date = yy + "-" + mm + "-" + dd;
+				$('[name="start"], [name="end"]').val(date);
+			};
+			
+			/* $('#planAddBtn').click(function(){
+				location.href = '/plan/addSpend';
+			}) */
+			
+			function moveAddSpend(btn){
+				location.href = btn.value;
+			};
+			
+			$('#projectPlanNList').change(function(){
+				var projectPlanCode = $(this).val();
+				location.href = "/plan/getSchedule?projectPlanCode=" + projectPlanCode; 
+			});
+			
+		</script>
+	</th:block>
+	
+</html>

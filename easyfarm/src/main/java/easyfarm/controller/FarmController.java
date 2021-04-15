@@ -23,7 +23,8 @@ import easyfarm.service.FarmService;
 
 
 
-
+//http://api.nongsaro.go.kr/service/
+//인증키 20210414GJHMG6WRKK5QXI9WYMOMQ
 @Controller
 public class FarmController {
 	
@@ -38,7 +39,7 @@ public class FarmController {
 		if(farmMember != null && memberId != null) {
 			result = farmService.deportation(farmMember, memberId);
 		}
-		
+
 		return result;
 	}
 	

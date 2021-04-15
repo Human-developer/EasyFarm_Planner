@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+	  
+	<!-- 화면 title 설정 -->
+	<th:block layout:fragment="customTitle">
+		<title>농자재매입 수정</title>
+	</th:block>
+	
+	<!-- 위에 네비 메뉴에 표시되는 경로 타이틀 -->
+	<th:block layout:fragment="pageTitle">
+		농자재매입 수정
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+
+	</th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss">
+		<style type="text/css">
+			.btnSize{margin-right: 40px;}
+			.p-star{ display:inline; color:red;}
+		</style>
+	</th:block>
+	
+	
+	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
+	<th:block layout:fragment="customContents" th:with="r = ${resourcePay}">
+	
+		<div class="container-fluid">
+		    <div class="row">
+				<div class="col-md-8 col-md-offset-2">
+					<div class="box-content">
+						<h3>농자재매입 수정</h3>
+						<hr/>
+						<form action="/plan/modifyPlanResourcePay" method="post">
+							<div class="form-horizontal">
+								<div class="form-group">
+									<label class="col-sm-3 control-label"><strong>거래처</strong></label>
+								    <div class="col-sm-6">
+								    	<input class="hidden" th:value="${farmCode}" name="farmCode">
+								    	<input class="hidden" th:value="${projectPlanCode}" name="projectPlanCode">
+								    	<input class="hidden" th:value="${r.resourcePayCode}" name="resourcePayCode">
+										<select class="form-control" name="clientCode" id="resourcePayClientCode">
+											<option value=""> :: 거래처선택 :: </option>
+											<th:block th:if="${#lists.size(clientNameList) > 0}" th:each="c : ${clientNameList}">
+												<option th:value="${c.clientCode}" th:text="${c.clientName}" th:selected="${c.clientCode} == ${r.clientCode}"></option>
+											</th:block>
+										</select>
+								    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label"><strong>품목</strong></label>
+								    <div class="col-sm-6">
+										<select class="form-control" name="stockItemCode" id="resourcePayStockItemCode">
+											<option value=""> :: 품목선택 :: </option>
+											<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+												<option th:value="${fs.stockItemCode}" th:text="|${fs.stockCate.stockCateName} : ${fs.stockItemName}|" th:selected="${fs.stockItemCode} == ${r.stockItemCode}"></option>
+											</th:block>
+										</select>
+								    </div>
+								</div>
+								<div class="form-group">
+									<label for="stockItemIncomeQuantity" class="col-sm-3 control-label"><strong>입고수량</strong></label>
+								    <div class="col-sm-6">
+								      <input type="text" class="form-control" name="stockItemIncomeQuantity" th:value="${r.stockItemIncomeQuantity}" placeholder="입고수량">
+								    </div>
+								</div>
+								<div class="form-group">
+									<label for="stockItemIncomeQuantityTotal" class="col-sm-3 control-label"><strong>입고용량</strong></label>
+								    <div class="col-sm-6">
+								      <input type="text" class="form-control" name="stockItemIncomeQuantityTotal" th:value="${r.stockItemIncomeQuantityTotal}" placeholder="입고용량">
+								    </div>
+								</div>
+								<div class="form-group">
+									<label for="stockItemIncomePerPay" class="col-sm-3 control-label"><strong>입고단가</strong></label>
+								    <div class="col-sm-6">
+								      <input type="text" class="form-control" name="stockItemIncomePerPay" th:value="${r.stockItemIncomePerPay}" placeholder="입고단가">
+								    </div>
+								</div>
+								<div class="form-group">
+									<label for="stockItemTotalPay" class="col-sm-3 control-label"><strong>총구매비</strong></label>
+								    <div class="col-sm-6">
+								      <input type="text" class="form-control" name="stockItemTotalPay" th:value="${r.stockItemTotalPay}" placeholder="총구매비">
+								    </div>
+								</div>
+								<hr>
+								<div class="form-group t-center">
+									<button type="submit" class="btn btn-primary btn-md waves-effect btn-rounded waves-light btnSize">농자재매입 수정</button>
+									<button type="button" th:value="|/plan/planResourcePayList?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-success btn-md waves-effect waves-light btn-rounded btnSize">
+										목록 돌아가기
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+					<!-- /.box-content -->
+				</div>
+			</div>
+		</div>
+		
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+		<script type="text/javascript">
+			function moveAddSpend(btn){
+				location.href = btn.value;
+			};
+			
+		</script>		
+	</th:block>
+
+</html>

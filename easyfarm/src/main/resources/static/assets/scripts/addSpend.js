@@ -153,7 +153,7 @@ $(function(){
 		var resourceStockItemCode = $(this).val();
 		
 		$.ajax({
-			url: "/ajax/getStockItemInfo",
+			url: "/plan/ajax/getStockItemInfo",
 			method: "POST",
 			data: { resourceStockItemCode : resourceStockItemCode },
 			success : function(data) {
@@ -368,68 +368,115 @@ $(function(){
 		postfix: '원'
 	});
 	
-	/*간편등록*/
-	$('#planAddClient, #planAddStock, #planAddBookmarkMachine, #planAddRetainMachine, #planAddResourcePay, #planAddResourceUsecapacity, #planAddCommonMachine').modal({
+	/*모달 설정*/
+	$('.modal').modal({
 		keyboard: true,
 		backdrop: 'static',
 		show: false
 	})
 	
+	var lang_kor = {
+	        "decimal" : "",
+	        "emptyTable" : "등록된 정보가 없습니다",
+	        "info" : "_START_ - _END_",
+	        "infoEmpty" : "0",
+	        "infoFiltered" : "(전체 _MAX_검색결과)",
+	        "infoPostFix" : "",
+	        "thousands" : ",",
+	        "lengthMenu" : "_MENU_ 개씩 보기",
+	        "loadingRecords" : "로딩중...",
+	        "processing" : "처리중...",
+	        "search" : "검색 : ",
+	        "zeroRecords" : "검색된 정보가 없습니다.",
+	        "paginate" : {
+	            "first" : "첫 페이지",
+	            "last" : "마지막 페이지",
+	            "next" : "다음",
+	            "previous" : "이전"
+	        },
+	        "aria" : {
+	            "sortAscending" : " :  오름차순 정렬",
+	            "sortDescending" : " :  내림차순 정렬"
+	        }
+	}
+	
 	$('#commonMachineListTable').DataTable();
 	$('#farmBookmarkMachineListTable').DataTable();
-	$('#clientListTable').DataTable();
-	$('#stockItemTable').DataTable();
+	/*거래처 데이터테이블 셋팅*/
+	var clientListTable = $('#clientListTable').DataTable({
+		"columnDefs": [
+			 {className: "hidden clientCode", 	"targets": [ 0 ]}
+			,{className: "hidden farmCode", 	"targets": [ 1 ]}
+			,{className: "clientName", 			"targets": [ 2 ]}
+			,{className: "clientPhone", 		"targets": [ 3 ]}
+			,{className: "clientAddress",		"targets": [ 4 ]}
+			,{className: "clientAccountBank", 	"targets": [ 5 ]}
+			,{className: "clientAccount", 		"targets": [ 6 ]}
+			,{className: "clientMemo", 			"targets": [ 7 ]}
+		]
+		,language : lang_kor
+	});
+	
 	$('#resourceUsecapacityListTable').DataTable();
 	
-	/*planModals.html 등록버튼 클릭시 ajax로 처리*/
+	
+	/* Modal 등록버튼, 테이블 수정,삭제 버튼 클릭시 ajax로 처리 */
+	
+	//거래처리스트를 테이블과 셀렉트 박스로 만든 후 input
+	function doClientList(data){
+		
+		var machineClientSelect = $('#machineClientCode');
+		var taxPayClientSelect  = $('#taxPayClientCode');
+		var etcPayClientSelect  = $('#etcPayClientCode');
+		var resourcePaySelect	= $('#resourcePayClientCode');
+		
+		var option  = '<option value=""> :: 거래처선택 :: </option>';
+		
+		clientListTable.clear().draw();
+		
+		machineClientSelect.children().remove();
+		taxPayClientSelect.children().remove();
+		etcPayClientSelect.children().remove();
+		
+		$.each(data, function(index){
+			clientListTable.row.add([
+				 data[index].clientCode
+				,data[index].farmCode
+				,data[index].clientName
+				,data[index].clientPhone
+				,data[index].clientAddress
+				,data[index].clientAccountBank
+				,data[index].clientAccount
+				,data[index].clientMemo
+				,'<a class="modifyClientInfo">수정</a>'
+				,'<a class="removeClientInfo">삭제</a>'
+			]).draw()
+			
+			option += '<option value=';
+			option += data[index].clientCode + '>';
+			option += data[index].clientName;
+			option += '</option>';
+			
+		})
+		
+		machineClientSelect.html(option);
+		taxPayClientSelect.html(option);
+		etcPayClientSelect.html(option);
+		resourcePaySelect.html(option);
+	}
+	
+	//모달 거래처등록버튼 클릭시
 	$('#addClientBtn').click(function(){
 	
-		var queryString = $("form[name=addClient]").serialize() ;
+		var queryString = $("form[name=addClient]").serialize();
 		
 		$.ajax({
-			url : "/ajax/addClient",
+			url : "/plan/ajax/addClient",
 			method: "POST",
 			data: queryString,
 			datatype: 'json',
 			success : function(data) {
-				
-				var tbody = $("#clientListTable tbody");
-				var machineClientSelect = $('#machineClientCode');
-				var taxPayClientSelect = $('#taxPayClientCode');
-				var etcPayClientSelect = $('#etcPayClientCode');
-				
-				var tr = "";
-				var option = '<option value=""> :: 거래처선택 :: </option>';
-				
-				tbody.children().remove();
-				machineClientSelect.children().remove();
-				taxPayClientSelect.children().remove();
-				etcPayClientSelect.children().remove();
-				
-				$.each(data, function(index){
-					tr += '<tr>';
-					tr += '<td>' + data[index].clientName + '</td>';
-					tr += '<td>' + data[index].clientPhone + '</td>';
-					tr += '<td>' + data[index].clientAddress + '</td>';
-					tr += '<td>' + data[index].clientAccountBank + '</td>';
-					tr += '<td>' + data[index].clientAccount + '</td>';
-					tr += '<td>' + data[index].clientMemo + '</td>';
-					tr += '</tr>';
-					
-					option += '<option value=';
-					option += data[index].clientCode + '>';
-					option += data[index].clientName;
-					option += '</option>';
-					
-				})
-				
-				tbody.html(tr);
-				console.log(option);
-				machineClientSelect.html(option);
-				taxPayClientSelect.html(option);
-				etcPayClientSelect.html(option);
-				
-				
+				doClientList(data);
 			},
 			error : function(xhr, status, error) {
 				console.log('xhr : ' + xhr);
@@ -442,9 +489,346 @@ $(function(){
 		
 	});
 	
+	/*거래처등록모달 초기화*/
 	$('#client-justified button').click(function(){
 		$("form[name=addClient] .inputReset").val('');
 	});
 	
+	/*거래처 테이블 수정 클릭시*/
+	var modalClientCode 		= $('#modifyClientCode');
+	var modalClientName 		= $('#modifyClientName');
+	var modalClientPhone 		= $('#modifyClientPhone');
+	var modalClientAddress 		= $('#modifyClientAddress');
+	var modalClientAccountBank  = $('#modifyClientAccountBank');
+	var modalClientAccount 		= $('#modifyClientAccount');
+	var modalClientMemo			= $('#modifyClientMemo');
+	var modalModifyClient 		= $('#planModifyClient');
+	
+	$(document).on('click', '.modifyClientInfo', function(){
+		var clientCode 			= $(this).parent().parent().children('.clientCode').text();
+		var clientName 			= $(this).parent().parent().children('.clientName').text();
+		var clientPhone 		= $(this).parent().parent().children('.clientPhone').text();
+		var clientAddress 		= $(this).parent().parent().children('.clientAddress').text();
+		var clientAccountBank 	= $(this).parent().parent().children('.clientAccountBank').text();
+		var clientAccount 		= $(this).parent().parent().children('.clientAccount').text();
+		var clientMemo 			= $(this).parent().parent().children('.clientMemo').text();
+		
+		$("form[name=modifyClient] .inputReset").val('');
+		
+		modalModifyClient.modal('show');
+		
+		modalClientCode.val(clientCode);
+		modalClientName.val(clientName);
+		modalClientPhone.val(clientPhone);
+		modalClientAddress.val(clientAddress);
+		modalClientAccountBank.val(clientAccountBank);
+		modalClientAccount.val(clientAccount);
+		modalClientMemo.val(clientMemo);
+		
+	});
+	
+	/*모달 거래처 정보수정 버튼 클릭시*/
+	$('#modifyClientBtn').click(function(){
+		
+		var queryString = $("form[name=modifyClient]").serialize();
+		var commonAjax = new ksmartAjax();
+		commonAjax.setAjaxUrl('/plan/ajax/modifyClient');
+		commonAjax.setAjaxType('post');
+		commonAjax.putObj(queryString);
+		commonAjax.setResultType('json');
+		commonAjax.action(function(data){
+			doClientList(data);
+			modalModifyClient.modal("hide");
+		});
+	});
+	
+	/*거래처 테이블 삭제 클릭시*/
+	$(document).on('click', '.removeClientInfo', function(){
+		var clientCode 	= $(this).parent().parent().children('.clientCode').text();
+		var farmCode 	= $(this).parent().parent().children('.farmCode').text();
+		
+		var commonAjax = new ksmartAjax();
+		commonAjax.setAjaxUrl('/plan/ajax/removeClient');
+		commonAjax.setAjaxType('post');
+		commonAjax.put("clientCode", clientCode);
+		commonAjax.put("farmCode", farmCode);
+		commonAjax.setResultType('json');
+		commonAjax.action(function(data){
+			doClientList(data);
+		});
+	});
+	
+	/*품목 데이터테이블 셋팅*/
+	var stockItemTable = $('#stockItemTable').DataTable({
+		"columnDefs": [
+			 {className: "hidden stockItemCode", 			"targets": [ 0 ]}
+			,{className: "hidden farmCode", 				"targets": [ 1 ]}
+			,{className: "hidden stockCateCode", 			"targets": [ 2 ]}
+			,{className: "stockCateName", 					"targets": [ 3 ]}
+			,{className: "stockItemName", 					"targets": [ 4 ]}
+			,{className: "stockItemQuantity",				"targets": [ 5 ]}
+			,{className: "stockItemQuantityUnit", 			"targets": [ 6 ]}
+			,{className: "stockItemQuantityCapacity", 		"targets": [ 7 ]}
+			,{className: "stockItemQuantityCapacityUnit", 	"targets": [ 8 ]}
+		]
+		,language : lang_kor
+	});
+	
+	/*품목등록모달 초기화*/
+	$('#stockItem-justified button').click(function(){
+		$("form[name=addStockItem]")[0].reset();
+	});
+	
+	/*모달 품목등록버튼 클릭시*/
+	var modalPlanAddStock = $('#planAddStock');
+	
+	$('#addStockItemBtn').click(function(){
+		var queryString = $("form[name=addStockItem]").serialize();
+		
+		var commonAjax = new ksmartAjax();
+		commonAjax.setAjaxUrl('/plan/ajax/addStockItem');
+		commonAjax.setAjaxType('post');
+		commonAjax.putObj(queryString);
+		commonAjax.setResultType('json');
+		commonAjax.action(function(data){
+			doStockItemList(data);
+			modalPlanAddStock.modal("hide");
+		});
+	});
+	
+	//품목리스트를 테이블과 셀렉트 박스로 만든 후 input
+	function doStockItemList(data){
+		
+		var resourcePayStockItemSelect = $('#resourcePayStockItemCode');
+		
+		var option  = '<option value=""> :: 품목선택 :: </option>';
+		
+		stockItemTable.clear().draw();
+		
+		resourcePayStockItemSelect.children().remove();
+		
+		$.each(data, function(index){
+			
+			stockItemTable.row.add([
+				 data[index].stockItemCode
+				,data[index].farmCode
+				,data[index].stockCate.stockCateCode
+				,data[index].stockCate.stockCateName
+				,data[index].stockItemName
+				,data[index].stockItemQuantity
+				,data[index].stockItemQuantityUnit
+				,data[index].stockItemQuantityCapacity
+				,data[index].stockItemQuantityCapacityUnit
+				,'<a class="modifyStockItemInfo">수정</a>'
+				,'<a class="removeStockItemInfo">삭제</a>'
+			]).draw()
+			
+			option += '<option value=';
+			option += data[index].stockItemCode + '>';
+			option += data[index].stockCate.stockCateName;
+			option += " : ";
+			option += data[index].stockItemName;
+			option += '</option>';
+			
+		})
+		resourcePayStockItemSelect.html(option);
+	}
+	
+	/*품목 데이터 테이블 수정 클릭시*/
+	var modalstockItemCode 						= $('#modifyStockItemCode');
+	var modalStockCateCode 						= $('#modifyStockCateCode');
+	var modalStockItemName 						= $('#modifyStockItemName');
+	var modalStockItemQuantity 					= $('#modifyStockItemQuantity');
+	var modalStockItemQuantityUnit 				= $('#modifyStockItemQuantityUnit');
+	var modalStockItemQuantityCapacity  		= $('#modifyStockItemQuantityCapacity');
+	var modalStockItemQuantityCapacityUnit 		= $('#modifyStockItemQuantityCapacityUnit');
+	var modalModifyStock 						= $('#planModifyStock');
+	
+	$(document).on('click', '.modifyStockItemInfo', function(){
+		var stockItemCode 					= $(this).parent().parent().children('.stockItemCode').text();
+		var stockCateCode 					= $(this).parent().parent().children('.stockCateCode').text();
+		var stockCateName 					= $(this).parent().parent().children('.stockCateName').text();
+		var stockItemName 					= $(this).parent().parent().children('.stockItemName').text();
+		var stockItemQuantity 				= $(this).parent().parent().children('.stockItemQuantity').text();
+		var stockItemQuantityUnit 			= $(this).parent().parent().children('.stockItemQuantityUnit').text();
+		var stockItemQuantityCapacity 		= $(this).parent().parent().children('.stockItemQuantityCapacity').text();
+		var stockItemQuantityCapacityUnit 	= $(this).parent().parent().children('.stockItemQuantityCapacityUnit').text();
+		
+		$("form[name=modifyStockItem]")[0].reset();
+		
+		modalModifyStock.modal('show');
+		
+		modalstockItemCode.val(stockItemCode);
+		modalStockCateCode.val(stockCateCode).prop('selected', true);;
+		modalStockItemName.val(stockItemName);
+		modalStockItemQuantity.val(stockItemQuantity);
+		modalStockItemQuantityUnit.val(stockItemQuantityUnit);
+		modalStockItemQuantityCapacity.val(stockItemQuantityCapacity);
+		modalStockItemQuantityCapacityUnit.val(stockItemQuantityCapacityUnit);
+		
+	});
+	
+	/*모달 품목수정버튼 클릭시*/
+	$('#modifyStockItemBtn').click(function(){
+		var queryString = $("form[name=modifyStockItem]").serialize();
+		
+		var commonAjax = new ksmartAjax();
+		commonAjax.setAjaxUrl('/plan/ajax/modifyStockItem');
+		commonAjax.setAjaxType('post');
+		commonAjax.putObj(queryString);
+		commonAjax.setResultType('json');
+		commonAjax.action(function(data){
+			doStockItemList(data);
+			modalModifyStock.modal("hide");
+		});
+	});
+	
+	/*품목 데이터 테이블 삭제 클릭시*/
+	$(document).on('click', '.removeStockItemInfo', function(){
+		var stockItemCode 	= $(this).parent().parent().children('.stockItemCode').text();
+		var farmCode 		= $(this).parent().parent().children('.farmCode').text();
+		
+		var commonAjax = new ksmartAjax();
+		commonAjax.setAjaxUrl('/plan/ajax/removeStockItem');
+		commonAjax.setAjaxType('post');
+		commonAjax.put("stockItemCode", stockItemCode);
+		commonAjax.put("farmCode", farmCode);
+		commonAjax.setResultType('json');
+		commonAjax.action(function(data){
+			doStockItemList(data);
+		});
+	});
+	
+	/*농자재매입 데이터테이블 셋팅*/
+	var resourcePayTable = $('#resourcePayTable').DataTable({
+		
+		"columnDefs": [
+			 {className: "hidden resourcePayCode", 		 "targets": [ 0 ]}
+			,{className: "hidden farmCode", 			 "targets": [ 1 ]}
+			,{className: "hidden clientCode", 			 "targets": [ 2 ]}
+			,{className: "hidden stockItemCode", 		 "targets": [ 3 ]}
+			,{className: "clientName", 					 "targets": [ 4 ]}
+			,{className: "stockCateName", 				 "targets": [ 5 ]}
+			,{className: "stockItemName",				 "targets": [ 6 ]}
+			,{className: "stockItemIncomeQuantity", 	 "targets": [ 7 ]}
+			,{className: "stockItemIncomeQuantityTotal", "targets": [ 8 ]}
+			,{className: "stockItemIncomePerPay", 		 "targets": [ 9 ]}
+			,{className: "stockItemTotalPay", 			 "targets": [ 10 ]}
+		]
+		,language : lang_kor
+	});
+	
+	/*농자재매입등록모달 초기화*/
+	$('#planResourcePay-justified button').click(function(){
+		$("form[name=addResourcePay]")[0].reset();
+	});
+	
+	/*모달 농자재매입등록버튼 클릭시*/
+	var modalplanAddResourcePay = $('#planAddResourcePay');
+	
+	$('#addResourcePayBtn').click(function(){
+		var queryString = $("form[name=addResourcePay]").serialize();
+		
+		var commonAjax = new ksmartAjax();
+		commonAjax.setAjaxUrl('/plan/ajax/addResourcePay');
+		commonAjax.setAjaxType('post');
+		commonAjax.putObj(queryString);
+		commonAjax.setResultType('json');
+		commonAjax.action(function(data){
+			doResourcePayList(data);
+			modalplanAddResourcePay.modal("hide");
+		});
+	});
+	
+	//품목리스트를 테이블과 셀렉트 박스로 만든 후 input
+	function doResourcePayList(data){
+		
+		resourcePayTable.clear().draw();
+		
+		$.each(data, function(index){
+			
+			resourcePayTable.row.add([
+				 data[index].resourcePayCode
+				,data[index].farmCode
+				,data[index].clientCode
+				,data[index].stockItemCode
+				,data[index].clientName
+				,data[index].stockCateName
+				,data[index].stockItemName
+				,data[index].stockItemIncomeQuantity
+				,data[index].stockItemIncomeQuantityTotal
+				,data[index].stockItemIncomePerPay
+				,data[index].stockItemTotalPay
+				,'<a class="modifyResourcePayInfo">수정</a>'
+				,'<a class="removeResourcePayInfo">삭제</a>'
+			]).draw()
+			
+		})
+	}
+	
+	/*농자재매입 데이터 테이블 수정 클릭시*/
+	var modalstockItemCode 						= $('#modifyStockItemCode');
+	var modalStockCateCode 						= $('#modifyStockCateCode');
+	var modalStockItemName 						= $('#modifyStockItemName');
+	var modalStockItemQuantity 					= $('#modifyStockItemQuantity');
+	var modalStockItemQuantityUnit 				= $('#modifyStockItemQuantityUnit');
+	var modalStockItemQuantityCapacity  		= $('#modifyStockItemQuantityCapacity');
+	var modalStockItemQuantityCapacityUnit 		= $('#modifyStockItemQuantityCapacityUnit');
+	var modalModifyStock 						= $('#planModifyStock');
+	
+	$(document).on('click', '.modifyStockItemInfo', function(){
+		var stockItemCode 					= $(this).parent().parent().children('.stockItemCode').text();
+		var stockCateCode 					= $(this).parent().parent().children('.stockCateCode').text();
+		var stockCateName 					= $(this).parent().parent().children('.stockCateName').text();
+		var stockItemName 					= $(this).parent().parent().children('.stockItemName').text();
+		var stockItemQuantity 				= $(this).parent().parent().children('.stockItemQuantity').text();
+		var stockItemQuantityUnit 			= $(this).parent().parent().children('.stockItemQuantityUnit').text();
+		var stockItemQuantityCapacity 		= $(this).parent().parent().children('.stockItemQuantityCapacity').text();
+		var stockItemQuantityCapacityUnit 	= $(this).parent().parent().children('.stockItemQuantityCapacityUnit').text();
+		
+		$("form[name=modifyStockItem]")[0].reset();
+		
+		modalModifyStock.modal('show');
+		
+		modalstockItemCode.val(stockItemCode);
+		modalStockCateCode.val(stockCateCode).prop('selected', true);;
+		modalStockItemName.val(stockItemName);
+		modalStockItemQuantity.val(stockItemQuantity);
+		modalStockItemQuantityUnit.val(stockItemQuantityUnit);
+		modalStockItemQuantityCapacity.val(stockItemQuantityCapacity);
+		modalStockItemQuantityCapacityUnit.val(stockItemQuantityCapacityUnit);
+		
+	});
+	
+	/*모달 품목수정버튼 클릭시*/
+	$('#modifyStockItemBtn').click(function(){
+		var queryString = $("form[name=modifyStockItem]").serialize();
+		
+		var commonAjax = new ksmartAjax();
+		commonAjax.setAjaxUrl('/plan/ajax/modifyStockItem');
+		commonAjax.setAjaxType('post');
+		commonAjax.putObj(queryString);
+		commonAjax.setResultType('json');
+		commonAjax.action(function(data){
+			doStockItemList(data);
+			modalModifyStock.modal("hide");
+		});
+	});
+	
+	/*품목 데이터 테이블 삭제 클릭시*/
+	$(document).on('click', '.removeStockItemInfo', function(){
+		var stockItemCode 	= $(this).parent().parent().children('.stockItemCode').text();
+		var farmCode 		= $(this).parent().parent().children('.farmCode').text();
+		
+		var commonAjax = new ksmartAjax();
+		commonAjax.setAjaxUrl('/plan/ajax/removeStockItem');
+		commonAjax.setAjaxType('post');
+		commonAjax.put("stockItemCode", stockItemCode);
+		commonAjax.put("farmCode", farmCode);
+		commonAjax.setResultType('json');
+		commonAjax.action(function(data){
+			doStockItemList(data);
+		});
+	});
 	
 });

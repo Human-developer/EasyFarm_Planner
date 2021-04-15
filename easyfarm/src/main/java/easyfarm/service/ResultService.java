@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 
 import easyfarm.dao.ResultMapper;
 import easyfarm.domain.Farm;
+import easyfarm.domain.plan.PlanWorkphaseCate;
 import easyfarm.domain.result.EtcPayResult;
 import easyfarm.domain.result.InsurancePayResult;
 import easyfarm.domain.result.MachineLeasePayResult;
@@ -122,6 +123,11 @@ public class ResultService {
 		workForcePayResult =resultmapper.getWorkForcePayResult();
 		
 		return workForcePayResult;
+	}
+	
+	//아이디가 소속된 농가명 가져오기
+	public List<PlanWorkphaseCate> getPlanWorkphaseCate() {
+		return resultmapper.getPlanWorkphaseCate();
 	}
 	
 	//아이디가 소속된 농가명 가져오기

@@ -26,10 +26,11 @@
 		<table id="test">
 			<thead>
 				<tr>
-					<th class="text-center">코드</th>
-					<th class="text-center">제목</th>
-					<th class="text-center">작성자</th>
-					<th class="text-center">작성일</th>
+					<th scope="col" class="text-center hidden">번호</th>
+					<th scope="col" class="text-center">번호</th>
+					<th scope="col" class="text-center">제목</th>
+					<th scope="col" class="text-center">작성자</th>
+					<th scope="col" class="text-center">작성일</th>
 					<th th:if = "${session.SLEVEL == '관리자'}">삭제</th>
 					<th>상태</th>
 				</tr>		
@@ -37,7 +38,9 @@
 			<tbody>
 			<!--DB에서 리스트 불러오기 연결  -->
 				<tr th:if="${#lists.size(selectBoardList)} > 0" th:each="l,index:${selectBoardList}">
-					<td th:text="${l.code}"class ="code" ></td>
+					<td th:text="${l.code}"class ="code hidden"></td>
+					<td th:text="${index.count}" class =""></td>
+
 					<td class = "test3" >
 					 <span class="glyphicon glyphicon-lock" aria-hidden="true"></span> [[${l.title}]]
                     </td>

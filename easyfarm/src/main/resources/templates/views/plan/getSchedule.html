@@ -50,11 +50,11 @@
 			}
 			/* .modal-wd85{width: 85%;} */
 			small{font-size: 100%;}
+			.form-control[readonly]{background-color: #F5F5F5;}
 		</style>
 	</th:block>
 	
 	<th:block layout:fragment="customContents">
-	
 		<div class="container-fluid">
 		    <div class="row">
 				<div class="col-md-12">
@@ -101,6 +101,11 @@
 									<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">관리화면</button></li>
 									<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
 									<li class="margin-bottom-10">
+										<button type="button" th:value="|/plan/planScheduleList?projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" class="btn btn-violet btn-rounded btn-bordered waves-effect waves-light">
+											계획 관리
+										</button>
+									</li>
+									<li class="margin-bottom-10">
 										<button type="button" th:value="|/plan/insurePayList?projectCode=${projectCode}&projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" class="btn btn-violet btn-rounded btn-bordered waves-effect waves-light">
 											프로젝트 보험료지출계획 관리
 										</button>
@@ -144,29 +149,29 @@
 							<div class="form-group form-group-sm">
 								<label for="workPhase" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>작업단계</strong></label>
 							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhase" id="workPhase"/>
+									<input type="text" class="form-control" name="workPhase" id="workPhase" readonly="readonly"/>
 							    </div>
 						    	<label for="workPhaseDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
 								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="date-range">
-										<input type="text" class="form-control" name="start" />
+									<div class="input-daterange input-group" id="workPhaseDate-range">
+										<input type="text" class="form-control" name="start" readonly="readonly"/>
 										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" />
+										<input type="text" class="form-control" name="end" readonly="readonly"/>
 									</div>
 								</div>
 							</div>
 							<div class="form-group form-group-sm">
 								<label for="workPhaseCate" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>상세항목</strong></label>
 							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhaseCate" id="workPhaseCate"/>
+									<input type="text" class="form-control" name="workPhaseCate" id="workPhaseCate" readonly="readonly"/>
 							    </div>
 							    
 							    <label for="workPhaseCateDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
 								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="date-range">
-										<input type="text" class="form-control" name="start" />
+									<div class="input-daterange input-group" id="workPhaseCateDate-range">
+										<input type="text" class="form-control" name="start" readonly="readonly"/>
 										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" />
+										<input type="text" class="form-control" name="end" readonly="readonly"/>
 									</div>
 								</div>
 							</div>

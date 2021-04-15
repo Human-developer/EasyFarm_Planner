@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+
+	<th:block layout:fragment="customTitle">
+		<title>실행 메인</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		프로젝트별 수입/지출 (결과)
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="customCssLib">
+		
+		
+	</th:block>
+	
+	<!-- 사용자 정의 css -->
+	<th:block layout:fragment="customCss">
+		
+	<style type="text/css">
+		.swal2-popup{
+	         font-size: medium !important;
+	         }
+	</style>
+
+	</th:block>
+	
+	<th:block layout:fragment="customContents">
+	
+	<div class="row small-spacing">
+			<div class="col-xs-12">
+				<div class="box-content" style="overflow: auto;">
+					<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs" style="overflow: auto;">
+					
+					<a th:href="@{/result}"> :: 결과리스트 :: </a>
+					    <ul id="myTab" class="nav nav-tabs" role="tablist">
+					      <li role="presentation" class=" active"><a href="#tab1" id="tab1-tab" role="tab" data-toggle="tab" aria-controls="tab1" aria-expanded="false">1111</a></li>
+					      <li role="presentation" class=" "><a href="#tab2" id="tab2-tab" role="tab" data-toggle="tab" aria-controls="tab2" aria-expanded="false">22222</a></li>
+					      <li role="presentation" class=" "><a href="#tab3" id="tab3-tab" role="tab" data-toggle="tab" aria-controls="tab3" aria-expanded="false">33333</a></li>
+					      
+					    </ul>
+					    <div id="myTabContent" class="tab-content" style="overflow: auto;">
+					      <div role="tabpanel" class="tab-pane fade  active in" id="tab1" aria-labelledby="tab1-tab">
+								[[${test}]]
+					      </div>
+					      <div role="tabpanel" class="tab-pane fade " id="tab2" aria-labelledby="tab2-tab">
+								[[${test[0].planWorkphaseCateBegin}]]
+					      </div>
+					      <div role="tabpanel" class="tab-pane fade " id="tab3" aria-labelledby="tab3-tab">
+								[[${test[0].planWorkphaseCateBegin}]]
+								[[${test[1].planWorkphaseCateBegin}]]
+								[[${test[2].planWorkphaseCateBegin}]]
+					      </div>
+						</div>
+					</div>
+				</div>	
+			</div>
+		</div>
+	
+	</th:block>	
+	
+	
+	
+	
+		
+	</th:block>
+	
+	<!-- 사용자 정의 자바스크립트 라이브러리 -->
+	<th:block layout:fragment="customScriptLib">
+		<script src="assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+		<script src="assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+		<script src="assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+		<script src="assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+		<script src="assets/scripts/datatables.demo.min.js"></script>
+	</th:block>
+	
+	
+	<!-- 사용자 정의 자바스크립트 -->
+	<th:block layout:fragment="customJavaScript">
+		
+		
+	
+	
+		<script type="text/javascript">
+			$(function(){
+				var etcpay = $(".etcpay"); 
+				var machineLeasePay = $(".machineLeasePay"); 
+				var humanpay = $(".humanpay"); 
+				var resourcepay = $(".resourcepay"); 
+				console.log(etcpay);
+				var etcSum = 0;
+				var machineLeaseSum = 0;
+				var humanSum = 0;
+				var resourceSum = 0;
+				var i = 0;
+				while(i < 10)
+				{
+					
+					etcSum += Number(etcpay.eq(i).text());
+					machineLeaseSum += Number(machineLeasePay.eq(i).text());
+					humanSum += Number(humanpay.eq(i).text());
+					resourceSum += Number(resourcepay.eq(i).text());
+					
+					i++;
+				};
+				console.log(etcSum);
+				$('.etctotal').text("비용 : "+ etcSum);
+				$('.machineleasetotal').text("비용 : "+machineLeaseSum);
+				$('.humantotal').text("비용 : "+humanSum);
+				$('.resourcetotal').text("비용 : "+resourceSum);
+				$('.paytotal').text(resourceSum + humanSum + machineLeaseSum + etcSum);
+			})
+			
+			$('#example2, #example3, #example4, #example5, #example6').DataTable();
+			
+			
+			var groupNum = 0;
+			var table = $('#example-row-grouping-2, #top-table').DataTable
+			({
+				"columnDefs": 
+				[
+					{ "visible": false, "targets": groupNum }
+				],
+				"order": [ groupNum, 'asc' ],
+				"displayLength": 25,
+				"drawCallback": function ( settings ) 
+				{
+					var api = this.api();
+					var rows = api.rows( {page:'current'} ).nodes();
+					var last=null;
+		 
+					api.column(groupNum, {page:'current'} ).data().each( function ( group, i ) 
+					{
+						if ( last !== group ) 
+						{
+							$(rows).eq( i ).before
+							(
+								'<tr class="group"><td colspan="8">'+group+'</td></tr>'
+							);
+		 
+							last = group;
+						}
+					});
+				}
+			});
+		 
+			// Order by the grouping
+			$('#example-row-grouping-2 tbody, #top-table tbody').on( 'click', 'tr.group', function () 
+				{
+					var currentOrder = table.order()[0];
+					if ( currentOrder[0] === groupNum && currentOrder[1] === 'asc' ) 
+					{
+						table.order( [ groupNum, 'desc' ] ).draw();
+					}
+					else 
+					{
+						table.order( [ groupNum, 'asc' ] ).draw();
+					}
+					return false;
+				});
+			
+			
+			
+			
+			
+		</script>
+	
+	
+	
+</html>
