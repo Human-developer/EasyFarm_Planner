@@ -8,7 +8,7 @@
 	</th:block>
 	
 	<th:block layout:fragment="pageTitle">
-		작물 코드
+		작물
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
@@ -29,11 +29,6 @@
 				작물 등록
 			</a>
 		</div>
-		<div style="margin-right: 10px" class="pull-right">
-			<a  th:href="@{/code}"  class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
-				돌아가기
-			</a>
-		</div>
 		<div style="margin-top: 6px;">
 			<small style="color: red; margin-left: 6px;"></small>
 		</div>
@@ -42,7 +37,6 @@
 			<thead>
 				<tr>
 					<th class="hidden">작물코드 			</th>
-					<th>작물코드 			</th>
 					<th>작물카테고리		</th>
 					<th>작물명			</th>
 					<th>사용유무			</th>
@@ -55,7 +49,6 @@
 			<tbody>
 				<tr th:if="${#lists.size(cropList)} > 0" th:each="l, st:${cropList}">
 					<td th:hidden="${l.cropCode}"></td>
-					<td th:text="${l.cropCode}"></td>
 					<td th:text="${l.cropCate}"></td>
 					<td th:text="${l.cropName}"></td>
 					<td th:text="${l.useStatus}"></td>
@@ -74,12 +67,6 @@
 			</tbody>
 		</table>
 		</div>
-	<div class="box-content">
-		<ul class="list-inline">
-			<li class="margin-bottom-10"><a th:href="@{/code}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>코드관리로 돌아가기</strong></button></a> </li>
-			<li ><a  th:if="${session.SLEVEL == '관리자'}" th:href="@{/code/addCrop}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>작물 등록</strong></button></a> </li></br>
-		</ul>		
-	</div>
 	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->

@@ -21,22 +21,22 @@
 	
 	<th:block layout:fragment="customContents">
 		<div class="box-content" style="margin-top: 20px">
-		<h3>1:1 문의</h3>
-		<hr>
-		<div class="dropdown js__drop_down">
-			<a href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
-			<ul class="sub-menu">
-				<li><a href="#">Action</a></li>
-				<li><a href="#">Another action</a></li>
-				<li><a href="#">Something else there</a></li>
-				<li class="split"></li>
-				<li><a href="#">Separated link</a></li>
-			</ul>
-			<!-- /.sub-menu -->
+		<div class="pull-left">
+			<div style="font-size: 24px;">1:1 문의</div>
 		</div>
+		<div class="pull-right">
+			<a th:href="@{/board/qnaInsert}"  class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
+				글쓰기
+			</a>
+		</div>
+		<div style="margin-top: 6px;">
+			<small style="color: red; margin-left: 6px;"></small>
+		</div>
+		<hr>
 		<table id="test">
 			<thead>
 				<tr>
+					<th scope="col" class="text-center hidden">번호</th>
 					<th scope="col" class="text-center">번호</th>
 					<th scope="col" class="text-center">제목</th>
 					<th scope="col" class="text-center">작성자</th>
@@ -48,7 +48,9 @@
 			<tbody>
 			<!--DB에서 리스트 불러오기 연결  -->
 				<tr th:if="${#lists.size(selectBoardList)} > 0" th:each="l,index:${selectBoardList}">
-					<td th:text="${l.code}"class ="code"></td>
+					<td th:text="${l.code}"class ="code hidden"></td>
+					<td th:text="${index.count}" class =""></td>
+
 					<td class = "test3" >
 					 <span class="glyphicon glyphicon-lock" aria-hidden="true"></span> [[${l.title}]]
                     </td>
@@ -60,19 +62,36 @@
 					<td th:if ="${l.conAnswer == null}" style="color: red">
 						답변대기
 					</td>
-					<td th:if ="${l.conAnswer != null}" style="color: blue">
+					<td th:if ="${l.conAnswer != null && l.conAnswer !='안녕하십니까. 
+
+빠른답변을 드리지 못한점 진심으로 사과의 말씀을 드립니다. 
+
+소중한 시간을 내어 보내주신 문의는 잘 받아보았습니다. 
+
+현재 고객센터 이용자수가 많아 처리가 지연되고 있습니다. 빠른 시일내에 답변드리도록 하겠습니다. 
+
+다른궁금한 점이 있으시면 언제든 1:1문의를  통하여 정성껏 답변드려 보다 도움이 되는 이지팜이 되겠습니다. 
+
+감사합니다.'}" style="color: blue">
 						답변완료
+					</td>
+					<td th:if ="${l.conAnswer == '안녕하십니까. 
+
+빠른답변을 드리지 못한점 진심으로 사과의 말씀을 드립니다. 
+
+소중한 시간을 내어 보내주신 문의는 잘 받아보았습니다. 
+
+현재 고객센터 이용자수가 많아 처리가 지연되고 있습니다. 빠른 시일내에 답변드리도록 하겠습니다. 
+
+다른궁금한 점이 있으시면 언제든 1:1문의를  통하여 정성껏 답변드려 보다 도움이 되는 이지팜이 되겠습니다. 
+
+감사합니다.'}" style="color: green">
+						답변지연
 					</td>
 				</tr>
 			</tbody>
 		</table>
 		</div>
-	<div class="box-content">
-		<ul class="list-inline">
-<!-- 		, @{/컨트롤러경로(글코드=${list.글코드 /*겟방식전달*/})} -->
-			<li ><a th:href="@{/board/qnaInsert}"><button type="button" class="btn btn-success btn-bordered waves-effect waves-light"><strong>글쓰기</strong></button></a> </li></br>
-		</ul>		
-	</div>
 	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
@@ -83,32 +102,8 @@
 	<!-- 사용자 정의 자바스크립트 -->
 	<th:block layout:fragment="customJavaScript">
 	<script type="text/javascript">
-		var lang_kor = {
-		        "decimal" : "",
-		        "emptyTable" : "내 농가가 없습니다",
-		        "info" : "_START_ - _END_ (총 _TOTAL_ 명)",
-		        "infoEmpty" : "0명",
-		        "infoFiltered" : "(전체 _MAX_ 농가 중 검색결과)",
-		        "infoPostFix" : "",
-		        "thousands" : ",",
-		        "lengthMenu" : "_MENU_ 개씩 보기",
-		        "loadingRecords" : "로딩중...",
-		        "processing" : "처리중...",
-		        "search" : "검색 : ",
-		        "zeroRecords" : "검색된 농가가 없습니다.",
-		        "paginate" : {
-		            "first" : "첫 페이지",
-		            "last" : "마지막 페이지",
-		            "next" : "다음",
-		            "previous" : "이전"
-		        },
-		        "aria" : {
-		            "sortAscending" : " :  오름차순 정렬",
-		            "sortDescending" : " :  내림차순 정렬"
-		        }
-		}
 		
-		$('#test').sysDataTable(lang_kor);
+		
 		
 		$('.test3').click(function(){
 			var userLevel = '[[${session.SLEVEL}]]';
@@ -153,6 +148,34 @@
 			}
 			
 		})
+		
+		var lang_kor = {
+		        "decimal" : "",
+		        "emptyTable" : "내 문의가 없습니다",
+		        "info" : "_START_ - _END_ (총 _TOTAL_ 명)",
+		        "infoEmpty" : "0명",
+		        "infoFiltered" : "(전체 _MAX_ 문의 중 검색결과)",
+		        "infoPostFix" : "",
+		        "thousands" : ",",
+		        "lengthMenu" : "_MENU_ 개씩 보기",
+		        "loadingRecords" : "로딩중...",
+		        "processing" : "처리중...",
+		        "search" : "검색 : ",
+		        "zeroRecords" : "검색된 문의가 없습니다.",
+		        "paginate" : {
+		            "first" : "첫 페이지",
+		            "last" : "마지막 페이지",
+		            "next" : "다음",
+		            "previous" : "이전"
+		        },
+		        "aria" : {
+		            "sortAscending" : " :  오름차순 정렬",
+		            "sortDescending" : " :  내림차순 정렬"
+		        }
+		}
+		
+		$('#test').sysDataTable(lang_kor);
+		
 		
 		</script>
 	</th:block>

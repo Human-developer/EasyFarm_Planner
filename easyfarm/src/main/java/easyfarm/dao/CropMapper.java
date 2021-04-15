@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import easyfarm.domain.Crop;
 import easyfarm.domain.CropDetailCategory;
 import easyfarm.domain.CropWorkStage;
+import easyfarm.domain.plan.StockCate;
 
 @Mapper
 public interface CropMapper {
@@ -45,6 +46,9 @@ public interface CropMapper {
 	public CropDetailCategory getCropDetailCategory(String commonWorkphaseCateCode);
 	//상세작업항목 수정
 	public int modifyCropDetailCategory(CropDetailCategory commonWorkphaseCateCode);
+	
+	//품목카테고리 등록
+	public int addStockCate(StockCate stockCate, String memberId);
 
 	
 	
