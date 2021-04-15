@@ -45,34 +45,35 @@ public class ResultController {
 	@Autowired
 	PlanService planService;
 	
-	
+	//프로젝트명 리스트 가져오기
 	@PostMapping(value = "/result/getProjectNameByFarmCode", produces = "application/json")
 	public @ResponseBody List<Map<String,Object>> test( @RequestParam(value = "farmCode",required = false) String farmCode,Model model) {
 		List<Map<String,Object>> project = null;
 		
 		project = resultService.getProjectNameByFarmName(farmCode);
-		System.out.println(project.toString() + "muyahoooooooooooooooooooooooooooooooooooooo");
+		System.out.println(project.toString() + "muyahooooo");
 		
 		return project;
 	}
 	
-	@PostMapping(value = "/result/getWorkPhaseByFarmCode", produces = "application/json")
+	//작업단계 가져오기
+	@PostMapping(value = "/result/getWorkPhaseByProjectCode", produces = "application/json")
 	public @ResponseBody List<Map<String,Object>> getWorkPhaseByProjectCode( @RequestParam(value = "projectCode",required = false) String projectCode) {
 		List<Map<String,Object>> workPhase = null;
 		
 		workPhase = resultService.getWorkPhaseByProjectCode(projectCode);
-		System.out.println(workPhase.toString() + "muyahuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+		System.out.println(workPhase.toString() + "muyahuuu");
 		
 		return workPhase;
 	}
 	
-	
-	
+	//선택한 대상의 결과데이터 출력
 	@GetMapping(value = "/result/resultData")
 	public String resultMain(Model model,
 			@RequestParam(value = "farmCode",required = false) String farmCode,
 			@RequestParam(value = "projectCode",required = false) String projectCode,
-			@RequestParam(value = "workPhaseCode",required = false) String workPhaseCode) {
+			@RequestParam(value = "workPhaseCode",required = false) String workPhaseCode,
+			@RequestParam(value = "projectPlanCode",required = false) String projectPlanCode) {
 		
 		System.out.println("\n\n\n\n\n\n\n\n"+farmCode+"<<farmCode \n\n\n\n\n\n\n\n\n");
 		System.out.println("\n\n\n\n\n\n\n\n"+workPhaseCode+"<<workPhaseCode \n\n\n\n\n\n\n\n\n");
@@ -102,15 +103,14 @@ public class ResultController {
 		 
 		
 		
-		return "views/result/resultAlert";
+		return "views/result/resultData";
 	}
 	
 	
 	
-	
+	//기본 매핑
 	@GetMapping("/result")
 	public String result(Model model,HttpSession session) {
-		
 		
 		List<Map<String,Object>> farm = null;
 		
@@ -127,16 +127,48 @@ public class ResultController {
 		return "views/result/resultMain";
 	}
 	
-	@GetMapping("/resultCalendar")
-	public String resultTable(Model model) {
+	//계획캘린더에서 실행버튼 클릭시
+	@GetMapping("/result/addResult")
+	public String resultCalendar(Model model,HttpSession session,
+			@RequestParam(value = "projectCode",required = false) String projectCode,
+			@RequestParam(value = "selectedDate",required = false) String selectedDate) {
 		
-		return "views/result/resultCalendar";
+		if(session.getAttribute("SID") == null) {
+			return "views/member/login";
+		}
+		model.addAttribute("test",resultService.getPlanWorkphaseCate());
+		System.out.println(resultService.getPlanWorkphaseCate());
+		
+			return "views/result/addResult";
 	}
 	
-	@GetMapping("/resultData5464654644")
-	public String resultData(Model model) {
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//쓸데없는거 처리장소
+	@GetMapping("/result/select")
+	public String selectOptions(Model model,HttpSession session) {
 		
+		List<Map<String,Object>> farm = null;
 		
+		 if(session.getAttribute("SID") == null) {
+			return "views/member/login";
+		 }else {
+			 String memberId = (String) session.getAttribute("SID");
+				
+				if(memberId != null) {
+					farm = resultService.getFarmName(memberId);
+					model.addAttribute("farm", farm);
+				 }
+			return "views/result/resultSelect";
+		 }
 		
 		/*
 		List<EtcPay> etcPayPlan = planService.getEtcPayPlan();
@@ -160,6 +192,11 @@ public class ResultController {
 		model.addAttribute("workForcePayPlan", workForcePayPlan);
 		*/
 		
-		return "views/result/resultMain";
 	}
+	
+	
+	
+	
+	
+	
 }

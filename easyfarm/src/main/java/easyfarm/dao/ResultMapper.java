@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import easyfarm.domain.Farm;
+import easyfarm.domain.plan.PlanWorkphaseCate;
 import easyfarm.domain.result.EtcPayResult;
 import easyfarm.domain.result.InsurancePayResult;
 import easyfarm.domain.result.MachineLeasePayResult;
@@ -44,4 +45,6 @@ public interface ResultMapper {
 	public List<Map<String,Object>> getProjectNameByFarmName(String farmCode);
 	
 	public List<Map<String,Object>> getWorkPhaseByProjectCode(String projectCode);
+	
+	public List<PlanWorkphaseCate> getPlanWorkphaseCate();
 }
