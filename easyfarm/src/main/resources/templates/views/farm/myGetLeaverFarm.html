@@ -16,6 +16,8 @@
 	<!-- 사용자 정의 css 라이브러리 -->
 	<th:block layout:fragment="customCssLib">
 		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/media/css/dataTables.bootstrap.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css}">
 	</th:block>
 	
 	<!-- 사용자 정의 css -->
@@ -29,32 +31,34 @@
 				<div class ="box-content">
 					<h3>내탈퇴신청목록</h3>
 					<hr>
-					<table id = "leaverFarmMemberTable">
-						<thead>
-							<tr>
-								<th>탈퇴신청코드</th>
-								<th>농가명</th>
-								<th>농가대표</th>
-								<th>탈퇴사유</th>
-								<th>탈퇴신청일</th>
-								<th>승인/거부</th>
-								<th>처리일</th>
-								<th>탈퇴취소</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="farmLeaverFarm : ${myLeaverFarmList}">
-								<td th:text = "${farmLeaverFarm.cancelRequestCode}"></td>
-								<td th:text = "${farmLeaverFarm.farm.farmName}"></td>
-								<td th:text = "${farmLeaverFarm.farm.ceoId}"></td>
-								<td th:text = "${farmLeaverFarm.cancelRequestReason}"></td>
-								<td th:text = "${farmLeaverFarm.cancelRequestDate}"></td>
-								<td th:text = "${farmLeaverFarm.cancelApproval.replace('탈퇴','')}"></td>
-								<td th:text = "${farmLeaverFarm.cancelApprovalDate}"></td>
-								<td><button th:if ="${farmLeaverFarm.cancelApproval == null}" type="button" class ="leaverFarmLemoveBtn btn btn-xs btn-danger waves-effect waves-light" th:value ="${farmLeaverFarm.cancelRequestCode}">취소</button></td>
-							</tr>
-						</tbody>
-					</table> 
+					<div class ="table-responsive">
+						<table id = "leaverFarmMemberTable">
+							<thead>
+								<tr>
+									<th>탈퇴신청코드</th>
+									<th>농가명</th>
+									<th>농가대표</th>
+									<th>탈퇴사유</th>
+									<th>탈퇴신청일</th>
+									<th>승인/거부</th>
+									<th>처리일</th>
+									<th>탈퇴취소</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="farmLeaverFarm : ${myLeaverFarmList}">
+									<td th:text = "${farmLeaverFarm.cancelRequestCode}"></td>
+									<td th:text = "${farmLeaverFarm.farm.farmName}"></td>
+									<td th:text = "${farmLeaverFarm.farm.ceoId}"></td>
+									<td th:text = "${farmLeaverFarm.cancelRequestReason}"></td>
+									<td th:text = "${farmLeaverFarm.cancelRequestDate}"></td>
+									<td th:text = "${farmLeaverFarm.cancelApproval}"></td>
+									<td th:text = "${farmLeaverFarm.cancelApprovalDate}"></td>
+									<td><button th:if ="${farmLeaverFarm.cancelApproval == null}" type="button" class ="leaverFarmLemoveBtn btn btn-xs btn-danger waves-effect waves-light" th:value ="${farmLeaverFarm.cancelRequestCode}">취소</button></td>
+								</tr>
+							</tbody>
+						</table> 
+					</div>
 				</div>
 			</div>
 		</div>
