@@ -884,7 +884,7 @@ public class PlanController {
 		return "views/plan/farmBookmarkMachine/addFarmBookmarkMachine";
 	}
 	
-	//농자재매입 등록
+	//농기계 즐겨찾기 등록
 	@PostMapping("/plan/addFarmBookmarkMachine")
 	public String addFarmBookmarkMachine(HttpSession session
 								  ,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode
@@ -896,16 +896,13 @@ public class PlanController {
 		
 		if(commonMachineCode.size() > 0 && memberId != null) {
 			
-			resourcePay.setRegMemberId(memberId);
+			//resourcePay.setRegMemberId(memberId);
 			
 			
 			
-			result = planService.addResourcePay(resourcePay);
+			//result = planService.addResourcePay(resourcePay);
 		}
-		return "redirect:/plan/planResourcePayList?projectPlanCode=" + projectPlanCode + "&farmCode=" + farmCode;
-		
-		
-		
+		//return "redirect:/plan/planResourcePayList?projectPlanCode=" + projectPlanCode + "&farmCode=" + farmCode;
 		return null;
 	}
 	
