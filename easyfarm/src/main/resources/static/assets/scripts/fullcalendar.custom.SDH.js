@@ -19,7 +19,6 @@ $(document).ready(function() {
 		var TODAY = todayDate.format('YYYY-MM-DD');
 		var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
 		$('#calendar').fullCalendar({
-			timezone: 'local',
 			header: {
 				left: 'prevYear,prev,next,nextYear today',
 				center: 'title',
@@ -59,52 +58,12 @@ $(document).ready(function() {
 			eventDragStop : function(info){
 				console.log(info);
 			},
-			eventClick: function(data){
-				//var yy = date.end._i.format("YYYY");
-	        	//var mm = date.end._i.format("MM");
-	        	//var dd = date.end._i.format("DD");
-	        	//var ss = date.end._i.format("dd");
-		        //onChangeDate(yy,mm,dd);
-				
-				
-				console.log(data);
-				if(data.planWorkphaseCateCode != null && data.planWorkphaseCateCode.trim()){
-					$('#workPhaseCate').parent().parent().removeClass('hidden');
-					
-					$('#workPhaseCate').val(data.title);
-					$('#workPhaseCateDate-range [name="start"]').val(data.start._i);
-					$('#workPhaseCateDate-range [name="end"]').val(data.end._i);
-					
-					$('#workPhase').val(data.workphaseName);
-					$('#workPhaseDate-range [name="start"]').val(data.planWorkphaseBegin);
-					$('#workPhaseDate-range [name="end"]').val(data.planWorkphaseEnd);
-				}
-				else{
-					$('#workPhaseCate').parent().parent().addClass('hidden');
-					$('#workPhase').val(data.title);
-					$('#workPhaseDate-range [name="start"]').val(data.start._i);
-					$('#workPhaseDate-range [name="end"]').val(data.end._i);
-				}
-				
-				
-				
-				
-				$.ajax({
-					url : "/plan/ajax/getAllPlanSchedule",
-					method: "POST",
-					data: {	'planWorkphaseCateCode' : data.planWorkphaseCateCode,
-							'planWorkphaseCode'		: data.planWorkphaseCode
-						  },
-					datatype: 'json',
-					success : function(data) {
-					},
-					error : function(xhr, status, error) {
-						console.log('xhr : ' + xhr);
-						console.log('status : ' + status);
-						console.log('error : ' + error);
-					}
-				});
-				
+			eventClick: function(data,a,b,c){
+				/*var yy=date.format("YYYY");
+	        	var mm=date.format("MM");
+	        	var dd=date.format("DD");
+	        	var ss=date.format("dd");
+		        onChangeDate(yy,mm,dd);*/
 				$('#planModal').modal('show');
 			},
 			customButtons: {
@@ -118,7 +77,7 @@ $(document).ready(function() {
             
             dayClick: function(date, allDay, jsEvent, view) {
         	   
-        	   
+        	   console.log("click yaho");
             },
             
 			events : function(info, successCallback, failureCallback, callback) {				
@@ -133,14 +92,7 @@ $(document).ready(function() {
 				});
 				 
 				request.done(function( data ) {
-					var fixedDate = data.map(function (array) {
-				          if (array.start !== array.end) {
-				            array.end = moment(array.end).add(1, 'days'); // 이틀 이상 AllDay 일정인 경우 달력에 표기시 하루를 더해야 정상출력
-				            array.start = moment(array.start);
-				          }
-				          return array;
-			        });
-					callback(fixedDate);
+					callback(data);
 				});
 				 
 				request.fail(function( jqXHR, textStatus ) {

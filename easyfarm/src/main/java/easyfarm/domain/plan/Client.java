@@ -26,6 +26,9 @@ public class Client {
 	// 거래처 메모 
 	private String clientMemo;
 	
+	//사용유무
+	private String useStatus;
+	
 	// 작성자아이디 
 	private String regMemberId;
 	
@@ -96,6 +99,14 @@ public class Client {
 	    this.clientMemo = clientMemo;
 	}
 	
+	public String getUseStatus() {
+		return useStatus;
+	}
+
+	public void setUseStatus(String useStatus) {
+		this.useStatus = useStatus;
+	}
+
 	public String getRegMemberId() {
 	    return regMemberId;
 	}

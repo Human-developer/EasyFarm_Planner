@@ -50,7 +50,6 @@
 			}
 			/* .modal-wd85{width: 85%;} */
 			small{font-size: 100%;}
-			.form-control[readonly]{background-color: #F5F5F5;}
 		</style>
 	</th:block>
 	
@@ -101,11 +100,6 @@
 									<li class="margin-bottom-10"><button type="button" class="btn btn-default" style="cursor: default;">관리화면</button></li>
 									<li class="margin-bottom-10"><i class="fa fa-arrow-right"></i></li>
 									<li class="margin-bottom-10">
-										<button type="button" th:value="|/plan/planScheduleList?projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" class="btn btn-violet btn-rounded btn-bordered waves-effect waves-light">
-											계획 관리
-										</button>
-									</li>
-									<li class="margin-bottom-10">
 										<button type="button" th:value="|/plan/insurePayList?projectCode=${projectCode}&projectPlanCode=${projectPlanCode}|" onclick="moveAddSpend(this)" class="btn btn-violet btn-rounded btn-bordered waves-effect waves-light">
 											프로젝트 보험료지출계획 관리
 										</button>
@@ -144,34 +138,33 @@
 						<h4 class="modal-title" id="myModalLabel-1">계획서간편보기</h4>
 					</div>
 					<div class="modal-body">
-						
 						<div class="form-horizontal">
 							<div class="form-group form-group-sm">
 								<label for="workPhase" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>작업단계</strong></label>
 							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhase" id="workPhase" readonly="readonly"/>
+									<input type="text" class="form-control" name="workPhase" id="workPhase"/>
 							    </div>
 						    	<label for="workPhaseDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
 								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="workPhaseDate-range">
-										<input type="text" class="form-control" name="start" readonly="readonly"/>
+									<div class="input-daterange input-group" id="date-range">
+										<input type="text" class="form-control" name="start" />
 										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" readonly="readonly"/>
+										<input type="text" class="form-control" name="end" />
 									</div>
 								</div>
 							</div>
 							<div class="form-group form-group-sm">
 								<label for="workPhaseCate" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>상세항목</strong></label>
 							    <div class="col-sm-4">
-									<input type="text" class="form-control" name="workPhaseCate" id="workPhaseCate" readonly="readonly"/>
+									<input type="text" class="form-control" name="workPhaseCate" id="workPhaseCate"/>
 							    </div>
 							    
 							    <label for="workPhaseCateDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
 								<div class="col-sm-5">
-									<div class="input-daterange input-group" id="workPhaseCateDate-range">
-										<input type="text" class="form-control" name="start" readonly="readonly"/>
+									<div class="input-daterange input-group" id="date-range">
+										<input type="text" class="form-control" name="start" />
 										<span class="input-group-addon bg-primary text-white"> ~ </span>
-										<input type="text" class="form-control" name="end" readonly="readonly"/>
+										<input type="text" class="form-control" name="end" />
 									</div>
 								</div>
 							</div>
@@ -391,12 +384,167 @@
 		<!-- FullCalendar -->
 		<script th:src="@{/assets/plugin/moment/moment.js}"></script>
 		<script th:src="@{/assets/plugin/fullcalendar/fullcalendar.min.js}"></script>
-		<script th:src="@{/assets/scripts/fullcalendar.custom.PGS.js}"></script>
+		<script th:src="@{/assets/scripts/fullcalendar.custom.SDH.js}"></script>
 		<script th:src="@{/assets/plugin/fullcalendar/ko.js}"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 	</th:block>
 	
 	<th:block layout:fragment="customJavaScript">
-		<script type="text/javascript">
+	<script type="text/javascript" th:inline="javascript">
+		/*<![CDATA[*/
+		var farm = '[[${farm}]]';
+	    var farmNameObj = JSON.parse(farm);
+		var farmName = {"":"농가를 선택해주세요"};
+		console.log(farmNameObj);
+		var Data ={"":"프로젝트를 선택해주세요"};
+		var PlanN = {"":"차수를 선택해주세요"};
+	    for(var i=0; i < farmNameObj.length; i++)
+	    {
+	    	farmName[farmNameObj[i].farmCode] = farmNameObj[i].farmName;
+	    }
+	    console.log(farmName);
+		/*]]>*/
+		const steps = ['농가', '프로', '차수']
+		const swalQueueStep = Swal.mixin(
+				{
+				  input: 'select',
+				  confirmButtonText: '다음 &rarr;',
+				  reverseButtons: true,
+				  allowOutsideClick: true,
+				  validationMessage: 'This field is required',
+				  inputAttributes: 
+					{
+						required: true
+					},
+				  inputOptions: 
+				  	{
+					    '농가명': farmName 
+					},
+				  progressSteps: steps
+				}).queue([
+				  {
+				    title: '농가 선택',
+				    text: '농가를 선택해 주세요',
+					showLoaderOnConfirm: true,
+				    preConfirm: function(farmCode)
+				    {
+				    	delete this.inputOptions.농가명;
+					    this.inputOptions.project = Data;
+				    },
+				  },
+				  {
+					title: '프로젝트 선택',
+					text: '프로젝트를 선택해 주세요',
+					preConfirm: function(projectCode)
+					{
+				    	delete this.inputOptions.project;
+					    this.inputOptions.PlanN = PlanN;
+				    },
+				  },
+				  {
+					title: '차수 선택',
+					text: '차수를 선택해 주세요'
+				  },
+				]).then((result) => {
+				  if (result.value) {
+				    const answers = JSON.stringify(result.value)
+				    console.log(result + "<< result")
+				    if(result.value[0] != '' && result.value[1] != '' && result.value[2] != '' ){		//유효성(임시)
+					    console.log(result.value[0] + "<< result.value")
+					    setTimeout(function() 
+					    {
+				    		Swal.fire
+				    		({
+				                title: "선택 완료!",
+				                confirmButtonText: '확인',
+				            }).then(function()
+				            	{
+				            	console.log("muyahooooooooooooooooooooooooooooooooooooooooooooooooooooo")
+				            	location.href ="/result/resultCalendar?farmCode="+ result.value[0] +"&projectCode=" + result.value[1] + "&projectPlanCode=" + result.value[2];
+					            });
+				        }, 100);
+				    }else{
+				    	setTimeout(function() 
+				    	{
+				    		Swal.fire({
+				                title: "다시!",
+				                text: "다시 선택해 주세요!",
+				            }).then(function(){
+				            	location.reload();
+				            });
+				        }, 100);
+				    }
+				  }
+				})
+		$('.swal2-select').change(function()
+		{																	//농가코드를 선택할 경우 해당 농가코드의 프로젝트를 검색
+			var farmCode = $(this).val();
+			Data ={"":"프로젝트를 선택해주세요"};	//change가 바뀌었을 경우 초기화 해주기 위함
+			var request = $.ajax({
+	               url:"/result/getProjectNameByFarmCode",
+	               method:"post", 
+	               data : {"farmCode":farmCode},
+	               datatype: "json",
+	            });
+	            request.done(function(data)
+	            {
+	            	
+	            	for(var i=0; i < data.length; i++)
+	            	{
+	            		var code =  data[i].projectCode;
+	            		var value = data[i].projectName;
+	            		Data[code] = value;
+	            	}
+	            });
+	            request.fail(function( jqXHR, textStatus )
+	            {
+	               alert( "Request failed : " + textStatus );
+	            });
+		});
+		
+		$('.swal2-confirm').click(function(){								//1페이지와 2페이지 구분을 위한 클래스 추가
+			$('.swal2-select').addClass("project-select");
+		})
+		
+	
+		$(document).on('change', '.project-select', function(){					//동적바인딩으로 2번째 페이지에 이벤트 걸기
+			var projectCode = $(this).val();
+			PlanN ={"":"차수를 선택해주세요"};
+			var request = $.ajax
+				({
+	               url:"/result/getWorkPhaseByProjectCode",
+	               method:"post", 
+	               data : {"projectCode":projectCode},
+	               datatype: "json",
+	            });
+	            request.done(function(data)
+	            {
+		            	console.log(data + "project data");
+		            	for(var i=0; i < data.length; i++)
+		            	{
+		            		var planN =  data[i].ProjectPlanN;
+		            		var code =  data[i].ProjectPlanCode;
+		            		console.log(code + "<< code" );
+		            		PlanN[code] = planN;
+	            		}
+	            });
+	            request.fail(function( jqXHR, textStatus )
+	            {
+	               alert( "Request failed : " + textStatus );
+	            });
+		});
+		
+		$(document).on('click', '.swal2-progress-step', function(){				//동적 바인딩으로 진행 현황 버튼 클릭시 새로고침
+			location.reload();
+		})
+		$(document).on('mouseover', '.swal2-progress-step', function(){				//동적 바인딩으로 진행 현황 버튼 클릭시 새로고침
+			$('#swal2-title').addClass("glyphicon glyphicon-refresh")
+			$('#swal2-title').text("")
+			
+		})
+	</script>
+	
+			<script type="text/javascript">
 			function onChangeDateStart(yy,mm,dd){
 				var date = yy + "-" + mm + "-" + dd;
 				$('[name="start"], [name="end"]').val(date);

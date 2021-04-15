@@ -25,6 +25,9 @@ public class StockItem {
 
     // 용량단위 
     private String stockItemQuantityCapacityUnit;
+    
+    //사용유무
+  	private String useStatus;
 
     // 작성자아이디 
     private String regMemberId;
@@ -98,7 +101,15 @@ public class StockItem {
     public void setStockItemQuantityCapacityUnit(String stockItemQuantityCapacityUnit) {
         this.stockItemQuantityCapacityUnit = stockItemQuantityCapacityUnit;
     }
+    
+    public String getUseStatus() {
+		return useStatus;
+	}
 
+	public void setUseStatus(String useStatus) {
+		this.useStatus = useStatus;
+	}
+    
     public String getRegMemberId() {
         return regMemberId;
     }

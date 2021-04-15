@@ -27,6 +27,7 @@ import easyfarm.domain.plan.PlanWorkphaseCate;
 import easyfarm.domain.plan.ProductGain;
 import easyfarm.domain.plan.ResourcePay;
 import easyfarm.domain.plan.ResourceUsePlan;
+import easyfarm.domain.plan.ResourceUsecapacity;
 import easyfarm.domain.plan.StockCate;
 import easyfarm.domain.plan.StockItem;
 import easyfarm.domain.plan.TaxPay;
@@ -118,16 +119,8 @@ public class PlanService {
 		Map<String, Object> stockItemInfo = null;
 		
 		if(projectData != null && !"".equals(projectData.toString())) {
+			
 			result = planMapper.getStockItem(projectData);
-			for(int i = 0; i < result.size(); i++) {
-				stockItemInfo = result.get(i);
-				
-				if(stockItemInfo.get("availableStatus") == "Y") {
-				}else if(stockItemInfo.get("availableStatus") == "N"){
-					stockItemInfo.replace("availableStatus", "불가능");
-				}
-				System.out.println(stockItemInfo.get("availableStatus"));
-			}
 		}
 		
 		return result;
@@ -189,6 +182,15 @@ public class PlanService {
 		return result;
 	}
 	
+	//농자재매입지출 조회
+	public List<Map<String, Object>> getResourcePayList(String farmCode) {
+		List<Map<String, Object>> result = null;
+		if(farmCode != null && !"".equals(farmCode.trim())) {
+			result = planMapper.getResourcePayList(farmCode);
+		}
+		return result;
+	}
+	
 	//단계별작업계획 월켈린더 리스트
 	public List<Map<String, Object>> getPlanWorkphaseSchedule(String projectPlanCode) {
 		List<Map<String, Object>> result = null;
@@ -233,83 +235,145 @@ public class PlanService {
 	}
 
 	//농가별 거래처 등록
-	public List<Map<String, Object>> addClient(Client client) {
-		List<Map<String, Object>> result 		= null;
-		Map<String, Object> paramMap 			= null;
-		int addResult 				 			= 0;
+	public int addClient(Client client) {
+		int addResult = 0;
 		
 		if(client != null) {
+			client.setUseStatus("Y");
 			addResult = planMapper.addClient(client);
-			
-			if(addResult > 0) {
-				paramMap = new HashMap<String, Object>();
-				paramMap.put("farmCode", client.getFarmCode());
-				
-				result = planMapper.getClientName(paramMap);
-			}
+		}
+		
+		return addResult;
+	}
+	
+	//거래처 코드별 정보 조회
+	public Client getClientInfo(String clientCode) {
+		
+		Client result = null;
+		
+		if(clientCode != null && !"".equals(clientCode.trim())) {
+			result = planMapper.getClientInfo(clientCode);
 		}
 		
 		return result;
 	}
 	
-	
-	public List<EtcPay> getEtcPayPlan(){
-		List<EtcPay> etcPayPlan = null;
-		System.out.println("getEtcPayPlan !@@@@@@@@@@@@@@@@@@@@@@@@");
-		etcPayPlan =planMapper.getEtcPayPlan();
-		return etcPayPlan;
-	}
-	
-	public List<ResourcePay> getResourcePayPlan(){
-		List<ResourcePay> resourcePayPlan = null;
-		resourcePayPlan =planMapper.getResourcePayPlan();
+	//농가별 거래처 수정
+	public int modifyClient(Client client) {
+		int modifyResult = 0;
 		
-		return resourcePayPlan;
+		if(client != null) {
+			modifyResult = planMapper.modifyClient(client);
+		}
+		return modifyResult;
 	}
 	
-	
-	
-	public List<MachineLeasePay> getMachineLeasePayPlan(){
-		List<MachineLeasePay> machineLeasePayPlan = null;
-		machineLeasePayPlan =planMapper.getMachineLeasePayPlan();
+	//농가별 거래처 삭제
+	public int removeClient(String clientCode) {
+		int removeResult = 0;
 		
-		return machineLeasePayPlan;
+		if(clientCode != null) {
+			removeResult = planMapper.removeClient(clientCode);
+		}
+		return removeResult;
 	}
 	
-	public List<MachineUsePay> getMachineUsePayPlan(){
-		List<MachineUsePay> machineUsePayPlan = null;
-		machineUsePayPlan =planMapper.getMachineUsePayPlan();
+	//농가별 품목등록
+	public int addStockItem(StockItem stockItem) {
+		int addResult = 0;
 		
-		return machineUsePayPlan;
+		if(stockItem != null) {
+			stockItem.setUseStatus("Y");
+			addResult = planMapper.addStockItem(stockItem);
+		}
+		return addResult;
 	}
 	
-	public List<ProductGain> getProductGainPlan(){
-		List<ProductGain> productGainPlan = null;
-		productGainPlan =planMapper.getProductGainPlan();
+	//품목 코드별 정보 조회
+	public StockItem getStockItemInfoByCode(String stockItemCode) {
 		
-		return productGainPlan;
-	}
-	
-	public List<ResourceUsePlan> getResourceUsePlanPlan(){
-		List<ResourceUsePlan> resourceUsePlan = null;
-		resourceUsePlan =planMapper.getResourceUsePlan();
-		return resourceUsePlan;
-	}
-	
-	public List<TaxPay> getTaxPayPlan(){
-		List<TaxPay> taxPayPlan = null;
-		taxPayPlan =planMapper.getTaxPayPlan();
+		StockItem result = null;
 		
-		return taxPayPlan;
-	}
-	
-	public List<WorkForcePay> getWorkForcePayPlan(){
-		List<WorkForcePay> workForcePayPlan = null;
-		workForcePayPlan =planMapper.getWorkForcePayPlan();
+		if(stockItemCode != null && !"".equals(stockItemCode.trim())) {
+			result = planMapper.getStockItemInfoByCode(stockItemCode);
+		}
 		
-		return workForcePayPlan;
+		return result;
 	}
 	
+	//농가별 품목수정
+	public int modifyStockItem(StockItem stockItem) {
+		
+		int modifyResult 			= 0;
+		
+		if(stockItem != null) {
+			modifyResult = planMapper.modifyStockItem(stockItem);
+		}
+		return modifyResult;
+	}
 	
+	//농가별 품목삭제
+	public int removeStockItem(String stockItemCode) {
+		
+		int removeResult = 0;
+		
+		if(stockItemCode != null) {
+			removeResult = planMapper.removeStockItem(stockItemCode);
+		}
+		return removeResult;
+	}
 	
+	//농가별 농자재매입등록
+	public int addResourcePay(ResourcePay resourcePay) {
+		ResourceUsecapacity resourceUsecapacity = null;
+		int addResult = 0;
+		
+		if(resourcePay != null) {
+			resourceUsecapacity = new ResourceUsecapacity();
+			
+			addResult += planMapper.addResourcePay(resourcePay);
+			addResult += planMapper.addResourceUsecapacity(resourcePay);
+		}
+		return addResult;
+	}
+	
+	//농자재매입 코드별 정보 조회
+	public ResourcePay getResourcePayInfo(String resourcePayCode) {
+		
+		ResourcePay result = null;
+		
+		if(resourcePayCode != null && !"".equals(resourcePayCode.trim())) {
+			result = planMapper.getResourcePayInfo(resourcePayCode);
+		}
+		
+		return result;
+	}
+	
+	//농가별 농자재매입수정
+	public int modifyPlanResourcePay(ResourcePay resourcePay) {
+		
+		int modifyResult = 0;
+		
+		if(resourcePay != null) {
+			modifyResult = planMapper.modifyPlanResourcePay(resourcePay);
+		}
+		return modifyResult;
+	}
+
+	//계획서 간편보기 전체 리스트 조회
+	public Map<String,List<Object>> getAllPlanSchedule(String planWorkphaseCode, String planWorkphaseCateCode) {
+		
+		Map<String,List<Object>> result = null;
+		
+		if(planWorkphaseCode != null && planWorkphaseCateCode == null) {
+			result = new HashMap<>();
+			
+			
+			
+		}
+		
+		
+		
+		return result;
+	}
 }
