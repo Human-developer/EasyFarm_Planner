@@ -2,6 +2,7 @@ package easyfarm.domain.plan;
 
 
 public class ResourceUsePlan {
+	
 	// 농자재사용계획코드
     private String resourceUseplanCode;
 
