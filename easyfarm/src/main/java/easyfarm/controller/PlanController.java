@@ -896,6 +896,7 @@ public class PlanController {
 		
 		if(commonMachineCode.size() > 0 && memberId != null) {
 			
+			
 			//resourcePay.setRegMemberId(memberId);
 			
 			
