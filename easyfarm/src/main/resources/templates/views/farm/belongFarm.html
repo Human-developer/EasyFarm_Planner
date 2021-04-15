@@ -16,6 +16,8 @@
 	<!-- 사용자 정의 css 라이브러리 -->
 	<th:block layout:fragment="customCssLib">
 		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/media/css/dataTables.bootstrap.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css}">
 	</th:block>
 	
 	<!-- 사용자 정의 css -->
@@ -49,51 +51,52 @@
 				<div class ="box-content">
 					<h3>내 소속 농가</h3>
 					<hr>
-					
-					<table id="myFarmTable">
-						<thead>
-							<tr>
-								<th th:text = "${'농가코드'}"/>
-								<th th:text = "${'권한'}"/>
-								<th th:text ="${'농가명'}"/>
-								<th th:text ="${'대표자 아이디'}"/>
-								<th th:text ="${'토지 면적'}"/>
-								<th th:text ="${'주소'}"/>
-								<th th:text ="${'농가 회원수'}"/>
-								<th th:text ="${'농가 생성일'}"/>
-								<th th:text ="${''}"/>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="farm : ${myFarmList}" class ="farmList">
-								<td th:text = "${farm.farmCode}"/>
-								<td th:text = "${farm.farmMemberLevel}"/>
-								<td class ="farmName" th:text = "${farm.farmName}"/>
-								<td class ="ceoId" th:text = "${farm.ceoId}"/>
-								<td class ="farmArea" th:text = "${farm.farmArea}"/>
-								<td class ="farmAddress" th:text = "${farm.farmAddress}"/>
-								<td th:text = "${farm.farmMemberCount + '명'}"/>
-								<td class ="farmRegDate" th:text = "${farm.farmRegDate}"/>
-								<td>
-									<div class="btn-group">
-										<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button>
-										<ul class="dropdown-menu">
-											<li><a th:href="@{/farm/detailFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">상세보기</a></li>
-											<li><a th:href="@{/farm/getMemberFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">회원조회</a></li>
-											<li><a th:href="@{/projectListByFarmCode(farmCode=${farm.farmCode})}">프로젝트</a></li>
-											<li th:if ="${farm.farmMemberLevel == 'farm_level_1' OR farm.farmMemberLevel == 'farm_level_2' }"><a th:href="@{/farm/modifyFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">수정</a></li>
-											<li th:if ="${farm.farmMemberLevel == 'farm_level_1' OR farm.farmMemberLevel == 'farm_level_2' }"><a th:href="@{/farm/getJoinFarm(farmCode=${farm.farmCode})}">가입신청 목록</a></li>
-											<li th:if ="${farm.farmMemberLevel == 'farm_level_1' OR farm.farmMemberLevel == 'farm_level_2' }"><a th:href="@{/farm/getLeaverFarm(farmCode=${farm.farmCode})}">탈퇴신청 목록</a></li>
-											<li><a th:href="@{#}" class ="farmCancelBtn" data-toggle="modal" data-target="#farmCancelModal">탈퇴</a></li>
-										</ul>
-									</div>
-								</td>
+					<div class ="table-responsive">
+						<table id="myFarmTable">
+							<thead>
+								<tr>
+									<th th:text = "${'농가코드'}"/>
+									<th th:text = "${'권한'}"/>
+									<th th:text ="${'농가명'}"/>
+									<th th:text ="${'대표자 아이디'}"/>
+									<th th:text ="${'토지 면적'}"/>
+									<th th:text ="${'주소'}"/>
+									<th th:text ="${'농가 회원수'}"/>
+									<th th:text ="${'농가 생성일'}"/>
+									<th th:text ="${''}"/>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="farm : ${myFarmList}" class ="farmList">
+									<td th:text = "${farm.farmCode}"/>
+									<td th:text = "${farm.farmMemberLevel}"/>
+									<td class ="farmName" th:text = "${farm.farmName}"/>
+									<td class ="ceoId" th:text = "${farm.ceoId}"/>
+									<td class ="farmArea" th:text = "${farm.farmArea}"/>
+									<td class ="farmAddress" th:text = "${farm.farmAddress}"/>
+									<td th:text = "${farm.farmMemberCount + '명'}"/>
+									<td class ="farmRegDate" th:text = "${farm.farmRegDate}"/>
+									<td>
+										<div class="btn-group">
+											<button type="button" class="btn btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-cog"></span></button>
+											<ul class="dropdown-menu">
+												<li><a th:href="@{/farm/detailFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">상세보기</a></li>
+												<li><a th:href="@{/farm/getMemberFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">회원조회</a></li>
+												<li><a th:href="@{/projectListByFarmCode(farmCode=${farm.farmCode})}">프로젝트</a></li>
+												<li th:if ="${farm.farmMemberLevel == 'farm_level_1' OR farm.farmMemberLevel == 'farm_level_2' }"><a th:href="@{/farm/modifyFarm(farmCode=${farm.farmCode},farmMemberLevel=${farm.farmMemberLevel})}">수정</a></li>
+												<li th:if ="${farm.farmMemberLevel == 'farm_level_1' OR farm.farmMemberLevel == 'farm_level_2' }"><a th:href="@{/farm/getJoinFarm(farmCode=${farm.farmCode})}">가입신청 목록</a></li>
+												<li th:if ="${farm.farmMemberLevel == 'farm_level_1' OR farm.farmMemberLevel == 'farm_level_2' }"><a th:href="@{/farm/getLeaverFarm(farmCode=${farm.farmCode})}">탈퇴신청 목록</a></li>
+												<li><a th:href="@{#}" class ="farmCancelBtn" data-toggle="modal" data-target="#farmCancelModal">탈퇴</a></li>
+											</ul>
+										</div>
+									</td>
+									
+								</tr>
 								
-							</tr>
-							
-							
-						</tbody>
-					</table>	
+								
+							</tbody>
+						</table>	
+					</div>
 				</div>
 				
 			</div>
@@ -183,7 +186,7 @@
 			}
 			
 			        
-			$('#myFarmTable').sysDataTable(lang_kor,[0,1]);
+			$('#myFarmTable').sysTable({vTarget:[0,1]});
 			
 			
 			$('.farmCancelBtn').click(function(){
