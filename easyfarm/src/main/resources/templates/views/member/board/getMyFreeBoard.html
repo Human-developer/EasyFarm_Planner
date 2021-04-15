@@ -8,7 +8,7 @@
 	</th:block>
 	
 	<th:block layout:fragment="pageTitle">
-		자유게시판
+		<a th:href="@{/member/getFreeBoard}">자유게시판</a>-작성한 게시글
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
@@ -21,7 +21,7 @@
 	
 	<th:block layout:fragment="customContents">
 		<div class="box-content" style="margin-top: 20px">
-		<h3>자유게시판</h3>
+		<h3>작성한 게시글</h3>
 		
 		<hr>
 		<div class="dropdown js__drop_down">
