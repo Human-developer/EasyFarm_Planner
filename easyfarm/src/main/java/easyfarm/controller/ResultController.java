@@ -94,7 +94,6 @@ public class ResultController {
 		
 
 		model.addAttribute("etcpayResult", etcpayResult);
-		
 		 model.addAttribute("resourcePayResult", resourcePayResult);
 		 model.addAttribute("insurancePayResult", insurancePayResult);
 		 model.addAttribute("machineLeasePayResult", machineLeasePayResult);
@@ -129,6 +128,25 @@ public class ResultController {
 		 }
 		return "views/result/resultMain";
 	}
+	
+	
+	//날짜 변경시 데이터 다시 
+		@PostMapping(value = "/result/getPlanDataforResult", produces = "application/json")
+		public @ResponseBody String getPlanDataforResult(Model model,
+				@RequestParam(value = "selectedDate",required = false) String selectedDate,
+				@RequestParam(value = "planWorkphaseCate",required = false) String planWorkphaseCate
+				) {
+			System.out.println( "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+ planWorkphaseCate + selectedDate +"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+			
+			List<Map<String,Object>> planData = null;
+			String defaultDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+			
+			
+			return null;
+		}
+	
+	
+	
 	
 	//계획캘린더에서 실행버튼 클릭시
 	@GetMapping("/result/addResult")

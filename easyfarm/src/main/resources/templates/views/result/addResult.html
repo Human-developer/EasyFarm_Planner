@@ -130,16 +130,46 @@
 			
 			/* datepicker */
 			var date = new Date();
+			$('[name="selectedDate"]').val("날짜를 선택해 주세요");
 			var beginDate = $('[name="selectedDate"]').datepicker({
 			  //년-월-일
+			
 			  startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
 			  language: 'kr',
 			  autoClose: true,
 			  //선택한 날짜를 가져옴
+			  
 			  onSelect: function (date) {
 			      //시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
-			      console.log($('[name="selectedDate"]').val() + "<<<value")
+			      var selectedDate = $('[name="selectedDate"]').val();
+			      console.log(selectedDate + "<<<selectedDate");
+			      
+			      var request = $.ajax({
+		               url:"/result/getPlanDataforResult",
+		               method:"post", 
+		               data : {
+		            	   	"selectedDate":selectedDate,
+		            	   	"planWorkphaseCate":"[[${planWorkphaseCate}]]"
+		            	   	},
+		               datatype: "json",
+		            });
+		            request.done(function(data)
+		            {
+		            	for(var i=0; i < data.length; i++)
+		            	{
+		            		var code =  data[i].projectCode;
+		            		var value = data[i].projectName;
+		            		Project[code] = value;
+		            	}
+		            });
+		            request.fail(function( jqXHR, textStatus )
+		            {
+		               alert( "Request failed : " + textStatus );
+		            });
+			      
+			      
 			  }
+			
 			}).data('datepicker');
 			
 			
