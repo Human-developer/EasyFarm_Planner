@@ -126,8 +126,8 @@ public class ResultService {
 	}
 	
 	//아이디가 소속된 농가명 가져오기
-	public List<PlanWorkphaseCate> getPlanWorkphaseCate() {
-		return resultmapper.getPlanWorkphaseCate();
+	public List<PlanWorkphaseCate> getPlanWorkphaseCate(String selectedDate, String projectCode) {
+		return resultmapper.getPlanWorkphaseCate(selectedDate,projectCode);
 	}
 	
 	//아이디가 소속된 농가명 가져오기
