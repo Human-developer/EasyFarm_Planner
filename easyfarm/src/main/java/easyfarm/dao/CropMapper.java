@@ -48,7 +48,7 @@ public interface CropMapper {
 	public int modifyCropDetailCategory(CropDetailCategory commonWorkphaseCateCode);
 	
 	//품목카테고리 등록
-	public int addStockCate(StockCate stockCate, String memberId);
+	public int addStockCate(Map<String, Object> map);
 
 	
 	

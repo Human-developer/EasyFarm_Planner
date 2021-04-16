@@ -162,15 +162,12 @@ public class CropService {
 		return cropList;
 	}
 
-	//품목 카테고리 
+	//품목 카테고리 등록
 	public int addStockCate(StockCate stockCate, String memberId) {
-		return cropMapper.addStockCate(stockCate,memberId);
+		Map<String, Object> stockcate = new HashMap<>();
+		stockcate.put("stockCate",stockCate);
+		stockcate.put("memberId",memberId);
+		return cropMapper.addStockCate(stockcate);
+		}
 		
 	}
-	
-	
-	
-	
-	
-	
-}

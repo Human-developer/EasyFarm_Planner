@@ -74,6 +74,13 @@ public class CodeController {
 		System.out.println(stockCateList);
 		return "views/code/getStockCateList";
 	}
+/*	@GetMapping("/code/getTaxPayCate")
+	public String getTaxPayCate(Model model) {
+		List<domain> TaxPayCateList = Service.get;
+		model.addAttribute("TaxPayCateList", TaxPayCateList);
+		System.out.println(TaxPayCateList);
+		return "views/code/getTaxPayCateList";
+	}*/
 	
 	@GetMapping("/code/getCommonMachineCode")
 	public String getCommonMachineCode(Model model) {

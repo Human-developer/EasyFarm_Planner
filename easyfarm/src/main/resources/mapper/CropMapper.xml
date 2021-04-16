@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="easyfarm.dao.CropMapper">
+	
+	<!--작물  -->
 	<resultMap type="Crop" id="CropResultMap">
 		<result property="cropCode"		column="crop_code"/>
 		<result property="cropCate"		column="crop_cate"/>
@@ -12,7 +14,8 @@
 		<id 	property="memberId" 	column="member_id"/>
 		</association>
 	</resultMap> 
-	            
+   
+    <!-- 작업단계 -->      
 	<resultMap type="CropWorkStage" id="CropWorkStageResultMap">
 		<result property="cropPhaseInfoCode"	column="crop_phase_info_code"/>
 		<result property="cropCode"				column="crop_code"/>
@@ -39,6 +42,7 @@
 		</association>
 	</resultMap>          
 	
+	<!-- 상세작업항목 -->
 	<resultMap type="CropDetailCategory" id="CropDetailCategoryResultMap">
 		<result property="commonWorkphaseCateCode"	column="common_workphase_cate_code"/>
 		<result property="commonWorkphaseCateName"	column="common_workphase_cate_name"/>
@@ -46,6 +50,13 @@
 		<result property="regDate"				column="reg_date"/>
 	</resultMap>          
 	
+	<!-- 품목카테고리 -->
+	<resultMap type="StockCate" id="resultStockCate">
+		<result property="stockCateCode"		column="stock_cate_code"/>
+		<result property="stockCateName"		column="stock_cate_name"/>
+		<result property="regMemberId"			column="reg_member_id"/>
+		<result property="regDate"				column="reg_date"/>
+	</resultMap>
 	<select id="getCropCode" parameterType="map" resultMap="CropResultMap">
 	SELECT 
 		c.crop_code,
@@ -81,8 +92,6 @@
 	on
 	 cp.crop_code = c.crop_code 
 		order by cp.crop_code asc, cp.workphase asc
-		
-	
 	</select>
 	
 	<select id="getCropDetailCategory" parameterType="String" resultMap="CropDetailCategoryResultMap">
@@ -145,6 +154,21 @@
 	VALUES (
 		sf_commonWorkphaseCateCode_max_code()
 		, #{crop.commonWorkphaseCateName}
+		, #{memberId}
+		, NOW()
+	)
+	</insert>
+	
+	<insert id="addStockCate" parameterType="map">
+	INSERT INTO tb_stock_cate(
+		stock_cate_code
+		, stock_cate_name
+		, reg_member_id
+		, reg_date
+	)
+	VALUES (
+		sf_stock_item_max_code()
+		, #{stockCate.stockCateName}
 		, #{memberId}
 		, NOW()
 	)
