@@ -14,7 +14,31 @@
 	<!-- 사용자 정의 css 라이브러리 -->
 	<th:block layout:fragment="customCssLib">
 		
+		<!-- Jquery UI -->
+		<link rel="stylesheet" th:href="@{/assets/plugin/jquery-ui/jquery-ui.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/jquery-ui/jquery-ui.structure.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/plugin/jquery-ui/jquery-ui.theme.min.css}">
 		
+		<!-- FlexDatalist -->
+		<link rel="stylesheet" th:href="@{/assets/plugin/flexdatalist/jquery.flexdatalist.min.css}">
+	
+		<!-- Popover -->
+		<link rel="stylesheet" th:href="@{/assets/plugin/popover/jquery.popSelect.min.css}">
+	
+		<!-- Select2 -->
+		<link rel="stylesheet" th:href="@{/assets/plugin/select2/css/select2.min.css}">
+	
+		<!-- Timepicker -->
+		<link rel="stylesheet" th:href="@{/assets/plugin/timepicker/bootstrap-timepicker.min.css}">
+		
+		<!-- Colorpicker -->
+		<link rel="stylesheet" th:href="@{/assets/plugin/colorpicker/css/bootstrap-colorpicker.min.css}">
+	
+		<!-- DateRangepicker -->
+		<link rel="stylesheet" th:href="@{/assets/plugin/daterangepicker/daterangepicker.css}">
+		
+		<!-- 데이트피커 플러그인 css, js파일 연결 -->
+		<link rel="stylesheet" href="/assets/plugin/air-datepicker/css/datepicker.min.css">
 	</th:block>
 	
 	<!-- 사용자 정의 css -->
@@ -36,6 +60,14 @@
 					<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs" style="overflow: auto;">
 					
 					<a th:href="@{/result}"> :: 결과리스트 :: </a>
+					<label for="workPhaseDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
+					<div class="col-md-5">
+						<div class="input-daterange input-group" id="workPhaseDate-range">
+							<input type="text" class="form-control" name="selectedDate" data-language='kr'>
+						</div>
+					</div>
+					
+					
 					    <ul id="myTab" class="nav nav-tabs" role="tablist">
 					      <li role="presentation" class=" active"><a href="#tab1" id="tab1-tab" role="tab" data-toggle="tab" aria-controls="tab1" aria-expanded="false">1111</a></li>
 					      <li role="presentation" class=" "><a href="#tab2" id="tab2-tab" role="tab" data-toggle="tab" aria-controls="tab2" aria-expanded="false">22222</a></li>
@@ -44,15 +76,14 @@
 					    </ul>
 					    <div id="myTabContent" class="tab-content" style="overflow: auto;">
 					      <div role="tabpanel" class="tab-pane fade  active in" id="tab1" aria-labelledby="tab1-tab">
-								[[${test}]]
+								[[${planWorkphaseCate}]]
 					      </div>
 					      <div role="tabpanel" class="tab-pane fade " id="tab2" aria-labelledby="tab2-tab">
-								[[${test[0].planWorkphaseCateBegin}]]
+								[[${planWorkphaseCate[0].planWorkphaseCateBegin}]]
 					      </div>
 					      <div role="tabpanel" class="tab-pane fade " id="tab3" aria-labelledby="tab3-tab">
-								[[${test[0].planWorkphaseCateBegin}]]
-								[[${test[1].planWorkphaseCateBegin}]]
-								[[${test[2].planWorkphaseCateBegin}]]
+								[[${planWorkphaseCate[0].planWorkphaseCateBegin}]]
+								[[${planWorkphaseCate[1].planWorkphaseCateBegin}]]
 					      </div>
 						</div>
 					</div>
@@ -70,20 +101,96 @@
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
 	<th:block layout:fragment="customScriptLib">
-		<script src="assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
-		<script src="assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
-		<script src="assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
-		<script src="assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
-		<script src="assets/scripts/datatables.demo.min.js"></script>
+		<script src="/assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+		<script src="/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+		<script src="/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js"></script>
+		<script src="/assets/scripts/datatables.demo.min.js"></script>
+		<script src="/assets/plugin/air-datepicker/js/datepicker.min.js"></script>
+		<!-- Moment -->
+		<script th:src="@{/assets/plugin/moment/moment.js}"></script>
+		<script src="/assets/plugin/air-datepicker/js/i18n/datepicker.kr.js"></script>
+		<script th:src="@{/assets/plugin/daterangepicker/daterangepicker.js}"></script>
+			
 	</th:block>
 	
 	
 	<!-- 사용자 정의 자바스크립트 -->
 	<th:block layout:fragment="customJavaScript">
 		
-		
+		<script type="text/javascript">
+			function moveAddSpend(btn){
+				location.href = $(btn).attr('data-value');
+			};
+			
+			/* $('#workPhaseCateDate-range, #workPhaseDate-range').datepicker({
+				language: 'kr',
+		        autoClose: true,
+			}); */
+			
+			/* datepicker */
+			var date = new Date();
+			var beginDate = $('[name="selectedDate"]').datepicker({
+			  //년-월-일
+			  startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+			  language: 'kr',
+			  autoClose: true,
+			  //선택한 날짜를 가져옴
+			  onSelect: function (date) {
+			      //시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
+			      console.log($('[name="selectedDate"]').val() + "<<<value")
+			  }
+			}).data('datepicker');
+			
+			
+			
+			/* datepicker */
+			var date = new Date();
+			var beginDate = $('[name="planWorkphaseCateBegin"]').datepicker({
+			  //년-월-일
+			  startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+			  language: 'kr',
+			  autoClose: true,
+			  //선택한 날짜를 가져옴
+			  onSelect: function (date) {
+			      //시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
+			      var endNum 	= new Date(date);
+			      var endDate 	= $('[name="planWorkphaseCateEnd"]');
+			      
+			      endDate.datepicker({
+			          minDate: new Date(endNum)
+			      });
+			      if(endDate.val() == ""){
+			    	  endDate.val(date);
+			      }
+			      
+			  }
+			}).data('datepicker');
+			var endDate = $('[name="planWorkphaseCateEnd"]').datepicker({
+			  startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),  // 시간, 분은 00으로 초기 설정
+			  language: 'kr',
+			  autoClose: true,
+			  //선택한 날짜를 가져옴
+			  onSelect: function (date) {
+				  
+			      var startNum 	= new Date(date);
+			      var startDate = $('[name="planWorkphaseCateBegin"]');
+			      
+			      startDate.datepicker({
+			          //시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
+			          maxDate: new Date(startNum)
+			      });
+			      
+			      if(startDate.val() == ""){
+			    	  startDate.val(date);
+			      }
+			      
+			  }
+			}).data('datepicker');
+			
+		</script>
 	
-	
+	<!-- 
 		<script type="text/javascript">
 			$(function(){
 				var etcpay = $(".etcpay"); 
@@ -163,11 +270,11 @@
 				});
 			
 			
-			
+			 
 			
 			
 		</script>
-	
+	 -->
 	
 	
 </html>

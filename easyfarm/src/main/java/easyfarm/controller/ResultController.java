@@ -1,5 +1,7 @@
 package easyfarm.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,7 @@ import easyfarm.domain.plan.EtcPay;
 import easyfarm.domain.plan.InsurancePay;
 import easyfarm.domain.plan.MachineLeasePay;
 import easyfarm.domain.plan.MachineUsePay;
+import easyfarm.domain.plan.PlanWorkphaseCate;
 import easyfarm.domain.plan.ProductGain;
 import easyfarm.domain.plan.ResourcePay;
 import easyfarm.domain.plan.ResourceUsePlan;
@@ -130,14 +133,19 @@ public class ResultController {
 	//계획캘린더에서 실행버튼 클릭시
 	@GetMapping("/result/addResult")
 	public String resultCalendar(Model model,HttpSession session,
-			@RequestParam(value = "projectCode",required = false) String projectCode,
-			@RequestParam(value = "selectedDate",required = false) String selectedDate) {
+			@RequestParam(value = "projectCode",required = false) String projectCode) {
 		
+		String selectedDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		
+		List<PlanWorkphaseCate> planWorkphaseCate = resultService.getPlanWorkphaseCate(selectedDate, projectCode);
 		if(session.getAttribute("SID") == null) {
 			return "views/member/login";
 		}
-		model.addAttribute("test",resultService.getPlanWorkphaseCate());
-		System.out.println(resultService.getPlanWorkphaseCate());
+		
+		model.addAttribute("projectCode",projectCode);
+		model.addAttribute("selectedDate",selectedDate);
+		model.addAttribute("planWorkphaseCate",planWorkphaseCate);
+		
 		
 			return "views/result/addResult";
 	}

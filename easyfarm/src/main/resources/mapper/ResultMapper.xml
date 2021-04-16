@@ -37,7 +37,7 @@
 		WHERE
 			run_status = '실행전'
 			AND
-			'2021-04-14' BETWEEN plan_workphase_begin AND plan_workphase_end
+			#{selectedDate} BETWEEN plan_workphase_begin AND plan_workphase_end
 			AND
 			project_plan_code ='project_plan_1'
   	</select>
