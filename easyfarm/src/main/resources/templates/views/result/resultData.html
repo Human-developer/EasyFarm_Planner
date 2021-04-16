@@ -179,7 +179,7 @@
 												<td>계획</td>
 												<td th:text="${r.resourcePayPlan.stockItemCode}"></td>
 												<td th:text="${r.resourcePayPlan.stockItemTotalPay}" style=" background: #F5F6CE;"></td>
-												<td th:text="${r.resourcePayPlan.stockItemIncomeDate}"></td>
+												<td th:text="${r.resourcePayPlan.regDate}"></td>
 												<td></td>
 											</tr>
 											<tr th:each="r : ${resourcePayResult}">
@@ -447,7 +447,7 @@
 												<td th:text="${r.resourcePayPlan.stockItemIncomeQuantityTotal}"></td>
 												<td th:text="${r.resourcePayPlan.stockItemIncomePerPay}"></td>
 												<td th:text="${r.resourcePayPlan.stockItemTotalPay}"style=" background: #F5F6CE;"></td>
-												<td th:text="${r.resourcePayPlan.stockItemIncomeDate}"></td>
+												<td th:text="${r.resourcePayPlan.regDate}"></td>
 												<td th:text="${r.resourcePayPlan.clientCode}"></td>
 												<td th:text="${r.resourcePayPlan.regMemberId}"></td>
 												<td th:text="${r.resourcePayPlan.regDate}"></td>
