@@ -22,13 +22,17 @@ import easyfarm.domain.CropDetailCategory;
 import easyfarm.domain.CropWorkStage;
 import easyfarm.domain.Machine;
 import easyfarm.domain.Member;
+import easyfarm.domain.plan.StockCate;
 import easyfarm.service.CropService;
 import easyfarm.service.MachineService;
+import easyfarm.service.PlanService;
 
 @Controller
 public class CodeController {
 	@Autowired
 	private CropService cropService;
+	@Autowired
+	private PlanService planService;
 	@Autowired
 	private MachineService machineService;
 	
@@ -62,6 +66,13 @@ public class CodeController {
 		System.out.println(cropDetailCategory);
 		model.addAttribute("cropDetailCategory" , cropDetailCategory );
 		return "views/code/getCropDetailCategory";
+	}
+	@GetMapping("/code/getStockCateList")
+	public String getStockCateList(Model model) {
+		List<StockCate> stockCateList = planService.getStockCateList();
+		model.addAttribute("stockCateList", stockCateList);
+		System.out.println(stockCateList);
+		return "views/code/getStockCateList";
 	}
 	
 	@GetMapping("/code/getCommonMachineCode")
@@ -120,6 +131,21 @@ public class CodeController {
 	@RequestMapping(value = "/code/addCropDetailCategory" , method = RequestMethod.GET)
 	public String addCropDetailCategory() {
 		return "views/code/addCropDetailCategory";
+	}
+	/*===========================================================*/
+	
+	@PostMapping("/code/addStockCate")
+	public String addStockCate(StockCate stockCate, HttpSession session) {
+		if (stockCate != null && !"".equals(stockCate.getStockCateCode())) {
+			String memberId = (String) session.getAttribute("SID");
+			cropService.addStockCate(stockCate, memberId);
+		}
+		return "redirect:/code/getStockCateList";
+	}
+	 
+	@RequestMapping(value = "/code/addStockCate" , method = RequestMethod.GET)
+	public String addStockCate() {
+		return "views/code/addStockCate";
 	}
 	/*===========================================================*/
 	

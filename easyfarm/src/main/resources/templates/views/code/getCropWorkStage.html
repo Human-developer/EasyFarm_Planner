@@ -27,11 +27,6 @@
 				작업단계 등록
 			</a>
 		</div>
-		<div style="margin-right: 10px" class="pull-right">
-			<a  th:href="@{/code}"  class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
-				돌아가기
-			</a>
-		</div>
 		<div style="margin-top: 6px;">
 			<small style="color: red; margin-left: 6px;"></small>
 		</div>
@@ -40,7 +35,6 @@
 				<thead>
 					<tr>
 						<th class="hidden">작업단계코드</th>
-						<th >작업단계코드</th>
 						<th class="hidden">작물코드 </th>
 						<th>작물명</th>
 						<th>작업단계</th>
@@ -56,7 +50,6 @@
 					<tr th:if="${#lists.size(cropWorkStage)} > 0" th:each="l:${cropWorkStage}">
 						<!-- <td th:text="${l.cropPhaseInfoCode}"></td> -->
 						<td th:hidden="${l.cropPhaseInfoCode}"></td>
-						<td th:text="${l.cropPhaseInfoCode}"></td>
 						<td th:hidden="${l.cropCode}"></td>
 						<td th:text="${l.Crop.cropName}"></td>
 						<td th:text="${l.workphase}"></td>

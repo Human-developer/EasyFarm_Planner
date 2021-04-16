@@ -53,7 +53,7 @@
 				<tr height="180">
 					<td colspan="2" class="" width="100%" >
 						<h3 style="text-align: center;">문의</h3>
-						<div th:text="${BoardVO.content}">
+						<div  id="content" th:text="${BoardVO.content}">
 							
 						</div>
 					</td>
@@ -62,8 +62,7 @@
 				<tr height="180">
 					<td colspan="2" class="" width="100%" >
 						<h3 style="text-align: center;">답변</h3>
-						<textarea class="form-control" id="content" name="conAnswer" th:text = "${BoardVO.conAnswer}"style="resize: none;  height: 500px; width: 100%;" >
-						</textarea>
+						<textarea class="form-control" id="conAnswer" name="conAnswer" th:text = "${BoardVO.conAnswer}"style="resize: none;  height: 500px; width: 100%;" ></textarea>
 					</td>
 				</tr>
 			</table >
@@ -74,13 +73,32 @@
 					</a>
 				</li>
 				<li>
-						<button type="submit" class="btn btn-success btn-bordered waves-effect waves-light">
-							<strong>확인</strong>
-						</button>
+					<button type="submit" id="addCheck" class="btn btn-success btn-bordered waves-effect waves-light">
+						<strong>확인</strong>
+					</button>
 				</li>
 			</ul>
 		</form>
 	</div>
 	</th:block>
+	<th:block layout:fragment="customJavaScript">
+	<script type="text/javascript">
+//공백검사
+		$(function() {
+			$('#addCheck').click(function() {
+				if ($('#conAnswer').val() == "") {
+					/* swal({
+						title : "답변을 입력하세요."
+					}); */
+					var ans ="안녕하십니까. \n\n빠른답변을 드리지 못한점 진심으로 사과의 말씀을 드립니다. \n\n소중한 시간을 내어 보내주신 문의는 잘 받아보았습니다. \n\n현재 고객센터 이용자수가 많아 처리가 지연되고 있습니다. 빠른 시일내에 답변드리도록 하겠습니다. \n\n다른궁금한 점이 있으시면 언제든 1:1문의를  통하여 정성껏 답변드려 보다 도움이 되는 이지팜이 되겠습니다. \n\n감사합니다."
+ 					$('#conAnswer').val(ans);
+//  					$('#conAnswer').append(ans)
+// 					$('#conAnswer').focus();
+					return $('#addCheck').submit();
+				}
 
+				return true;
+			})
+		});
+	</script>
 </html>

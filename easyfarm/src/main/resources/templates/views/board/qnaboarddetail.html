@@ -57,7 +57,7 @@
 			<tr height="180" th:hidden="${BoardVO.conAnswer == null}">
 				<td colspan="2" class="" width="100%" >
 					<h3 style="text-align: center;">답변</h3>
-					<div th:text="${BoardVO.conAnswer}">
+					<div id="conAnswer" th:text="${BoardVO.conAnswer}" style="white-space: pre-line;  width:1000px;">
 						
 					</div>
 				</td>
@@ -71,11 +71,16 @@
 						class="btn btn-success btn-bordered waves-effect waves-light">
 						<strong>목록</strong>
 					</button></a></li>
-			<li th:if ="${session.SLEVEL == '관리자'}"><a th:href="@{/board/qnaModify(code=${BoardVO.code})}">
-				<button type="button" class="btn btn-success btn-bordered waves-effect waves-light">
-					<strong th:if="${BoardVO.conAnswer == null}">답변</strong>
-					<strong th:unless="${BoardVO.conAnswer == null}">수정</strong>
-				</button></a>
+			<li th:if ="${session.SLEVEL == '관리자'}">
+				<a th:href="@{/board/qnaModify(code=${BoardVO.code})}">
+					<button type="button" class="btn btn-success btn-bordered waves-effect waves-light">
+						<strong th:if="${BoardVO.conAnswer == null}">답변</strong>
+						<strong th:if="${BoardVO.conAnswer != null}">수정</strong>
+					</button>
+					<!-- <button type="button" id="postpondBtn" class="btn btn-success btn-bordered waves-effect waves-light">
+						<strong th:if="${BoardVO.conAnswer == null}">지연</strong>
+					</button> -->
+				</a>
 			</li>
 		</ul>
 	</div>
@@ -115,6 +120,14 @@
 		}
 
 		$('#test').sysDataTable(lang_kor);
+		
+		/* function(){
+			$('#postpondBtn').click()function(){
+				
+			}
+		} */
+		
+		
 	</script>
 </th:block>
 

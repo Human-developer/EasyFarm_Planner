@@ -4,75 +4,67 @@
 	  layout:decorate="@{layout/default}">
 	
 	<th:block layout:fragment="customTitle">
-		<title>상세작업항목 리스트</title>
-	</th:block>
-	<th:block layout:fragment="pageTitle">
-		상세작업항목
+		<title>품목 카테고리 리스트</title>
 	</th:block>
 	
-		<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="pageTitle">
+		품목 카테고리
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
 	<th:block layout:fragment="customCssLib">
 		<!-- Data Tables -->
 		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/media/css/dataTables.bootstrap.min.css}">
 		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
 	</th:block>
 	
 	<th:block layout:fragment="customContents">
-		<div class="box-content" style="margin-top: 20px">
+		<div class="box-content">
 		<div class="pull-left">
-			<div style="font-size: 24px;">상세작업항목 리스트</div>
+			<div style="font-size: 24px;">품목 카테고리 리스트</div>
 		</div>
 		<div class="pull-right">
-			<a th:href="@{/code/addCropDetailCategory}"  class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
-				상세작업항목 등록
+			<a th:href="@{/code/addStockCate}"  class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
+				품목 카테고리 등록
 			</a>
 		</div>
 		<div style="margin-top: 6px;">
 			<small style="color: red; margin-left: 6px;"></small>
 		</div>
 		<hr>
-		<table  id="test" class="table table-striped table-bordered display" style="width:100%">
+		<table id="test" class="table table-striped table-bordered display" style="width:100%">
 			<thead>
 				<tr>
-					<th class="hidden">공통상세작업항목코드</th>
-					<th>공통상세작업항목명 </th>
-					<th>작성자아이디 </th>
-					<th>작성일자</th>
+					<th class="hidden">품목 카테고리 코드 			</th>
+					<th>품목 카테고리		</th>
+					<th>작성자아이디 		</th>
+					<th>작성일자			</th>
 					<th th:if = "${session.SLEVEL == '관리자'}">수정</th>
 					<th th:if = "${session.SLEVEL == '관리자'}">삭제</th>
 				</tr>			
 			</thead>
 			<tbody>
-				<tr th:if="${#lists.size(cropDetailCategory)} > 0" th:each="l:${cropDetailCategory}">
-					<td th:hidden="${l.commonWorkphaseCateCode}"></td>
-					<td th:text="${l.commonWorkphaseCateName}"></td>
+				<tr th:if="${#lists.size(stockCateList)} > 0" th:each="l, st:${stockCateList}">
+					<td th:hidden="${l.stockCateCode}"></td>
+					<td th:text="${l.stockCateName}"></td>
 					<td th:text="${l.regMemberId}"></td>
 					<td th:text="${l.regDate}"></td>
 					<td th:if = "${session.SLEVEL == '관리자'}">
-						<a th:href="@{/code/modifyCropDetailCategory(commonWorkphaseCateCode=${l.commonWorkphaseCateCode})}">수정</a>
+						<a th:href="@{/code/#(stockCateCode=${l.stockCateCode})}">수정</a>
 					</td>
 					<td th:if = "${session.SLEVEL == '관리자'}">
-						<a th:href="@{/getCropDetailCategory(commonWorkphaseCateCode=${l.commonWorkphaseCateCode})}">삭제</a>		
+						<a th:href="@{/code/#(stockCateCode=${l.stockCateCode})}">삭제</a>		
 					</td>
 				</tr>
-				<tr th:unless="${#lists.size(cropDetailCategory)} != 0">
+				<tr th:unless="${#lists.size(stockCateList)} != 0">
 					<td colspan="10" style="text-align: center;">조회된 내용이 없습니다.</td>
 				</tr>
 			</tbody>
 		</table>
 		</div>
 	</th:block>
-<!-- 사용자 정의 자바스크립트 라이브러리 -->
-	<!-- <th:block layout:fragment="customScriptLib">
-		<script th:src="@{/assets/plugin/datatables/media/js/jquery.dataTables.min.js}"></script>
-		<script th:src="@{/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js}"></script>
-		<script th:src="@{/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js}"></script>
-		<script th:src="@{/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js}"></script>
-		<script th:src="@{/assets/scripts/datatables.demo.min.js}"></script>
-		<script th:src="@{/assets/scripts/main.min.js}"></script>
-		<script th:src="@{/assets/plugin/jquery-ui/jquery-ui.min.js}"></script>
-		<script th:src="@{/assets/plugin/jquery-ui/jquery.ui.touch-punch.min.js}"></script>
-	</th:block> -->
+	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
 	<th:block layout:fragment="customScriptLib">
 		<div th:replace="fragments/dataTable :: dataTable" th:remove="tag"></div>	
@@ -110,4 +102,5 @@
 		
 		</script>
 	</th:block>
+
 </html>
