@@ -22,6 +22,7 @@ import easyfarm.domain.CropDetailCategory;
 import easyfarm.domain.CropWorkStage;
 import easyfarm.domain.Machine;
 import easyfarm.domain.Member;
+import easyfarm.domain.TaxPayCate;
 import easyfarm.domain.plan.StockCate;
 import easyfarm.service.CropService;
 import easyfarm.service.MachineService;
@@ -74,13 +75,13 @@ public class CodeController {
 		System.out.println(stockCateList);
 		return "views/code/getStockCateList";
 	}
-/*	@GetMapping("/code/getTaxPayCate")
+	@GetMapping("/code/getTaxPayCateList")
 	public String getTaxPayCate(Model model) {
-		List<domain> TaxPayCateList = Service.get;
+		List<TaxPayCate> TaxPayCateList = cropService.getTaxPayCateList();
 		model.addAttribute("TaxPayCateList", TaxPayCateList);
 		System.out.println(TaxPayCateList);
 		return "views/code/getTaxPayCateList";
-	}*/
+	}
 	
 	@GetMapping("/code/getCommonMachineCode")
 	public String getCommonMachineCode(Model model) {
@@ -153,6 +154,20 @@ public class CodeController {
 	@RequestMapping(value = "/code/addStockCate" , method = RequestMethod.GET)
 	public String addStockCate() {
 		return "views/code/addStockCate";
+	}
+	/*===========================================================*/
+	/*@PostMapping("/code/addTaxPayCate")
+	public String addTaxPayCate(TaxPayCate TaxPayCate, HttpSession session) {
+		if (TaxPayCate != null && !"".equals(TaxPayCate.getTaxPayCateCode())) {
+			String memberId = (String) session.getAttribute("SID");
+			cropService.addTaxPayCate(TaxPayCate, memberId);
+		}
+		return "redirect:/code/getTaxPayCateList";
+	}
+	*/
+	@RequestMapping(value = "/code/addTaxPayCate" , method = RequestMethod.GET)
+	public String addTaxPayCate() {
+		return "views/code/addTaxPayCate";
 	}
 	/*===========================================================*/
 	

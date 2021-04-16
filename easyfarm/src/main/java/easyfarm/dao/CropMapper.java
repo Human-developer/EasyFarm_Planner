@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import easyfarm.domain.Crop;
 import easyfarm.domain.CropDetailCategory;
 import easyfarm.domain.CropWorkStage;
-import easyfarm.domain.plan.StockCate;
+import easyfarm.domain.TaxPayCate;
 
 @Mapper
 public interface CropMapper {
@@ -49,6 +49,9 @@ public interface CropMapper {
 	
 	//품목카테고리 등록
 	public int addStockCate(Map<String, Object> map);
+	
+	//공과금카테고리 리스트
+	public List<TaxPayCate> getTaxPayCateList();
 
 	
 	

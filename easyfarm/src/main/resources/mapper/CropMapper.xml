@@ -57,6 +57,18 @@
 		<result property="regMemberId"			column="reg_member_id"/>
 		<result property="regDate"				column="reg_date"/>
 	</resultMap>
+	<!-- 공과금 카테고리 -->
+	<resultMap type="TaxPayCate" id="resultTaxPayCate">
+		<result property="taxPayCateCode"		column="tax_pay_cate_code"/>
+		<result property="taxPayCateName"		column="tax_pay_cate_name"/>
+		<result property="useStatus"			column="use_status"/>
+		<result property="regMemberId"			column="reg_member_id"/>
+		<result property="regDate"				column="reg_date"/>
+	</resultMap>
+	
+	
+	
+	
 	<select id="getCropCode" parameterType="map" resultMap="CropResultMap">
 	SELECT 
 		c.crop_code,
@@ -110,11 +122,19 @@
 	order by cast(SUBSTRING_INDEX(common_workphase_cate_code,'_',-1)AS UNSIGNED)
 	</select>
 	
-	
-	
-	
-	
-	
+	<select id="getTaxPayCateList" parameterType="String" resultMap="resultTaxPayCate">
+	SELECT 
+		tax_pay_cate_code
+		, tax_pay_cate_name
+		, use_status
+		, reg_member_id
+		, reg_date
+	FROM 
+		tb_tax_pay_cate;
+  	</select>
+
+
+
 	<insert id="addCrop" parameterType="map">
 	INSERT INTO 
 		tb_crop

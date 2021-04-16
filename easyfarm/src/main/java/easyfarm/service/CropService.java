@@ -13,6 +13,7 @@ import easyfarm.domain.Crop;
 import easyfarm.domain.CropDetailCategory;
 import easyfarm.domain.CropWorkStage;
 import easyfarm.domain.Machine;
+import easyfarm.domain.TaxPayCate;
 import easyfarm.domain.plan.StockCate;
 
 @Service
@@ -169,5 +170,9 @@ public class CropService {
 		stockcate.put("memberId",memberId);
 		return cropMapper.addStockCate(stockcate);
 		}
-		
+	//공과금 카테고리 리스트
+	public List<TaxPayCate> getTaxPayCateList() {
+		return cropMapper.getTaxPayCateList();
 	}
+		
+}
