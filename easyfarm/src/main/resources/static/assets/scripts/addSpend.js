@@ -1,11 +1,6 @@
 
 $(function(){
 	
-	$('#workPhaseCateDate-range, #workPhaseDate-range').datepicker({
-		language: 'kr',
-        autoClose: true,
-	});
-	
 	$('#workforcePayDay').TouchSpin({
 		min: 0,
 		max: 1000000000,

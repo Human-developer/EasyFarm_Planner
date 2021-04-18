@@ -72,7 +72,7 @@
 											<td th:text="${f.regMemberId}"></td>
 											<td th:text="${f.regDate}"></td>
 											<td>
-												<a>삭제</a>
+												<a th:href="|/plan/removePlanFarmRetainMachine?farmCode=${farmCode}&farmRetainMachineCode=${f.farmRetainMachineCode}|">삭제</a>
 											</td>
 										</tr>
 									</th:block>

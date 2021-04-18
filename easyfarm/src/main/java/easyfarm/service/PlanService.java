@@ -417,7 +417,31 @@ public class PlanService {
 		}
 		return addResult;
 	}
-
+	
+	//보유농기계 삭제
+	public int removePlanFarmRetainMachine(String farmRetainMachineCode) {
+		
+		int removeResult = 0;
+		
+		if(farmRetainMachineCode != null) {
+			removeResult = planMapper.removePlanFarmRetainMachine(farmRetainMachineCode);
+		}
+		return removeResult;
+		
+	}
+	
+	//기간별 작업단계 계획 정보조회
+	public PlanWorkphase getPlanWorkphaseInfo(String planWorkphaseCode) {
+		
+		PlanWorkphase result = null;
+		
+		if(planWorkphaseCode != null && !"".equals(planWorkphaseCode.trim())) {
+			result = planMapper.getPlanWorkphaseInfo(planWorkphaseCode);
+		}
+		return result;
+		
+	}
+	
 	//계획서 간편보기 전체 리스트 조회
 	public Map<String,List<Object>> getAllPlanSchedule(String planWorkphaseCode, String planWorkphaseCateCode) {
 		

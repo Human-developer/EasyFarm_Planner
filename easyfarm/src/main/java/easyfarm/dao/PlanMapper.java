@@ -156,4 +156,10 @@ public interface PlanMapper {
 	//보유농기계에 등록한 항목 제외한 농기계 즐겨찾기 리스트
 	public List<Map<String, Object>> getFarmBookmarkMachineList(String farmCode);
 	
+	//보유농기계 삭제
+	public int removePlanFarmRetainMachine(String farmRetainMachineCode);
+	
+	//기간별 작업단계 계획 정보조회
+	public PlanWorkphase getPlanWorkphaseInfo(String planWorkphaseCode);
+	
 }

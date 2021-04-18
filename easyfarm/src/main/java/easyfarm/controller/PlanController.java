@@ -470,6 +470,12 @@ public class PlanController {
 			System.out.println(workphaseNameList);
 			model.addAttribute("workphaseNameList", workphaseNameList);
 			
+			if(planWorkphaseCode != null && planWorkphaseCateCode == null) {
+				PlanWorkphase planWorkphaseInfo = null;
+				planWorkphaseInfo = planService.getPlanWorkphaseInfo(planWorkphaseCode);
+				model.addAttribute("planWorkphaseInfo", planWorkphaseInfo);
+			}
+			
 			if(planWorkphaseCateCode != null && !"".equals(planWorkphaseCateCode.trim())) {
 				/* 상세작업항목조회 */
 				List<Map<String, Object>> workphaseCateNameList = planService.getWorkphaseCateName(projectData);
@@ -959,20 +965,19 @@ public class PlanController {
 		return "redirect:/plan/getPlanFarmRetainMachineList?farmCode=" + farmCode;
 	}
 	
-	/*
 	//보유 농기계 삭제
-	@GetMapping("/plan/removePlanFarmBookmarkMachine")
-	public String removeFarmBookmarkMachine(@RequestParam(value = "farmBookmarkMachineCode", required = false) String farmBookmarkMachineCode
-			,@RequestParam(value = "farmCode", required = false) String farmCode) {
+	@GetMapping("/plan/removePlanFarmRetainMachine")
+	public String removePlanFarmRetainMachine(@RequestParam(value = "farmRetainMachineCode", required = false) String farmRetainMachineCode
+											,@RequestParam(value = "farmCode", required = false) String farmCode) {
 		int result = 0;
 		
-		if(farmBookmarkMachineCode != null && !"".equals(farmBookmarkMachineCode.trim())) {
+		if(farmRetainMachineCode != null && !"".equals(farmRetainMachineCode.trim())) {
 			
-			result = planService.removeFarmBookmarkMachine(farmBookmarkMachineCode);
+			result = planService.removePlanFarmRetainMachine(farmRetainMachineCode);
 		}
-		return "redirect:/plan/planFarmBookmarkMachineList?farmCode=" + farmCode;
+		return "redirect:/plan/getPlanFarmRetainMachineList?farmCode=" + farmCode;
 	}
-	*/
+	
 	
 	@GetMapping("/plan/resultPlan")
 	public String resultPlan() {

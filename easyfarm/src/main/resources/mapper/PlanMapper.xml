@@ -119,6 +119,26 @@
 		<result property="regDate" 						column="reg_date" />
 	</resultMap>
 	
+	<select id="getPlanWorkphaseInfo" parameterType="String" resultMap="resultPlanWorkphase">
+		SELECT
+			 project_workphase_code
+			,plan_workphase_begin
+			,plan_workphase_end
+			,plan_workphase_color
+			,plan_workphase_text_color
+		FROM
+			tb_plan_workphase
+		WHERE
+			plan_workphase_code = #{planWorkphaseCode}
+	</select>
+	
+	<update id="removePlanFarmRetainMachine" parameterType="String">
+		UPDATE tb_farm_retain_machine
+		SET
+			use_status = 'N'
+		WHERE 
+			farm_retain_machine_code = #{farmRetainMachineCode}
+	</update>
 	
 	<select id="getFarmBookmarkMachineList" parameterType="String" resultType="map">
 		SELECT
