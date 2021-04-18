@@ -359,6 +359,18 @@ public class PlanService {
 		}
 		return modifyResult;
 	}
+	
+	//농기계 즐겨찾기에 등록한 항목 제외한 공통농기계 리스트
+	public List<Map<String, Object>> getFarmCommonMachineList(String farmCode) {
+		
+		List<Map<String, Object>> result = null;
+		
+		if(farmCode != null && !"".equals(farmCode.trim())) {
+			result = planMapper.getFarmCommonMachineList(farmCode);
+		}
+		
+		return result;
+	}
 
 	//계획서 간편보기 전체 리스트 조회
 	public Map<String,List<Object>> getAllPlanSchedule(String planWorkphaseCode, String planWorkphaseCateCode) {

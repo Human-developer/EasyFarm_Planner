@@ -138,4 +138,9 @@ public interface PlanMapper {
 	
 	//농가별 농자재소모현황 등록
 	public int addResourceUsecapacity(ResourcePay resourcePay);
+	
+	//농기계 즐겨찾기에 등록한 항목 제외한 공통농기계 리스트
+	public List<Map<String, Object>> getFarmCommonMachineList(String farmCode);
+	
+	
 }

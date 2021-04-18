@@ -875,7 +875,7 @@ public class PlanController {
 		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
 			
 			/* 공통농기계목록조회 */
-			List<CommonMachine> commonMachineList = planService.getCommonMachineList();
+			List<Map<String, Object>> commonMachineList = planService.getFarmCommonMachineList(farmCode);
 			model.addAttribute("commonMachineList", commonMachineList);
 			
 			model.addAttribute("projectPlanCode", projectPlanCode);
