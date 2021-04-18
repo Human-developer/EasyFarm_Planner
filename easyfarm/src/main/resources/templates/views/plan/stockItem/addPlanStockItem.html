@@ -42,7 +42,6 @@
 									<label class="col-sm-3 control-label"><strong>품목카테고리</strong></label>
 								    <div class="col-sm-6">
 								    	<input class="hidden" th:value="${farmCode}" name="farmCode">
-								    	<input class="hidden" th:value="${projectPlanCode}" name="projectPlanCode">
 										<select class="form-control" name="stockCateCode" id="stockCateCode">
 											<option value=""> :: 카테고리선택 :: </option>
 											<th:block th:if="${#lists.size(stockCateList) > 0}" th:each="s : ${stockCateList}">
@@ -84,7 +83,7 @@
 								<hr>
 								<div class="form-group t-center">
 									<button type="submit" class="btn btn-primary btn-md waves-effect btn-rounded waves-light btnSize">품목 등록</button>
-									<button type="button" th:value="|/plan/planStockItemList?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-success btn-md waves-effect waves-light btn-rounded btnSize">
+									<button type="button" th:value="|/plan/planStockItemList?farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-success btn-md waves-effect waves-light btn-rounded btnSize">
 										목록 돌아가기
 									</button>
 								</div>
