@@ -178,17 +178,17 @@
 									<!-- 탭항목시작 -->
 									<ul class="nav nav-tabs nav-justified" id="myTabs-justified" role="tablist">
 										<li role="presentation" class="active">
-											<button type="button" th:value="|/plan/planClientList?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
+											<button type="button" th:value="|/plan/planClientList?farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
 												거래처
 											</button>
 										</li>
 										<li role="presentation">
-											<button type="button" th:value="|/plan/planStockItemList?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
+											<button type="button" th:value="|/plan/planStockItemList?farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
 												품목
 											</button>
 										</li>
 										<li role="presentation">
-											<button type="button" th:value="|/plan/planResourcePayList?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
+											<button type="button" th:value="|/plan/planResourcePayList?farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
 												농자재매입
 											</button>
 										</li>
@@ -198,12 +198,12 @@
 											</button>
 										</li>
 										<li role="presentation">
-											<button type="button" th:value="|/plan/planFarmBookmarkMachineList?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
+											<button type="button" th:value="|/plan/planFarmBookmarkMachineList?farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
 												농기계즐겨찾기
 											</button>
 										</li>
 										<li role="presentation">
-											<button type="button" th:value="|/plan/planClientList?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
+											<button type="button" th:value="|/plan/getPlanFarmRetainMachineList?farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
 												보유농기계
 											</button>
 										</li>

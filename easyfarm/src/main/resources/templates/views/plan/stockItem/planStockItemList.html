@@ -45,7 +45,7 @@
 							<div style="font-size: 24px;">품목 조회</div>
 						</div>
 						<div class="pull-right">
-							<button type="button" th:value="|/plan/addPlanStockItem?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-rounded">
+							<button type="button" th:value="|/plan/addPlanStockItem?farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-rounded">
 									품목 등록
 							</button>
 						</div>
@@ -83,10 +83,10 @@
 											<td th:text="${fs.stockItemQuantityCapacity}"></td>
 											<td th:text="${fs.stockItemQuantityCapacityUnit}"></td>
 											<td>
-												<a th:href="|/plan/modifyPlanStockItem?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}&stockItemCode=${fs.stockItemCode}|">수정</a>
+												<a th:href="|/plan/modifyPlanStockItem?farmCode=${farmCode}&stockItemCode=${fs.stockItemCode}|">수정</a>
 											</td>
 											<td>
-												<a th:href="|/plan/removePlanStockItem?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}&stockItemCode=${fs.stockItemCode}|">삭제</a>
+												<a th:href="|/plan/removePlanStockItem?farmCode=${farmCode}&stockItemCode=${fs.stockItemCode}|">삭제</a>
 											</td>
 										</tr>
 									</th:block>

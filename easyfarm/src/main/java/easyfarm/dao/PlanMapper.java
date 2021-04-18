@@ -11,6 +11,8 @@ import org.apache.ibatis.annotations.Mapper;
 import easyfarm.domain.plan.Client;
 import easyfarm.domain.plan.CommonMachine;
 import easyfarm.domain.plan.EtcPay;
+import easyfarm.domain.plan.FarmBookmarkMachine;
+import easyfarm.domain.plan.FarmRetainMachine;
 import easyfarm.domain.plan.InsurancePay;
 import easyfarm.domain.plan.MachineLeasePay;
 import easyfarm.domain.plan.MachineUsePay;
@@ -142,5 +144,16 @@ public interface PlanMapper {
 	//농기계 즐겨찾기에 등록한 항목 제외한 공통농기계 리스트
 	public List<Map<String, Object>> getFarmCommonMachineList(String farmCode);
 	
+	//농기계 즐겨찾기 등록
+	public int addFarmBookmarkMachine(FarmBookmarkMachine farmBookmarkMachine);
+	
+	//농기계 즐겨찾기 삭제
+	public int removeFarmBookmarkMachine(String farmBookmarkMachineCode);
+	
+	//보유농기계 등록
+	public int addPlanFarmRetainMachine(FarmRetainMachine farmRetainMachine);
+	
+	//보유농기계에 등록한 항목 제외한 농기계 즐겨찾기 리스트
+	public List<Map<String, Object>> getFarmBookmarkMachineList(String farmCode);
 	
 }

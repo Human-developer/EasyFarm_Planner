@@ -119,6 +119,87 @@
 		<result property="regDate" 						column="reg_date" />
 	</resultMap>
 	
+	
+	<select id="getFarmBookmarkMachineList" parameterType="String" resultType="map">
+		SELECT
+			 fbm.farm_bookmark_machine_code AS farmBookmarkMachineCode
+			,cm.common_machine_name 		AS commonMachineName
+			,fbm.reg_member_id 				AS regMemberId
+			,fbm.reg_date 					AS regDate
+		FROM
+			tb_farm_bookmark_machine AS fbm
+			INNER join
+			tb_common_machine AS cm
+			on
+			fbm.common_machine_code = cm.common_machine_code
+		WHERE
+			fbm.farm_bookmark_machine_code NOT IN
+						(SELECT
+							fbm.farm_bookmark_machine_code
+						FROM
+							tb_farm_retain_machine AS frm
+							INNER join
+							tb_farm_bookmark_machine AS fbm
+							on
+							frm.farm_bookmark_machine_code = fbm.farm_bookmark_machine_code
+						WHERE
+							frm.farm_code = #{farmCode}
+							and
+							frm.use_status = 'Y')
+			and
+			fbm.use_status = 'Y'
+	</select>
+	
+	<insert id="addPlanFarmRetainMachine" parameterType="FarmRetainMachine">
+		INSERT INTO tb_farm_retain_machine
+		(
+			 farm_retain_machine_code
+			,farm_bookmark_machine_code
+			,farm_code
+			,use_status
+			,reg_member_id
+			,reg_date
+		)
+		VALUES 
+		(
+			 sf_farm_retain_machine_max_code()
+			,#{farmBookmarkMachineCode}
+			,#{farmCode}
+			,'Y'
+			,#{regMemberId}
+			, NOW()
+		)
+	</insert>
+	
+	<update id="removeFarmBookmarkMachine" parameterType="String">
+		UPDATE tb_farm_bookmark_machine
+		SET
+			use_status='N'
+		WHERE
+			farm_bookmark_machine_code = #{farmBookmarkMachineCode}
+	</update>
+	
+	<insert id="addFarmBookmarkMachine" parameterType="FarmBookmarkMachine">
+		INSERT INTO tb_farm_bookmark_machine
+		(
+			 farm_bookmark_machine_code
+			,common_machine_code
+			,farm_code
+			,use_status
+			,reg_member_id
+			,reg_date
+		)
+		VALUES 
+		(
+			 sf_farm_bookmark_machine_max_code()
+			,#{commonMachineCode}
+			,#{farmCode}
+			,'Y'
+			,#{regMemberId}
+			,NOW()
+		)
+	</insert>
+	
 	<select id="getFarmCommonMachineList" parameterType="String" resultType="map">
 		SELECT
 			 common.common_machine_code AS commonMachineCode
@@ -137,7 +218,9 @@
 			on
 			fbm.common_machine_code = cm.common_machine_code
 		WHERE
-			 fbm.farm_code = #{farmCode})
+			 fbm.farm_code = #{farmCode}
+			 and
+			 fbm.use_status = 'Y')
 	</select>
 	
 	<insert id="addResourceUsecapacity" parameterType="ResourcePay">
@@ -785,6 +868,8 @@
 			fbm.common_machine_code = cm.common_machine_code
 		WHERE
 			frm.farm_code = #{farmCode}
+			and
+			frm.use_status = 'Y'
   	</select>
   	
   	<select id="getFarmBookmarkMachine" resultType="map" parameterType="map">
@@ -803,6 +888,8 @@
 			fbm.common_machine_code = cm.common_machine_code
 		WHERE
 			fbm.farm_code = #{farmCode}
+			and
+			fbm.use_status = 'Y'
   	</select>
   	
   	<select id="getClientName" resultType="map" parameterType="map">

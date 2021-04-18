@@ -19,6 +19,8 @@ import easyfarm.dao.PlanMapper;
 import easyfarm.domain.plan.Client;
 import easyfarm.domain.plan.CommonMachine;
 import easyfarm.domain.plan.EtcPay;
+import easyfarm.domain.plan.FarmBookmarkMachine;
+import easyfarm.domain.plan.FarmRetainMachine;
 import easyfarm.domain.plan.InsurancePay;
 import easyfarm.domain.plan.MachineLeasePay;
 import easyfarm.domain.plan.MachineUsePay;
@@ -370,6 +372,50 @@ public class PlanService {
 		}
 		
 		return result;
+	}
+	
+	//농기계 즐겨찾기 등록
+	public int addFarmBookmarkMachine(FarmBookmarkMachine farmBookmarkMachine) {
+		
+		int addResult = 0;
+		
+		if(farmBookmarkMachine != null) {
+			addResult = planMapper.addFarmBookmarkMachine(farmBookmarkMachine);
+		}
+		return addResult;
+	}
+	
+	//농기계 즐겨찾기 삭제
+	public int removeFarmBookmarkMachine(String farmBookmarkMachineCode) {
+		
+		int removeResult = 0;
+		
+		if(farmBookmarkMachineCode != null) {
+			removeResult = planMapper.removeFarmBookmarkMachine(farmBookmarkMachineCode);
+		}
+		return removeResult;
+	}
+	
+	//보유농기계에 등록한 항목 제외한 농기계 즐겨찾기 리스트
+	public List<Map<String, Object>> getFarmBookmarkMachineList(String farmCode) {
+		
+		List<Map<String, Object>> result = null;
+		
+		if(farmCode != null && !"".equals(farmCode.trim())) {
+			result = planMapper.getFarmBookmarkMachineList(farmCode);
+		}
+		return result;
+	}
+	
+	//보유농기계 등록
+	public int addPlanFarmRetainMachine(FarmRetainMachine farmRetainMachine) {
+		
+		int addResult = 0;
+		
+		if(farmRetainMachine != null) {
+			addResult = planMapper.addPlanFarmRetainMachine(farmRetainMachine);
+		}
+		return addResult;
 	}
 
 	//계획서 간편보기 전체 리스트 조회
