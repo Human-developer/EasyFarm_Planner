@@ -474,6 +474,7 @@ public class PlanController {
 				PlanWorkphase planWorkphaseInfo = null;
 				planWorkphaseInfo = planService.getPlanWorkphaseInfo(planWorkphaseCode);
 				model.addAttribute("planWorkphaseInfo", planWorkphaseInfo);
+				model.addAttribute("planWorkphaseCode", planWorkphaseCode);
 			}
 			
 			if(planWorkphaseCateCode != null && !"".equals(planWorkphaseCateCode.trim())) {
@@ -484,6 +485,8 @@ public class PlanController {
 				Map<String, Object> planWorkphaseCateInfo = null;
 				planWorkphaseCateInfo = planService.getPlanWorkphaseCateInfo(planWorkphaseCateCode);
 				model.addAttribute("planWorkphaseCateInfo", planWorkphaseCateInfo);
+				model.addAttribute("planWorkphaseCode", planWorkphaseCode);
+				model.addAttribute("planWorkphaseCateCode", planWorkphaseCateCode);
 			}
 			
 			//작업단계별, 상세항목별 지출계획 전체 조회
@@ -1069,18 +1072,19 @@ public class PlanController {
 	//계획서간편보기 전체 리스트 조회 ajax
 	@PostMapping("/plan/ajax/getAllPlanSchedule")
 	@ResponseBody
-	public Map<String,List<Object>> getAllPlanSchedule(	 @RequestParam(value = "planWorkphaseCateCode",required = false) String planWorkphaseCateCode
-														,@RequestParam(value = "planWorkphaseCode",required = false) String planWorkphaseCode) {
+	public Map<String,List<Map<String, Object>>> getAllPlanSchedule(@RequestParam(value = "planWorkphaseCateCode",required = false) String planWorkphaseCateCode
+																   ,@RequestParam(value = "planWorkphaseCode",required = false) String planWorkphaseCode) {
 		
-		Map<String, List<Object>> result = new HashMap<String, List<Object>>();
+		Map<String,List<Map<String, Object>>> result = null;
 		
 		if(planWorkphaseCode != null && !"".equals(planWorkphaseCode.trim())) {
 			
-			//result = planService.getAllPlanSchedule(planWorkphaseCode, planWorkphaseCateCode);
+			//작업단계별, 상세항목별 지출계획 전체 조회
+			result = planService.getAllPlanSchedule(planWorkphaseCode, planWorkphaseCateCode);
 			
 		}
 		
-		return null;
+		return result;
 	}
 	
 }

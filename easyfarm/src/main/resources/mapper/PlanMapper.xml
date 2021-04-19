@@ -345,9 +345,11 @@
 	
 	<select id="getPlanWorkphaseCateInfo" parameterType="String" resultType="map">
 		SELECT
-			 pw.project_workphase_code			 AS projectWorkphaseCode
+			 pwc.plan_workphase_code 			 AS planWorkphaseCode
+			,pw.project_workphase_code			 AS projectWorkphaseCode
 			,pw.plan_workphase_begin 			 AS planWorkphaseBegin
 			,pw.plan_workphase_end 				 AS planWorkphaseEnd
+			,pwc.plan_workphase_cate_code 		 AS planWorkphaseCateCode
 			,pwc.farm_workphase_cate_code		 AS farmWorkphaseCateCode
 			,pwc.plan_workphase_begin			 AS planWorkphaseCateBegin
 			,pwc.plan_workphase_end 			 AS planWorkphaseCateEnd
@@ -365,7 +367,8 @@
 	
 	<select id="getPlanWorkphaseInfo" parameterType="String" resultMap="resultPlanWorkphase">
 		SELECT
-			 project_workphase_code
+			 plan_workphase_code
+			,project_workphase_code
 			,plan_workphase_begin
 			,plan_workphase_end
 			,plan_workphase_color

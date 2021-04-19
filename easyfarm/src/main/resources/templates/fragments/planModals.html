@@ -526,6 +526,8 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-horizontal">
+							<input class="hidden" th:value="${planWorkphaseCode}" name="planWorkphaseCode"/>
+							<input class="hidden" th:value="${planWorkphaseCateCode}" name="planWorkphaseCateCode"/>
 							<div class="form-group">
 								<label for="etcPayClientCode" class="col-sm-3 control-label"><strong>거래처</strong></label>
 							    <div class="col-sm-6">
@@ -570,6 +572,8 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-horizontal">
+							<input class="hidden" th:value="${planWorkphaseCode}" name="planWorkphaseCode"/>
+							<input class="hidden" th:value="${planWorkphaseCateCode}" name="planWorkphaseCateCode"/>
 							<div class="form-group">
 								<label for="productGainStockItemCode" class="col-sm-3 control-label"><strong>품목</strong></label>
 							    <div class="col-sm-6">
@@ -620,6 +624,8 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-horizontal">
+							<input class="hidden" th:value="${planWorkphaseCode}" name="planWorkphaseCode"/>
+							<input class="hidden" th:value="${planWorkphaseCateCode}" name="planWorkphaseCateCode"/>
 							<div class="form-group">
 								<label for="taxPayCateCode" class="col-sm-3 control-label"><strong>공과금종류</strong></label>
 							    <div class="col-sm-6">
@@ -681,6 +687,8 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-horizontal">
+							<input class="hidden" th:value="${planWorkphaseCode}" name="planWorkphaseCode"/>
+							<input class="hidden" th:value="${planWorkphaseCateCode}" name="planWorkphaseCateCode"/>
 							<div class="form-group">
 								<label class="col-sm-3 control-label"><strong>품목</strong></label>
 							    <div class="col-sm-6">
@@ -744,6 +752,8 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-horizontal">
+							<input class="hidden" th:value="${planWorkphaseCode}" name="planWorkphaseCode"/>
+							<input class="hidden" th:value="${planWorkphaseCateCode}" name="planWorkphaseCateCode"/>
 							<div class="form-group">
 								<label for="farmRetainMachineCode" class="col-sm-3 control-label"><strong>보유농기계종류</strong></label>
 							    <div class="col-sm-6">
@@ -776,6 +786,8 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-horizontal">
+							<input class="hidden" th:value="${planWorkphaseCode}" name="planWorkphaseCode"/>
+							<input class="hidden" th:value="${planWorkphaseCateCode}" name="planWorkphaseCateCode"/>
 							<div class="form-group">
 								<label class="col-sm-3 control-label"><strong>거래처</strong></label>
 							    <div class="col-sm-6">
@@ -830,44 +842,48 @@
 		<!-- 인건비등록 모달 시작-->
 		<div class="modal fade" id="planAddWorkforcePay" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">
 			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel-1">인건비 지출계획</h4>
-					</div>
-					<div class="modal-body">
-						<div class="form-horizontal">
-							<div class="form-group">
-								<label for="workforceCount" class="col-sm-3 control-label"><strong>근무인원</strong></label>
-							    <div class="col-md-6">
-							      <input id="workforceCount" type="text" name="workforceCount" class="form-control" placeholder="0">
-							    </div>
-							</div>
-							<div class="form-group">
-								<label for="workforceHowlong" class="col-sm-3 control-label"><strong>근무일수</strong></label>
-							    <div class="col-md-6">
-							      <input id="workforceHowlong" type="text" name="workforceHowlong" class="form-control" placeholder="0">
-							    </div>
-							</div>
-							<div class="form-group">
-								<label for="workforcePayDay" class="col-sm-3 control-label"><strong>일일인건비</strong></label>
-							    <div class="col-md-6">
-							      <input id="workforcePayDay" type="text" name="workforcePayDay" class="form-control" placeholder="1000">
-							    </div>
-							</div>
-							<div class="form-group">
-								<label for="workforcePayTotal" class="col-sm-3 control-label"><strong>인건비합계</strong></label>
-							    <div class="col-md-6">
-							      <input id="workforcePayTotal" type="text" name="workforcePayTotal" class="form-control" readonly="readonly">
-							    </div>
+				<form action="" method="post">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel-1">인건비 지출계획</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-horizontal">
+								<input class="hidden" th:value="${planWorkphaseCode}" name="planWorkphaseCode"/>
+								<input class="hidden" th:value="${planWorkphaseCateCode}" name="planWorkphaseCateCode"/>
+								<div class="form-group">
+									<label for="workforceCount" class="col-sm-3 control-label"><strong>근무인원</strong></label>
+								    <div class="col-md-6">
+								      <input id="workforceCount" type="text" name="workforceCount" class="form-control" placeholder="0">
+								    </div>
+								</div>
+								<div class="form-group">
+									<label for="workforceHowlong" class="col-sm-3 control-label"><strong>근무일수</strong></label>
+								    <div class="col-md-6">
+								      <input id="workforceHowlong" type="text" name="workforceHowlong" class="form-control" placeholder="0">
+								    </div>
+								</div>
+								<div class="form-group">
+									<label for="workforcePayDay" class="col-sm-3 control-label"><strong>일일인건비</strong></label>
+								    <div class="col-md-6">
+								      <input id="workforcePayDay" type="text" name="workforcePayDay" class="form-control" placeholder="1000">
+								    </div>
+								</div>
+								<div class="form-group">
+									<label for="workforcePayTotal" class="col-sm-3 control-label"><strong>인건비합계</strong></label>
+								    <div class="col-md-6">
+								      <input id="workforcePayTotal" type="text" name="workforcePayTotal" class="form-control" readonly="readonly">
+								    </div>
+								</div>
 							</div>
 						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
+							<button type="submit" class="btn btn-primary btn-sm waves-effect waves-light">인건비 지출계획 등록</button>
+						</div>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default btn-sm waves-effect waves-light" data-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary btn-sm waves-effect waves-light">인건비 지출계획 등록</button>
-					</div>
-				</div>
+				</form>
 			</div>
 		</div>
 		<!-- 인건비등록 등록 모달 끝-->

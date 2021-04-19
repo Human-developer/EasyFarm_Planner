@@ -86,9 +86,6 @@ $(document).ready(function() {
 					$('#workPhaseDate-range [name="end"]').val(data.end._i);
 				}
 				
-				
-				
-				
 				$.ajax({
 					url : "/plan/ajax/getAllPlanSchedule",
 					method: "POST",
@@ -97,6 +94,168 @@ $(document).ready(function() {
 						  },
 					datatype: 'json',
 					success : function(data) {
+						var tr = '';
+						var expWorkforcePayListTableTbody 	 = $('#expWorkforcePayListTable tbody'); 	//인건비
+						var expMachineLeaseListTableTbody 	 = $('#expMachineLeaseListTable tbody');	//농기계대여
+						var expMachineUseListTableTbody   	 = $('#expMachineUseListTable tbody');   	//보유농기계
+						var expResourceUseplanListTableTbody = $('#expResourceUseplanListTable tbody'); //농자재사용
+						var expTaxPayListTableTbody 		 = $('#expTaxPayListTable tbody'); 			//공과금
+						var productGainListTableTbody 		 = $('#productGainListTable tbody'); 		//생산물
+						var expEtcPayListTableTbody 		 = $('#expEtcPayListTable tbody'); 			//기타비용
+						
+						//인건비
+						if(data.expWorkforcePayList.length > 0){
+							tr = '';
+							$.each(data.expWorkforcePayList, function(index){
+								tr += '<tr>';
+								tr += '<td>' + data.expWorkforcePayList[index].workforceCount + ' 명</td>';
+								tr += '<td>' + data.expWorkforcePayList[index].workforceHowlong + ' 일</td>';
+								tr += '<td>' + data.expWorkforcePayList[index].workforceRequireDay + '</td>';
+								tr += '<td>' + data.expWorkforcePayList[index].workforcePayDay + ' 원</td>';
+								tr += '<td>' + data.expWorkforcePayList[index].workforcePayTotal + ' 원</td>';
+								tr += '</tr>';
+							})
+							expWorkforcePayListTableTbody.children().remove();
+							expWorkforcePayListTableTbody.html(tr);
+						}else{
+							tr = '';
+							tr += '<tr>';
+							tr += '<td colspan="5" class="t-center">등록된 정보가 없습니다.</td>';
+							tr += '</tr>';
+							expWorkforcePayListTableTbody.html(tr);
+						}
+						
+						//농기계대여
+						if(data.expMachineLeaseList.length > 0){
+							tr = '';
+							$.each(data.expMachineLeaseList, function(index){
+								tr += '<tr>';
+								tr += '<td>' + data.expMachineLeaseList[index].clientName + '</td>';
+								tr += '<td>' + data.expMachineLeaseList[index].commonMachineName + '</td>';
+								tr += '<td>' + data.expMachineLeaseList[index].machineLeaseHowlong + ' 일</td>';
+								tr += '<td>' + data.expMachineLeaseList[index].machineLeasePayDay + ' 원</td>';
+								tr += '<td>' + data.expMachineLeaseList[index].machineLeasePayTotal + ' 원</td>';
+								tr += '</tr>';
+							})
+							expMachineLeaseListTableTbody.children().remove();
+							expMachineLeaseListTableTbody.html(tr);
+						}else{
+							tr = '';
+							tr += '<tr>';
+							tr += '<td colspan="5" class="t-center">등록된 정보가 없습니다.</td>';
+							tr += '</tr>';
+							expMachineLeaseListTableTbody.html(tr);
+						}
+						
+						//보유농기계
+						if(data.expMachineUseList.length > 0){
+							tr = '';
+							$.each(data.expMachineUseList, function(index){
+								tr += '<tr>';
+								tr += '<td>' + data.expMachineUseList[index].commonMachineName + '</td>';
+								tr += '</tr>';
+							})
+							expMachineUseListTableTbody.children().remove();
+							expMachineUseListTableTbody.html(tr);
+						}else{
+							tr = '';
+							tr += '<tr>';
+							tr += '<td colspan="1" class="t-center">등록된 정보가 없습니다.</td>';
+							tr += '</tr>';
+							expMachineUseListTableTbody.html(tr);
+						}
+						
+						//농자재
+						if(data.expResourceUseplanList.length > 0){
+							tr = '';
+							$.each(data.expResourceUseplanList, function(index){
+								tr += '<tr>';
+								tr += '<td>' + data.expResourceUseplanList[index].stockCateName + '</td>';
+								tr += '<td>' + data.expResourceUseplanList[index].stockItemName + '</td>';
+								tr += '<td>' + data.expResourceUseplanList[index].stockItemUseQuantity + '</td>';
+								tr += '<td>' + data.expResourceUseplanList[index].stockItemQuantityUnit + '</td>';
+								tr += '<td>' + data.expResourceUseplanList[index].stockItemUseQuantityTotal + '</td>';
+								tr += '<td>' + data.expResourceUseplanList[index].stockItemQuantityCapacityUnit + '</td>';
+								tr += '<td>' + data.expResourceUseplanList[index].stockItemUseQuantityConversionPay + ' 원</td>';
+								tr += '</tr>';
+							})
+							expResourceUseplanListTableTbody.children().remove();
+							expResourceUseplanListTableTbody.html(tr);
+						}else{
+							tr = '';
+							tr += '<tr>';
+							tr += '<td colspan="7" class="t-center">등록된 정보가 없습니다.</td>';
+							tr += '</tr>';
+							expResourceUseplanListTableTbody.html(tr);
+						}
+						
+						//공과금
+						if(data.expTaxPayList.length > 0){
+							tr = '';
+							$.each(data.expTaxPayList, function(index){
+								tr += '<tr>';
+								tr += '<td>' + data.expTaxPayList[index].clientName + '</td>';
+								tr += '<td>' + data.expTaxPayList[index].taxPayCateName + '</td>';
+								tr += '<td>' + data.expTaxPayList[index].taxPayWhatmonth + '</td>';
+								tr += '<td>' + data.expTaxPayList[index].taxPay + ' 원</td>';
+								tr += '<td>' + data.expTaxPayList[index].taxPayDetail + '</td>';
+								tr += '</tr>';
+							})
+							expTaxPayListTableTbody.children().remove();
+							expTaxPayListTableTbody.html(tr);
+						}else{
+							tr = '';
+							tr += '<tr>';
+							tr += '<td colspan="5" class="t-center">등록된 정보가 없습니다.</td>';
+							tr += '</tr>';
+							expTaxPayListTableTbody.html(tr);
+						}
+						
+						//생산물
+						if(data.productGainList.length > 0){
+							tr = '';
+							$.each(data.productGainList, function(index){
+								tr += '<tr>';
+								tr += '<td>' + data.productGainList[index].stockCateName + '</td>';
+								tr += '<td>' + data.productGainList[index].stockItemName + '</td>';
+								tr += '<td>' + data.productGainList[index].gainQuantity + '</td>';
+								tr += '<td>' + data.productGainList[index].stockItemQuantityUnit + '</td>';
+								tr += '<td>' + data.productGainList[index].gainQuantityCapacity + '</td>';
+								tr += '<td>' + data.productGainList[index].stockItemQuantityCapacityUnit + '</td>';
+								tr += '<td>' + data.productGainList[index].gainDetail + '</td>';
+								tr += '</tr>';
+							})
+							productGainListTableTbody.children().remove();
+							productGainListTableTbody.html(tr);
+						}else{
+							tr = '';
+							tr += '<tr>';
+							tr += '<td colspan="7" class="t-center">등록된 정보가 없습니다.</td>';
+							tr += '</tr>';
+							productGainListTableTbody.html(tr);
+						}
+						
+						//기타비용
+						if(data.expEtcPayList.length > 0){
+							tr = '';
+							$.each(data.expEtcPayList, function(index){
+								tr += '<tr>';
+								tr += '<td>' + data.expEtcPayList[index].clientName + '</td>';
+								tr += '<td>' + data.expEtcPayList[index].etcPay + ' 원</td>';
+								tr += '<td>' + data.expEtcPayList[index].etcPayDetail + '</td>';
+								tr += '</tr>';
+							})
+							expEtcPayListTableTbody.children().remove();
+							expEtcPayListTableTbody.html(tr);
+						}else{
+							tr = '';
+							tr += '<tr>';
+							tr += '<td colspan="3" class="t-center">등록된 정보가 없습니다.</td>';
+							tr += '</tr>';
+							expEtcPayListTableTbody.html(tr);
+						}
+						
+						$('#planModal').modal('show');
 					},
 					error : function(xhr, status, error) {
 						console.log('xhr : ' + xhr);
@@ -105,7 +264,6 @@ $(document).ready(function() {
 					}
 				});
 				
-				$('#planModal').modal('show');
 			},
 			customButtons: {
                 changeDateButton: {
