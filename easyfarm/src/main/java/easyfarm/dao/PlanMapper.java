@@ -162,4 +162,29 @@ public interface PlanMapper {
 	//기간별 작업단계 계획 정보조회
 	public PlanWorkphase getPlanWorkphaseInfo(String planWorkphaseCode);
 	
+	//기간별 작업단계별 상세항목 계획 정보조회
+	public Map<String, Object> getPlanWorkphaseCateInfo(String planWorkphaseCateCode);
+	
+	//작업단계별, 상세항목별 인건비 지출계획 조회
+	public List<Map<String, Object>> getExpWorkforcePayList(String planWorkphaseCode, String planWorkphaseCateCode);
+	
+	//작업단계별, 상세항목별 농기계 대여 지출계획 조회
+	public List<Map<String, Object>> getExpMachineLeaseList(String planWorkphaseCode, String planWorkphaseCateCode);
+	
+	//작업단계별, 상세항목별 보유농기계 지출계획 조회
+	public List<Map<String, Object>> getExpMachineUseList(String planWorkphaseCode, String planWorkphaseCateCode);
+	
+	//작업단계별, 상세항목별 농자재사용 지출계획 조회
+	public List<Map<String, Object>> getExpResourceUseplanList(String planWorkphaseCode, String planWorkphaseCateCode);
+	
+	//작업단계별, 상세항목별 공과금 지출계획 조회
+	public List<Map<String, Object>> getExpTaxPayList(String planWorkphaseCode, String planWorkphaseCateCode);
+	
+	//작업단계별, 상세항목별 생산물 지출계획 조회
+	public List<Map<String, Object>> getProductGainList(String planWorkphaseCode, String planWorkphaseCateCode);
+	
+	//작업단계별, 상세항목별 기타비용 지출계획 조회 
+	public List<Map<String, Object>> getExpEtcPayList(String planWorkphaseCode, String planWorkphaseCateCode);
+	
+	
 }

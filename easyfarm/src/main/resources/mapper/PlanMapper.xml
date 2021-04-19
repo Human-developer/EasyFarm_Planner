@@ -119,6 +119,250 @@
 		<result property="regDate" 						column="reg_date" />
 	</resultMap>
 	
+	<!-- 기타비용 지출계획 조회 -->
+	<select id="getExpEtcPayList" resultType="map" parameterType="String">
+		SELECT
+			 eep.etc_pay_code 		AS etcPayCode
+			,c.client_name 			AS clientName
+			,eep.etc_pay 			AS etcPay
+			,eep.etc_pay_detail 	AS etcPayDetail
+		FROM
+			tb_exp_etc_pay AS eep
+			INNER join
+			tb_client AS c
+			on
+			eep.client_code = c.client_code
+		WHERE
+			plan_workphase_code = #{planWorkphaseCode}
+			and
+			<if test="planWorkphaseCateCode == null">
+				plan_workphase_cate_code = ''
+			</if>
+			<if test="planWorkphaseCateCode != null">
+				plan_workphase_cate_code = #{planWorkphaseCateCode}
+			</if>
+	</select>
+	
+	<!-- 공과금 지출계획 조회 -->
+	<select id="getExpTaxPayList" resultType="map" parameterType="String">
+		SELECT
+			 etp.tax_pay_code 			AS taxPayCode
+			,c.client_name 				AS clientName
+			,tpc.tax_pay_cate_name 		AS taxPayCateName
+			,concat(substring_index(etp.tax_pay_whatmonth, '-', 1), '년 ', substring_index(etp.tax_pay_whatmonth, '-', -1), '월') 		AS taxPayWhatmonth
+			,etp.tax_pay 				AS taxPay
+			,etp.tax_pay_detail 		AS taxPayDetail
+		FROM
+			tb_exp_tax_pay AS etp
+			INNER join
+			tb_client AS c
+			on
+			etp.client_code = c.client_code
+			INNER join
+			tb_tax_pay_cate AS tpc
+			on
+			etp.tax_pay_cate_code = tpc.tax_pay_cate_code
+		WHERE
+			plan_workphase_code = #{planWorkphaseCode}
+			and
+			<if test="planWorkphaseCateCode == null">
+				plan_workphase_cate_code = ''
+			</if>
+			<if test="planWorkphaseCateCode != null">
+				plan_workphase_cate_code = #{planWorkphaseCateCode}
+			</if>	
+	</select>
+	
+	<!-- 생산물 지출계획 조회 -->
+	<select id="getProductGainList" resultType="map" parameterType="String">
+		SELECT
+			 sc.stock_cate_name 					AS stockCateName
+			,si.stock_item_name 					AS stockItemName
+			,pg.gain_quantity 						AS gainQuantity
+			,si.stock_item_quantity_unit 			AS stockItemQuantityUnit
+			,pg.gain_quantity_capacity 				AS gainQuantityCapacity
+			,si.stock_item_quantity_capacity_unit 	AS stockItemQuantityCapacityUnit
+			,pg.gain_detail 						AS gainDetail
+		FROM
+			tb_product_gain AS pg
+			INNER join
+			tb_stock_item AS si
+			on
+			pg.stock_item_code = si.stock_item_code
+			INNER join
+			tb_stock_cate AS sc
+			on
+			si.stock_cate_code = sc.stock_cate_code
+		WHERE
+			plan_workphase_code = #{planWorkphaseCode}
+			and
+			<if test="planWorkphaseCateCode == null">
+				plan_workphase_cate_code = ''
+			</if>
+			<if test="planWorkphaseCateCode != null">
+				plan_workphase_cate_code = #{planWorkphaseCateCode}
+			</if>
+	</select>
+	
+	<!-- 농자재사용 지출계획 조회 -->
+	<select id="getExpResourceUseplanList" resultType="map" parameterType="String">
+		SELECT
+			 sc.stock_cate_name 						AS stockCateName
+			,si.stock_item_name 						AS stockItemName
+			,eru.stock_item_use_quantity 				AS stockItemUseQuantity
+			,si.stock_item_quantity_unit 				AS stockItemQuantityUnit
+			,eru.stock_item_use_quantity_total 			AS stockItemUseQuantityTotal
+			,si.stock_item_quantity_capacity_unit 		AS stockItemQuantityCapacityUnit
+			,eru.stock_item_use_quantity_conversion_pay AS stockItemUseQuantityConversionPay
+		FROM
+			tb_exp_resource_useplan AS eru
+			INNER join
+			tb_resource_usecapacity AS ru
+			on
+			eru.resource_usecapacity_code = ru.resource_usecapacity_code
+			INNER join
+			tb_exp_resource_pay AS erp
+			on
+			ru.resource_pay_code = erp.resource_pay_code
+			INNER join
+			tb_stock_item AS si
+			on
+			erp.stock_item_code = si.stock_item_code
+			INNER join
+			tb_stock_cate AS sc
+			on
+			si.stock_cate_code = sc.stock_cate_code
+		WHERE
+			plan_workphase_code = #{planWorkphaseCode}
+			and
+			<if test="planWorkphaseCateCode == null">
+				plan_workphase_cate_code = ''
+			</if>
+			<if test="planWorkphaseCateCode != null">
+				plan_workphase_cate_code = #{planWorkphaseCateCode}
+			</if>
+	</select>
+	
+	<!-- 보유농기계 지출계획 조회 -->
+	<select id="getExpMachineUseList" parameterType="String" resultType="map">
+		SELECT
+			 cm.common_machine_name 		AS commonMachineName
+			,emu.machine_use_code 			AS machineUseCode
+			,emu.farm_retain_machine_code 	AS farmRetainMachineCode
+			,emu.reg_member_id 				AS regMemberId
+			,emu.reg_date 					AS regDate
+		FROM
+			tb_exp_machine_use AS emu
+			INNER join
+			tb_farm_retain_machine AS frm
+			on
+			emu.farm_retain_machine_code = frm.farm_retain_machine_code
+			INNER join
+			tb_farm_bookmark_machine AS fbm
+			on
+			frm.farm_bookmark_machine_code = fbm.farm_bookmark_machine_code
+			INNER join
+			tb_common_machine AS cm
+			on
+			fbm.common_machine_code = cm.common_machine_code
+		WHERE
+			plan_workphase_code = #{planWorkphaseCode}
+			and
+			<if test="planWorkphaseCateCode == null">
+				plan_workphase_cate_code = ''
+			</if>
+			<if test="planWorkphaseCateCode != null">
+				plan_workphase_cate_code = #{planWorkphaseCateCode}
+			</if>
+	</select>
+	
+	<!-- 농기계 대여 지출계획 조회 -->
+	<select id="getExpMachineLeaseList" resultType="map" parameterType="String">
+		SELECT 
+			 eml.machine_lease_code 		AS machineLeaseCode
+			,eml.plan_workphase_code 		AS planWorkphaseCode
+			,eml.plan_workphase_cate_code 	AS planWorkphaseCateCode
+			,c.client_name 					AS clientName
+			,c.client_code 					AS clientCode
+			,eml.farm_bookmark_machine_code AS farmBookmarkMachineCode
+			,cm.common_machine_name 		AS commonMachineName
+			,eml.machine_lease_howlong 		AS machineLeaseHowlong
+			,eml.machine_lease_pay_day 		AS machineLeasePayDay
+			,eml.machine_lease_pay_total 	AS machineLeasePayTotal
+			,eml.reg_member_id 				AS regMemberId
+			,eml.reg_date 					AS regDate
+		
+		FROM 
+			tb_exp_machine_lease AS eml
+			INNER join
+			tb_client AS c
+			on
+			eml.client_code = c.client_code
+			INNER join
+			tb_farm_bookmark_machine AS fbm
+			on
+			eml.farm_bookmark_machine_code = fbm.farm_bookmark_machine_code
+			INNER join
+			tb_common_machine AS cm
+			on
+			fbm.common_machine_code = cm.common_machine_code
+		WHERE
+			plan_workphase_code = #{planWorkphaseCode}
+			and
+			<if test="planWorkphaseCateCode == null">
+				plan_workphase_cate_code = ''
+			</if>
+			<if test="planWorkphaseCateCode != null">
+				plan_workphase_cate_code = #{planWorkphaseCateCode}
+			</if>
+	</select>
+	
+	<!-- 인건비 지출계획 조회 -->
+	<select id="getExpWorkforcePayList" resultType="map" parameterType="String">
+		SELECT 
+			 workforce_pay_code 		AS workforcePayCode
+			,plan_workphase_code 		AS planWorkphaseCode
+			,plan_workphase_cate_code 	AS planWorkphaseCateCode
+			,workforce_count 			AS workforceCount
+			,workforce_howlong 			AS workforceHowlong
+			,workforce_require_day 		AS workforceRequireDay
+			,workforce_pay_day 			AS workforcePayDay
+			,workforce_pay_total 		AS workforcePayTotal
+			,reg_member_id 				AS regMemberId
+			,reg_date 					AS regDate
+		FROM 
+			tb_exp_workforce_pay
+		WHERE
+			plan_workphase_code = #{planWorkphaseCode}
+			and
+			<if test="planWorkphaseCateCode == null">
+				plan_workphase_cate_code = ''
+			</if>
+			<if test="planWorkphaseCateCode != null">
+				plan_workphase_cate_code = #{planWorkphaseCateCode}
+			</if>
+	</select>
+	
+	<select id="getPlanWorkphaseCateInfo" parameterType="String" resultType="map">
+		SELECT
+			 pw.project_workphase_code			 AS projectWorkphaseCode
+			,pw.plan_workphase_begin 			 AS planWorkphaseBegin
+			,pw.plan_workphase_end 				 AS planWorkphaseEnd
+			,pwc.farm_workphase_cate_code		 AS farmWorkphaseCateCode
+			,pwc.plan_workphase_begin			 AS planWorkphaseCateBegin
+			,pwc.plan_workphase_end 			 AS planWorkphaseCateEnd
+			,pwc.plan_workphase_color 			 AS planWorkphaseColor
+			,pwc.plan_workphase_text_color 		 AS planWorkphaseTextColor
+		FROM
+			tb_plan_workphase_cate AS pwc
+			INNER join
+			tb_plan_workphase AS pw
+			on
+			pwc.plan_workphase_code = pw.plan_workphase_code
+		WHERE
+			pwc.plan_workphase_cate_code = #{planWorkphaseCateCode}
+	</select>
+	
 	<select id="getPlanWorkphaseInfo" parameterType="String" resultMap="resultPlanWorkphase">
 		SELECT
 			 project_workphase_code
@@ -334,32 +578,7 @@
 		WHERE
 			client_code = #{clientCode}
 	
-	</select>
-	
-	<select id="getExpEtcPayList" resultType="map" parameterType="String">
-		SELECT
-			 plan_workphase_code		AS	planWorkphaseCode
-			,project_plan_code			AS	
-			,project_workphase_code		AS	
-			,plan_workphase_begin		AS	
-			,plan_workphase_end			AS	
-			,plan_workphase_color		AS	
-			,plan_workphase_text_color	AS	
-			,reg_member_id				AS	
-			,reg_date					AS	
-			,run_status					AS	
-		FROM 
-			tb_exp_etc_pay
-		WHERE
-			plan_workphase_code = #{}
-			and
-			<if test="planWorkphaseCateCode == null">
-				plan_workphase_cate_code = ''
-			</if>
-			<if test="planWorkphaseCateCode != null">
-				plan_workphase_cate_code = #{planWorkphaseCateCode}
-			</if>
-	</select>
+	</select>	
 	
 	<insert id="addResourcePay" parameterType="ResourcePay">
 		INSERT INTO tb_exp_resource_pay

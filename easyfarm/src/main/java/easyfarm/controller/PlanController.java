@@ -480,7 +480,17 @@ public class PlanController {
 				/* 상세작업항목조회 */
 				List<Map<String, Object>> workphaseCateNameList = planService.getWorkphaseCateName(projectData);
 				model.addAttribute("workphaseCateNameList", workphaseCateNameList);
+				
+				Map<String, Object> planWorkphaseCateInfo = null;
+				planWorkphaseCateInfo = planService.getPlanWorkphaseCateInfo(planWorkphaseCateCode);
+				model.addAttribute("planWorkphaseCateInfo", planWorkphaseCateInfo);
 			}
+			
+			//작업단계별, 상세항목별 지출계획 전체 조회
+			Map<String,List<Map<String, Object>>> allPlanSchedule = null;
+			allPlanSchedule = planService.getAllPlanSchedule(planWorkphaseCode, planWorkphaseCateCode);
+			model.addAttribute("allPlanSchedule", allPlanSchedule);
+			System.out.println(allPlanSchedule + " <<<<<<<<<<<<<<< allPlanSchedule");
 			
 			/* 거래처항목조회 */
 			List<Map<String, Object>> clientNameList = planService.getClientName(projectData);
@@ -1066,7 +1076,7 @@ public class PlanController {
 		
 		if(planWorkphaseCode != null && !"".equals(planWorkphaseCode.trim())) {
 			
-			result = planService.getAllPlanSchedule(planWorkphaseCode, planWorkphaseCateCode);
+			//result = planService.getAllPlanSchedule(planWorkphaseCode, planWorkphaseCateCode);
 			
 		}
 		

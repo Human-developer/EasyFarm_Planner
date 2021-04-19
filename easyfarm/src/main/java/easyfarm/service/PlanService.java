@@ -442,20 +442,32 @@ public class PlanService {
 		
 	}
 	
-	//계획서 간편보기 전체 리스트 조회
-	public Map<String,List<Object>> getAllPlanSchedule(String planWorkphaseCode, String planWorkphaseCateCode) {
+	//기간별 작업단계별 상세항목 계획 정보조회
+	public Map<String, Object> getPlanWorkphaseCateInfo(String planWorkphaseCateCode) {
 		
-		Map<String,List<Object>> result = null;
+		Map<String, Object> result = null;
 		
-		if(planWorkphaseCode != null && planWorkphaseCateCode == null) {
-			result = new HashMap<>();
-			
-			
-			
+		if(planWorkphaseCateCode != null && !"".equals(planWorkphaseCateCode.trim())) {
+			result = planMapper.getPlanWorkphaseCateInfo(planWorkphaseCateCode);
 		}
+		return result;
+	}
+	
+	//작업단계별, 상세항목별 지출계획 전체 조회
+	public Map<String,List<Map<String, Object>>> getAllPlanSchedule(String planWorkphaseCode, String planWorkphaseCateCode) {
 		
+		Map<String,List<Map<String, Object>>> result = null;
 		
-		
+		if(planWorkphaseCode != null) {
+			result = new HashMap<>();
+			result.put("expWorkforcePayList", planMapper.getExpWorkforcePayList(planWorkphaseCode, planWorkphaseCateCode));
+			result.put("expMachineLeaseList", planMapper.getExpMachineLeaseList(planWorkphaseCode, planWorkphaseCateCode));
+			result.put("expMachineUseList", planMapper.getExpMachineUseList(planWorkphaseCode, planWorkphaseCateCode));
+			result.put("expResourceUseplanList", planMapper.getExpResourceUseplanList(planWorkphaseCode, planWorkphaseCateCode));
+			result.put("expTaxPayList", planMapper.getExpTaxPayList(planWorkphaseCode, planWorkphaseCateCode));
+			result.put("productGainList", planMapper.getProductGainList(planWorkphaseCode, planWorkphaseCateCode));
+			result.put("expEtcPayList", planMapper.getExpEtcPayList(planWorkphaseCode, planWorkphaseCateCode));
+		}
 		return result;
 	}
 }
