@@ -40,8 +40,8 @@
 					<th>농기계명 </th>
 					<th>작성자아이디 </th>
 					<th>작성일자</th>
-					<th th:if = "${session.SLEVEL == '관리자'}">수정</th>
-					<th th:if = "${session.SLEVEL == '관리자'}">삭제</th>
+					<th class="hidden" th:if = "${session.SLEVEL == '관리자'}">수정</th>
+					<th class="hidden" th:if = "${session.SLEVEL == '관리자'}">삭제</th>
 				</tr>			
 			</thead>
 			<tbody>
@@ -51,10 +51,10 @@
 					<td th:text="${l.commonMachineName}"></td>
 					<td th:text="${l.regMemberId}"></td>
 					<td th:text="${l.regDate}"></td>
-					<td th:if = "${session.SLEVEL == '관리자'}">
+					<td class="hidden" th:if = "${session.SLEVEL == '관리자'}">
 						<a th:href="@{/code/modifyCommonMachine(commonMachineCode=${l.commonMachineCode})}">수정</a>
 					</td>
-					<td th:if = "${session.SLEVEL == '관리자'}">
+					<td class="hidden" th:if = "${session.SLEVEL == '관리자'}">
 						<a th:href="@{/#(commonMachineCode=${l.commonMachineCode})}">삭제</a>		
 					</td>
 				</tr>

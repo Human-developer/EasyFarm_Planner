@@ -70,11 +70,11 @@ button {
 		$(function() {
 			$('#addCheck').click(function() {
 
-				if ($('#cropdetcate').val() == "") {
+				if ($('#TaxPayCate').val() == "") {
 					swal({
 						title : "공과금카테고리명을 입력해주세요."
 					});
-					$('#cropdetcate').focus();
+					$('#TaxPayCate').focus();
 					return false;
 				}
 			

@@ -48,16 +48,16 @@
 			</thead>
 			<tbody>
 				<tr th:if="${#lists.size(TaxPayCateList)} > 0" th:each="l, st:${TaxPayCateList}">
-					<td th:hidden="${l.TaxPayCateCode}"></td>
+					<td th:hidden="${l.taxPayCateCode}"></td>
 					<td th:text="${l.taxPayCateName}"></td>
 					<td th:text="${l.useStatus}"></td>
 					<td th:text="${l.regMemberId}"></td>
 					<td th:text="${l.regDate}"></td>
 					<td th:if = "${session.SLEVEL == '관리자'}">
-						<a th:href="@{/code/#(TaxPayCateCode=${l.TaxPayCateCode})}">수정</a>
+						<a th:href="@{/code/modifyTaxPayCate(taxPayCateCode=${l.taxPayCateCode})}">수정</a>
 					</td>
 					<td th:if = "${session.SLEVEL == '관리자'}">
-						<a th:href="@{/code/#(TaxPayCateCode=${l.TaxPayCateCode})}">삭제</a>		
+						<a th:href="@{/code/removeTaxPayCate(taxPayCateCode=${l.taxPayCateCode})}">삭제</a>		
 					</td>
 				</tr>
 			</tbody>

@@ -9,6 +9,7 @@ import easyfarm.domain.Crop;
 import easyfarm.domain.CropDetailCategory;
 import easyfarm.domain.CropWorkStage;
 import easyfarm.domain.TaxPayCate;
+import easyfarm.domain.plan.StockCate;
 
 @Mapper
 public interface CropMapper {
@@ -52,6 +53,21 @@ public interface CropMapper {
 	
 	//공과금카테고리 리스트
 	public List<TaxPayCate> getTaxPayCateList();
+	//공과금카테고리 등록
+	public int addTaxPayCate(Map<String, Object> map);
+	
+	//품목카테고리 삭제
+	public int removeStockCate(String stockCateCode);
+	//공과금 카테고리 삭제
+	public int removeTaxPayCate(String taxPayCateCode);
+	//품목카테고리 조회
+	public StockCate getInfoStockCate(String stockCateCode);
+	//품목 카테고리 수정
+	public int modifyStockCate(StockCate stockCate);
+	//공과금카테고리 조회
+	public TaxPayCate getInfoTaxPayCate(String taxPayCateCode);
+	//공과금 카테고리 수정
+	public int modifyTaxPayCate(TaxPayCate taxPayCate);
 
 	
 	

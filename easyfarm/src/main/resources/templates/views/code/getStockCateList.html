@@ -52,10 +52,10 @@
 					<td th:text="${l.regMemberId}"></td>
 					<td th:text="${l.regDate}"></td>
 					<td th:if = "${session.SLEVEL == '관리자'}">
-						<a th:href="@{/code/#(stockCateCode=${l.stockCateCode})}">수정</a>
+						<a th:href="@{/code/modifyStockCate(stockCateCode=${l.stockCateCode})}">수정</a>
 					</td>
 					<td th:if = "${session.SLEVEL == '관리자'}">
-						<a th:href="@{/code/#(stockCateCode=${l.stockCateCode})}">삭제</a>		
+						<a th:href="@{/code/removeStockCate(stockCateCode=${l.stockCateCode})}">삭제</a>		
 					</td>
 				</tr>
 				<tr th:unless="${#lists.size(stockCateList)} != 0">

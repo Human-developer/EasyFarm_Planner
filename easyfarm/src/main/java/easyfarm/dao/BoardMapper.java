@@ -18,7 +18,7 @@ public interface BoardMapper {
     public int updateBoard(BoardVO boardVO) ;
     
     // 게시물 삭제
-    public void deleteBoard(BoardVO boardVO) ;
+    public int removeQnaBoard(String code) ;
     
     // 게시물 조회
     public BoardVO selectBoardByCode(String code) ;
