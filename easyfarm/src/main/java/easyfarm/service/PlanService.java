@@ -470,4 +470,90 @@ public class PlanService {
 		}
 		return result;
 	}
+	
+	//인건비 지출계획 등록
+	public int addWorkforcePay(WorkForcePay workForcePay) {
+		
+		int addResult = 0;
+		
+		if(workForcePay != null) {
+			String workforceRequireDay = Integer.toString(Integer.parseInt(workForcePay.getWorkforceCount()) * Integer.parseInt(workForcePay.getWorkforceHowlong()));
+			workForcePay.setWorkforceRequireDay(workforceRequireDay);
+			addResult = planMapper.addWorkforcePay(workForcePay);
+		}
+		return addResult;
+	}
+	
+	//농기계 대여 지출계획 등록
+	public int addMachineLeasePay(MachineLeasePay machineLeasePay) {
+		
+		int addResult = 0;
+		
+		if(machineLeasePay != null) {
+			addResult = planMapper.addMachineLeasePay(machineLeasePay);
+		}
+		return addResult;
+	}
+	
+	//보유농기계 지출계획 등록
+	public int addMachineUsePay(MachineUsePay machineUsePay) {
+		
+		int addResult = 0;
+		
+		if(machineUsePay != null) {
+			addResult = planMapper.addMachineUsePay(machineUsePay);
+		}
+		return addResult;
+	}
+	
+	//농자재사용 지출계획 등록
+	public int addResourceUsePlan(ResourceUsePlan resourceUsePlan) {
+		
+		ResourceUsecapacity resourceUsecapacity = null; 
+		String resourceUsecapacityCode = null;
+		int result = 0;
+		
+		double useQuantity = 0.00;
+		double useQuantityTotal = 0.00;
+		
+		double retainQuantity = 0.00;
+		double retainQuantityExtra = 0.00;
+		
+		String changeQuantity = null;
+		String changeQuantityExtra = null;
+		
+		if(resourceUsePlan != null) {
+			
+			
+			result += planMapper.addResourceUsePlan(resourceUsePlan); //농자재사용지출계획 등록
+			
+			resourceUsecapacityCode = resourceUsePlan.getResourceUsecapacityCode();
+			resourceUsecapacity 	= planMapper.getResourceUsecapacityInfo(resourceUsecapacityCode); //농자재사용현황 업데이트를 위한 조회
+			
+			useQuantity 		= Double.parseDouble(resourceUsePlan.getStockItemUseQuantity());		//화면에서 입력한 사용수량
+			useQuantityTotal 	= Double.parseDouble(resourceUsePlan.getStockItemUseQuantityTotal());	//화면에서 입력한 사용용량
+			retainQuantity 		= Double.parseDouble(resourceUsecapacity.getResourceRetainQuantity());	//농자재사용현황 현재잔여수량
+			retainQuantityExtra = Double.parseDouble(resourceUsecapacity.getResourceRetainQuantityCapacityExtra());//농자재사용현황 현재잔여용량
+			
+			changeQuantity 		= Double.toString(retainQuantity - useQuantity); //잔여수량 - 사용수량
+			changeQuantityExtra = Double.toString(retainQuantityExtra - useQuantityTotal); //잔여용량 - 사용용량
+			
+			resourceUsecapacity.setResourceRetainQuantity(changeQuantity);
+			resourceUsecapacity.setResourceRetainQuantityCapacityExtra(changeQuantityExtra);
+			
+			if("0.0".equals(changeQuantity) || "0.0".equals(changeQuantityExtra)) {
+				resourceUsecapacity.setAvailableStatus("N");
+			}
+			
+			result += planMapper.modifyResourceUsecapacityInfo(resourceUsecapacity);
+			
+		}
+		return result;
+	}
+	
+	
+	
+	
+	
+	
 }

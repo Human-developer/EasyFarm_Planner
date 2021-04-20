@@ -186,5 +186,22 @@ public interface PlanMapper {
 	//작업단계별, 상세항목별 기타비용 지출계획 조회 
 	public List<Map<String, Object>> getExpEtcPayList(String planWorkphaseCode, String planWorkphaseCateCode);
 	
+	//인건비 지출계획 등록
+	public int addWorkforcePay(WorkForcePay workForcePay);
+	
+	//농기계 대여 지출계획 등록
+	public int addMachineLeasePay(MachineLeasePay machineLeasePay);
+	
+	//보유농기계 지출계획 등록
+	public int addMachineUsePay(MachineUsePay machineUsePay);
+	
+	//농자재사용 지출계획 등록
+	public int addResourceUsePlan(ResourceUsePlan resourceUsePlan);
+	
+	//농자재소모현황 코드정보조회
+	public ResourceUsecapacity getResourceUsecapacityInfo(String resourceUsecapacityCode);
+	
+	//농자재소모현황 업데이트
+	public int modifyResourceUsecapacityInfo(ResourceUsecapacity resourceUsecapacity);
 	
 }

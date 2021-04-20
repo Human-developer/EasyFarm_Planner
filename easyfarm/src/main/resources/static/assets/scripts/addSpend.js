@@ -38,48 +38,22 @@ $(function(){
 		postfix: '일'
 	});
 	
-	$('#leaseSwitch, #useSwitch').prop('checked', false);
-	
-	$('#leaseSwitch, #useSwitch').on('click', function(){
-		if($('#leaseSwitch').prop('checked')){
-			$('#machineClientCode, #commonMachineCode, #machineLeaseHowlong, #machineLeasePayDay, #farmRetainMachineCode').removeAttr('readonly');
-			$('#machineClientCode option, #commonMachineCode option, #farmRetainMachineCode option').removeAttr('disabled');
-			
-			$('#machineLeaseHowlong').TouchSpin({
-				min: 0,
-				max: 1000000000,
-				stepinterval: 50,
-				maxboostedstep: 10000000,
-				firstclickvalueifempty: 1,
-				postfix: '일'
-			});
-			$('#machineLeasePayDay').TouchSpin({
-				min: 0,
-				max: 1000000000,
-				firstclickvalueifempty: 1000,
-				step: 1000,
-				stepinterval: 50,
-				maxboostedstep: 10000000,
-				postfix: '원'
-			});
-			
-		}else{
-			$('#machineClientCode, #commonMachineCode, #machineLeaseHowlong, #machineLeasePayDay, #farmRetainMachineCode').attr('readonly', 'readonly');
-			$('#machineClientCode option, #commonMachineCode option, #farmRetainMachineCode option').attr('disabled', 'disabled');
-			
-			$("#machineLeaseHowlong").trigger('touchspin.destroy');
-			$("#machineLeasePayDay").trigger('touchspin.destroy');
-			$('#machineLeaseHowlong, #machineLeasePayDay, #machineLeasePayTotal').val('');
-			
-		}
-		
-		if($('#useSwitch').prop('checked')){
-			$('#farmRetainMachineCode').removeAttr('readonly');
-			$('#farmRetainMachineCode option').removeAttr('disabled');
-		}else{
-			$('#farmRetainMachineCode').attr('readonly', 'readonly');
-			$('#farmRetainMachineCode option').attr('disabled', 'disabled');
-		}
+	$('#machineLeaseHowlong').TouchSpin({
+		min: 0,
+		max: 1000000000,
+		stepinterval: 50,
+		maxboostedstep: 10000000,
+		firstclickvalueifempty: 1,
+		postfix: '일'
+	});
+	$('#machineLeasePayDay').TouchSpin({
+		min: 0,
+		max: 1000000000,
+		firstclickvalueifempty: 1000,
+		step: 1000,
+		stepinterval: 50,
+		maxboostedstep: 10000000,
+		postfix: '원'
 	});
 	
 	$('#workforceCount, #workforceHowlong, #workforcePayDay').on('propertychange change keyup', function(){
@@ -130,6 +104,8 @@ $(function(){
 		min: 0,
 		max: 1000000000,
 		maxboostedstep: 10000000,
+		step: 0.01,
+		decimals: 2,
 		buttondown_class: 'hidden',
 	    buttonup_class: 'hidden',
 	    postfix: '단위'
@@ -139,6 +115,8 @@ $(function(){
 		min: 0,
 		max: 1000000000,
 		maxboostedstep: 10000000,
+		step: 0.01,
+		decimals: 2,
 		buttondown_class: 'hidden',
 	    buttonup_class: 'hidden',
 	    postfix: '단위'

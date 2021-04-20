@@ -292,7 +292,7 @@
 										<div class="form-group t-center">
 											<div class="row">
 												<div class="col-md-6 col-md-offset-3">
-													<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+													<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block modalBtn" 
 														data-toggle="modal" data-target="#planAddWorkforcePay">인건비 지출계획등록
 													</button>
 												</div>
@@ -309,10 +309,10 @@
 											<div class="row">
 												<div class="col-sm-12">
 													<div class="pull-left">
-														<div class="switch primary"><input type="checkbox" checked id="leaseSwitch"><label for="leaseSwitch">농기계 대여 지출계획</label></div>
+														농기계 대여 지출계획
 													</div>
 													<div class="pull-right">
-														<button type="button" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded"
+														<button type="button" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded modalBtn"
 															data-toggle="modal" data-target="#planAddMachineLease">대여농기계등록</button>
 													</div>
 												</div>
@@ -358,10 +358,10 @@
 											<div class="row">
 												<div class="col-sm-12">
 													<div class="pull-left">
-														<div class="switch primary"><input type="checkbox" checked id="useSwitch"><label for="useSwitch">보유 농기계 지출계획</label></div>
+														보유 농기계 지출계획
 													</div>
 													<div class="pull-right">
-														<button type="button" id="planAddBtn" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded"
+														<button type="button" id="planAddBtn" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded modalBtn"
 															data-toggle="modal" data-target="#planAddMachineUse">보유농기계등록</button>
 													</div>
 												</div>
@@ -477,7 +477,7 @@
 											<div class="form-group t-center">
 												<div class="row">
 													<div class="col-md-6 col-md-offset-3">
-														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block modalBtn" 
 															data-toggle="modal" data-target="#planAddResourceUsePlan">농자재 지출계획등록
 														</button>
 													</div>
@@ -529,7 +529,7 @@
 											<div class="form-group t-center">
 												<div class="row">
 													<div class="col-md-6 col-md-offset-3">
-														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block modalBtn" 
 															data-toggle="modal" data-target="#planAddTaxPayPlan">공과금 지출계획등록
 														</button>
 													</div>
@@ -585,7 +585,7 @@
 											<div class="form-group t-center">
 												<div class="row">
 													<div class="col-md-6 col-md-offset-3">
-														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block modalBtn" 
 															data-toggle="modal" data-target="#planAddProductGain">생산물 수확계획등록
 														</button>
 													</div>
@@ -633,7 +633,7 @@
 											<div class="form-group t-center">
 												<div class="row">
 													<div class="col-md-6 col-md-offset-3">
-														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block modalBtn" 
 															data-toggle="modal" data-target="#planAddEtcPay">기타비용 지출계획등록
 														</button>
 													</div>
@@ -753,6 +753,13 @@
 			$('table').DataTable({
 				language : lang_kor
 			});
+			
+			$('.modalBtn').click(function(){
+				$("form[name=addWorkforcePay]")[0].reset();
+				$("form[name=addMachineLeasePay]")[0].reset();
+				$("form[name=addMachineUsePay]")[0].reset();
+				$("form[name=addResourceUsePlan]")[0].reset();
+			})
 		</script>
 	</th:block>
 

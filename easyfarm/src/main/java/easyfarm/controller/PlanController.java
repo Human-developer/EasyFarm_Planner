@@ -21,12 +21,16 @@ import easyfarm.domain.plan.CommonMachine;
 import easyfarm.domain.plan.FarmBookmarkMachine;
 import easyfarm.domain.plan.FarmRetainMachine;
 import easyfarm.domain.plan.InsurancePay;
+import easyfarm.domain.plan.MachineLeasePay;
+import easyfarm.domain.plan.MachineUsePay;
 import easyfarm.domain.plan.PlanWorkphase;
 import easyfarm.domain.plan.PlanWorkphaseCate;
 import easyfarm.domain.plan.ProjectPlan;
 import easyfarm.domain.plan.ResourcePay;
+import easyfarm.domain.plan.ResourceUsePlan;
 import easyfarm.domain.plan.StockCate;
 import easyfarm.domain.plan.StockItem;
+import easyfarm.domain.plan.WorkForcePay;
 import easyfarm.service.PlanService;
 
 @Controller
@@ -991,6 +995,85 @@ public class PlanController {
 		return "redirect:/plan/getPlanFarmRetainMachineList?farmCode=" + farmCode;
 	}
 	
+	//인건비 지출계획 등록
+	@PostMapping("/plan/addWorkforcePay")
+	public String addWorkforcePay(HttpSession session, WorkForcePay workForcePay
+								,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode) {
+		String memberId = (String) session.getAttribute("SID");
+		String urlParam = "";
+		int result = 0;
+		
+		if(workForcePay.getPlanWorkphaseCode() != null && !"".equals(workForcePay.getPlanWorkphaseCode()) && memberId != null) {
+			workForcePay.setRegMemberId(memberId);
+			result = planService.addWorkforcePay(workForcePay);
+		}
+			
+		if(workForcePay.getPlanWorkphaseCateCode() != null && !"".equals(workForcePay.getPlanWorkphaseCateCode())) {
+			urlParam = "&planWorkphaseCateCode=" + workForcePay.getPlanWorkphaseCateCode();
+		}
+		return "redirect:/plan/planScheduleDetail?projectPlanCode=" + projectPlanCode + "&planWorkphaseCode=" + workForcePay.getPlanWorkphaseCode() + urlParam;
+	}
+	
+	//농기계 대여 지출계획 등록
+	@PostMapping("/plan/addMachineLeasePay")
+	public String addMachineLeasePay(HttpSession session, MachineLeasePay machineLeasePay
+									,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode) {
+		
+		String memberId = (String) session.getAttribute("SID");
+		String urlParam = "";
+		int result = 0;
+		
+		if(machineLeasePay.getPlanWorkphaseCode() != null && !"".equals(machineLeasePay.getPlanWorkphaseCode()) && memberId != null) {
+			machineLeasePay.setRegMemberId(memberId);
+			result = planService.addMachineLeasePay(machineLeasePay);
+		}
+			
+		if(machineLeasePay.getPlanWorkphaseCateCode() != null && !"".equals(machineLeasePay.getPlanWorkphaseCateCode())) {
+			urlParam = "&planWorkphaseCateCode=" + machineLeasePay.getPlanWorkphaseCateCode();
+		}
+		return "redirect:/plan/planScheduleDetail?projectPlanCode=" + projectPlanCode + "&planWorkphaseCode=" + machineLeasePay.getPlanWorkphaseCode() + urlParam;
+	}
+	
+	//보유농기계 지출계획 등록
+	@PostMapping("/plan/addMachineUsePay")
+	public String addMachineUsePay(HttpSession session, MachineUsePay machineUsePay
+								,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode) {
+		
+		String memberId = (String) session.getAttribute("SID");
+		String urlParam = "";
+		int result = 0;
+		
+		if(machineUsePay.getPlanWorkphaseCode() != null && !"".equals(machineUsePay.getPlanWorkphaseCode()) && memberId != null) {
+			machineUsePay.setRegMemberId(memberId);
+			result = planService.addMachineUsePay(machineUsePay);
+		}
+		
+		if(machineUsePay.getPlanWorkphaseCateCode() != null && !"".equals(machineUsePay.getPlanWorkphaseCateCode())) {
+			urlParam = "&planWorkphaseCateCode=" + machineUsePay.getPlanWorkphaseCateCode();
+		}
+		return "redirect:/plan/planScheduleDetail?projectPlanCode=" + projectPlanCode + "&planWorkphaseCode=" + machineUsePay.getPlanWorkphaseCode() + urlParam;
+	}
+	
+	//농자재사용 지출계획 등록
+	@PostMapping("/plan/addResourceUsePlan")
+	public String addResourceUsePlan(HttpSession session, ResourceUsePlan resourceUsePlan
+									,@RequestParam(value = "projectPlanCode", required = false) String projectPlanCode) {
+		
+		String memberId = (String) session.getAttribute("SID");
+		String urlParam = "";
+		int result = 0;
+		
+		if(resourceUsePlan.getPlanWorkphaseCode() != null && !"".equals(resourceUsePlan.getPlanWorkphaseCode()) && memberId != null) {
+			resourceUsePlan.setRegMemberId(memberId);
+			result = planService.addResourceUsePlan(resourceUsePlan);
+		}
+		
+		if(resourceUsePlan.getPlanWorkphaseCateCode() != null && !"".equals(resourceUsePlan.getPlanWorkphaseCateCode())) {
+			urlParam = "&planWorkphaseCateCode=" + resourceUsePlan.getPlanWorkphaseCateCode();
+		}
+		return "redirect:/plan/planScheduleDetail?projectPlanCode=" + projectPlanCode + "&planWorkphaseCode=" + resourceUsePlan.getPlanWorkphaseCode() + urlParam;
+	}
+	
 	
 	@GetMapping("/plan/resultPlan")
 	public String resultPlan() {
@@ -1081,9 +1164,7 @@ public class PlanController {
 			
 			//작업단계별, 상세항목별 지출계획 전체 조회
 			result = planService.getAllPlanSchedule(planWorkphaseCode, planWorkphaseCateCode);
-			
 		}
-		
 		return result;
 	}
 	
