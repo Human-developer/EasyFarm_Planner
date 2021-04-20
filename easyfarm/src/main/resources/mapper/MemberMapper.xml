@@ -21,6 +21,7 @@
       <result property="levelName" 		column="level_name"/>
       <result property="useStatus" 		column="use_status"/>
       <result property="memberRegDate" 	column="reg_date"/>
+      <result property="memberImg" 		column="member_img"/>
       
       <result property="loginCode" 		column="login_code"/>
       <result property="loginMemberId" 	column="login_member_id"/>
@@ -46,7 +47,7 @@
    </resultMap>
    
 
-   
+ 
 	
 	<select id="getMemberInfoByEmail" resultMap="memberResultMap">
 		SELECT 
@@ -61,6 +62,7 @@
 			, member_iden_num
 			, member_reg_date
 			, member_status
+			, member_img
 		FROM tb_member
 		WHERE member_email = #{email}
 	</select>
@@ -136,6 +138,7 @@
 				,m.member_reg_date
 				,m.member_status
 				,l.level_name
+				,m.member_img
 			FROM 
 				tb_member AS m
 			JOIN
@@ -188,6 +191,7 @@
 			,m.member_reg_date
 			,m.member_status
 			,l.level_name
+			,m.member_img
 		FROM 
 			tb_member AS m
 		JOIN
@@ -356,5 +360,11 @@
 		FROM
 			tb_cancel_member
 	</select>
+	<update id="modifyProfile">
+		UPDATE tb_member
+		SET
+			member_img=#{pathName}
+		WHERE member_id=#{memberId}
+	</update>
 	
 </mapper>

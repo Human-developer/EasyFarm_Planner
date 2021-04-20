@@ -68,4 +68,5 @@ public class FreeBoardService {
 		 memberMapper.removeComment(commentsNum);
 	 }
 	
+	
 }
