@@ -1,6 +1,7 @@
 package easyfarm.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -94,7 +95,6 @@ public class ResultController {
 		
 
 		model.addAttribute("etcpayResult", etcpayResult);
-		
 		 model.addAttribute("resourcePayResult", resourcePayResult);
 		 model.addAttribute("insurancePayResult", insurancePayResult);
 		 model.addAttribute("machineLeasePayResult", machineLeasePayResult);
@@ -130,23 +130,82 @@ public class ResultController {
 		return "views/result/resultMain";
 	}
 	
+	
+	//날짜 변경시 데이터 다시 
+		@PostMapping(value = "/result/getPlanDataforResult", produces = "application/json")
+		public @ResponseBody String getPlanDataforResult(Model model,
+				@RequestParam(value = "selectedDate",required = false) String selectedDate,
+				@RequestParam(value = "planWorkphaseCate",required = false) String planWorkphaseCate
+				) {
+			System.out.println( "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+ planWorkphaseCate + selectedDate +"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+			
+			List<Map<String,Object>> planData = null;
+			String defaultDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+			
+			
+			return null;
+		}
+	
+	
+	
+	
 	//계획캘린더에서 실행버튼 클릭시
 	@GetMapping("/result/addResult")
 	public String resultCalendar(Model model,HttpSession session,
-			@RequestParam(value = "projectCode",required = false) String projectCode) {
+			@RequestParam(value = "projectPlanCode",required = false) String projectPlanCode) {
 		
+		//default 선택된 날짜는 오늘
 		String selectedDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 		
-		List<PlanWorkphaseCate> planWorkphaseCate = resultService.getPlanWorkphaseCate(selectedDate, projectCode);
 		if(session.getAttribute("SID") == null) {
 			return "views/member/login";
 		}
-		
-		model.addAttribute("projectCode",projectCode);
-		model.addAttribute("selectedDate",selectedDate);
-		model.addAttribute("planWorkphaseCate",planWorkphaseCate);
-		
-		
+		if(projectPlanCode == null) {
+			projectPlanCode = "project_plan_1";
+		}
+		if(projectPlanCode != null && !"".equals(projectPlanCode.trim())) {
+			/* projectPlanCode로 농가코드, 프로젝트코드, 작업단계코드 조회하기 */
+			Map<String, Object> projectPlanInfo = planService.getProjectPlanInfo(projectPlanCode);
+			String projectPlanN = (String)projectPlanInfo.get("projectPlanN");
+			String projectCode =  (String)projectPlanInfo.get("projectCode");
+			String farmCode =  (String)projectPlanInfo.get("farmCode");
+			System.out.println(projectPlanN + "<<<< projectPlanN    "+projectCode + "<<<< projectCode   "+farmCode + "<<<< farmCode   ");
+			
+			//작업단계코드 조회하기
+			List<PlanWorkphaseCate> planWorkphaseCate = resultService.getPlanWorkphaseCate(selectedDate, projectPlanCode);
+			System.out.println(planWorkphaseCate.get(0).getPlanWorkphaseCode() + "<<<  작업코드@@@");
+			
+			
+			for(int i=0; i < planWorkphaseCate.size();i++) {
+				
+				List<EtcPayResult> etcpayResult = resultService.getEtcPayResult(planWorkphaseCate.get(i).getPlanWorkphaseCode());
+				if(etcpayResult!=null) model.addAttribute("etcpayResult"+i, etcpayResult);
+				
+				//데이터가 없어서 디폴트값으로 함@@@@
+				List<ResourcePayResult> resourcePayResult = resultService.getResourcePayResult();
+				List<InsurancePayResult> insurancePayResult = resultService.getInsurancePayResult();
+				List<MachineLeasePayResult> machineLeasePayResult = resultService.getMachineLeasePayResult();
+				List<MachineUsePayResult> machineUsePayResult = resultService.getMachineUsePayResult();
+				List<ProductGainResult> productGainResult = resultService.getProductGainResult();
+				List<ResourceUsePlanResult> resourceUsePlanResult = resultService.getResourceUsePlanResult();
+				List<TaxPayResult> taxPayResult = resultService.getTaxPayResult();
+				List<WorkForcePayResult> workForcePayResult = resultService.getWorkForcePayResult();
+				
+				model.addAttribute("resourcePayResult", resourcePayResult);
+				model.addAttribute("insurancePayResult", insurancePayResult);
+				model.addAttribute("machineLeasePayResult", machineLeasePayResult);
+				model.addAttribute("machineUsePayResult", machineUsePayResult);
+				model.addAttribute("productGainResult", productGainResult);
+				model.addAttribute("resourceUsePlanResult", resourceUsePlanResult);
+				model.addAttribute("taxPayResult", taxPayResult);
+				model.addAttribute("workForcePayResult", workForcePayResult);
+			}
+			
+			
+			model.addAttribute("projectPlanCode",projectPlanCode);
+			model.addAttribute("selectedDate",selectedDate);
+			model.addAttribute("planWorkphaseCate",planWorkphaseCate);
+		}
 			return "views/result/addResult";
 	}
 	
@@ -161,22 +220,10 @@ public class ResultController {
 	
 	
 	//쓸데없는거 처리장소
-	@GetMapping("/result/select")
+	@GetMapping("/result/dino")
 	public String selectOptions(Model model,HttpSession session) {
 		
-		List<Map<String,Object>> farm = null;
-		
-		 if(session.getAttribute("SID") == null) {
-			return "views/member/login";
-		 }else {
-			 String memberId = (String) session.getAttribute("SID");
-				
-				if(memberId != null) {
-					farm = resultService.getFarmName(memberId);
-					model.addAttribute("farm", farm);
-				 }
-			return "views/result/resultSelect";
-		 }
+			return "views/result/dino";
 		
 		/*
 		List<EtcPay> etcPayPlan = planService.getEtcPayPlan();

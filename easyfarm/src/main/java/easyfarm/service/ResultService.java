@@ -127,6 +127,15 @@ public class ResultService {
 	
 	//아이디가 소속된 농가명 가져오기
 	public List<PlanWorkphaseCate> getPlanWorkphaseCate(String selectedDate, String projectCode) {
+		Map<String,Object> result =  null;
+		
+		List<PlanWorkphaseCate> workPhaseCates = resultmapper.getPlanWorkphaseCate(selectedDate,projectCode);
+		
+		if(workPhaseCates != null) {
+			for(PlanWorkphaseCate workPhaseCate : workPhaseCates) {
+				workPhaseCate.getPlanWorkphaseCateCode();
+			}
+		}
 		return resultmapper.getPlanWorkphaseCate(selectedDate,projectCode);
 	}
 	
