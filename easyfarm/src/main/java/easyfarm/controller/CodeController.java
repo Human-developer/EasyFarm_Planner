@@ -22,6 +22,7 @@ import easyfarm.domain.CropDetailCategory;
 import easyfarm.domain.CropWorkStage;
 import easyfarm.domain.Machine;
 import easyfarm.domain.Member;
+import easyfarm.domain.TaxPayCate;
 import easyfarm.domain.plan.StockCate;
 import easyfarm.service.CropService;
 import easyfarm.service.MachineService;
@@ -41,7 +42,7 @@ public class CodeController {
 		
 		return "views/code/codeMain";
 	}
-	
+	//작물리스트 조회
 	@GetMapping("/code/getCropCode")
 	public String getCropList(Model model) {
 		Map<String, Object> map=  new HashMap<String, Object>();
@@ -49,7 +50,7 @@ public class CodeController {
 		model.addAttribute("cropList" , cropList );
 		return "views/code/getCropCode";
 	}
-	
+	//작업단계 조회
 	@GetMapping("/code/getCropWorkStage")
 	public String getCropWorkStage(Model model) {
 		List<CropWorkStage> cropWorkStage = new ArrayList<CropWorkStage>();
@@ -58,7 +59,7 @@ public class CodeController {
 		model.addAttribute("cropWorkStage" , cropWorkStage );
 		return "views/code/getCropWorkStage";
 	}
-	
+	//상세작업항목조회
 	@GetMapping("/code/getCropDetailCategory")
 	public String getCropDetailCategory(Model model) {
 		List<CropDetailCategory> cropDetailCategory = new ArrayList<CropDetailCategory>();
@@ -67,6 +68,7 @@ public class CodeController {
 		model.addAttribute("cropDetailCategory" , cropDetailCategory );
 		return "views/code/getCropDetailCategory";
 	}
+	//품목카테고리조회
 	@GetMapping("/code/getStockCateList")
 	public String getStockCateList(Model model) {
 		List<StockCate> stockCateList = planService.getStockCateList();
@@ -74,7 +76,15 @@ public class CodeController {
 		System.out.println(stockCateList);
 		return "views/code/getStockCateList";
 	}
-	
+	//공과금카테고리조회
+	@GetMapping("/code/getTaxPayCateList")
+	public String getTaxPayCate(Model model) {
+		List<TaxPayCate> TaxPayCateList = cropService.getTaxPayCateList();
+		model.addAttribute("TaxPayCateList", TaxPayCateList);
+		System.out.println(TaxPayCateList);
+		return "views/code/getTaxPayCateList";
+	}
+	//공통농기계조회
 	@GetMapping("/code/getCommonMachineCode")
 	public String getCommonMachineCode(Model model) {
 		List<Machine> commonMachineList = new ArrayList<Machine>();
@@ -84,7 +94,7 @@ public class CodeController {
 		return "views/code/getCommonMachineCode";
 	}
 	/*===========================================================*/	
-	/*===========================================================*/	
+	//작물등록
 	@PostMapping("/code/addCrop")
 	public String addCrop(Crop crop,HttpSession session) {
 		if(crop != null && !"".equals(crop.getCropCode())){
@@ -98,8 +108,8 @@ public class CodeController {
 	public String addCrop() {
 		return "views/code/addCrop";
 	}
-	/*===========================================================*/
-	
+
+	//작업단계등록
 	@PostMapping("/code/addCropWorkStage")
 	public String addCropWorkStage(CropWorkStage crop,HttpSession session) {
 		if(crop != null && !"".equals(crop.getCropPhaseInfoCode())){
@@ -118,7 +128,7 @@ public class CodeController {
 		return "views/code/addCropWorkStage";		
 	}	
 	
-	/*===========================================================*/
+	//상세작업항목등록
 	@PostMapping("/code/addCropDetailCategory")
 	public String addCropDetailCategory(CropDetailCategory crop,HttpSession session) {
 		if(crop != null && !"".equals(crop.getCommonWorkphaseCateCode())){
@@ -132,8 +142,8 @@ public class CodeController {
 	public String addCropDetailCategory() {
 		return "views/code/addCropDetailCategory";
 	}
-	/*===========================================================*/
-	
+
+	//품목카테고리 등록
 	@PostMapping("/code/addStockCate")
 	public String addStockCate(StockCate stockCate, HttpSession session) {
 		if (stockCate != null && !"".equals(stockCate.getStockCateCode())) {
@@ -147,8 +157,24 @@ public class CodeController {
 	public String addStockCate() {
 		return "views/code/addStockCate";
 	}
-	/*===========================================================*/
-	
+
+	//공과금카테고리 등록
+	@PostMapping("/code/addTaxPayCate")
+	public String addTaxPayCate(TaxPayCate taxPayCate, HttpSession session) {
+		if (taxPayCate != null && !"".equals(taxPayCate.getTaxPayCateCode())) {
+			String memberId = (String) session.getAttribute("SID");
+			cropService.addTaxPayCate(taxPayCate, memberId);
+			System.out.println( " \n\n\n\n\n\n\n\n\n\n\n\test\n\n\n\n\n"+ taxPayCate);
+		}
+		return "redirect:/code/getTaxPayCateList";
+	}
+
+	@RequestMapping(value = "/code/addTaxPayCate" , method = RequestMethod.GET)
+	public String addTaxPayCate() {
+		return "views/code/addTaxPayCate";
+	}
+
+	//공통농기계등록
 	@PostMapping("/code/addCommonMachineCode")
 	public String addCommonMachineCode(Machine machine,HttpSession session) {
 		if(machine != null && !"".equals(machine.getCommonMachineCode())){
@@ -164,8 +190,7 @@ public class CodeController {
 	}
 	
 	/*===========================================================*/
-	/*===========================================================*/
-	
+	//작물수정
 	@PostMapping("/code/modifyCrop")
 	public String modifyCrop(Crop crop,HttpSession session) {
 		if(crop != null && !"".equals(crop.getCropCode())){
@@ -182,7 +207,8 @@ public class CodeController {
 		model.addAttribute("crop", crop);
 		return "views/code/modifyCrop";		
 	}	
-	/*===========================================================*/
+
+	//작업단계 수정
 	@PostMapping("/code/modifyCropWorkStage") 
 	public String modifyCropWorkStage(CropWorkStage cropWorkStage) {
 		if(cropWorkStage != null && !"".equals(cropWorkStage.getCropPhaseInfoCode())){
@@ -197,7 +223,8 @@ public class CodeController {
 		model.addAttribute("cropWorkStage", cropWorkStage);
 		return "views/code/modifyCropWorkStage";		
 	}	
-	/*===========================================================*/
+
+	//상세작업항목　수정
 	@PostMapping("/code/modifyCropDetailCategory") 
 	public String modifyCropDetailCategory(CropDetailCategory cropDetailCategory) {
 		if(cropDetailCategory != null && !"".equals(cropDetailCategory.getCommonWorkphaseCateCode())){
@@ -212,9 +239,38 @@ public class CodeController {
 		CropDetailCategory cropDetailCategory = cropService.getCropDetailCategory(commonWorkphaseCateCode);
 		model.addAttribute("cropDetailCategory", cropDetailCategory);
 		return "views/code/modifyCropDetailCategory";		
-	}	
+	}
 	
-	/*===========================================================*/
+	//품목카테고리 수정
+	@PostMapping("/code/modifyStockCate")
+	public String modifyStockCate(StockCate stockCate) {
+		if(stockCate != null && !"".equals(stockCate.getStockCateName()))
+			cropService.modifyStockCate(stockCate);
+		return "redirect:/code/getStockCateList";
+	}
+	@GetMapping("/code/modifyStockCate")
+	public String modifyStockCate(Model model,
+			@RequestParam(name = "stockCateCode" ,required = false)String StockCateCode) {
+		StockCate stockCate = cropService.getInfoStockCate(StockCateCode);
+		model.addAttribute("stockCate",stockCate);
+		return "views/code/modifyStockCate"; //화면단만들기	
+	}
+	//공과금 카테고리 수정
+	@PostMapping("/code/modifyTaxPayCate")
+	public String modifyTaxPayCate(TaxPayCate TaxPayCate) {
+		if(TaxPayCate != null && !"".equals(TaxPayCate.getTaxPayCateName()))
+			cropService.modifyTaxPayCate(TaxPayCate);
+		return "redirect:/code/getTaxPayCateList";
+	}
+	@GetMapping("/code/modifyTaxPayCate")
+	public String modifyTaxPayCate(Model model,
+			@RequestParam(name = "taxPayCateCode" ,required = false)String taxPayCateCode) {
+		TaxPayCate taxPayCate = cropService.getInfoTaxPayCate(taxPayCateCode);
+		model.addAttribute("taxPayCate",taxPayCate);
+		return "views/code/modifyTaxPayCate"; //화면단만들기	
+	}
+	
+	//공통농기계　수정		
 	@PostMapping("/code/modifyCommonMachine") 
 	public String modifyCommonMachine(Machine machine) {
 		if(machine != null && !"".equals(machine.getCommonMachineName())){
@@ -231,7 +287,6 @@ public class CodeController {
 		return "views/code/modifyCommonMachine";		
 	}	
 	
-	/*===========================================================*/
 	/*===========================================================*/
 	//작물 중복체크
 	@PostMapping("/ajax/cropCheck")
@@ -251,7 +306,6 @@ public class CodeController {
 		return result;
 	}
 	
-	/*===========================================================*/
 	//작업단계 중복체크
 	@PostMapping("/ajax/cropWorkphaseCheck")
 	public @ResponseBody String cropWorkphaseCheck(@RequestParam(value = "workphase", required = false) String workphase,
@@ -283,4 +337,18 @@ public class CodeController {
 		return result;
 	}
 	/*===========================================================*/
+	 //품목카테고리 삭제
+	 @GetMapping("/code/removeStockCate")
+	 public String removeStockCate (@RequestParam(value = "stockCateCode",required = false) String stockCateCode) {
+    	cropService.removeStockCate(stockCateCode);
+		return "redirect:/code/getStockCateList";
+	 }
+	 //공과금카테고리 삭제
+	 @GetMapping("/code/removeTaxPayCate")
+	 public String removeTaxPayCate (@RequestParam(value = "TaxPayCateCode",required = false) String TaxPayCateCode) {
+		 cropService.removeTaxPayCate(TaxPayCateCode);
+		 return "redirect:/code/getTaxPayCateList";
+	 }
+	
+	
 }

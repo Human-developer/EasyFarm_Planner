@@ -4,27 +4,29 @@
 	  layout:decorate="@{layout/default}">
 	
 	<th:block layout:fragment="customTitle">
-		<title>공통 농기계코드리스트</title>
-	</th:block>
-	<th:block layout:fragment="pageTitle">
-		공통 농기계코드
+		<title>공과금 카테고리 리스트</title>
 	</th:block>
 	
-		<!-- 사용자 정의 css 라이브러리 -->
+	<th:block layout:fragment="pageTitle">
+		공과금 카테고리
+	</th:block>
+	
+	<!-- 사용자 정의 css 라이브러리 -->
 	<th:block layout:fragment="customCssLib">
 		<!-- Data Tables -->
 		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/media/css/dataTables.bootstrap.min.css}">
 		<link rel="stylesheet" th:href="@{/assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/sys/sysStyle.css}">
 	</th:block>
 	
 	<th:block layout:fragment="customContents">
-	<div class="box-content" >
+		<div class="box-content">
 		<div class="pull-left">
-			<div style="font-size: 24px;">공통농기계 리스트</div>
+			<div style="font-size: 24px;">공과금 카테고리 리스트</div>
 		</div>
 		<div class="pull-right">
-			<a th:href="@{/code/addCommonMachineCode}"  class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
-				공통농기계 등록
+			<a th:href="@{/code/addTaxPayCate}"  class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
+				공과금 카테고리 등록
 			</a>
 		</div>
 		<div style="margin-top: 6px;">
@@ -32,51 +34,37 @@
 		</div>
 		<hr>
 		<div class="table-responsive">
-		
 		<table id="test" class="table table-striped table-bordered display" style="width:100%">
 			<thead>
 				<tr>
-					<th class="hidden">공통농기계코드</th>
-					<th>농기계명 </th>
-					<th>작성자아이디 </th>
-					<th>작성일자</th>
-					<th class="hidden" th:if = "${session.SLEVEL == '관리자'}">수정</th>
-					<th class="hidden" th:if = "${session.SLEVEL == '관리자'}">삭제</th>
+					<th class="hidden">공과금 카테고리 코드 			</th>
+					<th>공과금 카테고리		</th>
+					<th>사용유무			</th>
+					<th>작성자아이디 		</th>
+					<th>작성일자			</th>
+					<th th:if = "${session.SLEVEL == '관리자'}">수정</th>
+					<th th:if = "${session.SLEVEL == '관리자'}">삭제</th>
 				</tr>			
 			</thead>
 			<tbody>
-				<tr th:if="${#lists.size(commonMachineList)} > 0" th:each="l:${commonMachineList}">
-					<!-- <td th:text="${l.cropPhaseInfoCode}"></td> -->
-					<td th:hidden="${l.commonMachineCode}"></td>
-					<td th:text="${l.commonMachineName}"></td>
+				<tr th:if="${#lists.size(TaxPayCateList)} > 0" th:each="l, st:${TaxPayCateList}">
+					<td th:hidden="${l.taxPayCateCode}"></td>
+					<td th:text="${l.taxPayCateName}"></td>
+					<td th:text="${l.useStatus}"></td>
 					<td th:text="${l.regMemberId}"></td>
 					<td th:text="${l.regDate}"></td>
-					<td class="hidden" th:if = "${session.SLEVEL == '관리자'}">
-						<a th:href="@{/code/modifyCommonMachine(commonMachineCode=${l.commonMachineCode})}">수정</a>
+					<td th:if = "${session.SLEVEL == '관리자'}">
+						<a th:href="@{/code/modifyTaxPayCate(taxPayCateCode=${l.taxPayCateCode})}">수정</a>
 					</td>
-					<td class="hidden" th:if = "${session.SLEVEL == '관리자'}">
-						<a th:href="@{/#(commonMachineCode=${l.commonMachineCode})}">삭제</a>		
+					<td th:if = "${session.SLEVEL == '관리자'}">
+						<a th:href="@{/code/removeTaxPayCate(taxPayCateCode=${l.taxPayCateCode})}">삭제</a>		
 					</td>
-				</tr>
-				<tr th:unless="${#lists.size(commonMachineList)} != 0">
-					<td colspan="10" style="text-align: center;">조회된 내용이 없습니다.</td>
 				</tr>
 			</tbody>
 		</table>
 		</div>
-		</div>
 	</th:block>
-<!-- 사용자 정의 자바스크립트 라이브러리 -->
-	<!-- <th:block layout:fragment="customScriptLib">
-		<script th:src="@{/assets/plugin/datatables/media/js/jquery.dataTables.min.js}"></script>
-		<script th:src="@{/assets/plugin/datatables/media/js/dataTables.bootstrap.min.js}"></script>
-		<script th:src="@{/assets/plugin/datatables/extensions/Responsive/js/dataTables.responsive.min.js}"></script>
-		<script th:src="@{/assets/plugin/datatables/extensions/Responsive/js/responsive.bootstrap.min.js}"></script>
-		<script th:src="@{/assets/scripts/datatables.demo.min.js}"></script>
-		<script th:src="@{/assets/scripts/main.min.js}"></script>
-		<script th:src="@{/assets/plugin/jquery-ui/jquery-ui.min.js}"></script>
-		<script th:src="@{/assets/plugin/jquery-ui/jquery.ui.touch-punch.min.js}"></script>
-	</th:block> -->
+	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
 	<th:block layout:fragment="customScriptLib">
 		<div th:replace="fragments/dataTable :: dataTable" th:remove="tag"></div>	
@@ -97,7 +85,7 @@
 		        "loadingRecords" : "로딩중...",
 		        "processing" : "처리중...",
 		        "search" : "검색 : ",
-		        "zeroRecords" : "검색된 농기계가 없습니다.",
+		        "zeroRecords" : "검색된 공과금 카테고리가 없습니다.",
 		        "paginate" : {
 		            "first" : "첫 페이지",
 		            "last" : "마지막 페이지",
@@ -114,4 +102,5 @@
 		
 		</script>
 	</th:block>
+
 </html>

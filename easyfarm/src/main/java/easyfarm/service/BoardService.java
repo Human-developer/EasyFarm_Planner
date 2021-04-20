@@ -36,6 +36,10 @@ private BoardMapper boardMapper;
 		
 		return boardMapper.passCheck(code,password);
 	}
+
+	public int removeQnaBoard(String code) {
+		return boardMapper.removeQnaBoard(code);
+	}
 	
 	
 }
