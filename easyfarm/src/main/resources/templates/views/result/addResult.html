@@ -39,6 +39,12 @@
 		
 		<!-- 데이트피커 플러그인 css, js파일 연결 -->
 		<link rel="stylesheet" href="/assets/plugin/air-datepicker/css/datepicker.min.css">
+		
+		
+		
+		<!-- Touch Spin -->
+		<link rel="stylesheet" href="/assets/plugin/touchspin/jquery.bootstrap-touchspin.min.css">
+		
 	</th:block>
 	
 	<!-- 사용자 정의 css -->
@@ -77,9 +83,440 @@
 					    <div id="myTabContent" class="tab-content" style="overflow: auto;">
 					      <div role="tabpanel" class="tab-pane fade  active in" id="tab1" aria-labelledby="tab1-tab">
 								[[${planWorkphaseCate}]]
+							<div class="box-content card white">
+								<div class="box-title">인건비 지출계획</div>
+								<div class="card-content">
+									<div class="table-responsive">
+										<table class="table table-hover" style="width:100%">
+											<thead>
+												<tr>
+													<th>근무인원</th>
+													<th>근무일수</th>
+													<th>일일인건비</th>
+													<th>인건비합계</th>
+												</tr>
+											</thead>
+											<tbody>
+												<th:block th:if="${#lists.size(workForcePayResult) > 0}" th:each="wf : ${workForcePayResult}">
+													<tr>
+														<td th:text="${wf.workforcePayPlan.workforceCount}"></td>
+														<td th:text="${wf.workforcePayPlan.workforceHowlong}"></td>
+														<td th:text="${wf.workforcePayPlan.workforcePayDay}"></td>
+														<td th:text="${wf.workforcePayPlan.workforcePayTotal}"></td>
+													</tr>
+												</th:block>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="box-title">인건비 실행결과</div>
+								<div class="card-content">
+									<div class="table-responsive">
+										<table class="table table-hover" style="width:100%">
+											<thead>
+												<tr>
+													<th>근무인원</th>
+													<th>근무일수</th>
+													<th>일일인건비</th>
+													<th>인건비합계</th>
+												</tr>
+											</thead>
+											<tbody id="workForcePayResult">
+												<th:block th:each="wf : ${workForcePayResult}">
+													<tr>
+														<td>
+															<input  th:value="${wf.workforcePayPlan.workforceCount}" class="form-control"/>
+														</td>
+														<td>
+															<input  th:value="${wf.workforcePayPlan.workforceHowlong}" class="form-control"/>
+														</td>
+														<td>
+															<input th:value="${wf.workforcePayPlan.workforcePayDay}" class="form-control"/>
+														</td>
+														<td>
+															<input th:value="${wf.workforcePayPlan.workforcePayTotal}" class="form-control"/>
+														</td>
+													</tr>
+												</th:block>
+											</tbody>
+										</table>
+										<button id="etcPayResultSubmit" class ="btn btn-xs btn-success pull-right">결과 작성 마감</button>
+									</div>
+								</div>
+							</div>
+							
+							<div class="box-content card white">
+								<div class="box-title">농기계 대여 지출계획</div>
+								<div class="card-content">
+									<div class="table-responsive">
+										<table class="table table-hover" style="width:100%">
+											<thead>
+												<tr>
+													<th>거래처</th>
+													<th>농기계종류</th>
+													<th>대여일수</th>
+													<th>일일대여료</th>
+													<th>총대여료합계</th>
+												</tr>
+											</thead>
+											<tbody>
+												<th:block th:if="${#lists.size(machineLeasePayResult) > 0}" th:each="ml : ${machineLeasePayResult}">
+													<tr>
+														<td th:text="${ml.machineLeasePayPlan.clientCode}"></td>
+														<td th:text="${ml.machineLeasePayPlan.farmBookmarkMachineCode}"></td>
+														<td th:text="${ml.machineLeasePayPlan.machineLeaseHowlong}"></td>
+														<td th:text="${ml.machineLeasePayPlan.machineLeasePayDay}"></td>
+														<td th:text="${ml.machineLeasePayPlan.machineLeasePayTotal}"></td>
+													</tr>
+												</th:block>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="box-title">농기계 대여 실행결과</div>
+								<div class="card-content">
+									<div class="table-responsive">
+										<table class="table table-hover" style="width:100%">
+											<thead>
+												<tr>
+													<th>거래처</th>
+													<th>농기계종류</th>
+													<th>대여일수</th>
+													<th>일일대여료</th>
+													<th>총대여료합계</th>
+												</tr>
+											</thead>
+											<tbody id="machineLeasePayResult">
+												<th:block th:each="ml : ${machineLeasePayResult}">
+													<tr>
+														<td>
+															<input  th:value="${ml.machineLeasePayPlan.clientCode}" class="form-control"/>
+														</td>
+														<td>
+															<input  th:value="${ml.machineLeasePayPlan.farmBookmarkMachineCode}" class="form-control"/>
+														</td>
+														<td>
+															<input th:value="${ml.machineLeasePayPlan.machineLeaseHowlong}" class="form-control"/>
+														</td>
+														<td>
+															<input th:value="${ml.machineLeasePayPlan.machineLeasePayDay}" class="form-control"/>
+														</td>
+														<td>
+															<input th:value="${ml.machineLeasePayPlan.machineLeasePayTotal}" class="form-control"/>
+														</td>
+													</tr>
+												</th:block>
+											</tbody>
+										</table>
+										<button id="etcPayResultSubmit" class ="btn btn-xs btn-success pull-right">결과 작성 마감</button>
+									</div>
+								</div>
+							</div>
+							<div class="box-content card white">
+								<div class="box-title">보유 농기계 사용계획</div>
+								<div class="card-content">
+									<div class="table-responsive">
+										<table class="table table-hover" style="width:100%">
+											<thead>
+												<tr>
+													<th>농기계종류</th>
+													<th>작성자</th>
+													<th>작성일</th>
+												</tr>
+											</thead>
+											<tbody>
+												<th:block th:if="${#lists.size(machineUsePayResult) > 0}" th:each="mu : ${machineUsePayResult}">
+													<tr>
+														<td th:text="${mu.machineUsePayPlan.farmRetainMachineCode}"></td>
+														<td th:text="${mu.machineUsePayPlan.regMemberId}"></td>
+														<td th:text="${mu.machineUsePayPlan.regDate}"></td>
+													</tr>
+												</th:block>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="box-title">보유 농기계 사용결과</div>
+								<div class="card-content">
+									<div class="table-responsive">
+										<table class="table table-hover" style="width:100%">
+											<thead>
+												<tr>
+													<th>농기계종류</th>
+													<th>작성자</th>
+													<th>작성일</th>
+												</tr>
+											</thead>
+											<tbody id="machineLeasePayResult">
+												<th:block th:each="mu : ${machineUsePayResult}">
+													<tr>
+														<td>
+															<input  th:value="${mu.machineUsePayPlan.farmRetainMachineCode}" class="form-control"/>
+														</td>
+														<td>
+															<input  th:value="${mu.machineUsePayPlan.regMemberId}" class="form-control"/>
+														</td>
+														<td>
+															<input th:value="${mu.machineUsePayPlan.regDate}" class="form-control"/>
+														</td>
+													</tr>
+												</th:block>
+											</tbody>
+										</table>
+										<button id="etcPayResultSubmit" class ="btn btn-xs btn-success pull-right">결과 작성 마감</button>
+									</div>
+								</div>
+							</div>
+							<div class="box-content card white">
+								<div class="box-title">농자재매입 지출계획</div>
+								<div class="card-content">
+									<div class="table-responsive">
+										<table class="table table-hover" style="width:100%">
+											<thead>
+												<tr>
+													<th>품목명</th>
+													<th>입고수량</th>
+													<th>입고단위</th>
+													<th>입고단가</th>
+													<th>총구매비</th>
+												</tr>
+											</thead>
+											<tbody>
+												<th:block th:if="${#lists.size(resourcePayResult) > 0}" th:each="rp : ${resourcePayResult}">
+													<tr>
+														<td th:text="${rp.resourcePayPlan.stockItemName}"></td>
+														<td th:text="${rp.resourcePayPlan.stockItemIncomeQuantity+'('+rp.resourcePayPlan.stockItemQuantityUnit+')'}"></td>
+														<td th:text="${rp.resourcePayPlan.stockItemIncomeQuantityTotal+'('+rp.resourcePayPlan.stockItemQuantityCapacityUnit+')'}"></td>
+														<td th:text="${rp.resourcePayPlan.stockItemIncomePerPay}"></td>
+														<td th:text="${rp.resourcePayPlan.stockItemTotalPay}"></td>
+													</tr>
+												</th:block>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="box-title">농자재매입 매입결과</div>
+								<div class="card-content">
+									<div class="table-responsive">
+										<table class="table table-hover" style="width:100%">
+											<thead>
+												<tr>
+													<th>품목명</th>
+													<th>입고수량</th>
+													<th>입고단위</th>
+													<th>입고단가</th>
+													<th>총구매비</th>
+												</tr>
+											</thead>
+											<tbody id="resourcePayResult">
+												<th:block th:each="rp : ${resourcePayResult}">
+													<tr>
+														<td th:text="${rp.resourcePayPlan.stockItemName}"></td>
+														<td>
+															<input  th:value="${rp.resourcePayPlan.stockItemIncomeQuantity}" class="form-control eksdnl" th:data-eksdnl ="${rp.resourcePayPlan.stockItemQuantityUnit}"/>
+														</td>
+														<td>
+															<input th:value="${rp.resourcePayPlan.stockItemIncomeQuantityTotal}" class="form-control eksdnl" th:data-eksdnl ="${rp.resourcePayPlan.stockItemQuantityCapacityUnit}"/>
+														</td>
+														<td>
+															<input th:value="${rp.resourcePayPlan.stockItemIncomePerPay}" class="form-control"/>
+														</td>
+														<td>
+															<input th:value="${rp.resourcePayPlan.stockItemTotalPay}" class="form-control"/>
+														</td>
+													</tr>
+												</th:block>
+											</tbody>
+										</table>
+										<button id="etcPayResultSubmit" class ="btn btn-xs btn-success pull-right">결과 작성 마감</button>
+									</div>
+								</div>
+							</div>
+							<div class="box-content card white">
+								<div class="box-title">공과금 지출계획</div>
+								<div class="card-content">
+									<div class="table-responsive">
+										<table class="table table-hover" style="width:100%">
+											<thead>
+												<tr>
+													<th>거래처명</th>
+													<th>추가메모</th>
+													<th>납부월</th>
+													<th>납부금액</th>
+												</tr>
+											</thead>
+											<tbody>
+												<th:block th:if="${#lists.size(taxPayResult) > 0}" th:each="tp : ${taxPayResult}">
+													<tr>
+														<td th:text="${tp.taxPayPlan.clientCode}"></td>
+														<td th:text="${tp.taxPayPlan.taxPayDetail}"></td>
+														<td th:text="${tp.taxPayPlan.taxPayWhatmonth}"></td>
+														<td th:text="${tp.taxPayPlan.taxPay}"></td>
+													</tr>
+												</th:block>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="box-title">공과금 지출실행</div>
+								<div class="card-content">
+									<div class="table-responsive">
+										<table class="table table-hover" style="width:100%">
+											<thead>
+												<tr>
+													<th>거래처명</th>
+													<th>추가메모</th>
+													<th>납부월</th>
+													<th>납부금액</th>
+												</tr>
+											</thead>
+											<tbody id="taxPayResult">
+												<th:block th:each="tp : ${taxPayResult}">
+													<tr>
+														<td th:text="${tp.taxPayPlan.clientCode}"></td>
+														<td th:text="${tp.taxPayPlan.taxPayDetail}"></td>
+														<td th:text="${tp.taxPayPlan.taxPayWhatmonth}"></td>
+														<td>
+															<input th:value="${tp.taxPayPlan.taxPay}" class="form-control"/>
+														</td>
+													</tr>
+												</th:block>
+											</tbody>
+										</table>
+										<button id="etcPayResultSubmit" class ="btn btn-xs btn-success pull-right">결과 작성 마감</button>
+									</div>
+								</div>
+							</div>
+							
+							<div class="box-content card white">
+								<div class="box-title">기타비용 지출계획</div>
+								<div class="card-content">
+									<div class="table-responsive">
+										<table class="table table-hover" style="width:100%">
+											<thead>
+												<tr>
+													<th>거래처명</th>
+													<th>지출항목</th>
+													<th>지출금액</th>
+													<th>지출일자</th>
+												</tr>
+											</thead>
+											<tbody>
+												<th:block th:if="${#lists.size(etcpayResult) > 0}" th:each="ep : ${etcpayResult}">
+													<tr>
+														<td th:text="${ep.etcPayPlan.clientCode}"></td>
+														<td th:text="${ep.etcPayPlan.etcPayDetail}"></td>
+														<td th:text="${ep.etcPayPlan.etcPay}"></td>
+														<td th:text="${ep.etcPayPlan.etcPayDate}"></td>
+													</tr>
+												</th:block>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								
+								<div class="box-title">기타비용 지출실행</div>
+								<div class="card-content">
+									<div class="table-responsive">
+										<table class="table table-hover" style="width:100%">
+											<thead>
+												<tr>
+													<th>거래처명</th>
+													<th>지출항목</th>
+													<th>지출금액</th>
+													<th>지출일자</th>
+												</tr>
+											</thead>
+											<tbody id="taxPayResult">
+												<th:block th:each="ep : ${etcpayResult}">
+													<tr>
+														<td th:text="${ep.etcPayPlan.clientCode}"></td>
+														<td th:text="${ep.etcPayPlan.etcPayDetail}"></td>
+														<td>
+															<input th:value="${ep.etcPayPlan.etcPay}" class="form-control"/>
+														</td>
+														<td>
+															<input th:value="${ep.etcPayPlan.etcPayDate}" class="form-control"/>
+														</td>
+													</tr>
+												</th:block>
+											</tbody>
+										</table>
+										<button id="etcPayResultSubmit" class ="btn btn-xs btn-success pull-right">결과 작성 마감</button>
+									</div>
+								</div>
+							</div>
+							
+							<div class="box-content card white">
+							<div class="box-title">농자재사용 지출계획</div>
+							<div class="card-content">
+								<div class="table-responsive">
+									<table class="table table-hover" style="width:100%">
+										<thead>
+											<tr>
+												<th class="hidden">농자재소모현황코드</th>
+												<th>카테고리</th>
+												<th>품목명</th>
+												<th>사용수량</th>
+												<th>수량단위</th>
+												<th>사용용량</th>
+												<th>용량단위</th>
+												<th>사용량금액환산</th>
+											</tr>
+										</thead>
+										<tbody>
+											<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+												<tr>
+													<td th:text="${1}" class="hidden"></td>
+													<td th:text="${2}"></td>
+													<td th:text="${3}"></td>
+													<td th:text="${4}"></td>
+													<td th:text="${5}"></td>
+													<td th:text="${6}"></td>
+													<td th:text="${7}"></td>
+													<td th:text="${8}"></td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							
+							
+							<div class="box-title">생산물 수확계획</div>
+							<div class="card-content">
+								<div class="table-responsive">
+									<table class="table table-hover" style="width:100%">
+										<thead>
+											<tr>
+												<th class="hidden">생산물수확계획코드</th>
+												<th>카테고리</th>
+												<th>품목명</th>
+												<th>수확수량</th>
+												<th>수확용량</th>
+												<th>추가메모</th>
+											</tr>
+										</thead>
+										<tbody>
+											<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+												<tr>
+													<td th:text="${1}" class="hidden"></td>
+													<td th:text="${2}"></td>
+													<td th:text="${3}"></td>
+													<td th:text="${4}"></td>
+													<td th:text="${5}"></td>
+													<td th:text="${6}"></td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							
+						</div>
 					      </div>
 					      <div role="tabpanel" class="tab-pane fade " id="tab2" aria-labelledby="tab2-tab">
-								[[${planWorkphaseCate[0].planWorkphaseCateBegin}]]
+								asd
 					      </div>
 					      <div role="tabpanel" class="tab-pane fade " id="tab3" aria-labelledby="tab3-tab">
 								[[${planWorkphaseCate[0].planWorkphaseCateBegin}]]
@@ -112,6 +549,8 @@
 		<script src="/assets/plugin/air-datepicker/js/i18n/datepicker.kr.js"></script>
 		<script th:src="@{/assets/plugin/daterangepicker/daterangepicker.js}"></script>
 			
+			
+		<script th:src="@{/assets/plugin/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
 	</th:block>
 	
 	
@@ -130,16 +569,46 @@
 			
 			/* datepicker */
 			var date = new Date();
+			$('[name="selectedDate"]').val("날짜를 선택해 주세요");
 			var beginDate = $('[name="selectedDate"]').datepicker({
 			  //년-월-일
+			
 			  startDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
 			  language: 'kr',
 			  autoClose: true,
 			  //선택한 날짜를 가져옴
+			  
 			  onSelect: function (date) {
 			      //시작일 datepicker에 최대날짜를 방금 클릭한 날짜로 설정
-			      console.log($('[name="selectedDate"]').val() + "<<<value")
+			      var selectedDate = $('[name="selectedDate"]').val();
+			      console.log(selectedDate + "<<<selectedDate");
+			      
+			      var request = $.ajax({
+		               url:"/result/getPlanDataforResult",
+		               method:"post", 
+		               data : {
+		            	   	"selectedDate":selectedDate,
+		            	   	"planWorkphaseCate":"[[${planWorkphaseCate}]]"
+		            	   	},
+		               datatype: "json",
+		            });
+		            request.done(function(data)
+		            {
+		            	for(var i=0; i < data.length; i++)
+		            	{
+		            		var code =  data[i].projectCode;
+		            		var value = data[i].projectName;
+		            		Project[code] = value;
+		            	}
+		            });
+		            request.fail(function( jqXHR, textStatus )
+		            {
+		               alert( "Request failed : " + textStatus );
+		            });
+			      
+			      
 			  }
+			
 			}).data('datepicker');
 			
 			
@@ -275,6 +744,34 @@
 			
 		</script>
 	 -->
+	 <script type="text/javascript">
+	 	$('.btn').click(function(){
+	 		if($(this).text() == '결과 작성 마감'){
+		 		$(this).parent().find('input').attr('readonly','readonly');
+		 		$(this).text('취소').removeClass('btn-success').addClass('btn-danger');
+		 		
+	 		}
+	 		else{
+	 			$(this).parent().find('input').removeAttr('readonly');
+	 			$(this).text('결과 작성 마감').removeClass('btn-danger').addClass('btn-success');
+	 		}
+	 	})
+	 	
+	 	
+	 	
+	 	 $(".eksdnl").each(function(){
+	 		var eksdnl = $(this).attr('data-eksdnl');
+	 		$(this).TouchSpin({
+		         verticalbuttons: true,
+		         min : 0,
+		         max : 10000000000,
+		         postfix : eksdnl
+		      }); 
+	 		$(this).parent().find('.input-group-btn-vertical').remove();
+	 	 })
+		      
+		
+	 </script>
 	
 	
 </html>

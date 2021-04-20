@@ -37,7 +37,7 @@
 		WHERE
 			run_status = '실행전'
 			AND
-			#{selectedDate} BETWEEN plan_workphase_begin AND plan_workphase_end
+			'2021-04-15' BETWEEN plan_workphase_begin AND plan_workphase_end
 			AND
 			project_plan_code ='project_plan_1'
   	</select>
@@ -83,7 +83,7 @@
 			tb_farm AS f
 		on
 			m.farm_code=f.farm_code
-		WHERE
+		WHERE 
 			m.farm_member_id = #{memberId} 
   	</select>
   	
@@ -116,7 +116,6 @@
 			p.etc_pay_code
 			,p.plan_workphase_code
 			,p.plan_workphase_cate_code
-			,p.etc_pay_date
 			,p.etc_pay
 			,p.etc_pay_detail
 			,p.reg_member_id
@@ -141,30 +140,34 @@
    </select>
   
     	<resultMap type="ResourcePayResult" id="resultResourcePayMap">
-	  		<id column="farm_resource_pay_run_code"  			property="farmResourcePayRunCode"/>
-	  		<result column="farm_resource_pay_code" 			property="farmResourcePayCode" />
-	  		<result column="farm_code" 							property="farmCode" />
-	  		<result column="client_code" 						property="clientCode" />
-	  		<result column="stock_item_code" 					property="stockItemCode" />
-	  		<result column="stock_item_income_quantity" 		property="stockItemIncomeQuantity" />
-	  		<result column="stock_item_income_quantity_total" 	property="stockItemIncomeQuantityTotal" />
-	  		<result column="stock_item_income_per_pay" 			property="stockItemIncomePerPay" />
-	  		<result column="stock_item_total_pay" 				property="stockItemTotalPay" />
-	  		<result column="stock_item_income_date" 			property="stockItemIncomeDate" />
-	  		<result column="complete_status" 					property="completeStatus" /> 
-	  		<result column="reg_member_id" 						property="regMemberId" /> 
-	  		<result column="reg_date" 							property="regDate" />
+	  		<id column="farm_resource_pay_run_code"  			property="farmResourcePayRunCode"/>         <!--농가별농자재매입지출계획대비실행코드-->                                   
+	  		<result column="farm_resource_pay_code" 			property="farmResourcePayCode" />           <!--농가별농자재매입지출계획코드-->        
+	  		<result column="farm_code" 							property="farmCode" />                      <!--농가코드-->       
+	  		<result column="client_code" 						property="clientCode" />                    <!--거래처코드-->       
+	  		<result column="stock_item_code" 					property="stockItemCode" />                 <!--품목코드-->             
+	  		<result column="stock_item_income_quantity" 		property="stockItemIncomeQuantity" />       <!--입고수량-->               
+	  		<result column="stock_item_income_quantity_total" 	property="stockItemIncomeQuantityTotal" />  <!--입고용량소계-->              
+	  		<result column="stock_item_income_per_pay" 			property="stockItemIncomePerPay" />         <!--입고단가-->              
+	  		<result column="stock_item_total_pay" 				property="stockItemTotalPay" />             <!--총구매비-->            
+	  		<result column="stock_item_income_date" 			property="stockItemIncomeDate" />           <!--입고일-->               
+	  		<result column="complete_status" 					property="completeStatus" />               	<!--실행완료여부-->                           
+	  		<result column="reg_member_id" 						property="regMemberId" />                   <!--작성자아이디-->                         
+	  		<result column="reg_date" 							property="regDate" />						<!--작성일-->
 	  	<association property="resourcePayPlan" javaType="ResourcePay">
-	  		<id column="resource_pay_code" 						property="resourcePayCode"/>
-	  		<result column="farm_code" 							property="farmCode" />
-	  		<result column="client_code" 						property="clientCode" />
-	  		<result column="stock_item_code" 					property="stockItemCode" />
-	  		<result column="stock_item_income_quantity" 		property="stockItemIncomeQuantity" />
-	  		<result column="stock_item_income_quantity_total" 	property="stockItemIncomeQuantityTotal" />
-	  		<result column="stock_item_income_per_pay" 			property="stockItemIncomePerPay" />
-	  		<result column="stock_item_total_pay" 				property="stockItemTotalPay" />
-	  		<result column="reg_member_id" 						property="regMemberId" />
-	  		<result column="reg_date" 							property="regDate" />
+	  		<id column="resource_pay_code" 						property="resourcePayCode"/>				<!--농가별농자재매입지출계획코드-->
+	  		<result column="farm_code" 							property="farmCode" />						<!--농가코드-->
+	  		<result column="client_code" 						property="clientCode" />					<!--거래처코드-->
+	  		<result column="stock_item_code" 					property="stockItemCode" />					<!--품목코드-->
+	  		<result column="stock_item_income_quantity" 		property="stockItemIncomeQuantity" />		<!--입고수량-->
+	  		<result column="stock_item_income_quantity_total" 	property="stockItemIncomeQuantityTotal" />	<!--입고용량소계-->
+	  		<result column="stock_item_income_per_pay" 			property="stockItemIncomePerPay" />			<!--입고단가-->
+	  		<result column="stock_item_total_pay" 				property="stockItemTotalPay" />				<!--총구매비-->
+	  		<result column="reg_member_id" 						property="regMemberId" />                   <!--작성자아이디--> 
+	  		<result column="reg_date" 							property="regDate" />						<!--작성일-->
+	  		<result column="stock_item_name" 					property="stockItemName" />					<!--품목명-->
+	  		<result column="use_status" 						property="useStatus" />						<!--사용상태-->
+	  		<result column="stock_item_quantity_unit" 			property="stockItemQuantityUnit" />			<!--수량단위-->
+	  		<result column="stock_item_quantity_capacity_unit" 	property="stockItemQuantityCapacityUnit" />	<!--상세용량단위-->
 	  	</association>
   	</resultMap>
   
@@ -193,12 +196,20 @@
 		, p.stock_item_total_pay
 		, p.reg_member_id
 		, p.reg_date
+		, i.stock_item_name
+		, i.use_status
+		, i.stock_item_quantity_unit
+		, i.stock_item_quantity_capacity_unit
 		FROM
 		tb_farm_resource_pay_run AS r
-		JOIN
+		inner JOIN
 		tb_exp_resource_pay AS p
 		ON
 		r.farm_resource_pay_code=p.resource_pay_code
+		INNER join
+		tb_stock_item AS i
+		ON 
+		p.stock_item_code=i.stock_item_code
 		WHERE
 		p.farm_code='farm_1'
    </select>
@@ -335,10 +346,10 @@
 	  		<result column="reg_member_id" 				property="regMemberId" />       	<!--작성자아이디-->            
 	  		<result column="reg_date" 					property="regDate" />           	<!--작성일-->                              
 	  	<association property="machineUsePayPlan" javaType="MachineUsePay">
-	  		<id column="machine_use_code" 				property="machineUseCode"/>			<!--농가별농자재매입지출계획코드-->
-	  		<result column="plan_workphase_code" 		property="planWorkphaseCode" />		<!--인건비지출계획대비실행-->
-	  		<result column="plan_workphase_cate_code" 	property="planWorkphaseCateCode" />	<!--인건비지출계획대비실행-->
-	  		<result column="farm_retain_machine_code" 	property="farmRetainMachineCode" />	<!--인건비지출계획대비실행-->
+	  		<id column="machine_use_code" 				property="machineUseCode"/>			<!--농기계사용지출계획-->
+	  		<result column="plan_workphase_code" 		property="planWorkphaseCode" />		<!--기간별작업단계계획코드-->
+	  		<result column="plan_workphase_cate_code" 	property="planWorkphaseCateCode" />	<!--작업단계별상세항목코드-->
+	  		<result column="farm_retain_machine_code" 	property="farmRetainMachineCode" />	<!--농가별보유농기계코드-->
 	  		<result column="reg_member_id" 				property="regMemberId" />			<!--작성자아이디-->
 	  		<result column="reg_date" 					property="regDate" />				<!--작성일-->
 	  	</association>
@@ -397,7 +408,6 @@
 	 SELECT
 		r.product_gain_run_code
 		, r.product_gain_code
-		, r.project_code
 		, r.stock_item_code
 		, r.gain_quantity
 		, r.gain_quantity_capacity
@@ -406,11 +416,9 @@
 		, r.reg_member_id
 		, r.reg_date
 		, p.product_gain_code
-		, p.project_code
 		, p.stock_item_code
 		, p.gain_quantity
 		, p.gain_quantity_capacity
-		, p.gain_date
 		, p.reg_member_id
 		, p.reg_date
 		FROM
@@ -420,7 +428,7 @@
 		ON
 		r.product_gain_code=p.product_gain_code
 		WHERE
-		p.project_code='project_1'
+		p.plan_workphase_code = 'plan_workphase_2'
    </select>
    
    
