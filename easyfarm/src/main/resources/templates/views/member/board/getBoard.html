@@ -55,26 +55,37 @@
 							<ul class="sub-menu">
 								<li><a th:if="${b.boardId != session.SID}" th:href="@{/member/addReport(memberId=${b.boardId})}">신고</a></li>
 								<li><a th:if="${b.boardId == session.SID}" th:href="@{/member/modifyFreeBoard(boardNum=${b.boardNum})}">수정</a></li>
-								<li><a th:if="${b.boardId == session.SID}" class="removeFreeBoard" th:data-boardNum="${b.boardNum}" th:href="@{#}">삭제</a></li>
+								<li><a th:if="${b.boardId == session.SID or '관리자' == session.SLEVEL}" class="removeFreeBoard" th:data-boardNum="${b.boardNum}" th:href="@{#}">삭제</a></li>
 							</ul>
 						</div>
 						
 						<div style="text-align: center;" class="data" th:data-val="${b.boardNum}">
 							<h3 th:text="${b.boardTitle}"></h3>	
 							<div style="text-align: left; border-bottom : solid 1px;" >
-							작성자:<span th:text="${b.memberName}" ></span>	
+								<div class="">
+								작성자:<span th:text="${b.memberName}" ></span>	
+								</div>
+								<div class="" style="text-align: right;">
+								조회수:<span  th:text="${b.boardGetNum}"></span>
+								</div>
 							</div>
 						</div>
 						
 						<div style="text-align: right; margin-bottom: 10px;" >
-							조회수:<span th:text="${b.boardGetNum}"></span>
+							<strong>첨부파일 : </strong>
+			                <a th:if="${b.boardFile != null}" class="card-text"  th:text="${b.boardFileName}" download th:href="@{/assets/images/}+${b.boardFile}" ></a><p th:if="${b.boardFileSize > 0}" th:text="'('+${b.boardFileSize}+'KB)'"></p>
+							
 						</div>
 						
 						<div style="text-align: center;">
 							<h2 th:text="${b.boardContent}"></h2>
 						</div>
-						<div style="margin-top: 300px; border-bottom : solid 1px;"> 
-							 등록일:<span th:text="${b.boardDate}"></span>
+						
+					
+						
+						<div style="margin-top: 300px; border-bottom : solid 1px;"> 					
+			              	  등록일:<span th:text="${b.boardDate}"></span>
+							 
 						</div>
 						<div>
 						<div class="box-content" >
@@ -91,7 +102,7 @@
 										<a th:if="${session.SID != null}" href="#" class="dropdown-toggle glyphicon glyphicon-option-vertical " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></a>
 										<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
 											<li><a th:if="${session.SID != c.memberId }" th:href="@{/member/addReport(memberId=${c.memberId})}">신고</a></li>
-											<li><a th:if="${session.SID == c.memberId and session.SID == b.boardId}" class="removeComment" th:data-val="${c.commentsNum}">삭제</a></li>
+											<li><a th:if="${session.SID == c.memberId or session.SID == b.boardId or '관리자' == session.SLEVEL}" class="removeComment" th:data-val="${c.commentsNum}">삭제</a></li>
 										</ul> 
 									</div>
 									
