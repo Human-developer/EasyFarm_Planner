@@ -30,29 +30,23 @@
 			background-size : 50px;
 			position: relative;
 			top 	: 140px;
-			
 		}
 		.jump{
-			
 			animation: jump 0.5s linear;
 		}
 	@keyframes jump {
 		0% {
 			top: 150px;
 		}
-		
 		30% {
 			top: 130px;
 		}
-		
 		50% {
 			top: 80px;
 		}
-		
 		80% {
 			top: 130px;
 		}
-		
 		100% {
 			top: 150px;
 		}
@@ -121,8 +115,9 @@
 			var game = $('.game');
 			var dino = $('#dino');
 			var cactus = $('#cactus');
-			var score = 0;
 			var num = 0;
+			var scoreNum = 0;
+			
 			/* function jump(){
 				dino.addClass('jump');
 				setTimeout(function(){
@@ -152,6 +147,10 @@
 				}
 				
 				if(event.keyCode == 32){
+					var score = setInterval(function(){
+						scoreNum++;
+						$('.score').text(scoreNum);
+					},1000);
 					if(setI == null){
 						setI = setInterval(tf,500);
 					}
@@ -169,7 +168,6 @@
 			
 			let isAlive = setInterval(function(){
 				let dinoTop = parseInt(dino.css("top"));
-				let dinoBot = dinoTop-50;
 				let cactusLeft = parseInt(cactus.css("left"));
 				
 				if(cactusLeft < 40 && cactusLeft > 0 && dinoTop >= 140)
@@ -177,9 +175,11 @@
 					dino.removeClass('test1').removeClass('test2').addClass('dieno')
 					cactus.removeClass('cactus');
 					if(dino.hasClass('dieno')==true){
+						clearInterval(setI);
+						cactus.removeClass();
 						Swal.fire({
 							  title: '죽었습니다!',
-							  text: '공룡이 죽고 말았어',
+							  text: '최종점수 : '+scoreNum,
 							  imageUrl: '/assets/images/dieno.png',
 							  imageWidth: 400,
 							  imageHeight: 200,
