@@ -150,4 +150,7 @@ public interface MemberMapper {
 	public void modifyFreeBoard(FreeBoard board);
 	//게시판 삭제
 	public void removeFreeBoard(int boardNum);
+	
+	//프로필 사진변경
+	public void modifyProfile(String memberId,String pathName);
 }

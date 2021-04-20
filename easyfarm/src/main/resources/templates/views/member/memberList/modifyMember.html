@@ -95,11 +95,79 @@
 		});
 			
 		
+		$('#img').click(function(){
+			$('.file').click();
+		})
 		
-		
+		$('#profileStorage').click(function(){
+			
+			var formData = new FormData();
+			var inputFile = $(".file");
+			var files = inputFile[0].files;
+			
+	
+			
+			if(files.length > 1) {
+			    alert('파일은 1개까지 첨부 가능합니다.');
+			    return false;
+			}
+			
+			for(var i = 0; i < files.length; i++) {
+			    var fileSize = files[i].size;
+			    var maxSize = 100000000; //100MB
+			   
+			    if(fileSize > maxSize){
+			        alert("첨부파일 사이즈는 100MB 이내로 등록 가능합니다. ");
+			        return false;
+			    }
+			    var fileName = files[i].name;
+			    var ext = fileName.split('.').pop().toLowerCase();
+			    if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+			        alert('gif,png,jpg,jpeg 파일만 업로드 할수 있습니다.');
+			        return;
+			    }
+			    formData.append('uploadFiles', files[i]);
+			    //console.log( "파일 : " + files[i] );
+			}		
+				$.ajax({
+				    type : "post",
+				    url : '/member/profile',
+				    data : formData,
+				    contentType: false,
+				    processData: false,
+				    enctype: 'multipart/form-data',
+				    dataType : 'json',
+				    beforeSend:function(){
+				       
+				    },
+				    success : function(data) {
+				 
+				    	console.log(data);
+				       if(data != null){
+				    	   
+				      	 var name = "/assets/images/"+data.imgName;
+				       	 $('#img').attr("src",name);
+				       }
+				    },
+				    error : function(error) {
+				        
+				       
+				        console.log('error : ' + error);
+				    }
+			});
+		})
 		
 		
 		</script>
+	</th:block>
+	<th:block layout:fragment="customCss">
+		<style>
+		.fo {
+		  width: 200px;
+		  height: 200px;
+		  object-fit: cover;
+		}
+		</style>
 	</th:block>
 	
 	<th:block layout:fragment="customContents"  th:with="m = ${member}">
@@ -120,6 +188,16 @@
 							</div>
 							<div class="panel-body" >
 								<div class="form-horizontal">
+									<div class="form-group">
+										<label for="memberImg" class="col-sm-2 control-label" ><strong>프로필</strong></label>
+									    <div class="col-sm-9">
+									    	<a href="#"><img th:src="@{${m.memberImg}}"  alt="" class="fo col-sm-offset-3" id="img"></a>
+											<input type="file" class="file" style="display: none;">
+									    </div>				   					   
+									</div>
+									<div class="form-group">								
+											<button type="button" class="btn col-sm-offset-5" id="profileStorage">프로필저장</button>
+									</div>
 									<div class="form-group">
 										<label for="memberId" class="col-sm-2 control-label" ><strong>아이디</strong></label>
 									    <div class="col-sm-10">

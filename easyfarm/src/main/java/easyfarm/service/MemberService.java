@@ -301,4 +301,8 @@ public class MemberService {
 		 memberMapper.removeBan(banCode);
 		 memberMapper.updateMemberCancel(banId);
 	 }
+	 //프로필 수정
+	 public void modifyProfile(String memberId,String pathName) {
+		 memberMapper.modifyProfile(memberId,pathName);
+	 }
 }
