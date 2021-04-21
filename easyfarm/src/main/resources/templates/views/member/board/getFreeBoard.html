@@ -22,9 +22,10 @@
 	<th:block layout:fragment="customContents">
 		<div class="box-content" style="margin-top: 20px">
 		<h3>자유게시판</h3>
+		<small style="color: red;">오른쪽 상단 *** 클릭시 글쓰기&내 게시물보기 --></small>
 		
 		<hr>
-		<div class="dropdown js__drop_down">
+		<div th:if="${session.SID != null}" class="dropdown js__drop_down">
 			<a href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
 			<ul class="sub-menu">
 				<li><a th:href="@{/member/addFreeBoard}">글쓰기</a></li>
