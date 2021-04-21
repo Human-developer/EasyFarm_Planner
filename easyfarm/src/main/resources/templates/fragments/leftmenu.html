@@ -6,7 +6,7 @@
 		<a href="/" class="logo"><i class="ico glyphicon glyphicon-grain"></i>EasyFarm</a>
 		<button type="button" class="button-close fa fa-times js__menu_close"></button>
 		<div class="user" th:if="${session.SID != null}">
-			<a href="" class="avatar"><img th:if="${session.SIMG != null}" th:src="@{/assets/images/}+${session.SIMG}" alt=""><img th:if="${session.SIMG == null}" th:src="@{/assets/images/none-profile.jpg}" alt=""><span class="status online"></span></a>
+			<a href="" class="avatar"><img th:if="${session.SIMG != '' and session.SIMG != null}" th:src="@{/assets/images/}+${session.SIMG}" alt=""><img th:if="${session.SIMG == '' or session.SIMG == null}" th:src="@{/assets/images/none-profile.jpg}" alt=""><span class="status online"></span></a>
 			<h5 class="name"><a th:text="${session.SID}"></a></h5> 		
 			<h5 class="position" th:text="${session.SNAME}"></h5>		
 			<h5 class="position" th:text="${session.SLEVEL}"></h5>		

@@ -42,7 +42,8 @@
 						<div class=" col-sm-12
 									 " >
 							
-								<img th:src="@{${m.memberImg}}" alt="" class="fo" style="margin-bottom: 20px;">
+								<img th:if="${session.SIMG != '' and session.SIMG != null}" th:src="@{${m.memberImg}}" alt="" class="fo" style="margin-bottom: 20px;">
+								<img th:if="${session.SIMG == '' or session.SIMG == null}" th:src="@{/assets/images/none-profile.jpg}" alt="" class="fo" style="margin-bottom: 20px;">
 								
 								
 						</div>
