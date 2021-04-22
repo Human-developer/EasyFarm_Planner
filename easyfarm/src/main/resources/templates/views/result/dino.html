@@ -122,7 +122,6 @@
 			var num = 0;
 			var scoreNum = 0;
 			
-			
 			var tf = function(){
 				cactus.addClass('cactus');
 				num++;
@@ -136,19 +135,18 @@
 			};
 			var setI = null;
 			document.addEventListener("keydown",function(event){
+				//esc
 				if(event.keyCode == 27){
 					clearInterval(setI);
 					cactus.removeClass();
 				}
 				
+				//점프
 				if(event.keyCode == 32){
 					
-					if(scoreNum > 10){
-					}
-					
 					var score = setInterval(function(){
-						scoreNum++;
 						$('.score').text("점수 : " + scoreNum);
+						scoreNum++;
 					},1000);
 					if(setI == null){
 						setI = setInterval(tf,200);
