@@ -84,6 +84,7 @@ public class ResultController {
 		List<EtcPayResult> etcpayResult = resultService.getEtcPayResult(workPhaseCode);
 		System.out.println("\n\n\n\n\n\n\n\n"+etcpayResult+"<<etcpayResult \n\n\n\n\n\n\n\n\n");
 		
+		//검색된 대상의 값이 없어서 dafault값으로 대체
 		List<ResourcePayResult> resourcePayResult = resultService.getResourcePayResult();
 		List<InsurancePayResult> insurancePayResult = resultService.getInsurancePayResult();
 		List<MachineLeasePayResult> machineLeasePayResult = resultService.getMachineLeasePayResult();
@@ -137,7 +138,6 @@ public class ResultController {
 				@RequestParam(value = "selectedDate",required = false) String selectedDate,
 				@RequestParam(value = "planWorkphaseCate",required = false) String planWorkphaseCate
 				) {
-			System.out.println( "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+ planWorkphaseCate + selectedDate +"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 			
 			List<Map<String,Object>> planData = null;
 			String defaultDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -208,9 +208,6 @@ public class ResultController {
 		}
 			return "views/result/addResult";
 	}
-	
-	
-	
 	
 	
 	
