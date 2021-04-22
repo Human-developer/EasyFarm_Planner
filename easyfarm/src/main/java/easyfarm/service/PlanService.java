@@ -19,6 +19,8 @@ import easyfarm.dao.PlanMapper;
 import easyfarm.domain.plan.Client;
 import easyfarm.domain.plan.CommonMachine;
 import easyfarm.domain.plan.EtcPay;
+import easyfarm.domain.plan.FarmBookmarkMachine;
+import easyfarm.domain.plan.FarmRetainMachine;
 import easyfarm.domain.plan.InsurancePay;
 import easyfarm.domain.plan.MachineLeasePay;
 import easyfarm.domain.plan.MachineUsePay;
@@ -57,7 +59,7 @@ public class PlanService {
 		List<Map<String, Object>> result = null;
 		if(projectCode != null && !"".equals(projectCode.trim())) {
 			result = planMapper.getProjectPlanNList(projectCode);
-		}
+		} 
 		return result;
 	}
 	
@@ -359,21 +361,199 @@ public class PlanService {
 		}
 		return modifyResult;
 	}
-
-	//계획서 간편보기 전체 리스트 조회
-	public Map<String,List<Object>> getAllPlanSchedule(String planWorkphaseCode, String planWorkphaseCateCode) {
+	
+	//농기계 즐겨찾기에 등록한 항목 제외한 공통농기계 리스트
+	public List<Map<String, Object>> getFarmCommonMachineList(String farmCode) {
 		
-		Map<String,List<Object>> result = null;
+		List<Map<String, Object>> result = null;
 		
-		if(planWorkphaseCode != null && planWorkphaseCateCode == null) {
-			result = new HashMap<>();
-			
-			
-			
+		if(farmCode != null && !"".equals(farmCode.trim())) {
+			result = planMapper.getFarmCommonMachineList(farmCode);
 		}
-		
-		
 		
 		return result;
 	}
+	
+	//농기계 즐겨찾기 등록
+	public int addFarmBookmarkMachine(FarmBookmarkMachine farmBookmarkMachine) {
+		
+		int addResult = 0;
+		
+		if(farmBookmarkMachine != null) {
+			addResult = planMapper.addFarmBookmarkMachine(farmBookmarkMachine);
+		}
+		return addResult;
+	}
+	
+	//농기계 즐겨찾기 삭제
+	public int removeFarmBookmarkMachine(String farmBookmarkMachineCode) {
+		
+		int removeResult = 0;
+		
+		if(farmBookmarkMachineCode != null) {
+			removeResult = planMapper.removeFarmBookmarkMachine(farmBookmarkMachineCode);
+		}
+		return removeResult;
+	}
+	
+	//보유농기계에 등록한 항목 제외한 농기계 즐겨찾기 리스트
+	public List<Map<String, Object>> getFarmBookmarkMachineList(String farmCode) {
+		
+		List<Map<String, Object>> result = null;
+		
+		if(farmCode != null && !"".equals(farmCode.trim())) {
+			result = planMapper.getFarmBookmarkMachineList(farmCode);
+		}
+		return result;
+	}
+	
+	//보유농기계 등록
+	public int addPlanFarmRetainMachine(FarmRetainMachine farmRetainMachine) {
+		
+		int addResult = 0;
+		
+		if(farmRetainMachine != null) {
+			addResult = planMapper.addPlanFarmRetainMachine(farmRetainMachine);
+		}
+		return addResult;
+	}
+	
+	//보유농기계 삭제
+	public int removePlanFarmRetainMachine(String farmRetainMachineCode) {
+		
+		int removeResult = 0;
+		
+		if(farmRetainMachineCode != null) {
+			removeResult = planMapper.removePlanFarmRetainMachine(farmRetainMachineCode);
+		}
+		return removeResult;
+		
+	}
+	
+	//기간별 작업단계 계획 정보조회
+	public PlanWorkphase getPlanWorkphaseInfo(String planWorkphaseCode) {
+		
+		PlanWorkphase result = null;
+		
+		if(planWorkphaseCode != null && !"".equals(planWorkphaseCode.trim())) {
+			result = planMapper.getPlanWorkphaseInfo(planWorkphaseCode);
+		}
+		return result;
+		
+	}
+	
+	//기간별 작업단계별 상세항목 계획 정보조회
+	public Map<String, Object> getPlanWorkphaseCateInfo(String planWorkphaseCateCode) {
+		
+		Map<String, Object> result = null;
+		
+		if(planWorkphaseCateCode != null && !"".equals(planWorkphaseCateCode.trim())) {
+			result = planMapper.getPlanWorkphaseCateInfo(planWorkphaseCateCode);
+		}
+		return result;
+	}
+	
+	//작업단계별, 상세항목별 지출계획 전체 조회
+	public Map<String,List<Map<String, Object>>> getAllPlanSchedule(String planWorkphaseCode, String planWorkphaseCateCode) {
+		
+		Map<String,List<Map<String, Object>>> result = null;
+		
+		if(planWorkphaseCode != null) {
+			result = new HashMap<>();
+			result.put("expWorkforcePayList", planMapper.getExpWorkforcePayList(planWorkphaseCode, planWorkphaseCateCode));
+			result.put("expMachineLeaseList", planMapper.getExpMachineLeaseList(planWorkphaseCode, planWorkphaseCateCode));
+			result.put("expMachineUseList", planMapper.getExpMachineUseList(planWorkphaseCode, planWorkphaseCateCode));
+			result.put("expResourceUseplanList", planMapper.getExpResourceUseplanList(planWorkphaseCode, planWorkphaseCateCode));
+			result.put("expTaxPayList", planMapper.getExpTaxPayList(planWorkphaseCode, planWorkphaseCateCode));
+			result.put("productGainList", planMapper.getProductGainList(planWorkphaseCode, planWorkphaseCateCode));
+			result.put("expEtcPayList", planMapper.getExpEtcPayList(planWorkphaseCode, planWorkphaseCateCode));
+		}
+		return result;
+	}
+	
+	//인건비 지출계획 등록
+	public int addWorkforcePay(WorkForcePay workForcePay) {
+		
+		int addResult = 0;
+		
+		if(workForcePay != null) {
+			String workforceRequireDay = Integer.toString(Integer.parseInt(workForcePay.getWorkforceCount()) * Integer.parseInt(workForcePay.getWorkforceHowlong()));
+			workForcePay.setWorkforceRequireDay(workforceRequireDay);
+			addResult = planMapper.addWorkforcePay(workForcePay);
+		}
+		return addResult;
+	}
+	
+	//농기계 대여 지출계획 등록
+	public int addMachineLeasePay(MachineLeasePay machineLeasePay) {
+		
+		int addResult = 0;
+		
+		if(machineLeasePay != null) {
+			addResult = planMapper.addMachineLeasePay(machineLeasePay);
+		}
+		return addResult;
+	}
+	
+	//보유농기계 지출계획 등록
+	public int addMachineUsePay(MachineUsePay machineUsePay) {
+		
+		int addResult = 0;
+		
+		if(machineUsePay != null) {
+			addResult = planMapper.addMachineUsePay(machineUsePay);
+		}
+		return addResult;
+	}
+	
+	//농자재사용 지출계획 등록
+	public int addResourceUsePlan(ResourceUsePlan resourceUsePlan) {
+		
+		ResourceUsecapacity resourceUsecapacity = null; 
+		String resourceUsecapacityCode = null;
+		int result = 0;
+		
+		double useQuantity = 0.00;
+		double useQuantityTotal = 0.00;
+		
+		double retainQuantity = 0.00;
+		double retainQuantityExtra = 0.00;
+		
+		String changeQuantity = null;
+		String changeQuantityExtra = null;
+		
+		if(resourceUsePlan != null) {
+			
+			
+			result += planMapper.addResourceUsePlan(resourceUsePlan); //농자재사용지출계획 등록
+			
+			resourceUsecapacityCode = resourceUsePlan.getResourceUsecapacityCode();
+			resourceUsecapacity 	= planMapper.getResourceUsecapacityInfo(resourceUsecapacityCode); //농자재사용현황 업데이트를 위한 조회
+			
+			useQuantity 		= Double.parseDouble(resourceUsePlan.getStockItemUseQuantity());		//화면에서 입력한 사용수량
+			useQuantityTotal 	= Double.parseDouble(resourceUsePlan.getStockItemUseQuantityTotal());	//화면에서 입력한 사용용량
+			retainQuantity 		= Double.parseDouble(resourceUsecapacity.getResourceRetainQuantity());	//농자재사용현황 현재잔여수량
+			retainQuantityExtra = Double.parseDouble(resourceUsecapacity.getResourceRetainQuantityCapacityExtra());//농자재사용현황 현재잔여용량
+			
+			changeQuantity 		= Double.toString(retainQuantity - useQuantity); //잔여수량 - 사용수량
+			changeQuantityExtra = Double.toString(retainQuantityExtra - useQuantityTotal); //잔여용량 - 사용용량
+			
+			resourceUsecapacity.setResourceRetainQuantity(changeQuantity);
+			resourceUsecapacity.setResourceRetainQuantityCapacityExtra(changeQuantityExtra);
+			
+			if("0.0".equals(changeQuantity) || "0.0".equals(changeQuantityExtra)) {
+				resourceUsecapacity.setAvailableStatus("N");
+			}
+			
+			result += planMapper.modifyResourceUsecapacityInfo(resourceUsecapacity);
+			
+		}
+		return result;
+	}
+	
+	
+	
+	
+	
+	
 }
