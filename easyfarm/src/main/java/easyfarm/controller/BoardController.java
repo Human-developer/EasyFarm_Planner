@@ -30,8 +30,15 @@ public class BoardController {
 	 private JavaMailSender javaMailSender;
 	
 	 
+	 //게시글 삭제
+	 @GetMapping("/board/removeQnaBoard")
+	 public String removeQnaBOard (@RequestParam(value = "code",required = false) String code) {
+	    	boardService.removeQnaBoard(code);
+		 return "redirect:/board/qnaList";
+	 }
 	 
-	
+	 
+	//게시글 암호 확인
 	@PostMapping("/ajax/passCheck")
 	public @ResponseBody boolean passCheck(
 			@RequestParam(value = "code",required = false)String code,

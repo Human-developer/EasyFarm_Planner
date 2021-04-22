@@ -18,7 +18,11 @@
       <result property="boardContent" 		column="board_content"/>
       <result property="boardGetNum"		column="board_get_num"/>
       <result property="boardDate" 			column="board_date"/>
-      <result property="memberName" 			column="member_name"/>
+      <result property="memberName" 		column="member_name"/>
+      <result property="boardFile" 			column="board_file"/>
+      <result property="boardFileSize" 		column="board_file_size"/>
+      <result property="boardFileName" 		column="board_file_name"/>
+      
     
    </resultMap>
  
@@ -31,6 +35,9 @@
 			, board_get_num
 			, board_date
 			, member_name
+			, board_file
+			, board_file_size
+			, board_file_name
 		FROM 
 			tb_free_board
 		join
@@ -51,6 +58,9 @@
 			, board_get_num
 			, board_date
 			, member_name
+			, board_file
+			, board_file_size
+			, board_file_name
 		FROM 
 			tb_free_board
 		join
@@ -101,6 +111,9 @@
 		, board_content
 		, board_get_num
 		, board_date
+		, board_file
+		, board_file_size
+		, board_file_name
 		)
 		VALUES
 		(
@@ -109,6 +122,9 @@
 		, #{boardContent}
 		, 0
 		, NOW()
+		, #{boardFile}
+		, #{boardFileSize}
+		, #{boardFileName}
 		)
 	</insert>
    	<delete id="removeComment" parameterType="int">
@@ -125,7 +141,10 @@
 		SET
 			board_title=#{boardTitle},
 			board_content=#{boardContent},
-			board_date=NOW()
+			board_date=NOW(),
+			board_file=#{boardFile},
+		 	board_file_size=#{boardFileSize},
+		 	board_file_name=#{boardFileName}
 		WHERE board_num=#{boardNum}
    	</update>
    	<delete id="removeFreeBoard">
