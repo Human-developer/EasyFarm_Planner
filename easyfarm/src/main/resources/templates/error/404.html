@@ -24,8 +24,16 @@
 			text-align: center;
 			background-color: rgb(241,241,241);
 		}
+		.errorHead{
+			font-size: 50px;
+		}
+		.errorPage{
+			text-align: center;
+		}
 		.text{
 			text-decoration: overline;
+			position: relative;
+			bottom: -150px;
 		}
 		#dino{
 			width 	: 50px;
@@ -88,12 +96,25 @@
 	</style>
 	</th:block>
 	
+
 	
 	<th:block layout:fragment="customContents">
+	
+	<div class="errorPage"> <span class="errorHead"> 404 ERROR! </span><br /> 
+		<p th:text="${'path: ' + path}"></p> 
+		<p th:text="${'status: ' + status}"></p> 
+		<p th:text="${'timestamp: ' + timestamp}"></p> 
+		<p th:text="${'error: ' + error}"></p> 
+		<p th:text="${'errors: ' + errors}"></p> 
+		<p th:text="${'exception: ' + exception}"></p> 
+		<p th:text="${'message: ' + message}"></p> 
+		<p th:text="${'trace: ' + trace}"></p> 
+	</div>
+		
 		<div class="row small-spacing">
 			<div class="col-xs-12">
 				
-				<div class="game"><h3 class="text">:: 스페이스바를 눌러 시작 ::</h3> <div class ="score">점수 : 0</div>
+				<div class="game"> <div class ="score">점수 : 0</div> <h3 class="text">:: 스페이스바를 눌러 시작 ::</h3>
 					<div id="dino" ></div>
 					<div id="cactus"></div>
 				</div>
@@ -152,6 +173,7 @@
 					if(setI == null){
 						setI = setInterval(tf,200);
 						$('.text').css('display', 'none');
+						$('.errorPage').css('display', 'none');
 					}
 					else{
 						if(dino.hasClass('jump')==false){							

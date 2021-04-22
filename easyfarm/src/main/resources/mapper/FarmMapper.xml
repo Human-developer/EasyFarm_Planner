@@ -125,7 +125,7 @@
 			<result property="farmMemberCount" column="farm_member_count"/>
 		</association>
 	</resultMap>
-	
+	<!-- 농가명 중복확인 -->
 	<select id="farmByName" resultMap="farmResultMap" parameterType="String" >
 		SELECT 
 			farm_code, 
@@ -140,7 +140,9 @@
 		WHERE
 			farm_name = #{farmName}
 	</select>
+	<!-- 농가명 중복확인 -->
 	
+	<!-- 농가 등록 -->
 	<insert id="addFarm" parameterType="Farm">
 		INSERT INTO tb_farm
 			( 
@@ -161,7 +163,9 @@
 			#{farmPublicStatus}, 
 			NOW())
 	</insert>
+	<!-- 농가 등록 -->
 	
+	<!-- 농가회원등록 -->
 	<insert id="addFarmMember" parameterType="FarmMember">
 		INSERT INTO tb_farm_member
 			( 
@@ -180,8 +184,9 @@
 			NOW(), 
 			#{farmMemberStatus})
 	</insert>
+	<!-- 농가회원등록 -->
 	
-	
+	<!-- 내농가 목록 조회 -->
 	<select id="myFamr" resultMap="farmResultMap" parameterType="String">
 		 SELECT 
 			f.farm_code, 
@@ -201,7 +206,9 @@
 			f.ceo_member_id =#{memberId}
 		GROUP BY f.farm_code;
 	</select>
+	<!-- 내농가 목록 조회 -->
 	
+	<!-- 농가 상세보기 -->
 	<select id="detailFarm" resultMap="farmResultMap" parameterType="Farm">
 		SELECT 
 			f.farm_code, 
@@ -226,8 +233,9 @@
 			fm.farm_member_status ='정상'
 		GROUP BY f.farm_code;
 	</select>
+	<!-- 농가 상세보기 -->
 	
-	
+	<!-- 내 소속 농가 목록 조회 -->
 	<select id="belongFarm" resultMap="farmResultMap" parameterType="String">
 		SELECT 
 			f.farm_code, 
@@ -255,7 +263,9 @@
 			fm.farm_member_status ='정상'
 		GROUP BY f.farm_code
 	</select>
+	<!-- 내 소속 농가 목록 조회 -->
 	
+	<!-- 농가 정보 조회 -->
 	<select id="updateByFarm" resultMap="farmResultMap" parameterType="String">
 		SELECT 
 			f.farm_code, 
@@ -277,7 +287,9 @@
 			AND
 			fm.farm_member_id = #{memberId}
 	</select>
+	<!-- 농가 정보 조회 -->
 	
+	<!-- 농가 수정 -->
 	<update id="updateFarm" parameterType="Farm">
 		UPDATE tb_farm
 		<trim prefix="SET" suffixOverrides=",">
@@ -289,7 +301,9 @@
 		WHERE 
 			farm_code=#{farmCode}
 	</update>
+	<!-- 농가 수정 -->
 	
+	<!-- 농가 검색 -->
 	<select id="searchFarm" resultMap="farmResultMap" parameterType="String">
 		SELECT 
 			f.farm_code, 
@@ -315,7 +329,9 @@
 			f.farm_public_status ='y'
 		GROUP BY f.farm_code;
 	</select>
+	<!-- 농가 검색 -->
 	
+	<!-- 농가 회원 목록 조회 -->
 	<select id="getMemberFarm" resultMap="farmMemberResultMap" parameterType="String">
 		SELECT 
 			fm.farm_member_code, 
@@ -344,7 +360,9 @@
 			fm.farm_member_status = '정상'
 			ORDER BY FIELD(fm.farm_level_code,'farm_level_1','farm_level_2','farm_level_3')	asc
 	</select>
+	<!-- 농가 회원 목록 조회 -->
 	
+	<!-- 농가 가입 신청 등록 -->
 	<insert id="addFarmMemberJoin" parameterType="String">
 		INSERT INTO tb_farm_member_join
 			(farm_join_code, 
@@ -360,8 +378,9 @@
 			NOW(), 
 			#{farmJoinPurpose})
 	</insert>
+	<!-- 농가 가입 신청 등록 -->
 	
-	
+	<!-- 농가 가입 신청 목록 조회 -->
 	<select id="listJoinFarm"  resultMap="farmJoinResultMap" parameterType="String">
 		SELECT 
 			farm_join_code, 
@@ -378,7 +397,9 @@
 			AND
 			farm_join_request_member_id =#{memberId}
 	</select>
+	<!-- 농가 가입 신청 목록 조회 -->
 	
+	<!-- 농가 가입신청 중복확인 -->
 	<select id="addFarmMemberJoinCheck"  resultMap="farmJoinResultMap" parameterType="String">
 		SELECT 
 			farm_join_code, 
@@ -397,7 +418,9 @@
 			AND
 			farm_code = sf_farm_name_by_code(#{farmName});
 	</select>
+	<!-- 농가 가입신청 중복확인 -->
 	
+	<!-- 농가 가입신청 목록 조회 -->
 	<select id="getJoinFarm" resultMap="farmJoinResultMap" parameterType ="String">
 		SELECT 
 			fmj.farm_join_code, 
@@ -418,7 +441,9 @@
 			AND
 			fmj.farm_code = #{farmCode};
 	</select>
+	<!-- 농가 가입신청 목록 조회 -->
 	
+	<!-- 농가 가입 승인/거부 -->
 	<update id="farmJoinMember" parameterType="String">
 		UPDATE tb_farm_member_join
 		SET
@@ -427,7 +452,9 @@
 		WHERE 
 			farm_join_code=#{farmMemberJoinCode}
 	</update>
+	<!-- 농가 가입 승인/거부 -->
 	
+	<!-- 농가 가입신청 정보 조회 -->
 	<select id="getJoinMember" resultMap="farmJoinResultMap" parameterType="String">
 		SELECT 
 			farm_join_code, 
@@ -442,7 +469,9 @@
 		WHERE
 			farm_join_code =#{farmMemberJoinCode}
 	</select>
+	<!-- 농가 가입신청 정보 조회 -->
 	
+	<!-- 농가 회원등록 -->
 	<insert id="joinAddFarmMember" parameterType="FarmMember">
 		INSERT INTO tb_farm_member
 			( 
@@ -461,7 +490,9 @@
 			NOW(), 
 			#{farmMemberStatus})
 	</insert>
+	<!-- 농가 회원등록 -->
 	
+	<!-- 내 가입 신청 목록 조회  -->
 	<select id="myGetJoinFarm" resultMap="farmJoinResultMap" parameterType="String">
 		SELECT 
 			fmj.farm_join_code, 
@@ -486,20 +517,24 @@
 			AND
 			fmj.farm_join_request_member_id = #{memberId}
 	</select>
+	<!-- 내 가입 신청 목록 조회  -->
 	
+	<!-- 내 가입 신청 취소 -->
 	<delete id="removeJoinFarm" parameterType="String">
 		DELETE FROM 
 			tb_farm_member_join 
 		WHERE 
 			farm_join_code=#{farmJoinCode}
 	</delete>
+	<!-- 내 가입 신청 취소 -->
 	
-	
+	<!-- 농가별 회원 권한 조회 -->
 	<select id="getFarmMemberLevel" resultType="String" parameterType="String">
 		SELECT sf_code_id_by_level(#{farmCode},#{memberId});
 	</select>
+	<!-- 농가별 회원 권한 조회 -->
 	
-	
+	<!-- 농가 탈퇴 신청 중복확인 -->
 	<select id="addCancelMemberCheck" resultMap="farmCancelMemberResultMap" parameterType="String">
 		SELECT 
 				fcr.farm_cancel_request_code, 
@@ -519,8 +554,10 @@
 				fcr.farm_code = sf_add_member_farm_code(#{farmName})
 				AND
 				fcr.farm_cancel_request_farm_member_code = sf_id_farm_code_by_farm_member_code(#{memberId}, sf_add_member_farm_code(#{farmName}))
-	
 	</select>
+	<!-- 농가 탈퇴 신청 중복확인 -->
+	
+	<!-- 농가 탈퇴 신청 등록-->
 	<insert id="addCancelMember" parameterType="String">
 		INSERT INTO tb_farm_cancel_request
 			(
@@ -539,7 +576,9 @@
 			NOW()
 			)
 	</insert>
+	<!-- 농가 탈퇴 신청 등록-->
 	
+	<!-- 농가 탈퇴 신청 목록 조회 -->
 	<select id="getLeaverFarm" resultMap="farmCancelMemberResultMap" parameterType="String">
 		SELECT 
 			fcr.farm_cancel_request_code, 
@@ -571,7 +610,9 @@
 			AND
 			fcr.farm_cancel_request_farm_member_code != sf_id_farm_code_by_farm_member_code(#{memberId}, #{farmCode})
 	</select>
+	<!-- 농가 탈퇴 신청 목록 조회 -->
 			
+	<!-- 농가 탈퇴 신청 승인/거부 -->
 	<update id="isLeaverFarm" parameterType="FarmCancelRequest">
 		UPDATE tb_farm_cancel_request
 		SET
@@ -581,9 +622,10 @@
 			farm_cancel_approval_member_id=#{cancelApprovalMemberId}
 		WHERE 
 			farm_cancel_request_code=#{cancelRequestCode}
-	
 	</update>
+	<!-- 농가 탈퇴 신청 승인/거부 -->
 	
+	<!-- 농가 회원 탈퇴 처리 -->
 	<update id="leaverFarmMember" parameterType="String">
 		UPDATE tb_farm_member
 		SET
@@ -591,7 +633,9 @@
 		WHERE 
 			farm_member_code = sf_farm_cancel_request_code_is_member_code(#{cancelRequestCode})
 	</update>
+	<!-- 농가 회원 탈퇴 처리 -->
 	
+	<!-- 내 탈퇴 신청 목록 조회 -->
 	<select id="myGetLeaverFarm" resultMap="farmCancelMemberResultMap" parameterType="String">
 		SELECT 
 			fcr.farm_cancel_request_code, 
@@ -619,7 +663,9 @@
 		WHERE
 			fm.farm_member_id =#{memberId}
 	</select>
+	<!-- 내 탈퇴 신청 목록 조회 -->
 	
+	<!-- 농가 탈퇴 신청 취소 -->
 	<delete id="cancelLeaverFarm" parameterType="String">
 		DELETE 
 		FROM 
@@ -627,7 +673,9 @@
 		WHERE 
 			farm_cancel_request_code=#{cancelLeaverFarm};
 	</delete>
+	<!-- 농가 탈퇴 신청 취소 -->
 	
+	<!-- 농가대표 제외 회원목록 조회 -->
 	<select id="farmMemeberList" resultMap="farmMemberResultMap" parameterType="String">
 		SELECT 
 			fm.farm_member_code, 
@@ -647,11 +695,15 @@
 			AND
 			fm.farm_level_code != 'farm_level_1';
 	</select>
+	<!-- 농가대표 제외 회원목록 조회 -->
 	
+	<!-- 농가 대표 수정 프로시저 -->
 	<update id="modifyCeoFarmProcedure" parameterType="String">
 		CALL sp_farm_member_code_by_farm_ceo_modify(#{farmMemberCode});
 	</update>
+	<!-- 농가 대표 수정 프로시저 -->
 	
+	<!-- 농가대표 회원코드 조회 -->
 	<select id="farmCeoMemberCode" resultType="String" parameterType="String">
 		SELECT 
 			farm_member_code
@@ -664,7 +716,9 @@
 			AND
 			farm_code = #{farmCode};
 	</select>
+	<!-- 농가대표 회원코드 조회 -->
 	
+	<!-- 회원권한 수정 -->
 	<update id="modifyFarmMemberLevel" parameterType="String">
 		UPDATE tb_farm_member
 		SET
@@ -672,7 +726,9 @@
 		WHERE 
 			farm_member_code=#{farmMemberCode};
 	</update>
+	<!-- 회원권한 수정 -->
 	
+	<!-- 농가 대표 수정 -->
 	<update id="modifyFarmCeo" parameterType="String">
 		UPDATE tb_farm
 		SET
@@ -680,12 +736,15 @@
 		WHERE 
 			farm_code=#{farmCode};
 	</update>
+	<!-- 농가 대표 수정 -->
 	
-	
+	<!-- 농가대표 수정 확인 -->
 	<select id="modifyFarmCeoCheck" resultType="boolean" parameterType="String">
 		SELECT sf_modify_Ceo_Farm_Check(#{ceoMemberCode}, #{memberCode}, #{memberId}, #{farmCode})
 	</select>
+	<!-- 농가대표 수정 확인 -->
 	
+	<!-- 농가 회원 추방 / 탈퇴처리 -->
 	<update id="deportationFarmMember" parameterType="String">
 		UPDATE tb_farm_member
 		SET
@@ -693,7 +752,9 @@
 		WHERE 
 			farm_member_code=#{farmMemberCode}
 	</update>
+	<!-- 농가 회원 추방 / 탈퇴처리 -->
 	
+	<!-- 농가 추방 회원 / 탈퇴신청 등록 -->
 	<insert id="deportationCancelRequest" parameterType="String">
 		INSERT INTO tb_farm_cancel_request
 			(farm_cancel_request_code, 
@@ -716,6 +777,8 @@
 			NOW(), 
 			#{memberId})
 	</insert>
+	<!-- 농가 추방 회원 / 탈퇴신청 등록 -->
+	
 </mapper>
 
 
