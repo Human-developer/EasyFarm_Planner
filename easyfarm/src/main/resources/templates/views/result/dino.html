@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layout/default}">
+
+	<th:block layout:fragment="customTitle">
+		<title>월간 계획 간편보기</title>
+	</th:block>
+	
+	<th:block layout:fragment="pageTitle">
+		월간 계획 간편보기
+	</th:block>
+	
+	<th:block layout:fragment="customCssLib">
+	</th:block>
+	
+	<th:block layout:fragment="customCss">
+	<style type="text/css">
+		.game{
+			width 	: 600px;
+			height	: 200px;
+			border	: 1px solid;
+			margin  : auto;
+			background-color: rgb(241,241,241);
+		}
+		#dino{
+			width 	: 50px;
+			height	: 50px;
+			/* background-image: url("/assets/images/dino2.png"); */
+			background-size : 50px;
+			position: relative;
+			top 	: 140px;
+		}
+		.jump{
+			animation: jump 0.5s linear;
+		}
+	@keyframes jump {
+		0% {
+			top: 150px;
+		}
+		30% {
+			top: 130px;
+		}
+		50% {
+			top: 80px;
+		}
+		80% {
+			top: 130px;
+		}
+		100% {
+			top: 150px;
+		}
+	}	
+		.cactus{
+			width 	: 20px;
+			height	: 40px;
+			position: relative;
+			top	: 110px;
+			left: 580px;
+			background-image: url("/assets/images/cactus.png");
+			background-size: 20px 40px;
+			
+			animation: block 1s infinite linear;
+		}
+		@keyframes block{
+			0% {
+				left: 580px;
+			}
+		
+			100% {
+				left: 0px;
+			}
+		}
+		
+		.test1{
+			background-image: url("/assets/images/dino2.png");
+		}
+		.test2{
+			background-image: url("/assets/images/dino1.png");
+		}
+		.dieno{
+			background-image: url("/assets/images/dieno.png");
+		}
+	</style>
+	</th:block>
+	
+	
+	<th:block layout:fragment="customContents">
+		<div class="row small-spacing">
+			<div class="col-xs-12">
+				<div class ="score">0</div>
+				<div class="game">
+					<div id="dino" ></div>
+					<div id="cactus"></div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+	
+	
+	
+	
+	
+	
+	
+	
+	<th:block layout:fragment="customScriptLib">
+		<!-- FullCalendar -->
+		<script th:src="@{/assets/plugin/moment/moment.js}"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+	</th:block>
+	
+	<th:block layout:fragment="customJavaScript">
+		<script>
+			var game = $('.game');
+			var dino = $('#dino');
+			var cactus = $('#cactus');
+			var num = 0;
+			var scoreNum = 0;
+			
+			/* function jump(){
+				dino.addClass('jump');
+				setTimeout(function(){
+					dino.removeClass('jump');
+				}, 300);
+			}
+			document.addEventListner("keydown", function(event){
+				jump();
+			}); */
+			
+			var tf = function(){
+				cactus.addClass('cactus');
+				num++;
+				if(num % 2 == 0){
+					dino.removeClass('test2').removeClass('dieno').addClass('test1');	
+				}
+				else{
+					dino.removeClass('test1').removeClass('dieno').addClass('test2');
+				}
+				
+			};
+			var setI = null;
+			document.addEventListener("keydown",function(event){
+				if(event.keyCode == 27){
+					clearInterval(setI);
+					cactus.removeClass();
+				}
+				
+				if(event.keyCode == 32){
+					var score = setInterval(function(){
+						scoreNum++;
+						$('.score').text(scoreNum);
+					},1000);
+					if(setI == null){
+						setI = setInterval(tf,500);
+					}
+					else{
+						if(dino.hasClass('jump')==false){							
+							dino.addClass('jump');
+							//clearInterval(setI);
+							setTimeout(function(){
+								dino.removeClass('jump');	
+							},500); 
+						}
+					}
+				}
+			})
+			
+			let isAlive = setInterval(function(){
+				let dinoTop = parseInt(dino.css("top"));
+				let cactusLeft = parseInt(cactus.css("left"));
+				
+				if(cactusLeft < 40 && cactusLeft > 0 && dinoTop >= 140)
+				{
+					dino.removeClass('test1').removeClass('test2').addClass('dieno')
+					cactus.removeClass('cactus');
+					if(dino.hasClass('dieno')==true){
+						clearInterval(setI);
+						cactus.removeClass();
+						Swal.fire({
+							  title: '죽었습니다!',
+							  text: '최종점수 : '+scoreNum,
+							  imageUrl: '/assets/images/dieno.png',
+							  imageWidth: 400,
+							  imageHeight: 200,
+							  imageAlt: 'Custom image',
+							  confirmButtonText: '다시하기',
+							}).then((result) => {
+								location.reload();
+							})
+					}
+				}
+			}, 10);
+			
+		</script>
+	
+	</th:block>
+	
+</html>

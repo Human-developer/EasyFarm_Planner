@@ -34,6 +34,7 @@ public class Member {
 	private Date logoutDate;			//로그아웃 날짜
 	private String regDate;				// 날짜값을 셋팅
 	private String regDay;				//날짜값을 셋팅
+	private String memberImg;			//프로필 사진경로
 
 	
 	

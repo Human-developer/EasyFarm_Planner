@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layout/default}">
+
+<th:block layout:fragment="customTitle">
+	<title>품목 카테고리 수정</title>
+</th:block>
+
+<th:block layout:fragment="pageTitle">
+		품목 카테고리 코드 - 품목 카테고리 수정
+	</th:block>
+
+<th:block layout:fragment="customContents">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-offset-2 col-sm-8">
+				<div class="box-content">
+					<h3>
+						<strong>품목 카테고리 수정</strong>
+					</h3>
+					<hr>
+
+					<form th:action="@{/code/modifyStockCate}" method="post">
+						<div class="panel-body" style="padding-top: 0">
+							<div class="form-horizontal">
+
+								<input name="stockCateCode" type="hidden" class="form-control"
+									th:value="${stockCate.stockCateCode}" />
+								<!--공백 예외처리 해야함  스크립트쓰기-->
+								<div class="form-group margin-bottom-20">
+									<label for="stockCateName" class="col-sm-3 control-label"><strong>품목 카테고리명</strong></label>
+									<div class="col-sm-6">
+										<input id="stockCateName" name="stockCateName" type="text" class="form-control"
+											th:value="${stockCate.stockCateName}" />
+									</div>
+								</div>
+								<hr>
+								<div class="form-group">
+									<div class="col-sm-10 col-sm-offset-1">
+										<button type="submit"
+											class="btn btn-success btn-rounded waves-effect waves-light"
+											style="width: 100%">품목 카테고리 수정</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
+
+</html>

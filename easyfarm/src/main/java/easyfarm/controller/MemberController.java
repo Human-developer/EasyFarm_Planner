@@ -3,6 +3,10 @@ package easyfarm.controller;
 
 
 
+
+
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +18,7 @@ import java.util.Random;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
@@ -24,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import easyfarm.domain.FreeBoard;
 import easyfarm.domain.Member;
@@ -35,6 +41,8 @@ import easyfarm.service.MemberService;
 @Controller
 public class MemberController {
 	
+	@Value("${file.upload.path}")
+	private String fileUploadPath;
 	
 	@Autowired
 	MemberService memberService;
@@ -56,6 +64,69 @@ public class MemberController {
 			 }			
 		 };
 	 }
+	 
+	
+	
+	//프로필 사진변경
+	@PostMapping("/member/profile")
+	@ResponseBody
+	public  Map<String, Object> test(MultipartFile uploadFiles, HttpSession session)throws Exception {
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String releasePath = null;
+
+		File file = new File("");
+		// 내프로젝트 경로
+		
+		if(fileUploadPath.indexOf("WEB-INF") > -1) {			
+			//배포시점 파일경로
+			releasePath = session.getServletContext().getRealPath("/");
+			System.out.println(releasePath);
+		}else {			
+			File rootPath = file.getAbsoluteFile();
+			releasePath = rootPath.getAbsolutePath();
+		}
+		
+		
+		//저장할 이미지이름을 위한 추출
+		String memberId = (String)session.getAttribute("SID");
+		Date today = new Date();
+		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmmss");
+		String day = simpleDate.format(today);
+		
+		
+		//확장자 명 추출
+		int pos = uploadFiles.getOriginalFilename().lastIndexOf( "." );
+		String ext = uploadFiles.getOriginalFilename().substring( pos + 1 ); 
+		//이미지이름
+		String pathName = memberId + day+"."+ext;
+		
+		// 저장 경로
+		File img = new File( releasePath + fileUploadPath + pathName);		
+				
+		//프로젝트에 이미지 저장
+		uploadFiles.transferTo( img );
+		
+		Member member = memberService.getMemberInfoById(memberId);
+		
+		File removeFile = new File(releasePath + fileUploadPath + member.getMemberImg());
+		
+		if(removeFile.exists()) {
+			removeFile.delete();
+		}
+		
+		
+		
+		//프로필 경로를위한 프로필 변경
+		memberService.modifyProfile(memberId,pathName);
+		
+		// 변경한 이미지를 보여주기위한 리턴
+		map.put("imgName", pathName);
+		
+		
+		return map;
+	}
+	
 	
 	//전체 게시판조회
 	@GetMapping("/member/getFreeBoard")
@@ -74,7 +145,6 @@ public class MemberController {
 		if(boardId != null && !"".equals(boardId.trim())) {
 			List<FreeBoard> boardList = freeBoardService.getFreeBoard(boardId);
 			model.addAttribute("boardList",boardList);
-			System.out.println(boardList  +"11111111111111111111111111111111111111111111");
 		}
 		return "views/member/board/getMyFreeBoard";
 	}
@@ -103,12 +173,69 @@ public class MemberController {
 		return "views/member/board/addFreeBoard";
 	}
 	@PostMapping("/member/addFreeBoard")
-	public String addFreeBoard(FreeBoard board) {
-		if(board != null) {			
-			freeBoardService.addFreeBoard(board);
+	public String addFreeBoard(FreeBoard board,@RequestParam(value = "file")MultipartFile boardFile,HttpSession session) throws IllegalStateException, IOException {
+		
+	
+		
+		
+		String releasePath = null;
+
+		File file = new File("");
+		// 내프로젝트 경로
+		
+		System.out.println(boardFile);
+		
+		if(fileUploadPath.indexOf("WEB-INF") > -1) {			
+			//배포시점 파일경로
+			releasePath = session.getServletContext().getRealPath("/");
+			System.out.println(releasePath);
+		}else {			
+			File rootPath = file.getAbsoluteFile();
+			releasePath = rootPath.getAbsolutePath();
 		}
+		
+		if(boardFile.getSize() > 0) {
+			
+			//저장할 이미지이름을 위한 추출
+			String memberId = (String)session.getAttribute("SID");
+			Date today = new Date();
+			SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmmss");
+			String day = simpleDate.format(today);
+			
+			
+			//확장자 명 추출
+			int pos = boardFile.getOriginalFilename().lastIndexOf( "." );
+			String ext = boardFile.getOriginalFilename().substring( pos + 1 ); 
+			//이미지이름
+			String pathName = memberId + day+"."+ext;
+			
+			// 저장 경로
+			File boardFil = new File( releasePath + fileUploadPath + pathName);		
+					
+			//프로젝트에 파일 저장
+			boardFile.transferTo( boardFil );
+			
+			board.setBoardFile(pathName);		
+			board.setBoardFileName(boardFile.getOriginalFilename());		
+			board.setBoardFileSize(boardFile.getSize()/1024);
+		}
+		
+		if(board != null) {	
+			
+			freeBoardService.addFreeBoard(board);
+		
+		}
+		
+		//게시물 수정할때 쓸것
+		
+		
+		
+		
 		return "redirect:/member/getFreeBoard";
 	}
+	
+	
+	
 	//게시판수정
 	@GetMapping("/member/modifyFreeBoard")
 	public String modifyFreeBoard(Model model,
@@ -120,7 +247,65 @@ public class MemberController {
 		return "views/member/board/modifyFreeBoard";
 	}
 	@PostMapping("/member/modifyFreeBoard")
-	public String modifyFreeBoard(FreeBoard board) {
+	public String modifyFreeBoard(FreeBoard board,@RequestParam(value = "file")MultipartFile boardFile,HttpSession session) throws IllegalStateException, IOException {
+	
+		
+		
+		
+		String releasePath = null;
+
+		File file = new File("");
+		// 내프로젝트 경로
+		
+		System.out.println(boardFile);
+		
+		if(fileUploadPath.indexOf("WEB-INF") > -1) {			
+			//배포시점 파일경로
+			releasePath = session.getServletContext().getRealPath("/");
+			System.out.println(releasePath);
+		}else {			
+			File rootPath = file.getAbsoluteFile();
+			releasePath = rootPath.getAbsolutePath();
+		}
+		
+		if(boardFile.getSize() > 0) {
+			
+			//저장할 파일이름을 위한 추출
+			String memberId = (String)session.getAttribute("SID");
+			Date today = new Date();
+			SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmmss");
+			String day = simpleDate.format(today);
+			
+			
+			//확장자 명 추출
+			int pos = boardFile.getOriginalFilename().lastIndexOf( "." );
+			String ext = boardFile.getOriginalFilename().substring( pos + 1 ); 
+			
+			//파일이름
+			String pathName = memberId + day+"."+ext;
+			
+			// 저장 경로
+			File boardFil = new File( releasePath + fileUploadPath + pathName);		
+					
+			//프로젝트에 파일 저장
+			boardFile.transferTo( boardFil );
+			
+			//데이터베이스에 파일경로명 + 파일실제명 + 파일사이즈 저장 
+			board.setBoardFile(pathName);		
+			board.setBoardFileName(boardFile.getOriginalFilename());		
+			board.setBoardFileSize(boardFile.getSize()/1024);
+		}
+		
+		int boardNum = board.getBoardNum();//게시물 넘버 추출
+		FreeBoard removeboard = freeBoardService.getBoard(boardNum); // 기존 파일 삭제를 위한 추출
+		
+		File removeFile = new File(releasePath + fileUploadPath + removeboard.getBoardFile()); //기존파일 경로설정 
+		
+		if(removeFile.exists()) {
+			removeFile.delete(); //기존 파일 삭제
+		}
+		
+		
 		if(board != null) {
 			
 			freeBoardService.modifyFreeBoard(board);
@@ -179,11 +364,11 @@ public class MemberController {
 	
 	
 	
-	 @GetMapping("/member")
-	 public String member() {
+	@GetMapping("/member")
+	public String member() {
 	
-		 return "views/member/member";
-	 }
+		return "views/member/member";
+	}
 
 	 //로그인
 	 @GetMapping("/member/login")
@@ -229,6 +414,8 @@ public class MemberController {
 						 session.setAttribute("SNAME", member.getMemberName());
 						 // 이름
 						 session.setAttribute("SLEVEL", member.getLevelName());
+						 // 프로필
+						 session.setAttribute("SIMG", member.getMemberImg());
 						msg = "로그인성공";
 						map.put("msg", msg);			
 					 	return map; 					 	 					 	
@@ -539,7 +726,7 @@ public class MemberController {
 		  }
 	  }
 
-	  //회원검색&조회
+	  //회원조회
 	  @GetMapping("/member/getMember") 
 	  public String getMember(Model model) {
 		  
@@ -559,11 +746,13 @@ public class MemberController {
 		  List<Member> levelList = null;
 			if(memberId != null && !"".equals(memberId.trim())) {
 				member = memberService.getMemberInfoById(memberId);
+				member.setMemberImg("/assets/images/"+member.getMemberImg());
 				levelList = memberService.getAuthority();//권한목록
 			}else {
 				memberId = (String)session.getAttribute("SID");
 				member = memberService.getMemberInfoById(memberId);
-				levelList = memberService.getAuthority();
+				member.setMemberImg("/assets/images/"+member.getMemberImg());
+				levelList = memberService.getAuthority();//권한목록
 			}
 			model.addAttribute("levelList", levelList);
 			model.addAttribute("member", member);
@@ -647,11 +836,13 @@ public class MemberController {
 		  if(memberId != null && !"".equals(memberId.trim())){
 			  
 			   member = memberService.getMemberInfoById(memberId);
+			   member.setMemberImg("/assets/images/"+member.getMemberImg());
 			   model.addAttribute("member", member);
 		  }else {
 			  
 			   memberId = (String) session.getAttribute("SID");
 			   member = memberService.getMemberInfoById(memberId);
+			   member.setMemberImg("/assets/images/"+member.getMemberImg());
 			   model.addAttribute("member", member);
 		  }
 		  

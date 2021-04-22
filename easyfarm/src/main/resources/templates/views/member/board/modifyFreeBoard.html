@@ -19,7 +19,7 @@
 		
 			
 			<div class="card-content">
-						<form data-toggle="validator" class="form-horizontal" method="post" th:action="@{/member/modifyFreeBoard}" th:with=" b = ${board}">
+						<form data-toggle="validator" class="form-horizontal" method="post" th:action="@{/member/modifyFreeBoard}" enctype="multipart/form-data" th:with=" b = ${board}">
 							<div class="form-group">
 								<label for="writer" class="col-sm-2 control-label">작성자</label>
 								<div class="col-sm-9">
@@ -40,6 +40,13 @@
 									<textarea class="form-control" id="boardContent" th:text="${b.boardContent}"  name="boardContent" placeholder="내용을 입력해주세요" style="resize: none;  height: 350px; width: 100%;" required></textarea>
 								</div>
 							</div>
+							
+							<div class="form-group">
+								<label for="boardFile" class="col-sm-2 control-label">첨부파일</label>
+								<div class="col-sm-9">
+									<input type="file" class="form-control" id="file"  name="file" placeholder="첨부파일 " >
+								</div>
+							</div>
 					
 							<div class ="form-group t-center">
 								<button type="submit" id="btn" class="btn btn-success btn-bordered waves-effect waves-light">수정</button>
@@ -53,8 +60,35 @@
 	</th:block>
 	
 
-	<!-- 사용자 정의 자바스크립트 -->
 	<th:block layout:fragment="customJavaScript">
+		<script>
+			// 파일첨부 체크 리스트
+			$("input[id=file]").change(function(){
+			 
+			    if($(this).val() != ""){
+			      // 확장자 체크
+			          var ext = $(this).val().split(".").pop().toLowerCase();
+			          if($.inArray(ext, ["gif","jpg","jpeg","png","hwp","pdf","doc","xls","xlsx","ppt","pptx","docx"]) == -1){
+			              alert("gif, jpg, jpeg, png 파일만 업로드 해주세요.");
+			              $(this).val("");
+			              return;
+			          }
+			          
+			          // 용량 체크
+			          for (var i=0; i<this.files.length; i++) {
+			            var fileSize = this.files[i].size;
+			            var fSMB = (fileSize / (1024 * 1024)).toFixed(2);
+			            var maxSize = 1024 * 1024 * 1;
+			            var mSMB = (maxSize / (1024 * 1024));
+			            if(fileSize > maxSize){
+			              alert(this.files[i].name + "(이)가 용량 1MB을 초과했습니다.\n\n" + fSMB + "MB</font> / " + mSMB + "MB");
+			              $(this).val("");    
+			            }
+			          }
+			    }
+			});
+
+		</script>
 	
 	</th:block>
 

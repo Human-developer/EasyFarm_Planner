@@ -13,6 +13,8 @@ import easyfarm.domain.Crop;
 import easyfarm.domain.CropDetailCategory;
 import easyfarm.domain.CropWorkStage;
 import easyfarm.domain.Machine;
+import easyfarm.domain.TaxPayCate;
+import easyfarm.domain.plan.StockCate;
 
 @Service
 @Transactional
@@ -160,10 +162,52 @@ public class CropService {
 		List<Crop> cropList = cropMapper.getCropListByCropCategory(cropCategory);
 		return cropList;
 	}
-	
-	
-	
-	
-	
-	
+
+	//품목 카테고리 등록
+	public int addStockCate(StockCate stockCate, String memberId) {
+		Map<String, Object> stockcate = new HashMap<>();
+		stockcate.put("stockCate",stockCate);
+		stockcate.put("memberId",memberId);
+		return cropMapper.addStockCate(stockcate);
+		}
+	//공과금 카테고리 리스트
+	public List<TaxPayCate> getTaxPayCateList() {
+		return cropMapper.getTaxPayCateList();
+	}
+	//공과금 카테고리 등록
+	public int addTaxPayCate(TaxPayCate taxPayCate, String memberId) {
+		Map<String, Object> taxPay = new HashMap<>();
+		taxPay.put("taxPayCate",taxPayCate);	
+		taxPay.put("memberId",memberId);
+		return cropMapper.addTaxPayCate(taxPay);
+		}
+
+	//품목카테고리 삭제
+	public int removeStockCate(String stockCateCode) {
+		return cropMapper.removeStockCate(stockCateCode);
+	}
+
+	//공과금 카테고리 삭제
+	public int removeTaxPayCate(String taxPayCateCode) {
+		return cropMapper.removeTaxPayCate(taxPayCateCode);
+		
+	}
+	//품목 카테고리 조회
+	public StockCate getInfoStockCate(String stockCateCode) {
+		return cropMapper.getInfoStockCate(stockCateCode);
+	}
+	//품목 카테고리 수정
+	public int modifyStockCate(StockCate stockCate) {
+		return cropMapper.modifyStockCate(stockCate);
+	}
+	//공과금 카테고리 조회
+	public TaxPayCate getInfoTaxPayCate(String taxPayCateCode) {
+		return cropMapper.getInfoTaxPayCate(taxPayCateCode);
+	}
+	//공과금 카테고리 수정
+	public int modifyTaxPayCate(TaxPayCate taxPayCate) {
+		return cropMapper.modifyTaxPayCate(taxPayCate);
+	}
+
+		
 }

@@ -32,7 +32,14 @@ public class ResourcePay {
     // 작성일
     private String regDate;
 
-
+    private String stockItemName;
+    
+    private String useStatus;
+    
+    private String stockItemQuantityUnit;
+    
+    private String stockItemQuantityCapacityUnit;
+    
     public String getResourcePayCode() {
         return resourcePayCode;
     }
@@ -111,6 +118,38 @@ public class ResourcePay {
 
 	public void setRegMemberId(String regMemberId) {
 		this.regMemberId = regMemberId;
+	}
+
+	public String getStockItemName() {
+		return stockItemName;
+	}
+
+	public void setStockItemName(String stockItemName) {
+		this.stockItemName = stockItemName;
+	}
+
+	public String getUseStatus() {
+		return useStatus;
+	}
+
+	public void setUseStatus(String useStatus) {
+		this.useStatus = useStatus;
+	}
+
+	public String getStockItemQuantityUnit() {
+		return stockItemQuantityUnit;
+	}
+
+	public void setStockItemQuantityUnit(String stockItemQuantityUnit) {
+		this.stockItemQuantityUnit = stockItemQuantityUnit;
+	}
+
+	public String getStockItemQuantityCapacityUnit() {
+		return stockItemQuantityCapacityUnit;
+	}
+
+	public void setStockItemQuantityCapacityUnit(String stockItemQuantityCapacityUnit) {
+		this.stockItemQuantityCapacityUnit = stockItemQuantityCapacityUnit;
 	}
 
 

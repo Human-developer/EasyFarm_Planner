@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layout/default}">
+
+<th:block layout:fragment="customTitle">
+	<title>품목 카테고리 등록</title>
+</th:block>
+
+<th:block layout:fragment="pageTitle">
+		품목 카테고리 등록
+	</th:block>
+
+<th:block layout:fragment="customCss">
+	<style>
+button {
+	border: 0;
+	padding: 0;
+	outline: none;
+	cursor: pointer;
+	background-color: transparent;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+.lc-round-btn {
+	display: block;
+	width: 100%;
+	height: 60px;
+	line-height: 58px;
+	font-weight: 700;
+	font-size: 20px;
+	border-radius: 60px;
+	background-color: #3BBD5A;
+	color: #fff;
+	transition: box-shadow .2s;
+	margin-top: 30px;
+}
+
+.btn {
+	background-color: #3BBD5A;
+	width: auto;
+	color: #fff;
+	font-weight: 700;
+}
+
+.green-input {
+	display: block;
+	width: 100%;
+	border: 1px solid #ccd1d9;
+	height: 50px;
+	padding: 0 10px;
+	line-height: 46px;
+	font-size: 16px;
+}
+
+.important-col {
+	background-image: url("/assets/images/") !important;
+	color: #3bbd5a !important;
+}
+
+#wrapper {
+	background-image: url("/assets/images/") !important;
+	background-size: 100% 100%;
+}
+</style>
+</th:block>
+<th:block layout:fragment="customJavaScript">
+	<script type="text/javascript">
+		//공백검사
+		$(function() {
+			$('#addCheck').click(function() {
+
+				if ($('#cropdetcate').val() == "") {
+					swal({
+						title : "품목카테고리명을 입력해주세요."
+					});
+					$('#cropdetcate').focus();
+					return false;
+				}
+			
+				return true;
+			})
+		});
+	</script>
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-offset-2 col-sm-8">
+				<div class="box-content">
+					<div class="pull-left">
+						<div style="font-size: 24px;">품목 카테고리 등록</div>
+					</div>
+					<div class="pull-right">
+						<a th:href="@{/code/getStockCateList}"  class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
+							리스트로 돌아가기
+						</a>
+					</div>
+					<div style="margin-top: 6px;">
+						<small style="color: red; margin-left: 6px;"></small>
+					</div>
+					<hr>
+
+					<form th:action="@{/code/addStockCate}" method="post">
+						<div class="panel-body" style="padding-top: 0">
+							<div class="form-horizontal">
+								<div class="form-group margin-bottom-20">
+									<label for="stockcate" class="col-sm-3 control-label"><strong>품목 카테고리명</strong></label>
+									<div class="col-sm-6">
+										<!-- 제한조건넣기 -->
+										<input type="text" size="20" class="green-input"
+											name="StockCateName" id="stockcate"
+											placeholder="품목 카테고리명 입력">
+									</div>
+
+								</div>
+								<hr>
+								<div class="form-group">
+									<div class="col-sm-10 col-sm-offset-1">
+										<button type="submit" id="addCheck"
+											class="btn btn-success btn-rounded waves-effect waves-light"
+											style="width: 100%">품목 카테고리 등록</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
+
+
+
+</html>

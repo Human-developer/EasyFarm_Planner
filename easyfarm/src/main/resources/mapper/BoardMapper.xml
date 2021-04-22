@@ -28,6 +28,7 @@
 			tq.con_answer
 		FROM 
 			tb_qnaboard as tq
+<!-- 			order by  -->
     </select>
     
     <insert id="insertBoard" parameterType="BoardVO">
@@ -73,11 +74,15 @@
     </select>
     <select id="passCheck" parameterType="String" resultType="boolean">
        SELECT 
-	if(tq.qna_password = #{password},true,false)
-FROM 
-	tb_qnaboard as tq
-WHERE
-	tq.code  = #{code}
+			if(tq.qna_password = #{password},true,false)
+		FROM 
+			tb_qnaboard as tq
+		WHERE
+			tq.code  = #{code}
     </select>
+    
+     <delete id="removeQnaBoard">
+   		DELETE FROM tb_qnaboard WHERE code=#{code}
+   	</delete>
     
 </mapper>
