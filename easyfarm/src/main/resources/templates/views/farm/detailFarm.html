@@ -98,7 +98,7 @@
 							</div>
 							<div class ="col-sm-6" style ="text-align: right;">
 								<button th:if = "${farm.farmMemberLevel == 'farm_level_1'}"  class="btn btn-xs btn-danger margin-top-20" th:href="@{#}">농가삭제</button>
-								<button th:if = "${farm.farmMemberLevel != 'farm_level_1'}" class ="farmCancelBtn btn btn-xs btn-danger" data-toggle="modal" data-target="#farmCancelModal">농가탈퇴</button>
+								<button th:if = "${farm.farmMemberLevel != 'farm_level_1'}" class ="farmCancelBtn btn btn-xs btn-danger margin-top-20" data-toggle="modal" data-target="#farmCancelModal">농가탈퇴</button>
 							</div>
 						</div>
 						<hr class ="col-sm-12" style ="margin: 0; padding: 0;">
