@@ -562,11 +562,6 @@
 				location.href = $(btn).attr('data-value');
 			};
 			
-			/* $('#workPhaseCateDate-range, #workPhaseDate-range').datepicker({
-				language: 'kr',
-		        autoClose: true,
-			}); */
-			
 			/* datepicker */
 			var date = new Date();
 			$('[name="selectedDate"]').val("날짜를 선택해 주세요");
@@ -605,13 +600,8 @@
 		            {
 		               alert( "Request failed : " + textStatus );
 		            });
-			      
-			      
 			  }
-			
 			}).data('datepicker');
-			
-			
 			
 			/* datepicker */
 			var date = new Date();
@@ -657,94 +647,7 @@
 			  }
 			}).data('datepicker');
 			
-		</script>
 	
-	<!-- 
-		<script type="text/javascript">
-			$(function(){
-				var etcpay = $(".etcpay"); 
-				var machineLeasePay = $(".machineLeasePay"); 
-				var humanpay = $(".humanpay"); 
-				var resourcepay = $(".resourcepay"); 
-				console.log(etcpay);
-				var etcSum = 0;
-				var machineLeaseSum = 0;
-				var humanSum = 0;
-				var resourceSum = 0;
-				var i = 0;
-				while(i < 10)
-				{
-					
-					etcSum += Number(etcpay.eq(i).text());
-					machineLeaseSum += Number(machineLeasePay.eq(i).text());
-					humanSum += Number(humanpay.eq(i).text());
-					resourceSum += Number(resourcepay.eq(i).text());
-					
-					i++;
-				};
-				console.log(etcSum);
-				$('.etctotal').text("비용 : "+ etcSum);
-				$('.machineleasetotal').text("비용 : "+machineLeaseSum);
-				$('.humantotal').text("비용 : "+humanSum);
-				$('.resourcetotal').text("비용 : "+resourceSum);
-				$('.paytotal').text(resourceSum + humanSum + machineLeaseSum + etcSum);
-			})
-			
-			$('#example2, #example3, #example4, #example5, #example6').DataTable();
-			
-			
-			var groupNum = 0;
-			var table = $('#example-row-grouping-2, #top-table').DataTable
-			({
-				"columnDefs": 
-				[
-					{ "visible": false, "targets": groupNum }
-				],
-				"order": [ groupNum, 'asc' ],
-				"displayLength": 25,
-				"drawCallback": function ( settings ) 
-				{
-					var api = this.api();
-					var rows = api.rows( {page:'current'} ).nodes();
-					var last=null;
-		 
-					api.column(groupNum, {page:'current'} ).data().each( function ( group, i ) 
-					{
-						if ( last !== group ) 
-						{
-							$(rows).eq( i ).before
-							(
-								'<tr class="group"><td colspan="8">'+group+'</td></tr>'
-							);
-		 
-							last = group;
-						}
-					});
-				}
-			});
-		 
-			// Order by the grouping
-			$('#example-row-grouping-2 tbody, #top-table tbody').on( 'click', 'tr.group', function () 
-				{
-					var currentOrder = table.order()[0];
-					if ( currentOrder[0] === groupNum && currentOrder[1] === 'asc' ) 
-					{
-						table.order( [ groupNum, 'desc' ] ).draw();
-					}
-					else 
-					{
-						table.order( [ groupNum, 'asc' ] ).draw();
-					}
-					return false;
-				});
-			
-			
-			 
-			
-			
-		</script>
-	 -->
-	 <script type="text/javascript">
 	 	$('.btn').click(function(){
 	 		if($(this).text() == '결과 작성 마감'){
 		 		$(this).parent().find('input').attr('readonly','readonly');
@@ -758,7 +661,6 @@
 	 	})
 	 	
 	 	
-	 	
 	 	 $(".eksdnl").each(function(){
 	 		var eksdnl = $(this).attr('data-eksdnl');
 	 		$(this).TouchSpin({
@@ -769,7 +671,6 @@
 		      }); 
 	 		$(this).parent().find('.input-group-btn-vertical').remove();
 	 	 })
-		      
 		
 	 </script>
 	

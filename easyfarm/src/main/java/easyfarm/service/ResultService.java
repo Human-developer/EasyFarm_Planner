@@ -33,18 +33,8 @@ import easyfarm.domain.result.WorkForcePayResult;
 public class ResultService {
 	
 	
-	//연관 맺어주기 =  DI 필드 주입방식
-	/*@Autowired
-	private MemberMapper memberMapper;
 	
-	private MemberMapper memberMapper2;
-	// 2. DI SETTER 메서드 주입방식
-	@Autowired
-	public void setMemberMapper(MemberMapper memberMapper2) {
-		this.memberMapper2 = memberMapper;
-	}
-	*/
-	// 3. DI 생성자 메서드 주입방식 (spring권장)
+	// DI 생성자 메서드 주입방식 (spring권장)
 	private final ResultMapper resultmapper;
 	
 	//3-1 spring framework 4.3 이후부터는 @Autowired 쓰지 않아도 주입 가능
