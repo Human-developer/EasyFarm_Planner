@@ -50,16 +50,16 @@
 		<div class="row">
 			<div class="col-lg-offset-2 col-lg-8">
 				<div class="box-content" >
-						<div   class="dropdown js__drop_down">
-							<a th:if="${session.SID != null}" href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
+						
+						<div style="text-align: center; border-bottom : solid 1px;" class="data box-content" th:data-val="${b.boardNum}">
+						<div th:if="${session.SID != null and session.SID != ''}"  class="dropdown js__drop_down">
+							<a href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
 							<ul class="sub-menu">
 								<li><a th:if="${b.boardId != session.SID}" th:href="@{/member/addReport(memberId=${b.boardId})}">신고</a></li>
 								<li><a th:if="${b.boardId == session.SID}" th:href="@{/member/modifyFreeBoard(boardNum=${b.boardNum})}">수정</a></li>
 								<li><a th:if="${b.boardId == session.SID or '관리자' == session.SLEVEL}" class="removeFreeBoard" th:data-boardNum="${b.boardNum}" th:href="@{#}">삭제</a></li>
 							</ul>
 						</div>
-						
-						<div style="text-align: center; border-bottom : solid 1px;" class="data box-content" th:data-val="${b.boardNum}">
 							<h3 th:text="${b.boardTitle}"></h3>	
 							<div style=" text-align: left;" >
 								<div class="">

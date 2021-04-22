@@ -1,10 +1,6 @@
 package easyfarm.controller;
 
 
-
-
-
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -41,6 +37,7 @@ import easyfarm.service.MemberService;
 @Controller
 public class MemberController {
 	
+	//저장경로지정(properties에 입력된값 가져오기)
 	@Value("${file.upload.path}")
 	private String fileUploadPath;
 	
@@ -54,30 +51,28 @@ public class MemberController {
 	private JavaMailSender javaMailSender;
 	
 
-	 //메일 속도 단축을 위한 쓰레드활용
+	 //메일 속도 단축을 위한 쓰레드활용 
 	 public Runnable createRunnable(final SimpleMailMessage message) {
 		 return new Runnable() {
 		 	 @Override
 			 public void run() {
 		 		 
-				 javaMailSender.send(message);
+				 javaMailSender.send(message); //message에 담긴 메세지+인증코드 보내기
 			 }			
 		 };
 	 }
 	 
 	
-	
 	//프로필 사진변경
 	@PostMapping("/member/profile")
 	@ResponseBody
-	public  Map<String, Object> test(MultipartFile uploadFiles, HttpSession session)throws Exception {
+	public  Map<String, Object> modifyPofile(MultipartFile uploadFiles, HttpSession session)throws Exception {
 		Map<String,Object> map = new HashMap<String, Object>();
 		
 		String releasePath = null;
 
 		File file = new File("");
-		// 내프로젝트 경로
-		
+		// 내프로젝트 경로		
 		if(fileUploadPath.indexOf("WEB-INF") > -1) {			
 			//배포시점 파일경로
 			releasePath = session.getServletContext().getRealPath("/");
@@ -85,15 +80,12 @@ public class MemberController {
 		}else {			
 			File rootPath = file.getAbsoluteFile();
 			releasePath = rootPath.getAbsolutePath();
-		}
-		
-		
+		}			
 		//저장할 이미지이름을 위한 추출
 		String memberId = (String)session.getAttribute("SID");
 		Date today = new Date();
 		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmmss");
-		String day = simpleDate.format(today);
-		
+		String day = simpleDate.format(today);		
 		
 		//확장자 명 추출
 		int pos = uploadFiles.getOriginalFilename().lastIndexOf( "." );
@@ -105,25 +97,17 @@ public class MemberController {
 		File img = new File( releasePath + fileUploadPath + pathName);		
 				
 		//프로젝트에 이미지 저장
-		uploadFiles.transferTo( img );
-		
-		Member member = memberService.getMemberInfoById(memberId);
-		
-		File removeFile = new File(releasePath + fileUploadPath + member.getMemberImg());
-		
+		uploadFiles.transferTo( img );		
+		Member member = memberService.getMemberInfoById(memberId);		
+		File removeFile = new File(releasePath + fileUploadPath + member.getMemberImg());		
 		if(removeFile.exists()) {
 			removeFile.delete();
-		}
-		
-		
-		
+		}		
 		//프로필 경로를위한 프로필 변경
-		memberService.modifyProfile(memberId,pathName);
-		
+		memberService.modifyProfile(memberId,pathName);		
 		// 변경한 이미지를 보여주기위한 리턴
 		map.put("imgName", pathName);
-		
-		
+			
 		return map;
 	}
 	
