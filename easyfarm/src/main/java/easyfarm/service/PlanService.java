@@ -59,7 +59,7 @@ public class PlanService {
 		List<Map<String, Object>> result = null;
 		if(projectCode != null && !"".equals(projectCode.trim())) {
 			result = planMapper.getProjectPlanNList(projectCode);
-		}
+		} 
 		return result;
 	}
 	
