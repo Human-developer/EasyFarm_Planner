@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="easyfarm.dao.CropMapper">
+	
+	<!--작물  -->
 	<resultMap type="Crop" id="CropResultMap">
 		<result property="cropCode"		column="crop_code"/>
 		<result property="cropCate"		column="crop_cate"/>
@@ -12,7 +14,8 @@
 		<id 	property="memberId" 	column="member_id"/>
 		</association>
 	</resultMap> 
-	            
+   
+    <!-- 작업단계 -->      
 	<resultMap type="CropWorkStage" id="CropWorkStageResultMap">
 		<result property="cropPhaseInfoCode"	column="crop_phase_info_code"/>
 		<result property="cropCode"				column="crop_code"/>
@@ -39,12 +42,32 @@
 		</association>
 	</resultMap>          
 	
+	<!-- 상세작업항목 -->
 	<resultMap type="CropDetailCategory" id="CropDetailCategoryResultMap">
 		<result property="commonWorkphaseCateCode"	column="common_workphase_cate_code"/>
 		<result property="commonWorkphaseCateName"	column="common_workphase_cate_name"/>
 		<result property="regMemberId"			column="reg_member_id"/>
 		<result property="regDate"				column="reg_date"/>
 	</resultMap>          
+	
+	<!-- 품목카테고리 -->
+	<resultMap type="StockCate" id="resultStockCate">
+		<result property="stockCateCode"		column="stock_cate_code"/>
+		<result property="stockCateName"		column="stock_cate_name"/>
+		<result property="regMemberId"			column="reg_member_id"/>
+		<result property="regDate"				column="reg_date"/>
+	</resultMap>
+	<!-- 공과금 카테고리 -->
+	<resultMap type="TaxPayCate" id="resultTaxPayCate">
+		<result property="taxPayCateCode"		column="tax_pay_cate_code"/>
+		<result property="taxPayCateName"		column="tax_pay_cate_name"/>
+		<result property="useStatus"			column="use_status"/>
+		<result property="regMemberId"			column="reg_member_id"/>
+		<result property="regDate"				column="reg_date"/>
+	</resultMap>
+	
+	
+	
 	
 	<select id="getCropCode" parameterType="map" resultMap="CropResultMap">
 	SELECT 
@@ -81,8 +104,6 @@
 	on
 	 cp.crop_code = c.crop_code 
 		order by cp.crop_code asc, cp.workphase asc
-		
-	
 	</select>
 	
 	<select id="getCropDetailCategory" parameterType="String" resultMap="CropDetailCategoryResultMap">
@@ -101,11 +122,19 @@
 	order by cast(SUBSTRING_INDEX(common_workphase_cate_code,'_',-1)AS UNSIGNED)
 	</select>
 	
-	
-	
-	
-	
-	
+	<select id="getTaxPayCateList" parameterType="String" resultMap="resultTaxPayCate">
+	SELECT 
+		tax_pay_cate_code
+		, tax_pay_cate_name
+		, use_status
+		, reg_member_id
+		, reg_date
+	FROM 
+		tb_tax_pay_cate;
+  	</select>
+
+
+
 	<insert id="addCrop" parameterType="map">
 	INSERT INTO 
 		tb_crop
@@ -148,6 +177,38 @@
 		, #{memberId}
 		, NOW()
 	)
+	</insert>
+	
+	<insert id="addStockCate" parameterType="map">
+	INSERT INTO tb_stock_cate(
+		stock_cate_code
+		, stock_cate_name
+		, reg_member_id
+		, reg_date
+	)
+	VALUES (
+		sf_stock_item_max_code_yoo()<!-- 함수 다시 만들기 -->
+		, #{stockCate.stockCateName}
+		, #{memberId}
+		, NOW()
+	)
+	</insert>
+	
+	<insert id="addTaxPayCate" parameterType="map">
+	INSERT INTO tb_tax_pay_cate(
+		tax_pay_cate_code
+		, tax_pay_cate_name
+		, use_status
+		, reg_member_id
+		, reg_date
+		)
+	VALUES(
+		sf_tax_pay_cate_max_code()
+		, #{taxPayCate.taxPayCateName}
+		, 'O'
+		, #{memberId}
+		, NOW()
+		);
 	</insert>
 
 
@@ -193,6 +254,26 @@
 		</trim>
 	WHERE 
 	common_workphase_cate_code=#{commonWorkphaseCateCode}
+	</update>
+	<update id="modifyStockCate" parameterType="StockCate">
+	UPDATE tb_stock_cate
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="stockCateName != null and stockCateName != ''.toString()">
+			stock_cate_name=#{stockCateName}
+			</if>
+		</trim>
+	WHERE 
+	stock_cate_code=#{stockCateCode}
+	</update>
+	<update id="modifyTaxPayCate" parameterType="TaxPayCate">
+	UPDATE tb_tax_pay_cate
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="taxPayCateName != null and taxPayCateName != ''.toString()">
+			tax_pay_cate_name=#{taxPayCateName}
+			</if>
+		</trim>
+	WHERE 
+	tax_pay_cate_code=#{taxPayCateCode}
 	</update>
 	
 	
@@ -274,4 +355,47 @@
 		where
 			use_status = 'O' and crop_cate = #{cropCategory}
 	</select>
+	
+	<!--품목 카테고리 조회  -->
+	<select id="getInfoStockCate" parameterType="String" resultMap="resultStockCate">
+		SELECT 
+			 s.stock_cate_code
+			,s.stock_cate_name
+			,s.reg_member_id
+			,s.reg_date
+		FROM
+			tb_stock_cate as s
+	 	<trim prefix="WHERE" prefixOverrides="AND|OR ">
+			<if test="stockCateCode != null and stockCateCode != ''.toString()">
+				s.stock_cate_code = #{stockCateCode}
+			</if>
+		</trim>
+	</select>
+	<select id="getInfoTaxPayCate" parameterType="String" resultMap="resultTaxPayCate">
+		SELECT 
+			 t.tax_pay_cate_code
+			,t.tax_pay_cate_name
+			,t.use_status
+			,t.reg_member_id
+			,t.reg_date
+		FROM
+			tb_tax_pay_cate as t
+	 <!-- 	<trim prefix="WHERE" prefixOverrides="AND|OR ">
+			<if test="taxPayCateCode != null and taxPayCateCode != ''.toString()">
+				t.tax_pay_cate_code = #{taxPayCateCode}
+			</if>
+		</trim> -->
+		where
+		t.tax_pay_cate_code = #{taxPayCateCode}
+	</select>
+	
+	<delete id="removeStockCate">
+	DELETE FROM tb_stock_cate WHERE stock_cate_code=#{stockCateCode}
+	</delete>
+	<delete id="removeTaxPayCate">
+	DELETE FROM tb_tax_pay_cate WHERE tax_pay_cate_code=#{TaxPayCateCode}
+	</delete>
+	
+	
+	
 </mapper>

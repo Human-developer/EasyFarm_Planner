@@ -66,11 +66,6 @@ public class MemberController {
 	 }
 	 
 	
-	 
-	@GetMapping("/member/test")
-	public String test() {
-		return "views/member/memberList/test";
-	}
 	
 	//프로필 사진변경
 	@PostMapping("/member/profile")
@@ -275,7 +270,7 @@ public class MemberController {
 		
 		if(boardFile.getSize() > 0) {
 			
-			//저장할 이미지이름을 위한 추출
+			//저장할 파일이름을 위한 추출
 			String memberId = (String)session.getAttribute("SID");
 			Date today = new Date();
 			SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -285,7 +280,8 @@ public class MemberController {
 			//확장자 명 추출
 			int pos = boardFile.getOriginalFilename().lastIndexOf( "." );
 			String ext = boardFile.getOriginalFilename().substring( pos + 1 ); 
-			//이미지이름
+			
+			//파일이름
 			String pathName = memberId + day+"."+ext;
 			
 			// 저장 경로
@@ -294,18 +290,19 @@ public class MemberController {
 			//프로젝트에 파일 저장
 			boardFile.transferTo( boardFil );
 			
+			//데이터베이스에 파일경로명 + 파일실제명 + 파일사이즈 저장 
 			board.setBoardFile(pathName);		
 			board.setBoardFileName(boardFile.getOriginalFilename());		
 			board.setBoardFileSize(boardFile.getSize()/1024);
 		}
 		
-		int boardNum = board.getBoardNum();
-		FreeBoard removeboard = freeBoardService.getBoard(boardNum);
+		int boardNum = board.getBoardNum();//게시물 넘버 추출
+		FreeBoard removeboard = freeBoardService.getBoard(boardNum); // 기존 파일 삭제를 위한 추출
 		
-		File removeFile = new File(releasePath + fileUploadPath + removeboard.getBoardFile());
+		File removeFile = new File(releasePath + fileUploadPath + removeboard.getBoardFile()); //기존파일 경로설정 
 		
 		if(removeFile.exists()) {
-			removeFile.delete();
+			removeFile.delete(); //기존 파일 삭제
 		}
 		
 		
@@ -367,11 +364,11 @@ public class MemberController {
 	
 	
 	
-	 @GetMapping("/member")
-	 public String member() {
+	@GetMapping("/member")
+	public String member() {
 	
-		 return "views/member/member";
-	 }
+		return "views/member/member";
+	}
 
 	 //로그인
 	 @GetMapping("/member/login")

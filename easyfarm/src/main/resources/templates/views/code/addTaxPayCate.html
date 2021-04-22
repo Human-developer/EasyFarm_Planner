@@ -4,11 +4,11 @@
 	layout:decorate="@{layout/default}">
 
 <th:block layout:fragment="customTitle">
-	<title>품목 카테고리 등록</title>
+	<title>공과금 카테고리 등록</title>
 </th:block>
 
 <th:block layout:fragment="pageTitle">
-		품목 카테고리 등록
+		공과금 카테고리 등록
 	</th:block>
 
 <th:block layout:fragment="customCss">
@@ -54,12 +54,12 @@ button {
 }
 
 .important-col {
-	background-image: url("/assets/images/") !important;
+/* 	background-image: url("/assets/images/") !important; */
 	color: #3bbd5a !important;
 }
 
 #wrapper {
-	background-image: url("/assets/images/") !important;
+/* 	background-image: url("/assets/images/") !important; */
 	background-size: 100% 100%;
 }
 </style>
@@ -70,11 +70,11 @@ button {
 		$(function() {
 			$('#addCheck').click(function() {
 
-				if ($('#cropdetcate').val() == "") {
+				if ($('#TaxPayCate').val() == "") {
 					swal({
-						title : "품목카테고리명을 입력해주세요."
+						title : "공과금카테고리명을 입력해주세요."
 					});
-					$('#cropdetcate').focus();
+					$('#TaxPayCate').focus();
 					return false;
 				}
 			
@@ -90,10 +90,10 @@ button {
 			<div class="col-sm-offset-2 col-sm-8">
 				<div class="box-content">
 					<div class="pull-left">
-						<div style="font-size: 24px;">품목 카테고리 등록</div>
+						<div style="font-size: 24px;">공과금 카테고리 등록</div>
 					</div>
 					<div class="pull-right">
-						<a th:href="@{/code/getStockCateList}"  class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
+						<a th:href="@{/code/getTaxPayCateList}"  class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
 							리스트로 돌아가기
 						</a>
 					</div>
@@ -102,16 +102,16 @@ button {
 					</div>
 					<hr>
 
-					<form th:action="@{/code/addStockCate}" method="post">
+					<form th:action="@{/code/addTaxPayCate}" method="post">
 						<div class="panel-body" style="padding-top: 0">
 							<div class="form-horizontal">
 								<div class="form-group margin-bottom-20">
-									<label for="stockcate" class="col-sm-3 control-label"><strong>품목 카테고리명</strong></label>
+									<label for="TaxPayCate" class="col-sm-4 control-label"><strong>공과금 카테고리명</strong></label>
 									<div class="col-sm-6">
 										<!-- 제한조건넣기 -->
 										<input type="text" size="20" class="green-input"
-											name="StockCateName" id="stockcate"
-											placeholder="품목 카테고리명 입력">
+											name="taxPayCateName" id="TaxPayCate"
+											placeholder="공과금 카테고리명 입력">
 									</div>
 
 								</div>
@@ -120,7 +120,7 @@ button {
 									<div class="col-sm-10 col-sm-offset-1">
 										<button type="submit" id="addCheck"
 											class="btn btn-success btn-rounded waves-effect waves-light"
-											style="width: 100%">품목 카테고리 등록</button>
+											style="width: 100%">공과금 카테고리 등록</button>
 									</div>
 								</div>
 							</div>

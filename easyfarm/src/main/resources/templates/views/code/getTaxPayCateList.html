@@ -4,11 +4,11 @@
 	  layout:decorate="@{layout/default}">
 	
 	<th:block layout:fragment="customTitle">
-		<title>자유게시판</title>
+		<title>공과금 카테고리 리스트</title>
 	</th:block>
 	
 	<th:block layout:fragment="pageTitle">
-		자유게시판
+		공과금 카테고리
 	</th:block>
 	
 	<!-- 사용자 정의 css 라이브러리 -->
@@ -20,42 +20,49 @@
 	</th:block>
 	
 	<th:block layout:fragment="customContents">
-		<div class="box-content" style="margin-top: 20px">
-		<h3>자유게시판</h3>
-		<small style="color: red;">오른쪽 상단 *** 클릭시 글쓰기&내 게시물보기 --></small>
-		
-		<hr>
-		<div th:if="${session.SID != null}" class="dropdown js__drop_down">
-			<a href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
-			<ul class="sub-menu">
-				<li><a th:href="@{/member/addFreeBoard}">글쓰기</a></li>
-				<li><a th:href="@{/member/getMyFreeBoard}">내 게시물보기</a></li>		
-			</ul>
-			<!-- /.sub-menu -->
+		<div class="box-content">
+		<div class="pull-left">
+			<div style="font-size: 24px;">공과금 카테고리 리스트</div>
 		</div>
-		<table id="board" class="table" style="width:100%">
+		<div class="pull-right">
+			<a th:href="@{/code/addTaxPayCate}"  class="btn btn-primary btn-sm waves-effect waves-light btn-rounded btnSize">
+				공과금 카테고리 등록
+			</a>
+		</div>
+		<div style="margin-top: 6px;">
+			<small style="color: red; margin-left: 6px;"></small>
+		</div>
+		<hr>
+		<div class="table-responsive">
+		<table id="test" class="table table-striped table-bordered display" style="width:100%">
 			<thead>
 				<tr>
-					<th >번호</th>
-					<th >제목</th>
-					<th >작성자</th>
-					<th >작성일</th>
-					<th >조회수</th>
-				</tr>		
+					<th class="hidden">공과금 카테고리 코드 			</th>
+					<th>공과금 카테고리		</th>
+					<th>사용유무			</th>
+					<th>작성자아이디 		</th>
+					<th>작성일자			</th>
+					<th th:if = "${session.SLEVEL == '관리자'}">수정</th>
+					<th th:if = "${session.SLEVEL == '관리자'}">삭제</th>
+				</tr>			
 			</thead>
 			<tbody>
-				<tr th:each="b : ${boardList}" class="boardTitle" th:data-boardNum="${b.boardNum}" th:data-boardGetNum="${b.boardGetNum}">
-					<td th:text="${b.boardNum}" ></td>
-					<td th:text="${b.boardTitle}" ><a></a></td>
-					<td th:text="${b.memberName}"></td>   
-					<td th:text="${b.boardDate}"></td>     
-					<td th:text="${b.boardGetNum}"></td>			
+				<tr th:if="${#lists.size(TaxPayCateList)} > 0" th:each="l, st:${TaxPayCateList}">
+					<td th:hidden="${l.taxPayCateCode}"></td>
+					<td th:text="${l.taxPayCateName}"></td>
+					<td th:text="${l.useStatus}"></td>
+					<td th:text="${l.regMemberId}"></td>
+					<td th:text="${l.regDate}"></td>
+					<td th:if = "${session.SLEVEL == '관리자'}">
+						<a th:href="@{/code/modifyTaxPayCate(taxPayCateCode=${l.taxPayCateCode})}">수정</a>
+					</td>
+					<td th:if = "${session.SLEVEL == '관리자'}">
+						<a th:href="@{/code/removeTaxPayCate(taxPayCateCode=${l.taxPayCateCode})}">삭제</a>		
+					</td>
 				</tr>
 			</tbody>
 		</table>
-		
 		</div>
-
 	</th:block>
 	
 	<!-- 사용자 정의 자바스크립트 라이브러리 -->
@@ -68,17 +75,17 @@
 		<script type="text/javascript">
 		var lang_kor = {
 		        "decimal" : "",
-		        "emptyTable" : "게시물이 없습니다",
+		        "emptyTable" : "내 농가가 없습니다",
 		        "info" : "_START_ - _END_ (총 _TOTAL_ 명)",
 		        "infoEmpty" : "0명",
-		        "infoFiltered" : "(전체 _MAX_ 게시물 중 검색결과)",
+		        "infoFiltered" : "(전체 _MAX_ 농가 중 검색결과)",
 		        "infoPostFix" : "",
 		        "thousands" : ",",
 		        "lengthMenu" : "_MENU_ 개씩 보기",
 		        "loadingRecords" : "로딩중...",
 		        "processing" : "처리중...",
 		        "search" : "검색 : ",
-		        "zeroRecords" : "검색된 게시물이 없습니다.",
+		        "zeroRecords" : "검색된 공과금 카테고리가 없습니다.",
 		        "paginate" : {
 		            "first" : "첫 페이지",
 		            "last" : "마지막 페이지",
@@ -91,14 +98,7 @@
 		        }
 		}
 		
-		$('#board').sysDataTable(lang_kor);
-		
-		
-		$('.boardTitle').click(function(){
-			var boardNum = $(this).attr("data-boardNum");
-			var boardGetNum = $(this).attr("data-boardGetNum");
-			location.href = "/member/getBoard?boardNum="+boardNum+"&&boardGetNum="+boardGetNum;
-		})
+		$('#test').sysDataTable(lang_kor);
 		
 		</script>
 	</th:block>

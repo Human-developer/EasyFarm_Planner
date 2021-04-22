@@ -14,151 +14,8 @@
 	<th:block layout:fragment="customJavaScript">
 		
 	
-		<script type="text/javascript">
-			
-		$(function(){
-
-			
-			$('#addCheck').click(function(){
-							
-				
-				var getMail = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
-				var getCheck= RegExp(/^[a-zA-Z0-9]{4,12}$/);
-				var phoneNumberRegex = /^[0-9]{3}-[0-9]{4}-[0-9]{4}$/;
-				
-				
-				
-				if($('#memberPw').val() == ""){
-					 swal({
-							title: "비밀번호를 입력 해주세요.",
-							confirmButtonColor: '#304ffe'
-						});
-					$('#memberPw').focus();
-					return false;
-				}
-				if(!getCheck.test($('#memberPw').val())){
-					swal({
-						title: "비밀번호를 형식에맞게 입력 해주세요.",
-						confirmButtonColor: '#304ffe'
-					});
-					$('#memberPw').val("");
-					$('#memberPw').focus();
-					return false;
-				}
-				if($('#memberPw').val() == $('#memberId').val()){
-					swal({
-						title: "아이디 비밀번호가 같습니다.",
-						confirmButtonColor: '#304ffe'
-					});
-					$("#password").val("");
-					$('#memberPw').focus();
-					return false;
-				}
-				if($('#memberPw').val() != $('#memberPwCheck').val()){
-					swal({
-						title: "비밀번호가 같지않습니다.",
-						confirmButtonColor: '#304ffe'
-					});
-					$('#memberPwCheck').focus();
-					return false;
-				}
-				
-				if($('#memberPhone').val() == ""){
-					swal({
-						title: "휴대폰번호를 입력 해주세요.",
-						confirmButtonColor: '#304ffe'
-					});
-					$('#memberPhone').focus();
-					return false;
-				}
-				
-				if(!phoneNumberRegex.test($('#memberPhone').val())){
-					swal({
-						title: "휴대폰번호를 형식에맞게 입력해주세요.",
-						confirmButtonColor: '#304ffe'
-					});
-					$('#memberPhone').focus();
-					return false;
-				}
-								
-				if($('#memberAddress').val() == ""){
-					swal({
-						title: "주소를 입력 해주세요.",
-						confirmButtonColor: '#304ffe'
-					});
-					$('#memberAddress').focus();
-					return false;
-				}
-				
-				return true;
-			})
-		});
-			
-		
-		$('#img').click(function(){
-			$('.file').click();
-		})
-		
-		$('#profileStorage').click(function(){
-			
-			var formData = new FormData();
-			var inputFile = $(".file");
-			var files = inputFile[0].files;
-			
-	
-			
-			if(files.length > 1) {
-			    alert('파일은 1개까지 첨부 가능합니다.');
-			    return false;
-			}
-			
-			for(var i = 0; i < files.length; i++) {
-			    var fileSize = files[i].size;
-			    var maxSize = 100000000; //100MB
-			   
-			    if(fileSize > maxSize){
-			        alert("첨부파일 사이즈는 100MB 이내로 등록 가능합니다. ");
-			        return false;
-			    }
-			    var fileName = files[i].name;
-			    var ext = fileName.split('.').pop().toLowerCase();
-			    if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
-			        alert('gif,png,jpg,jpeg 파일만 업로드 할수 있습니다.');
-			        return;
-			    }
-			    formData.append('uploadFiles', files[i]);
-			    //console.log( "파일 : " + files[i] );
-			}		
-				$.ajax({
-				    type : "post",
-				    url : '/member/profile',
-				    data : formData,
-				    contentType: false,
-				    processData: false,
-				    enctype: 'multipart/form-data',
-				    dataType : 'json',
-				    beforeSend:function(){
-				       
-				    },
-				    success : function(data) {
-				 
-				    	console.log(data);
-				       if(data != null){
-				    	   
-				      	 var name = "/assets/images/"+data.imgName;
-				       	 $('#img').attr("src",name);
-				       }
-				    },
-				    error : function(error) {
-				        
-				       
-				        console.log('error : ' + error);
-				    }
-			});
-		})
-		
-		
-		</script>
+		<script th:src="@{/assets/scripts/modifyMember.js}"></script>
+		<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	</th:block>
 	<th:block layout:fragment="customCss">
 		<style>
@@ -178,7 +35,7 @@
 			<div class="container-fluid">
 				<div class="row" >
 					<div class="
-					col-lg-offset-3 col-lg-6
+					col-lg-offset-2 col-lg-7
 					
 					">
 					
@@ -189,44 +46,45 @@
 							<div class="panel-body" >
 								<div class="form-horizontal">
 									<div class="form-group">
-										<label for="memberImg" class="col-sm-2 control-label" ><strong>프로필</strong></label>
-									    <div class="col-sm-9">
-									    	<a href="#"><img th:src="@{${m.memberImg}}"  alt="" class="fo col-sm-offset-3" id="img"></a>
+										<label for="memberImg" class="col-md-3 control-label" ><strong>프로필</strong></label>
+									    <div class="col-md-6">
+									    	<a href="#"><img th:if="${m.memberImg == null and m.memberImg == ''}" th:src="@{${m.memberImg}}"  alt="" class="fo col-sm-offset-3" id="img"></a>
+									    	<a href="#"><img th:if="${m.memberImg != null or m.memberImg != ''}" th:src="@{/assets/images/none-profile.jpg}"  alt="" class="fo col-sm-offset-3" id="img"></a>
 											<input type="file" class="file" style="display: none;">
+											<button type="button" style="margin-top: 10px;" class=" col-sm-offset-4 btn btn-success btn-rounded btn-bordered waves-effect waves-light addressBtn" id="profileStorage">프로필저장</button>
 									    </div>				   					   
 									</div>
 									<div class="form-group">								
-											<button type="button" class="btn col-sm-offset-5" id="profileStorage">프로필저장</button>
 									</div>
 									<div class="form-group">
-										<label for="memberId" class="col-sm-2 control-label" ><strong>아이디</strong></label>
-									    <div class="col-sm-10">
+										<label for="memberId" class="col-md-3 control-label" ><strong>아이디</strong></label>
+									    <div class="col-md-8">
 									      <input type="text" size="15" class="form-control" name="memberId" id="memberId" readonly="readonly" th:value="${m.memberId}" >
 									    </div>				   					   
 									</div>
 									<div class="form-group">
-										<label for="memberPw" class="col-sm-2 control-label"><strong>비밀번호</strong></label>
-									    <div class="col-sm-10">
+										<label for="memberPw" class="col-md-3 control-label"><strong>비밀번호</strong></label>
+									    <div class="col-md-8">
 									      <input type="password" size="15" class="form-control" name="memberPw" id="memberPw" th:value="${m.memberPw}" placeholder="4~12자의 영문 대소문자와 숫자로만 입력">
 									    </div>
 									</div>
 									<div class="form-group">
-										<label for="memberPwCheck" class="col-sm-2 control-label"><strong>비밀번호확인</strong></label>
-									    <div class="col-sm-10">
+										<label for="memberPwCheck" class="col-md-3 control-label"><strong>비밀번호확인</strong></label>
+									    <div class="col-md-8">
 									      <input type="password" size="15" class="form-control" name="memberPwCheck" id="memberPwCheck" th:value="${m.memberPw}" placeholder="비밀번호확인">
 									    </div>
 									</div>
 								
 				
 									<div class="form-group">
-										<label for="memberPhone" class="col-sm-2 control-label"><strong>휴대폰번호</strong></label>
-									    <div class="col-sm-10">
+										<label for="memberPhone" class="col-md-3 control-label"><strong>휴대폰번호</strong></label>
+									    <div class="col-md-8">
 									      <input type="tel" size="12" class="form-control" name="memberPhone" id="memberPhone" th:value="${m.memberPhone}" placeholder="000-0000-0000">
 									    </div>
 									</div>
 									<div class="form-group" th:if="${session.SLEVEL == '관리자'}">
-										<label  class="col-sm-2 control-label"><strong>권한</strong></label>
-									    <div class="col-sm-10" >
+										<label  class="col-md-3 control-label"><strong>권한</strong></label>
+									    <div class="col-md-8" >
 									      <select  id="levelCode" name="levelCode" class="form-control" >
 									      	<option th:each="l : ${levelList}" th:value="${l.levelCode}" th:text="${l.levelName}"></option>
 									      	
@@ -238,15 +96,21 @@
 									   
 									</div>
 								
+									
 									<div class="form-group">
-										<label for="memberAddress" class="col-sm-2 control-label"><strong>주소</strong></label>
-									    <div class="col-sm-10">
-									      <input type="text" class="form-control" name="memberAddress" id="memberAddress" th:value="${m.memberAddress}" placeholder="Address">
+										<label for="memberAddress" class="col-md-3 control-label"><strong>주소</strong></label>
+									    <div class="col-md-5">
+									      <input type="text" class="form-control" name="memberAddress"  id="memberAddress" th:value="${m.memberAddress}" placeholder="도로명 주소">
+									      <span id="guide" style="color:#999"></span>
+									      
+									    </div>
+									     <div class="col-md-1">
+											<button type="button" class="btn btn-success btn-rounded btn-bordered waves-effect waves-light addressBtn" onclick="sample4_execDaumPostcode()">주소검색</button>
 									    </div>
 									</div>
 									<div class="form-group" th:if="${session.SLEVEL == '관리자'}">
-									    <label class="col-sm-2 control-label"><strong>상태</strong></label>
-									    <div class="col-sm-10">
+									    <label class="col-md-3 control-label"><strong>상태</strong></label>
+									    <div class="col-md-8">
 									      <select id="memberStatus" name="memberStatus" class="form-control">
 									      	<option value="정상">:: 정상 ::</option>
 									      	<option value="정지">:: 정지 ::</option>
@@ -261,7 +125,7 @@
 									</div>
 									<hr>
 									<div class="form-group">
-										<div class="col-sm-offset-4">			
+										<div class="col-md-offset-4">			
 											<button type="submit" id="addCheck" class="btn btn-success btn-rounded waves-effect waves-light">수정</button>
 											<a th:href="@{/}" class="btn btn-danger btn-rounded waves-effect waves-light">취소</a>
 										</div>

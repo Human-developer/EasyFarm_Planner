@@ -50,7 +50,7 @@
 		<div class="row">
 			<div class="col-lg-offset-2 col-lg-8">
 				<div class="box-content" >
-						<div  class="dropdown js__drop_down">
+						<div   class="dropdown js__drop_down">
 							<a th:if="${session.SID != null}" href="#" class="dropdown-icon glyphicon glyphicon-option-vertical js__drop_down_button"></a>
 							<ul class="sub-menu">
 								<li><a th:if="${b.boardId != session.SID}" th:href="@{/member/addReport(memberId=${b.boardId})}">신고</a></li>
@@ -59,9 +59,9 @@
 							</ul>
 						</div>
 						
-						<div style="text-align: center;" class="data" th:data-val="${b.boardNum}">
+						<div style="text-align: center; border-bottom : solid 1px;" class="data box-content" th:data-val="${b.boardNum}">
 							<h3 th:text="${b.boardTitle}"></h3>	
-							<div style="text-align: left; border-bottom : solid 1px;" >
+							<div style=" text-align: left;" >
 								<div class="">
 								작성자:<span th:text="${b.memberName}" ></span>	
 								</div>
@@ -70,24 +70,24 @@
 								</div>
 							</div>
 						</div>
-						
-						<div style="text-align: right; margin-bottom: 10px;" >
-							<strong>첨부파일 : </strong>
-			                <a th:if="${b.boardFile != null}" class="card-text"  th:text="${b.boardFileName}" download th:href="@{/assets/images/}+${b.boardFile}" ></a><p th:if="${b.boardFileSize > 0}" th:text="'('+${b.boardFileSize}+'KB)'"></p>
+						<div class="box-content" style="border-bottom : solid 1px;  ">
+							<div style="text-align: right; margin-bottom: 10px;" >
+				              	  등록일:<span th:text="${b.boardDate}"></span>
+							</div>
 							
+							<div style="text-align: center;">
+								<h2 th:text="${b.boardContent}"></h2>
+							</div>
+							
+						
+							
+							<div style="margin-top: 300px; " class="col-sm-"> 					
+								<strong>첨부파일  </strong>
+				                <a th:if="${b.boardFile != null}" style="height: auto;" class="form-control"   th:text="${b.boardFileName}+'('+${b.boardFileSize}+'KB)'" download  th:href="@{/assets/images/}+${b.boardFile}" ></a>
+												 
+							</div>
 						</div>
 						
-						<div style="text-align: center;">
-							<h2 th:text="${b.boardContent}"></h2>
-						</div>
-						
-					
-						
-						<div style="margin-top: 300px; border-bottom : solid 1px;"> 					
-			              	  등록일:<span th:text="${b.boardDate}"></span>
-							 
-						</div>
-						<div>
 						<div class="box-content" >
 							<ul th:each="c : ${commentList}">
 								<li class ="col-xs-12" style = "margin-bottom: 15px;" >
@@ -115,7 +115,7 @@
 																								
 							</ul>		
 						</div>
-						</div>
+						
 						
 						<div th:if="${session.SID != null}" class="box-content" >
 						<strong >댓글 입력</strong>
@@ -217,6 +217,8 @@
 					}
 				});
 		 })
+		
+		 
 			
 		</script>
 	</th:block>
