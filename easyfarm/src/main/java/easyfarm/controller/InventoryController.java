@@ -49,4 +49,5 @@ public class InventoryController {
 		int result = inventoryService.modifyStockError(stockStatusCode, farmCode, errorRemainQty, searchRemainQty, stockQtyCapUnit);
 		return result;
 	}
+	
 }
