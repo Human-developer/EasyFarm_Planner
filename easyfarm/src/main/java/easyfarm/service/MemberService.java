@@ -39,6 +39,8 @@ public class MemberService {
 		memberMapper.addMember(member);
 		 
 	 }
+	 
+	 //이메일 조회
 	 public Member getMemberInfoByEmail(String email) {
 		 Member member = null;
 		 member = memberMapper.getMemberInfoByEmail(email);

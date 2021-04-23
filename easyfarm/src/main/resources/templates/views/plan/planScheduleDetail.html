@@ -129,44 +129,65 @@
 										<input class="form-control t-center" name="projectPlanN" id="projectPlanN" th:value="${projectPlanN}" readonly="readonly"/>
 								    </div>
 								</div>
-								<div class="form-group">
+								<div class="form-group" th:if="${planWorkphaseInfo != null}" th:with="pp = ${planWorkphaseInfo}">
 									<label for="workPhase" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>작업단계</strong></label>
 								    <div class="col-sm-4">
-										<select class="form-control" name="workPhase" id="workPhase">
+										<select class="form-control" name="workPhase" id="workPhase" disabled="disabled">
 											<option value=""> :: 단계선택 :: </option>
-											<th:block th:if="${#lists.size(workphaseNameList) > 0}" th:each="w, st : ${workphaseNameList}">
-												<option th:value="${st.count}" th:text="|${w.workphase} : ${w.workphaseName}|"></option>
+											<th:block th:if="${#lists.size(workphaseNameList) > 0}" th:each="w : ${workphaseNameList}">
+												<option th:value="${w.projectWorkphaseCode}" th:text="|${w.workphase} : ${w.workphaseName}|" th:selected="${w.projectWorkphaseCode} == ${pp.projectWorkphaseCode}"></option>
 											</th:block>
 										</select>
 								    </div>
 							    	<label for="workPhaseDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
 									<div class="col-md-5">
 										<div class="input-daterange input-group" id="workPhaseDate-range">
-											<input type="text" class="form-control" name="start" />
+											<input type="text" class="form-control" name="start" th:value="${pp.planWorkphaseBegin}" readonly="readonly"/>
 											<span class="input-group-addon bg-primary text-white"> ~ </span>
-											<input type="text" class="form-control" name="end" />
+											<input type="text" class="form-control" name="end" th:value="${pp.planWorkphaseEnd}" readonly="readonly"/>
 										</div>
 									</div>
 								</div>
-								<div class="form-group" th:if="${workphaseCateNameList != null}">
-									<label for="workPhaseCate" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>상세항목</strong></label>
-								    <div class="col-sm-4">
-										<select class="form-control" name="workPhaseCate" id="workPhaseCate">
-											<option value=""> :: 상세항목선택 :: </option>
-											<th:block th:each="w, st : ${workphaseCateNameList}">
-												<option th:value="${st.count}" th:text="${w.commonWorkphaseCateName}"></option>
-											</th:block>
-										</select>
-								    </div>
-								    <label for="workPhaseCateDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
-									<div class="col-md-5">
-										<div class="input-daterange input-group" id="workPhaseCateDate-range">
-											<input type="text" class="form-control" name="start" />
-											<span class="input-group-addon bg-primary text-white"> ~ </span>
-											<input type="text" class="form-control" name="end" />
+								<th:block th:if="${planWorkphaseCateInfo != null}" th:with="wc = ${planWorkphaseCateInfo}">
+									<div class="form-group">
+										<label for="workPhase" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>작업단계</strong></label>
+									    <div class="col-sm-4">
+											<select class="form-control" name="workPhase" id="workPhase" disabled="disabled">
+												<option value=""> :: 단계선택 :: </option>
+												<th:block th:if="${#lists.size(workphaseNameList) > 0}" th:each="w : ${workphaseNameList}">
+													<option th:value="${w.projectWorkphaseCode}" th:text="|${w.workphase} : ${w.workphaseName}|" th:selected="${w.projectWorkphaseCode} == ${wc.projectWorkphaseCode}"></option>
+												</th:block>
+											</select>
+									    </div>
+								    	<label for="workPhaseDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
+										<div class="col-md-5">
+											<div class="input-daterange input-group" id="workPhaseDate-range">
+												<input type="text" class="form-control" name="start" th:value="${wc.planWorkphaseBegin}" readonly="readonly"/>
+												<span class="input-group-addon bg-primary text-white"> ~ </span>
+												<input type="text" class="form-control" name="end" th:value="${wc.planWorkphaseEnd}" readonly="readonly"/>
+											</div>
 										</div>
 									</div>
-								</div>
+									<div class="form-group" th:if="${workphaseCateNameList != null}">
+										<label for="workPhaseCate" class="col-sm-2 control-label" style="width: 80px; padding-right: 0px;"><strong>상세항목</strong></label>
+									    <div class="col-sm-4">
+											<select class="form-control" name="workPhaseCate" id="workPhaseCate" disabled="disabled">
+												<option value=""> :: 상세항목선택 :: </option>
+												<th:block th:each="w : ${workphaseCateNameList}">
+													<option th:value="${w.farmWorkphaseCateCode}" th:text="${w.commonWorkphaseCateName}" th:selected="${w.farmWorkphaseCateCode} == ${wc.farmWorkphaseCateCode}"></option>
+												</th:block>
+											</select>
+									    </div>
+									    <label for="workPhaseCateDate" class="col-sm-1 control-label pl-0" style="width: 60px;"><strong>기간</strong></label>
+										<div class="col-md-5">
+											<div class="input-daterange input-group" id="workPhaseCateDate-range">
+												<input type="text" class="form-control" name="start" th:value="${wc.planWorkphaseCateBegin}" readonly="readonly"/>
+												<span class="input-group-addon bg-primary text-white"> ~ </span>
+												<input type="text" class="form-control" name="end" th:value="${wc.planWorkphaseCateEnd}" readonly="readonly"/>
+											</div>
+										</div>
+									</div>
+								</th:block>
 							</div>
 							
 							<!-- 사전정보등록 아코디온 시작 -->
@@ -178,17 +199,17 @@
 									<!-- 탭항목시작 -->
 									<ul class="nav nav-tabs nav-justified" id="myTabs-justified" role="tablist">
 										<li role="presentation" class="active">
-											<button type="button" th:value="|/plan/planClientList?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
+											<button type="button" th:value="|/plan/planClientList?farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
 												거래처
 											</button>
 										</li>
 										<li role="presentation">
-											<button type="button" th:value="|/plan/planStockItemList?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
+											<button type="button" th:value="|/plan/planStockItemList?farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
 												품목
 											</button>
 										</li>
 										<li role="presentation">
-											<button type="button" th:value="|/plan/planResourcePayList?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
+											<button type="button" th:value="|/plan/planResourcePayList?farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
 												농자재매입
 											</button>
 										</li>
@@ -198,12 +219,12 @@
 											</button>
 										</li>
 										<li role="presentation">
-											<button type="button" th:value="|/plan/planFarmBookmarkMachineList?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
+											<button type="button" th:value="|/plan/planFarmBookmarkMachineList?farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
 												농기계즐겨찾기
 											</button>
 										</li>
 										<li role="presentation">
-											<button type="button" th:value="|/plan/planClientList?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
+											<button type="button" th:value="|/plan/getPlanFarmRetainMachineList?farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-bordered btn-block">
 												보유농기계
 											</button>
 										</li>
@@ -227,7 +248,7 @@
 							<!-- 탭항목끝 -->
 							
 							<!-- 탭항목별컨텐츠 시작-->
-							<div class="tab-content" id="myTabContent-justified">
+							<div class="tab-content" id="myTabContent-justified" th:with="ps = ${allPlanSchedule}">
 								<!-- 인건비관리 시작 -->
 								<div class="tab-pane fade in active" role="tabpanel" id="workforcePay-justified" aria-labelledby="workforcePay-tab-justified">
 									
@@ -235,26 +256,32 @@
 										<div class="box-title">인건비 지출계획</div>
 										<div class="card-content">
 											<div class="table-responsive">
-												<table class="table table-hover" style="width:100%">
+												<table class="table table-striped table-bordered display" style="width:100%">
 													<thead>
 														<tr>
 															<th>근무인원</th>
 															<th>근무일수</th>
+															<th>맨데이</th>
 															<th>일일인건비</th>
 															<th>인건비합계</th>
-															<th>작성자</th>
-															<th>작성일</th>
+															<th>수정</th>
+															<th>삭제</th>
 														</tr>
 													</thead>
 													<tbody>
-														<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+														<th:block th:if="${#lists.size(ps.expWorkforcePayList) > 0}" th:each="w : ${ps.expWorkforcePayList}">
 															<tr>
-																<td th:text="${1}"></td>
-																<td th:text="${2}"></td>
-																<td th:text="${3}"></td>
-																<td th:text="${4}"></td>
-																<td th:text="${5}"></td>
-																<td th:text="${6}"></td>
+																<td th:text="${w.workforceCount}"></td>
+																<td th:text="${w.workforceHowlong}"></td>
+																<td th:text="${w.workforceRequireDay}"></td>
+																<td th:text="${w.workforcePayDay}"></td>
+																<td th:text="${w.workforcePayTotal}"></td>
+																<td>
+																	<a th:href="|/plan/modifyPlanClient?farmCode=${farmCode}|">수정</a>
+																</td>
+																<td>
+																	<a th:href="|/plan/removeClient?farmCode=${farmCode}|">삭제</a>
+																</td>
 															</tr>
 														</th:block>
 													</tbody>
@@ -265,7 +292,7 @@
 										<div class="form-group t-center">
 											<div class="row">
 												<div class="col-md-6 col-md-offset-3">
-													<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+													<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block modalBtn" 
 														data-toggle="modal" data-target="#planAddWorkforcePay">인건비 지출계획등록
 													</button>
 												</div>
@@ -282,10 +309,10 @@
 											<div class="row">
 												<div class="col-sm-12">
 													<div class="pull-left">
-														<div class="switch primary"><input type="checkbox" checked id="leaseSwitch"><label for="leaseSwitch">농기계 대여 지출계획</label></div>
+														농기계 대여 지출계획
 													</div>
 													<div class="pull-right">
-														<button type="button" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded"
+														<button type="button" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded modalBtn"
 															data-toggle="modal" data-target="#planAddMachineLease">대여농기계등록</button>
 													</div>
 												</div>
@@ -293,7 +320,7 @@
 										</div>
 										<div class="card-content">
 											<div class="table-responsive">
-												<table class="table table-hover" style="width:100%">
+												<table class="table table-striped table-bordered display" style="width:100%">
 													<thead>
 														<tr>
 															<th>거래처</th>
@@ -301,20 +328,24 @@
 															<th>대여일수</th>
 															<th>일일대여료</th>
 															<th>총대여료합계</th>
-															<th>작성자</th>
-															<th>작성일</th>
+															<th>수정</th>
+															<th>삭제</th>
 														</tr>
 													</thead>
 													<tbody>
-														<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+														<th:block th:if="${#lists.size(ps.expMachineLeaseList) > 0}" th:each="m : ${ps.expMachineLeaseList}">
 															<tr>
-																<td th:text="${1}"></td>
-																<td th:text="${2}"></td>
-																<td th:text="${3}"></td>
-																<td th:text="${4}"></td>
-																<td th:text="${5}"></td>
-																<td th:text="${6}"></td>
-																<td th:text="${7}"></td>
+																<td th:text="${m.clientName}"></td>
+																<td th:text="${m.commonMachineName}"></td>
+																<td th:text="${m.machineLeaseHowlong}"></td>
+																<td th:text="${m.machineLeasePayDay}"></td>
+																<td th:text="${m.machineLeasePayTotal}"></td>
+																<td>
+																	<a th:href="|/plan/modifyPlanClient?farmCode=${farmCode}|">수정</a>
+																</td>
+																<td>
+																	<a th:href="|/plan/removeClient?farmCode=${farmCode}|">삭제</a>
+																</td>
 															</tr>
 														</th:block>
 													</tbody>
@@ -327,10 +358,10 @@
 											<div class="row">
 												<div class="col-sm-12">
 													<div class="pull-left">
-														<div class="switch primary"><input type="checkbox" checked id="useSwitch"><label for="useSwitch">보유 농기계 지출계획</label></div>
+														보유 농기계 지출계획
 													</div>
 													<div class="pull-right">
-														<button type="button" id="planAddBtn" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded"
+														<button type="button" id="planAddBtn" class="btn btn-primary btn-xs waves-effect waves-light btn-rounded modalBtn"
 															data-toggle="modal" data-target="#planAddMachineUse">보유농기계등록</button>
 													</div>
 												</div>
@@ -338,20 +369,24 @@
 										</div>
 										<div class="card-content">
 											<div class="table-responsive">
-												<table class="table table-hover" style="width:100%">
+												<table class="table table-striped table-bordered display" style="width:100%">
 													<thead>
 														<tr>
 															<th>농기계종류</th>
-															<th>작성자</th>
-															<th>작성일</th>
+															<th>수정</th>
+															<th>삭제</th>
 														</tr>
 													</thead>
 													<tbody>
-														<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+														<th:block th:if="${#lists.size(ps.expMachineUseList) > 0}" th:each="em : ${ps.expMachineUseList}">
 															<tr>
-																<td th:text="${1}"></td>
-																<td th:text="${2}"></td>
-																<td th:text="${3}"></td>
+																<td th:text="${em.commonMachineName}"></td>
+																<td>
+																	<a th:href="|/plan/modifyPlanClient?farmCode=${farmCode}|">수정</a>
+																</td>
+																<td>
+																	<a th:href="|/plan/removeClient?farmCode=${farmCode}|">삭제</a>
+																</td>
 															</tr>
 														</th:block>
 													</tbody>
@@ -365,37 +400,74 @@
 								<!-- 농자재관리 시작 -->
 								<div class="tab-pane fade" role="tabpanel" id="resource-justified" aria-labelledby="resource-tab-justified">
 									<div class="box-content card white">
-										<div class="box-title">농자재사용 지출계획</div>
+										<div class="box-title">
+											<div class="row">
+												<div class="col-sm-12">
+													<h4>농가별 농자재 소모현황</h4>
+												</div>
+											</div>
+										</div>
 										<div class="card-content">
 											<div class="table-responsive">
-												<table class="table table-hover" style="width:100%">
+												<table id="resourceUsecapacityListTable" class="table table-striped table-bordered display" style="width:100%">
 													<thead>
 														<tr>
-															<th>농자재소모현황코드</th>
+															<th>거래처</th>
 															<th>카테고리</th>
 															<th>품목명</th>
-															<th>사용수량</th>
-															<th>수량단위</th>
-															<th>사용용량</th>
-															<th>용량단위</th>
-															<th>사용량금액환산</th>
-															<th>작성자</th>
-															<th>작성일</th>
+															<th>잔여수량</th>
+															<th>잔여용량</th>
+															<th>사용가능여부</th>
 														</tr>
 													</thead>
 													<tbody>
-														<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+														<th:block th:if="${#lists.size(resourceUsecapacityList) > 0}" th:each="r : ${resourceUsecapacityList}">
 															<tr>
-																<td th:text="${1}"></td>
-																<td th:text="${2}"></td>
-																<td th:text="${3}"></td>
-																<td th:text="${4}"></td>
-																<td th:text="${5}"></td>
-																<td th:text="${6}"></td>
-																<td th:text="${7}"></td>
-																<td th:text="${8}"></td>
-																<td th:text="${9}"></td>
-																<td th:text="${10}"></td>
+																<td th:text="${r.clientName}"></td>
+																<td th:text="${r.stockCateName}"></td>
+																<td th:text="${r.stockItemName}"></td>
+																<td th:text="${r.resourceRetainQuantity}"></td>
+																<td th:text="${r.resourceRetainQuantityCapacityExtra}"></td>
+																<td th:text="${r.availableStatus}"></td>
+															</tr>
+														</th:block>
+													</tbody>
+												</table>
+											</div>
+										</div>
+										<div class="box-title">농자재사용 지출계획</div>
+										<div class="card-content">
+											<div class="table-responsive">
+												<table class="table table-striped table-bordered display" style="width:100%">
+													<thead>
+														<tr>
+															<th>품목카테고리</th>
+															<th>품목명</th>
+															<th>사용수량</th>
+															<th>수량단위</th>
+															<th>총사용용량</th>
+															<th>용량단위</th>
+															<th>총사용량금액환산</th>
+															<th>수정</th>
+															<th>삭제</th>
+														</tr>
+													</thead>
+													<tbody>
+														<th:block th:if="${#lists.size(ps.expResourceUseplanList) > 0}" th:each="ru : ${ps.expResourceUseplanList}">
+															<tr>
+																<td th:text="${ru.stockCateName}"></td>
+																<td th:text="${ru.stockItemName}"></td>
+																<td th:text="${ru.stockItemUseQuantity}"></td>
+																<td th:text="${ru.stockItemQuantityUnit}"></td>
+																<td th:text="${ru.stockItemUseQuantityTotal}"></td>
+																<td th:text="${ru.stockItemQuantityCapacityUnit}"></td>
+																<td th:text="${ru.stockItemUseQuantityConversionPay}"></td>
+																<td>
+																	<a th:href="|/plan/modifyPlanClient?farmCode=${farmCode}|">수정</a>
+																</td>
+																<td>
+																	<a th:href="|/plan/removeClient?farmCode=${farmCode}|">삭제</a>
+																</td>
 															</tr>
 														</th:block>
 													</tbody>
@@ -405,7 +477,7 @@
 											<div class="form-group t-center">
 												<div class="row">
 													<div class="col-md-6 col-md-offset-3">
-														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block modalBtn" 
 															data-toggle="modal" data-target="#planAddResourceUsePlan">농자재 지출계획등록
 														</button>
 													</div>
@@ -422,30 +494,32 @@
 										<div class="box-title">공과금 지출계획</div>
 										<div class="card-content">
 											<div class="table-responsive">
-												<table class="table table-hover" style="width:100%">
+												<table class="table table-striped table-bordered display" style="width:100%">
 													<thead>
 														<tr>
-															<th>공과금지출계획코드</th>
 															<th>거래처명</th>
 															<th>공과금항목</th>
 															<th>납부월</th>
 															<th>납부금액</th>
 															<th>추가메모</th>
-															<th>작성자</th>
-															<th>작성일</th>
+															<th>수정</th>
+															<th>삭제</th>
 														</tr>
 													</thead>
 													<tbody>
-														<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+														<th:block th:if="${#lists.size(ps.expTaxPayList) > 0}" th:each="tp : ${ps.expTaxPayList}">
 															<tr>
-																<td th:text="${1}"></td>
-																<td th:text="${2}"></td>
-																<td th:text="${3}"></td>
-																<td th:text="${4}"></td>
-																<td th:text="${5}"></td>
-																<td th:text="${6}"></td>
-																<td th:text="${7}"></td>
-																<td th:text="${8}"></td>
+																<td th:text="${tp.clientName}"></td>
+																<td th:text="${tp.taxPayCateName}"></td>
+																<td th:text="${tp.taxPayWhatmonth}"></td>
+																<td th:text="${tp.taxPay}"></td>
+																<td th:text="${tp.taxPayDetail}"></td>
+																<td>
+																	<a th:href="|/plan/modifyPlanClient?farmCode=${farmCode}|">수정</a>
+																</td>
+																<td>
+																	<a th:href="|/plan/removeClient?farmCode=${farmCode}|">삭제</a>
+																</td>
 															</tr>
 														</th:block>
 													</tbody>
@@ -455,7 +529,7 @@
 											<div class="form-group t-center">
 												<div class="row">
 													<div class="col-md-6 col-md-offset-3">
-														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block modalBtn" 
 															data-toggle="modal" data-target="#planAddTaxPayPlan">공과금 지출계획등록
 														</button>
 													</div>
@@ -472,30 +546,36 @@
 										<div class="box-title">생산물 수확계획</div>
 										<div class="card-content">
 											<div class="table-responsive">
-												<table class="table table-hover" style="width:100%">
+												<table class="table table-striped table-bordered display" style="width:100%">
 													<thead>
 														<tr>
-															<th>생산물수확계획코드</th>
-															<th>카테고리</th>
+															<th>품목카테고리</th>
 															<th>품목명</th>
 															<th>수확수량</th>
+															<th>수량단위</th>
 															<th>수확용량</th>
+															<th>용량단위</th>
 															<th>추가메모</th>
-															<th>작성자</th>
-															<th>작성일</th>
+															<th>수정</th>
+															<th>삭제</th>
 														</tr>
 													</thead>
 													<tbody>
-														<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+														<th:block th:if="${#lists.size(ps.productGainList) > 0}" th:each="pg : ${ps.productGainList}">
 															<tr>
-																<td th:text="${1}"></td>
-																<td th:text="${2}"></td>
-																<td th:text="${3}"></td>
-																<td th:text="${4}"></td>
-																<td th:text="${5}"></td>
-																<td th:text="${6}"></td>
-																<td th:text="${7}"></td>
-																<td th:text="${8}"></td>
+																<td th:text="${pg.stockCateName}"></td>
+																<td th:text="${pg.stockItemName}"></td>
+																<td th:text="${pg.gainQuantity}"></td>
+																<td th:text="${pg.stockItemQuantityUnit}"></td>
+																<td th:text="${pg.gainQuantityCapacity}"></td>
+																<td th:text="${pg.stockItemQuantityCapacityUnit}"></td>
+																<td th:text="${pg.gainDetail}"></td>
+																<td>
+																	<a th:href="|/plan/modifyPlanClient?farmCode=${farmCode}|">수정</a>
+																</td>
+																<td>
+																	<a th:href="|/plan/removeClient?farmCode=${farmCode}|">삭제</a>
+																</td>
 															</tr>
 														</th:block>
 													</tbody>
@@ -505,7 +585,7 @@
 											<div class="form-group t-center">
 												<div class="row">
 													<div class="col-md-6 col-md-offset-3">
-														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block modalBtn" 
 															data-toggle="modal" data-target="#planAddProductGain">생산물 수확계획등록
 														</button>
 													</div>
@@ -522,26 +602,28 @@
 										<div class="box-title">기타비용 지출계획</div>
 										<div class="card-content">
 											<div class="table-responsive">
-												<table class="table table-hover" style="width:100%">
+												<table class="table table-striped table-bordered display" style="width:100%">
 													<thead>
 														<tr>
-															<th>기타비용지출계획코드</th>
 															<th>거래처명</th>
 															<th>지출금액</th>
 															<th>추가메모</th>
-															<th>작성자</th>
-															<th>작성일</th>
+															<th>수정</th>
+															<th>삭제</th>
 														</tr>
 													</thead>
 													<tbody>
-														<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
+														<th:block th:if="${#lists.size(ps.expEtcPayList) > 0}" th:each="ep : ${ps.expEtcPayList}">
 															<tr>
-																<td th:text="${1}"></td>
-																<td th:text="${2}"></td>
-																<td th:text="${3}"></td>
-																<td th:text="${4}"></td>
-																<td th:text="${5}"></td>
-																<td th:text="${6}"></td>
+																<td th:text="${ep.clientName}"></td>
+																<td th:text="${ep.etcPay}"></td>
+																<td th:text="${ep.etcPayDetail}"></td>
+																<td>
+																	<a th:href="|/plan/modifyPlanClient?farmCode=${farmCode}|">수정</a>
+																</td>
+																<td>
+																	<a th:href="|/plan/removeClient?farmCode=${farmCode}|">삭제</a>
+																</td>
 															</tr>
 														</th:block>
 													</tbody>
@@ -551,7 +633,7 @@
 											<div class="form-group t-center">
 												<div class="row">
 													<div class="col-md-6 col-md-offset-3">
-														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block" 
+														<button type="button" class="btn btn-primary btn-md waves-effect waves-light btn-rounded btn-block modalBtn" 
 															data-toggle="modal" data-target="#planAddEtcPay">기타비용 지출계획등록
 														</button>
 													</div>
@@ -642,6 +724,42 @@
 			function moveAddSpend(btn){
 					location.href = btn.value;
 			};
+			
+			var lang_kor = {
+			        "decimal" : "",
+			        "emptyTable" : "등록된 정보가 없습니다",
+			        "info" : "_START_ - _END_",
+			        "infoEmpty" : "0",
+			        "infoFiltered" : "(전체 _MAX_검색결과)",
+			        "infoPostFix" : "",
+			        "thousands" : ",",
+			        "lengthMenu" : "_MENU_ 개씩 보기",
+			        "loadingRecords" : "로딩중...",
+			        "processing" : "처리중...",
+			        "search" : "검색 : ",
+			        "zeroRecords" : "검색된 정보가 없습니다.",
+			        "paginate" : {
+			            "first" : "첫 페이지",
+			            "last" : "마지막 페이지",
+			            "next" : "다음",
+			            "previous" : "이전"
+			        },
+			        "aria" : {
+			            "sortAscending" : " :  오름차순 정렬",
+			            "sortDescending" : " :  내림차순 정렬"
+			        }
+			}
+			
+			$('table').DataTable({
+				language : lang_kor
+			});
+			
+			$('.modalBtn').click(function(){
+				$("form[name=addWorkforcePay]")[0].reset();
+				$("form[name=addMachineLeasePay]")[0].reset();
+				$("form[name=addMachineUsePay]")[0].reset();
+				$("form[name=addResourceUsePlan]")[0].reset();
+			})
 		</script>
 	</th:block>
 

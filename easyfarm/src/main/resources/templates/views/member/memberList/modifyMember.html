@@ -48,8 +48,8 @@
 									<div class="form-group">
 										<label for="memberImg" class="col-md-3 control-label" ><strong>프로필</strong></label>
 									    <div class="col-md-6">
-									    	<a href="#"><img th:if="${m.memberImg == null and m.memberImg == ''}" th:src="@{${m.memberImg}}"  alt="" class="fo col-sm-offset-3" id="img"></a>
-									    	<a href="#"><img th:if="${m.memberImg != null or m.memberImg != ''}" th:src="@{/assets/images/none-profile.jpg}"  alt="" class="fo col-sm-offset-3" id="img"></a>
+									    	<a href="#"><img th:if="${m.memberImg != null and m.memberImg != ''}" th:src="@{${m.memberImg}}"  alt="" class="fo col-sm-offset-3" id="img"></a>
+									    	<a href="#"><img th:if="${m.memberImg == null or m.memberImg == ''}" th:src="@{/assets/images/none-profile.jpg}"  alt="" class="fo col-sm-offset-3" id="img"></a>
 											<input type="file" class="file" style="display: none;">
 											<button type="button" style="margin-top: 10px;" class=" col-sm-offset-4 btn btn-success btn-rounded btn-bordered waves-effect waves-light addressBtn" id="profileStorage">프로필저장</button>
 									    </div>				   					   

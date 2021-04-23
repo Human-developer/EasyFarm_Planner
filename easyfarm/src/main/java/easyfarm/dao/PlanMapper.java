@@ -11,6 +11,8 @@ import org.apache.ibatis.annotations.Mapper;
 import easyfarm.domain.plan.Client;
 import easyfarm.domain.plan.CommonMachine;
 import easyfarm.domain.plan.EtcPay;
+import easyfarm.domain.plan.FarmBookmarkMachine;
+import easyfarm.domain.plan.FarmRetainMachine;
 import easyfarm.domain.plan.InsurancePay;
 import easyfarm.domain.plan.MachineLeasePay;
 import easyfarm.domain.plan.MachineUsePay;
@@ -138,4 +140,68 @@ public interface PlanMapper {
 	
 	//농가별 농자재소모현황 등록
 	public int addResourceUsecapacity(ResourcePay resourcePay);
+	
+	//농기계 즐겨찾기에 등록한 항목 제외한 공통농기계 리스트
+	public List<Map<String, Object>> getFarmCommonMachineList(String farmCode);
+	
+	//농기계 즐겨찾기 등록
+	public int addFarmBookmarkMachine(FarmBookmarkMachine farmBookmarkMachine);
+	
+	//농기계 즐겨찾기 삭제
+	public int removeFarmBookmarkMachine(String farmBookmarkMachineCode);
+	
+	//보유농기계 등록
+	public int addPlanFarmRetainMachine(FarmRetainMachine farmRetainMachine);
+	
+	//보유농기계에 등록한 항목 제외한 농기계 즐겨찾기 리스트
+	public List<Map<String, Object>> getFarmBookmarkMachineList(String farmCode);
+	
+	//보유농기계 삭제
+	public int removePlanFarmRetainMachine(String farmRetainMachineCode);
+	
+	//기간별 작업단계 계획 정보조회
+	public PlanWorkphase getPlanWorkphaseInfo(String planWorkphaseCode);
+	
+	//기간별 작업단계별 상세항목 계획 정보조회
+	public Map<String, Object> getPlanWorkphaseCateInfo(String planWorkphaseCateCode);
+	
+	//작업단계별, 상세항목별 인건비 지출계획 조회
+	public List<Map<String, Object>> getExpWorkforcePayList(String planWorkphaseCode, String planWorkphaseCateCode);
+	
+	//작업단계별, 상세항목별 농기계 대여 지출계획 조회
+	public List<Map<String, Object>> getExpMachineLeaseList(String planWorkphaseCode, String planWorkphaseCateCode);
+	
+	//작업단계별, 상세항목별 보유농기계 지출계획 조회
+	public List<Map<String, Object>> getExpMachineUseList(String planWorkphaseCode, String planWorkphaseCateCode);
+	
+	//작업단계별, 상세항목별 농자재사용 지출계획 조회
+	public List<Map<String, Object>> getExpResourceUseplanList(String planWorkphaseCode, String planWorkphaseCateCode);
+	
+	//작업단계별, 상세항목별 공과금 지출계획 조회
+	public List<Map<String, Object>> getExpTaxPayList(String planWorkphaseCode, String planWorkphaseCateCode);
+	
+	//작업단계별, 상세항목별 생산물 지출계획 조회
+	public List<Map<String, Object>> getProductGainList(String planWorkphaseCode, String planWorkphaseCateCode);
+	
+	//작업단계별, 상세항목별 기타비용 지출계획 조회 
+	public List<Map<String, Object>> getExpEtcPayList(String planWorkphaseCode, String planWorkphaseCateCode);
+	
+	//인건비 지출계획 등록
+	public int addWorkforcePay(WorkForcePay workForcePay);
+	
+	//농기계 대여 지출계획 등록
+	public int addMachineLeasePay(MachineLeasePay machineLeasePay);
+	
+	//보유농기계 지출계획 등록
+	public int addMachineUsePay(MachineUsePay machineUsePay);
+	
+	//농자재사용 지출계획 등록
+	public int addResourceUsePlan(ResourceUsePlan resourceUsePlan);
+	
+	//농자재소모현황 코드정보조회
+	public ResourceUsecapacity getResourceUsecapacityInfo(String resourceUsecapacityCode);
+	
+	//농자재소모현황 업데이트
+	public int modifyResourceUsecapacityInfo(ResourceUsecapacity resourceUsecapacity);
+	
 }

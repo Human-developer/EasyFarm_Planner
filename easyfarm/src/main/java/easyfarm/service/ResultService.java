@@ -33,18 +33,8 @@ import easyfarm.domain.result.WorkForcePayResult;
 public class ResultService {
 	
 	
-	//연관 맺어주기 =  DI 필드 주입방식
-	/*@Autowired
-	private MemberMapper memberMapper;
 	
-	private MemberMapper memberMapper2;
-	// 2. DI SETTER 메서드 주입방식
-	@Autowired
-	public void setMemberMapper(MemberMapper memberMapper2) {
-		this.memberMapper2 = memberMapper;
-	}
-	*/
-	// 3. DI 생성자 메서드 주입방식 (spring권장)
+	// DI 생성자 메서드 주입방식 (spring권장)
 	private final ResultMapper resultmapper;
 	
 	//3-1 spring framework 4.3 이후부터는 @Autowired 쓰지 않아도 주입 가능
@@ -59,73 +49,72 @@ public class ResultService {
 		System.out.println("======================================");
 	}	
 	
-	
+	//기타비용 실행결과리스트 
 	public List<EtcPayResult> getEtcPayResult(String workPhaseCode){
-		/* MemberMapper member = new MemberMapper(); */
 		List<EtcPayResult> etcPayList = null;
 		etcPayList =resultmapper.getEtcPayResult(workPhaseCode);
 		
 		return etcPayList;
 	}
+	//농자재매입 실행결과리스트 
 	public List<ResourcePayResult> getResourcePayResult(){
-		/* MemberMapper member = new MemberMapper(); */
 		List<ResourcePayResult> resourcePayList = null;
 		resourcePayList =resultmapper.getResourcePayResult();
 		
 		
 		return resourcePayList;
 	}
+	//보험비 실행결과리스트 
 	public List<InsurancePayResult> getInsurancePayResult(){
-		/* MemberMapper member = new MemberMapper(); */
 		List<InsurancePayResult> insurancePayList = null;
 		insurancePayList =resultmapper.getInsurancePayResult();
 		
 		return insurancePayList;
 	}
+	//농기계 대여료 실행결과리스트 
 	public List<MachineLeasePayResult> getMachineLeasePayResult(){
-		/* MemberMapper member = new MemberMapper(); */
 		List<MachineLeasePayResult> machineLeasePay = null;
 		machineLeasePay =resultmapper.getMachineLeasePayResult();
 		
 		return machineLeasePay;
 	}
+	//보유농기계 사용 실행결과리스트 
 	public List<MachineUsePayResult> getMachineUsePayResult(){
-		/* MemberMapper member = new MemberMapper(); */
 		List<MachineUsePayResult> machineUsePay = null;
 		machineUsePay =resultmapper.getMachineUsePayResult();
 		
 		return machineUsePay;
 	}
+	//생산물 수확 실행결과리스트 
 	public List<ProductGainResult> getProductGainResult(){
-		/* MemberMapper member = new MemberMapper(); */
 		List<ProductGainResult> productGainResult = null;
 		productGainResult =resultmapper.getProductGainResult();
 		
 		return productGainResult;
 	}
+	//농자재 사용 실행결과리스트
 	public List<ResourceUsePlanResult> getResourceUsePlanResult(){
-		/* MemberMapper member = new MemberMapper(); */
 		List<ResourceUsePlanResult> resourceUsePlanResult = null;
 		resourceUsePlanResult =resultmapper.getResourceUsePlanResult();
 		
 		return resourceUsePlanResult;
 	}
+	//공과금 실행결과리스트 
 	public List<TaxPayResult> getTaxPayResult(){
-		/* MemberMapper member = new MemberMapper(); */
 		List<TaxPayResult> taxPayResult = null;
 		taxPayResult =resultmapper.getTaxPayResult();
 		
 		return taxPayResult;
 	}
+	//인건비 실행결과리스트
 	public List<WorkForcePayResult> getWorkForcePayResult(){
-		/* MemberMapper member = new MemberMapper(); */
 		List<WorkForcePayResult> workForcePayResult = null;
 		workForcePayResult =resultmapper.getWorkForcePayResult();
 		
 		return workForcePayResult;
 	}
 	
-	//아이디가 소속된 농가명 가져오기
+	//작업단계코드 조회하기
 	public List<PlanWorkphaseCate> getPlanWorkphaseCate(String selectedDate, String projectCode) {
 		Map<String,Object> result =  null;
 		
