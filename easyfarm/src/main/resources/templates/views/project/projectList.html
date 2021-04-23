@@ -35,7 +35,7 @@
 		<div class="box-content">
 			<h3>농가별 프로젝트 조회</h3>
 			<hr>
-			<button class="btn btn-success"><a style="color:white" th:href="@{/projectAdd(farmCode=${farmCode})}">등록</a></button>
+			<button class="btn btn-success"><a style="color:white" th:href="@{/addProject(farmCode=${farmCode})}">등록</a></button>
 			<table th:if="${projectList!=null}" id="example" class="table table-striped table-bordered display" style="width:100%">
 				<thead>
 					<tr>
@@ -65,8 +65,8 @@
 						<td th:text="${pl.projectEstimateSpending}"></td>
 						<td th:text="${pl.regMemberId}"></td>
 						<td th:text="${pl.regDate}"></td>
-						<td><a th:href="@{/projectModify(projectCode=${pl.projectCode}, farmCode=${pl.farmCode})}">수정</a></td>
-						<td><a th:href="@{/projectRemoveByProjectCode(projectCode=${pl.projectCode}, farmCode=${pl.farmCode})}">삭제</a></td>
+						<td><a th:href="@{/modifyProject(projectCode=${pl.projectCode}, farmCode=${pl.farmCode})}">수정</a></td>
+						<td><a th:href="@{/removeProjectByProjectCode(projectCode=${pl.projectCode}, farmCode=${pl.farmCode})}">삭제</a></td>
 					</tr>
 				</tbody>
 			</table>
