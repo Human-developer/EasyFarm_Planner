@@ -57,7 +57,7 @@
 								<div class="col-xs-12 box-content " style="border: none; overflow: auto; ">
 									<h2>프로젝트 수입/지출</h2>
 									<div class="pull-right"  th:each="i : ${insurancePayResult}">
-										프로젝트 코드 : <i th:text="${i.insurancePayPlan.projectCode}"></i>	<br/>
+										<!-- 프로젝트 코드 : <i th:text="${i.insurancePayPlan.projectCode}"></i>	<br/> -->
 										<br/> 
 									</div>
 									<table id="top-table" class="table table-striped table-bordered display" style="width: 100%" border="1" >
@@ -241,8 +241,8 @@
 								<div th:each="w : ${workForcePayResult}">
 									<h2>인건비 실행결과</h2>
 									<div class="pull-right">
-										인건비 실행코드 : <i th:text="${w.workforcePayRunCode}"></i>	<br/>
-										인건비 계획코드 : <i th:text="${w.workforcePayPlan.workforcePayCode}"></i>	<br/>
+									<!-- 	인건비 실행코드 : <i th:text="${w.workforcePayRunCode}"></i>	<br/>
+										인건비 계획코드 : <i th:text="${w.workforcePayPlan.workforcePayCode}"></i>	<br/> -->
 										근무일자 : <i th:text="${w.workforceRunDate}"></i>	<br/>
 										실제인건비 합계 : <i class="total"></i><br/>
 										<br/>
@@ -297,8 +297,8 @@
 								<div th:each="t : ${taxPayResult}">
 									<h2>공과금 실행결과</h2>
 									<div class="pull-right">
-										공과금 실행코드 : <i th:text="${t.taxPayRunCode}"></i>	<br/>
-										공과금 계획코드 : <i th:text="${t.taxPayPlan.taxPayCode}"></i>	<br/>
+										<!-- 공과금 실행코드 : <i th:text="${t.taxPayRunCode}"></i>	<br/>
+										공과금 계획코드 : <i th:text="${t.taxPayPlan.taxPayCode}"></i>	<br/> -->
 										해당월 : <i th:text="${t.taxPayRunCorrMonth}"></i>	<br/>
 										공과금 합계 : <i class="total"></i><br/>
 										<br/>
