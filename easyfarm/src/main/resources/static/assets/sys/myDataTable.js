@@ -5,7 +5,12 @@ $.fn.sysDataTable = function(langKor, tagets,displayLen){
 	if(displayLen == null) displayLen =10;
 	$(this).css('width','100%')
 	$(this).addClass('table table-striped table-bordered display dataTable');
-	$(this).dataTable({
+	
+	
+	 	/*,
+	  	ordering: true,
+	  	serverSide: false*/
+	return $(this).dataTable({
 		"paginate": false,
 		"sort": false,
 		//기본 표시건수
@@ -30,11 +35,6 @@ $.fn.sysDataTable = function(langKor, tagets,displayLen){
             }
         ]
 		});
-	
-	 	/*,
-	  	ordering: true,
-	  	serverSide: false*/
-	return $(this);
 }
 
 
@@ -48,7 +48,7 @@ $.fn.sysTable = function(obj){
 		vTarget.visible = false;
 		vTarget.searchable = false;
 	} 
-	columnDef.push(vTarget);
+	
 	
 	var lang_kor = {
 	        "decimal" : "",

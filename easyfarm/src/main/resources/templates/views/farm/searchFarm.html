@@ -189,16 +189,19 @@
 				var farmName = farmTr.children('.farmName').text();
 				var ceoId = farmTr.children('.ceoId').text() ;
 				var farmArea = farmTr.children('.farmArea').text(); 
-				var farmAddress = farmTr.children('.farmAddress').text(); 
+				var farmAddress = farmTr.children('.farmAddress').text();
+				var farmMemberCount = farmTr.children('.farmMemberCount').text(); 
 				
 				//모달에 데이터 출력해줄 태그들
 				var modalFarmName = $('#modalFarmName');
 				var modalFarmAddress = $('#modalFarmAddress');
 				var modalFarmArea = $('#modalFarmArea');
+				var modalFarmMemberCount = $('#modalFarmMemberCount');
 				
 				modalFarmName.text(farmName);
 				modalFarmAddress.text(farmAddress);
 				modalFarmArea.text(farmArea);
+				modalFarmMemberCount.text(farmMemberCount);
 			});
 			
 			$('#addFarmMemberBtn').click(function(){
