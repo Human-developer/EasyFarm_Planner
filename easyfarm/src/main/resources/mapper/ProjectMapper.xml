@@ -72,7 +72,7 @@
 			tb_farm_project
 	</select>
 	<!-- 등록 3 - 프로젝트 insert -->
-	<insert id="addProjectByProject" parameterType="Project">
+	<insert id="projectAddByProjectObject" parameterType="Project">
 		INSERT INTO
 			tb_farm_project
 		(
@@ -119,7 +119,7 @@
 			crop_code = #{cropCode}
 	</select>
 	<!-- 등록 4 - 프로젝트별 작업단계 insert -->
-	<insert id="addProjectWorkphaseByProjectWorkphase" parameterType="ProjectWorkphase">
+	<insert id="projectWorkphaseAddByProjectWorkphase" parameterType="ProjectWorkphase">
 		INSERT INTO
 			tb_project_workphase
 		(
@@ -180,7 +180,7 @@
 			project_code = #{projectCode}
 	</select>
 	<!-- 수정 2 - 프로젝트 update -->
-	<update id="modifyProjectByProject" parameterType="Project">
+	<update id="projectModifyByProjectObject" parameterType="Project">
 		UPDATE
 			tb_farm_project
 		SET
@@ -204,7 +204,7 @@
 			tpw.project_code = #{projectCode}
 	</select>
 	<!-- 수정 4 - 프로젝트별 작업단계 수정 -->
-	<update id="modifyProjectWorkphaseUseStatus" parameterType="String">
+	<update id="projectWorkphaseModifyN" parameterType="String">
 		UPDATE
 			tb_project_workphase
 		SET
@@ -213,7 +213,7 @@
 			project_code = #{projectCode}
 	</update>
 	<!-- 수정 5 - 프로젝트별 작업단계 수정 -->
-	<update id="modifyProjectWorkphase" parameterType="String">
+	<update id="projectWorkphaseModify" parameterType="String">
 		UPDATE
 			tb_project_workphase
 		SET
@@ -223,7 +223,7 @@
 	</update>
 	
 	<!-- 프로젝트 삭제 -->
-	<delete id="removeProjectByProjectCode" parameterType="String">
+	<delete id="projectRemoveByProjectCode" parameterType="String">
 		DELETE
 		FROM
 			tb_farm_project

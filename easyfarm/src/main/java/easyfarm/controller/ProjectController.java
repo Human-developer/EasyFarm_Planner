@@ -43,8 +43,8 @@ public class ProjectController {
 	
 	// 프로젝트 등록
 	// 등록 1 - 프로젝트 등록 뷰 연결
-	@GetMapping("/addProject")
-	public String addProject(Model model,
+	@GetMapping("/projectAdd")
+	public String projectAdd(Model model,
 							@RequestParam String farmCode) {
 		model.addAttribute("farmCode",farmCode);
 		return "views/project/projectAdd";
@@ -62,8 +62,8 @@ public class ProjectController {
 		return projectService.getCropPhaseByCropCode(cropCode);
 	}
 	// 등록 4 - 프로젝트 테이블, 작업단계 테이블 인서트
-	@PostMapping("/addProjectByProject")
-	public String addProjectByProject(Project project,
+	@PostMapping("/projectAddByProjectObject")
+	public String projectAddByProjectObject(Project project,
 											@RequestParam String farmCode,
 											HttpSession session,
 											@RequestParam List<String> checkWorkphase) {
@@ -72,7 +72,7 @@ public class ProjectController {
 		
 		project.setFarmCode(farmCode);
 		project.setRegMemberId(memberId);
-		projectService.addProjectService(project, checkWorkphase);
+		projectService.projectAddService(project, checkWorkphase);
 		String uri = "projectListByFarmCode?farmCode="+farmCode;
 		return "redirect:"+uri;
 	}
@@ -89,8 +89,8 @@ public class ProjectController {
 	
 	// 프로젝트 수정
 	// 수정 1 - 프로젝트 뷰 연결
-	@GetMapping("/modifyProject")
-	public String modifyProject(Model model,
+	@GetMapping("/projectModify")
+	public String projectModify(Model model,
 								@RequestParam String farmCode,
 								@RequestParam String projectCode) {
 		
@@ -108,22 +108,22 @@ public class ProjectController {
 		return projectService.getProjectWorkphaseListByProjectCode(projectCode);
 	}
 	// 수정 3 - 프로젝트, 프로젝트별 작업단계 update
-	@PostMapping("/modifyProjectByProjectCode")
-	public String modifyProjectByProjectCode(Project project,
+	@PostMapping("/projectModifyByProjectCode")
+	public String projectModifyByProjectCode(Project project,
 											@RequestParam String farmCode,
 											ProjectWorkphase projectWorkphase) {
-		projectService.modifyProjectWorkphase(projectWorkphase, project);
+		projectService.projectWorkphaseModify(projectWorkphase, project);
 		String uri = "projectListByFarmCode?farmCode="+farmCode;
 		return "redirect:"+uri;
 	}
 	
 	// 프로젝트 삭제
-	@GetMapping("/removeProjectByProjectCode")
-	public String removeProjectByProjectCode(@RequestParam String projectCode,
+	@GetMapping("/projectRemoveByProjectCode")
+	public String projectRemoveByProjectCode(@RequestParam String projectCode,
 											@RequestParam String farmCode,
 											HttpServletRequest request) {
 		
-		int result = projectService.removeProjectByProjectCode(projectCode);
+		int result = projectService.projectRemoveByProjectCode(projectCode);
 		if(result == 1) System.out.println(projectCode + " 프로젝트 삭제 성공");
 		
 		String uri = "projectListByFarmCode?farmCode="+farmCode;

@@ -26,7 +26,7 @@
 	<!-- 컨텐츠 작성은 여기서  ↓ ↓ ↓ -->
 	<th:block layout:fragment="customContents">
 		<div class="box-content">
-			<form id="projectModifyForm" action="/modifyProjectByProjectCode" method="post">
+			<form id="projectModifyForm" action="/projectModifyByProjectCode" method="post">
 				<input type="hidden" name="farmCode" th:value="${farmCode}">
 				<div class="form-group">
 					<label for="projectName">프로젝트 이름</label>

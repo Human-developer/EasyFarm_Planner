@@ -25,11 +25,10 @@
 			<h3>프로젝트 메인</h3>
 			<hr>
 			<div>
-				<a class="btn btn-success" th:href="@{/projectListByFarmCode(farmCode=${farmCode})}">프로젝트 목록 조회</a>
-				<a class="btn btn-success" th:href="@{/addProject(farmCode=${farmCode})}">프로젝트 등록</a>
-				<a class="btn btn-success" th:href="@{/inventoryList(farmCode=${farmCode})}">재고현황</a>
+				<a th:href="@{/projectListByFarmCode(farmCode=${farmCode})}">프로젝트 목록 조회</a>
 			</div>
 			<div>
+				<a th:href="@{/projectAdd(farmCode=${farmCode})}">프로젝트 등록</a>
 			</div>
 		</div>
 	</th:block>
