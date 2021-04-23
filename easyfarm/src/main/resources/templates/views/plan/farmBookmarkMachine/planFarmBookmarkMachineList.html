@@ -45,7 +45,7 @@
 							<div style="font-size: 24px;">농기계 즐겨찾기 목록</div>
 						</div>
 						<div class="pull-right">
-							<button type="button" th:value="|/plan/addFarmBookmarkMachine?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-rounded">
+							<button type="button" th:value="|/plan/addFarmBookmarkMachine?farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-rounded">
 									농기계 즐겨찾기 등록
 							</button>
 						</div>
@@ -72,7 +72,7 @@
 											<td th:text="${f.regMemberId}"></td>
 											<td th:text="${f.regDate}"></td>
 											<td>
-												<a th:href="|/plan/removePlanFarmBookmarkMachine?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}&farmBookmarkMachineCode=${f.farmBookmarkMachineCode}|">삭제</a>
+												<a th:href="|/plan/removePlanFarmBookmarkMachine?farmCode=${farmCode}&farmBookmarkMachineCode=${f.farmBookmarkMachineCode}|">삭제</a>
 											</td>
 										</tr>
 									</th:block>

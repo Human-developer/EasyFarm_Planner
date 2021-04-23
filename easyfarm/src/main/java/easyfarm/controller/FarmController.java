@@ -45,6 +45,7 @@ public class FarmController {
 	
 	
 	
+	//농가 대표 수정
 	@PostMapping("/json/modifyCeoFarm/")
 	public @ResponseBody String modifyCeoFarm(FarmMember farmMember) {
 		String result ="실패";
@@ -66,6 +67,7 @@ public class FarmController {
 		
 		return result;
 	}
+	//농가 회원 목록 조회(대표x)
 	@PostMapping("/json/farmMemberList")
 	public @ResponseBody List<FarmMember> getFarmMemberList(@RequestParam(value = "farmCode",required = false) String farmCode){
 		List<FarmMember> result = null;

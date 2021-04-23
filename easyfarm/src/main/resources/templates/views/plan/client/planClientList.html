@@ -45,7 +45,7 @@
 							<div style="font-size: 24px;">거래처 조회</div>
 						</div>
 						<div class="pull-right">
-							<button type="button" th:value="|/plan/addPlanClient?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-rounded">
+							<button type="button" th:value="|/plan/addPlanClient?farmCode=${farmCode}|" onclick="moveAddSpend(this)" class="btn btn-primary btn-md waves-effect waves-light btn-rounded">
 									거래처 등록
 							</button>
 						</div>
@@ -81,10 +81,10 @@
 											<td th:text="${c.clientAccount}" 	class="clientAccount"></td>
 											<td th:text="${c.clientMemo}" 		class="clientMemo"></td>
 											<td>
-												<a th:href="|/plan/modifyPlanClient?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}&clientCode=${c.clientCode}|">수정</a>
+												<a th:href="|/plan/modifyPlanClient?farmCode=${farmCode}&clientCode=${c.clientCode}|">수정</a>
 											</td>
 											<td>
-												<a th:href="|/plan/removeClient?projectPlanCode=${projectPlanCode}&farmCode=${farmCode}&clientCode=${c.clientCode}|">삭제</a>
+												<a th:href="|/plan/removeClient?farmCode=${farmCode}&clientCode=${c.clientCode}|">삭제</a>
 											</td>
 										</tr>
 									</th:block>

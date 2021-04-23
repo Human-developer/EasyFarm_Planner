@@ -25,6 +25,7 @@ public class FarmService {
 	@Autowired
 	private FarmMapper farmMapper;
 	
+	/* 농가명 중복확인 */
 	public Farm farmByName(String farmName) {
 		Farm resultFarm = null;
 		
@@ -35,6 +36,7 @@ public class FarmService {
 		
 		return resultFarm;
 	}
+	/* 농가명 중복확인 */
 	
 	/* 농가등록 */
 	public int addFarm(Farm farm) {
@@ -158,6 +160,7 @@ public class FarmService {
 	}
 	/* 농가가입신청 */
 	
+	/* 농가 가입 신청 목록 조회 */
 	public List<FarmMemberJoin> getJoinFarm(String farmCode){
 		List<FarmMemberJoin> resultFarmMemberJoin =null;
 		if(farmCode != null) {
@@ -166,7 +169,9 @@ public class FarmService {
 		
 		return resultFarmMemberJoin; 
 	}
+	/* 농가 가입 신청 목록 조회 */
 	
+	/* 농가 가입 승인/거부 */
 	public int farmJoinMember(String farmMemberJoinCode,String approval,String memberId) {
 		int result = 0;
 		if(farmMemberJoinCode != null && approval != null && memberId != null) {
@@ -196,8 +201,9 @@ public class FarmService {
 		
 		return result;
 	}
+	/* 농가 가입 승인/거부 */
 	
-	
+	/* 내 가입신청 목록 조회 */
 	public List<FarmMemberJoin> myGetJoinFarm(String memberId){
 		List<FarmMemberJoin> resultMemberJoinList = null;
 		
@@ -206,7 +212,9 @@ public class FarmService {
 		}
 		return resultMemberJoinList;
 	}
+	/* 내 가입신청 목록 조회 */
 	
+	/* 가입신청 취소 */
 	public int removeJoinFarm(String farmJoinCode) {
 		int result =0;
 		
@@ -216,13 +224,15 @@ public class FarmService {
 		
 		return result;
 	}
+	/* 가입신청 취소 */
 	
+	/* 농가회원권한 조회 */
 	public String getFarmMemberLevel(String farmCode, String memberId) {
 		return farmMapper.getFarmMemberLevel(farmCode, memberId);
 	}
+	/* 농가회원권한 조회 */
 	
-	
-	//탈퇴신청
+	/* 농가 탈퇴 신청 등록 */
 	public String addCancelMember(String memberId, String farmName,String cancelRequestReason) {
 		String result = "신청실패";
 		if(memberId != null && farmName != null) {
@@ -241,12 +251,11 @@ public class FarmService {
 				
 		}
 		
-		
 		return result;
 	}
+	/* 농가 탈퇴 신청 등록 */
 	
-	
-	//농가별 탈퇴신청목록
+	/* 농가 탈퇴 신청 목록 조회 */
 	public List<FarmCancelRequest> getLeaverFarm(String farmCode,String memberId){
 		List<FarmCancelRequest> result =null;
 		if(farmCode != null) {			
@@ -255,8 +264,9 @@ public class FarmService {
 		
 		return result;
 	}
+	/* 농가 탈퇴 신청 목록 조회 */
 	
-	//탈퇴 처리
+	/* 탈퇴 신청 승인/거부 */
 	public int isLeaverFarm(FarmCancelRequest cancelRequest) {
 		int result = 0;
 		if(cancelRequest!= null) {
@@ -264,10 +274,13 @@ public class FarmService {
 			
 			if("탈퇴승인".equals(approval)) {
 					
+				//농가 회원 탈퇴 처리
 				result += farmMapper.leaverFarmMember(cancelRequest.getCancelRequestCode());
+				//탈퇴 신청 승인 처리
 				result += farmMapper.isLeaverFarm(cancelRequest);
 			}
 			else if("탈퇴거부".equals(approval)) {
+				//탈퇴 신청 거부 처리
 				result += farmMapper.isLeaverFarm(cancelRequest);
 			}
 			
@@ -275,8 +288,9 @@ public class FarmService {
 		
 		return result;
 	}
+	/* 탈퇴 신청 승인/거부 */
 	
-	//내 탈퇴신청목록
+	/* 내 탈퇴신청 목록 조회 */
 	public List<FarmCancelRequest> myGetLeaverFarm(String memberId){
 		List<FarmCancelRequest> resultLeaverFarmList = null;
 		
@@ -285,8 +299,9 @@ public class FarmService {
 		}
 		return resultLeaverFarmList;
 	}
+	/* 내 탈퇴신청 목록 조회 */
 	
-	//농가탈퇴 취소
+	/* 탈퇴신청 취소 */
 	public String cancelLeaverFarm(String cancelLeaverFarm) {
 		String result ="삭제실패";
 		
@@ -300,7 +315,10 @@ public class FarmService {
 		
 		return result;
 	}
+	/* 탈퇴신청 취소 */
 	
+	/* 농가 대표 수정 */
+	//농가 회원 목록 조회(대표x)
 	public List<FarmMember> farmMemeberList(String farmCode){
 		List<FarmMember> result =null;
 		if(farmCode != null) {
@@ -309,6 +327,7 @@ public class FarmService {
 		return result ;
 	}
 	
+	//처리
 	public int modifyCeoFarm(FarmMember farmMember) {
 		int result = 0;
 		if(farmMember != null) {			
@@ -336,21 +355,20 @@ public class FarmService {
 					throw new RuntimeException("불일치"); 
 				}
 			}
-			
-			
 		}
-		
-		
 		return result;
 	}
+	/* 농가 대표 수정 */
 	
+	/* 농가 회원 추방 */
 	public String deportation(FarmMember farmMember, String memberId) {
 		String result = "실패";
 		
 		if(farmMember != null && memberId != null) {
 			int deportationResult = 0;
+			//농가 탈퇴신청 등록
 			deportationResult += farmMapper.deportationCancelRequest(farmMember.getFarmMemberCode(),farmMember.getFarmCode(),memberId);
-			
+			//농가 회원 탈퇴 처리
 			deportationResult += farmMapper.deportationFarmMember(farmMember.getFarmMemberCode());
 			
 			if(deportationResult > 0) {
@@ -360,4 +378,5 @@ public class FarmService {
 		
 		return result;
 	}
+	/* 농가 회원 추방 */
 }
