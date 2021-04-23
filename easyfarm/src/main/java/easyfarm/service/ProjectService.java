@@ -28,7 +28,7 @@ public class ProjectService {
 		return projectMapper.getCropPhaseByCropCode(cropCode);
 	}
 	// 등록 2 - 프로젝트, 프로젝트별 작업단계 insert
-	public void projectAddService(Project project, List<String> checkWorkphase) {
+	public void addProjectService(Project project, List<String> checkWorkphase) {
 		
 		// 프로젝트 insert
 		String maxProjectCode = projectMapper.getMaxProjectCode();
@@ -39,7 +39,7 @@ public class ProjectService {
 			maxProjectCode="project_"+(Integer.parseInt(maxProjectCode)+1);
 			project.setProjectCode(maxProjectCode);
 		}
-		int result1 = projectMapper.projectAddByProjectObject(project);
+		int result1 = projectMapper.addProjectByProject(project);
 		if(result1!=0) System.out.println("프로젝트 등록 1단계 성공 --------- 프로젝트 서비스");
 		
 		// projectWorkphase 객체에 데이터 세팅
@@ -68,7 +68,7 @@ public class ProjectService {
 					projectWorkphase.setUseStatus("Y");
 				}
 			}
-			int result2 = projectMapper.projectWorkphaseAddByProjectWorkphase(projectWorkphase);
+			int result2 = projectMapper.addProjectWorkphaseByProjectWorkphase(projectWorkphase);
 			if(result2 !=0) System.out.println("프로젝트 등록 2단계 성공"+i+"번째 --------- 프로젝트 서비스");
 		}
 	}
@@ -88,27 +88,27 @@ public class ProjectService {
 		return projectMapper.getProjectWorkphaseListByProjectCode(projectCode);
 	}
 	// 수정 3 - 프로젝트, 프로젝트별 작업단계 update
-	public void projectWorkphaseModify(ProjectWorkphase projectWorkphase, Project project) {
+	public void modifyProjectWorkphase(ProjectWorkphase projectWorkphase, Project project) {
 		// 프로젝트 - update
-		projectMapper.projectModifyByProjectObject(project);
+		projectMapper.modifyProjectByProject(project);
 		
 		// 프로젝트별 작업단계 - 전체 N으로 초기화
 		String projectCode = project.getProjectCode();
-		int result1 = projectMapper.projectWorkphaseModifyN(projectCode);
+		int result1 = projectMapper.modifyProjectWorkphaseUseStatus(projectCode);
 		if(result1!=0) System.out.println("프로젝트별 작업단계 수정 1단계 성공 --------------  프로젝트 서비스");
 		
 		// 프로젝트별 작업단계 - 체크된 프로젝트별 작업단계 Y
 		String[] projectWorkphaseCode = projectWorkphase.getProjectWorkphaseCode().split(",");
 		for(int i = 0; i<projectWorkphaseCode.length; i++) {
 			// 프로젝트별 작업단계 update
-			int result2 = projectMapper.projectWorkphaseModify(projectWorkphaseCode[i], projectCode);
+			int result2 = projectMapper.modifyProjectWorkphase(projectWorkphaseCode[i], projectCode);
 			if(result2!=0) System.out.println("프로젝트별 작업단계 수정 2단계 성공 "+i+"번째 --------------  프로젝트 서비스");
 		}
 	}
 	
 	// 프로젝트 삭제
-	public int projectRemoveByProjectCode(String projectCode) {
-		return projectMapper.projectRemoveByProjectCode(projectCode);
+	public int removeProjectByProjectCode(String projectCode) {
+		return projectMapper.removeProjectByProjectCode(projectCode);
 	}
 	
 }
