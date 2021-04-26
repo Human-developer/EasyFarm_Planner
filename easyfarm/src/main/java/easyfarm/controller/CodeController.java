@@ -345,8 +345,8 @@ public class CodeController {
 	 }
 	 //공과금카테고리 삭제
 	 @GetMapping("/code/removeTaxPayCate")
-	 public String removeTaxPayCate (@RequestParam(value = "TaxPayCateCode",required = false) String TaxPayCateCode) {
-		 cropService.removeTaxPayCate(TaxPayCateCode);
+	 public String removeTaxPayCate (@RequestParam(value = "taxPayCateCode",required = false) String taxPayCateCode) {
+		 cropService.removeTaxPayCate(taxPayCateCode);
 		 return "redirect:/code/getTaxPayCateList";
 	 }
 	

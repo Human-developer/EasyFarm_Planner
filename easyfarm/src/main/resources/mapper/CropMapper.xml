@@ -393,7 +393,7 @@
 	DELETE FROM tb_stock_cate WHERE stock_cate_code=#{stockCateCode}
 	</delete>
 	<delete id="removeTaxPayCate">
-	DELETE FROM tb_tax_pay_cate WHERE tax_pay_cate_code=#{TaxPayCateCode}
+	DELETE FROM tb_tax_pay_cate WHERE tax_pay_cate_code=#{taxPayCateCode}
 	</delete>
 	
 	
