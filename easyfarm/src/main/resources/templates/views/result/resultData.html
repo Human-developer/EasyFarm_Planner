@@ -35,8 +35,6 @@
 				<div class="box-content" style="overflow: auto;">
 					
 					<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs" style="overflow: auto;">
-					<a th:href="@{/result/select}"> :: 옵션 :: </a>
-					<a th:href="@{/result/addResult}"> :: 캘린더 :: </a>
 					    <ul id="myTab" class="nav nav-tabs" role="tablist">
 					      <li role="presentation" class=" active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false">실행 종합</a></li>
 					      <li role="presentation" class="dropdown">
@@ -232,9 +230,9 @@
 										</tbody>
 									</table>
 								</div>
-								    
-										
 					      </div>
+					    
+					    <!-- 상세보기 탭 시작 -->
 					    
 					      <div role="tabpanel" class="tab-pane fade " id="dropdown1" aria-labelledby="dropdown1-tab">
 							<div class="col-xs-12 box-content " style="border: none; overflow: auto; ">
@@ -284,7 +282,7 @@
 												<td th:text="${w.workforceRunQuantity}"></td>
 												<td th:text="${w.workforceRunDate}"></td>
 												<td th:text="${w.workforcePayRunDay}"></td>
-												<td th:text="${w.workforcePayRunTotal}" style=" background: #F5F6CE;"></td>
+												<td th:text="${w.workforcePayRunTotal}" class="pay" style=" background: #F5F6CE;"></td>
 												<td th:text="${w.regMemberId}"></td>
 												<td th:text="${w.completeStatus}"></td>
 											</tr>
@@ -341,7 +339,7 @@
 												<td>실행</td>
 												<td th:text="${t.taxPayCateCode}"></td>
 												<td th:text="${t.taxPayRunMemo}"></td>
-												<td th:text="${t.taxPayRunPay}" style=" background: #F5F6CE;"></td>
+												<td th:text="${t.taxPayRunPay}" class="pay" style=" background: #F5F6CE;"></td>
 												<td th:text="${t.taxPayRunCorrMonth}"></td>
 												<td th:text="${t.regMemberId}"></td>
 												<td th:text="${t.regDate}"></td>
@@ -404,7 +402,7 @@
 											<td>실행</td>
 											<td></td>
 											<td th:text="${e.etcPayRunMemo}"></td>
-											<td th:text="${e.etcPayRunPay}" style=" background: #F5F6CE;"></td>
+											<td th:text="${e.etcPayRunPay}" class="pay" style=" background: #F5F6CE;"></td>
 											<td th:text="${e.etcPayRunDate}"></td>
 											<td th:text="${e.regMemberId}"></td>
 											<td th:text="${e.regDate}"></td>
@@ -472,7 +470,7 @@
 												<td th:text="${r.stockItemIncomeQuantity}"></td>
 												<td th:text="${r.stockItemIncomeQuantityTotal}"></td>
 												<td th:text="${r.stockItemIncomePerPay}"></td>
-												<td th:text="${r.stockItemTotalPay}"style=" background: #F5F6CE;"></td>
+												<td th:text="${r.stockItemTotalPay}" class="pay" style=" background: #F5F6CE;"></td>
 												<td th:text="${r.stockItemIncomeDate}"></td>
 												<td th:text="${r.clientCode}"></td>
 												<td th:text="${r.regMemberId}"></td>
@@ -490,7 +488,7 @@
 										농기계대여료  합계 : <i class="total"></i><br/>
 										<br/>
 									</div>
-									<table id="example6" class="table table-striped table-bordered display" style="width: 100%; overflow: auto;" border="1" >
+									<table id="example5" class="table table-striped table-bordered display" style="width: 100%; overflow: auto;" border="1" >
 										<thead>
 											<tr>
 												<th style="text-align: center;"> 계획 </th>
@@ -532,7 +530,7 @@
 												<td th:text="${m.farmBookmarkMachineCode}"></td>
 												<td th:text="${m.machineLeaseRunDate}" colspan="2"></td>
 												<td style="display: none;"></td>
-												<td th:text="${m.machineLeaseRunPay}"style=" background: #F5F6CE;"></td>
+												<td th:text="${m.machineLeaseRunPay}" class="pay" style=" background: #F5F6CE;"></td>
 												<td th:text="${m.clientCode}"></td>
 												<td th:text="${m.regMemberId}"></td>
 												<td th:text="${m.regDate}"></td>
@@ -626,7 +624,20 @@
 					} );
 				}
 			} );
-		 
+			
+			//상세항목별 테이블 합산 
+			$(function(){
+				$('.table').each(function(){
+					var pay = $(this).find('.pay');
+					var total = 0;
+					pay.each(function(){
+						total += Number($(this).text());
+					})
+					$(this).parent().parent().parent().parent().find('.total').text(total);
+				})
+			});
+			
+			
 			// Order by the grouping
 			$('#example-row-grouping-2 tbody, #top-table tbody').on( 'click', 'tr.group', function () {
 				var currentOrder = table.order()[0];

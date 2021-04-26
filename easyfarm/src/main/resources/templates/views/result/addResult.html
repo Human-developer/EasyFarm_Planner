@@ -82,7 +82,7 @@
 					    </ul>
 					    <div id="myTabContent" class="tab-content" style="overflow: auto;">
 					      <div role="tabpanel" class="tab-pane fade  active in" id="tab1" aria-labelledby="tab1-tab">
-								[[${planWorkphaseCate}]]
+					      	
 							<div class="box-content card white">
 								<div class="box-title">인건비 지출계획</div>
 								<div class="card-content">
@@ -189,12 +189,8 @@
 											<tbody id="machineLeasePayResult">
 												<th:block th:each="ml : ${machineLeasePayResult}">
 													<tr>
-														<td>
-															<input  th:value="${ml.machineLeasePayPlan.clientCode}" class="form-control"/>
-														</td>
-														<td>
-															<input  th:value="${ml.machineLeasePayPlan.farmBookmarkMachineCode}" class="form-control"/>
-														</td>
+														<td th:text="${ml.machineLeasePayPlan.clientCode}"></td>
+														<td th:text="${ml.machineLeasePayPlan.farmBookmarkMachineCode}"></td>
 														<td>
 															<input th:value="${ml.machineLeasePayPlan.machineLeaseHowlong}" class="form-control"/>
 														</td>
@@ -212,6 +208,7 @@
 									</div>
 								</div>
 							</div>
+							
 							<div class="box-content card white">
 								<div class="box-title">보유 농기계 사용계획</div>
 								<div class="card-content">
@@ -247,12 +244,10 @@
 													<th>작성일</th>
 												</tr>
 											</thead>
-											<tbody id="machineLeasePayResult">
+											<tbody id="machineUsePayResult">
 												<th:block th:each="mu : ${machineUsePayResult}">
 													<tr>
-														<td>
-															<input  th:value="${mu.machineUsePayPlan.farmRetainMachineCode}" class="form-control"/>
-														</td>
+															<td th:text="${mu.machineUsePayPlan.farmRetainMachineCode}"></td>
 														<td>
 															<input  th:value="${mu.machineUsePayPlan.regMemberId}" class="form-control"/>
 														</td>
@@ -267,6 +262,7 @@
 									</div>
 								</div>
 							</div>
+							
 							<div class="box-content card white">
 								<div class="box-title">농자재매입 지출계획</div>
 								<div class="card-content">
@@ -427,7 +423,7 @@
 													<th>지출일자</th>
 												</tr>
 											</thead>
-											<tbody id="taxPayResult">
+											<tbody id="etcPayResult">
 												<th:block th:each="ep : ${etcpayResult}">
 													<tr>
 														<td th:text="${ep.etcPayPlan.clientCode}"></td>
@@ -446,75 +442,8 @@
 									</div>
 								</div>
 							</div>
-							
-							<div class="box-content card white">
-							<div class="box-title">농자재사용 지출계획</div>
-							<div class="card-content">
-								<div class="table-responsive">
-									<table class="table table-hover" style="width:100%">
-										<thead>
-											<tr>
-												<th class="hidden">농자재소모현황코드</th>
-												<th>카테고리</th>
-												<th>품목명</th>
-												<th>사용수량</th>
-												<th>수량단위</th>
-												<th>사용용량</th>
-												<th>용량단위</th>
-												<th>사용량금액환산</th>
-											</tr>
-										</thead>
-										<tbody>
-											<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
-												<tr>
-													<td th:text="${1}" class="hidden"></td>
-													<td th:text="${2}"></td>
-													<td th:text="${3}"></td>
-													<td th:text="${4}"></td>
-													<td th:text="${5}"></td>
-													<td th:text="${6}"></td>
-													<td th:text="${7}"></td>
-													<td th:text="${8}"></td>
-												</tr>
-											</th:block>
-										</tbody>
-									</table>
-								</div>
-							</div>
-							
-							
-							<div class="box-title">생산물 수확계획</div>
-							<div class="card-content">
-								<div class="table-responsive">
-									<table class="table table-hover" style="width:100%">
-										<thead>
-											<tr>
-												<th class="hidden">생산물수확계획코드</th>
-												<th>카테고리</th>
-												<th>품목명</th>
-												<th>수확수량</th>
-												<th>수확용량</th>
-												<th>추가메모</th>
-											</tr>
-										</thead>
-										<tbody>
-											<th:block th:if="${#lists.size(farmStockItemList) > 0}" th:each="fs : ${farmStockItemList}">
-												<tr>
-													<td th:text="${1}" class="hidden"></td>
-													<td th:text="${2}"></td>
-													<td th:text="${3}"></td>
-													<td th:text="${4}"></td>
-													<td th:text="${5}"></td>
-													<td th:text="${6}"></td>
-												</tr>
-											</th:block>
-										</tbody>
-									</table>
-								</div>
-							</div>
-							
+								<button id="resultSubmitBtn" class="btn btn-danger form-control">결과 제출</button>
 						</div>
-					      </div>
 					      <div role="tabpanel" class="tab-pane fade " id="tab2" aria-labelledby="tab2-tab">
 								asd
 					      </div>
@@ -526,7 +455,7 @@
 					</div>
 				</div>	
 			</div>
-		</div>
+			</div>
 	
 	</th:block>	
 	
@@ -549,7 +478,7 @@
 		<script src="/assets/plugin/air-datepicker/js/i18n/datepicker.kr.js"></script>
 		<script th:src="@{/assets/plugin/daterangepicker/daterangepicker.js}"></script>
 			
-			
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>	
 		<script th:src="@{/assets/plugin/touchspin/jquery.bootstrap-touchspin.min.js}"></script>
 	</th:block>
 	
@@ -648,11 +577,13 @@
 			}).data('datepicker');
 			
 	
-	 	$('.btn').click(function(){
+	 	$('.btn-xs').click(function(){
+	 		var tableId = $(this).parent().find('tbody').attr('id')
 	 		if($(this).text() == '결과 작성 마감'){
 		 		$(this).parent().find('input').attr('readonly','readonly');
 		 		$(this).text('취소').removeClass('btn-success').addClass('btn-danger');
-		 		
+		 		console.log(tableId);
+		 		console.log($(this).parent().find('input').eq(0).val());
 	 		}
 	 		else{
 	 			$(this).parent().find('input').removeAttr('readonly');
@@ -671,6 +602,40 @@
 	 		$(this).parent().find('.input-group-btn-vertical').remove();
 	 	 })
 		
+	 	 $('#resultSubmitBtn').click(function(){
+	 		Swal.fire({
+	 			  title: '결과를 저장하시겠습니까?',
+	 			  showCancelButton: true,
+	 			  confirmButtonText: '저장하기',
+	 			  cancelButtonText: '취소',
+	 			}).then((result) => {
+	 			  /* Read more about isConfirmed, isDenied below */
+	 			  if (result.isConfirmed) {
+	 			    Swal.fire('Saved!', '', 'success').then(() =>{
+	 			    	location.href="/result"
+	 			    })
+	 			  } else if (result.isDenied) {
+	 			    Swal.fire('Changes are not saved', '', 'info')
+	 			  }
+	 			})
+	 	 })
+	 	 $('.mdi-logout').click(function(){
+	 		Swal.fire({
+	 			  title: '로그아웃 하시겠습니까?',
+	 			  showCancelButton: true,
+	 			  confirmButtonText: '로그아웃',
+	 			  cancelButtonText: '취소',
+	 			}).then((result) => {
+	 			  /* Read more about isConfirmed, isDenied below */
+	 			  if (result.isConfirmed) {
+	 			    Swal.fire('로그아웃 성공!', '', 'success').then(() =>{
+	 			    	location.href="/member/logout"
+	 			    })
+	 			  } else if (result.isDenied) {
+	 			    Swal.fire('Changes are not saved', '', 'info')
+	 			  }
+	 			})
+	 	 })
 	 </script>
 	
 	
