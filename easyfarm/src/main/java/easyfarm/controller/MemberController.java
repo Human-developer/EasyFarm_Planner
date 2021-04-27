@@ -299,8 +299,36 @@ public class MemberController {
 	}
 	//게시판 삭제
 	@GetMapping("/member/removeFreeBoard")
-	public String removeFreeBoard(@RequestParam(value = "boardNum",required = false)int boardNum) {
-		if(boardNum != 0) {
+	public String removeFreeBoard(@RequestParam(value = "boardNum",required = false)int boardNum,HttpSession session) {
+		System.out.println(boardNum);
+		
+		
+		if(boardNum > 0) {
+			String releasePath = null;
+
+			File file = new File("");
+			if(fileUploadPath.indexOf("WEB-INF") > -1) {			
+				//배포시점 파일경로
+				releasePath = session.getServletContext().getRealPath("/");
+				System.out.println(releasePath);
+			}else {			
+				File rootPath = file.getAbsoluteFile();
+				releasePath = rootPath.getAbsolutePath();
+			}
+			FreeBoard removeboard = freeBoardService.getBoard(boardNum); // 기존 파일 삭제를 위한 추출
+			
+			File removeFile = new File(releasePath + fileUploadPath + removeboard.getBoardFile()); //기존파일 경로설정 
+			
+			if(removeFile.exists()) {
+				removeFile.delete(); //기존 파일 삭제
+			}
+			// 댓글 전체조회
+			List<FreeBoard> commentList = freeBoardService.getCommentList(boardNum);
+			// 댓글삭제
+			for(FreeBoard coments : commentList) {
+				freeBoardService.removeComment(coments.getCommentsNum());		
+			}
+			//테이블 삭제
 			freeBoardService.removeFreeBoard(boardNum);
 		}
 		return "redirect:/member/getFreeBoard";
@@ -389,7 +417,7 @@ public class MemberController {
 					    member.getMemberStatus() != "정지" &&	 !"정지".equals(member.getMemberStatus().trim()) &&
 					    member.getMemberStatus() != "휴면" &&	 !"휴면".equals(member.getMemberStatus().trim()) ) {
 						 if(session.getAttribute("SID") == null) {
-							// memberService.updateLogin(memberId);							
+							memberService.updateLogin(memberId);							
 						 }
 					
 						 // 아이디
