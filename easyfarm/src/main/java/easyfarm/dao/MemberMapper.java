@@ -12,7 +12,7 @@ import easyfarm.domain.Report;
 @Mapper
 public interface MemberMapper {
 	
-	// 로그인 
+	// 개인회원조회&로그인아이디 검사
 	public Member getMemberInfoById(String memberId);
 		
 	// 로그인 기록

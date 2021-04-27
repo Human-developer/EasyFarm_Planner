@@ -102,7 +102,7 @@
 										<a th:if="${session.SID != null}" href="#" class="dropdown-toggle glyphicon glyphicon-option-vertical " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></a>
 										<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
 											<li><a th:if="${session.SID != c.memberId }" th:href="@{/member/addReport(memberId=${c.memberId})}">신고</a></li>
-											<li><a th:if="${session.SID == c.memberId or session.SID == b.boardId or '관리자' == session.SLEVEL}" class="removeComment" th:data-val="${c.commentsNum}">삭제</a></li>
+											<li><a th:if="${session.SID == c.memberId or session.SID == b.boardId or '관리자' == session.SLEVEL}" th:href="@{#}" class="removeComment" th:data-val="${c.commentsNum}">삭제</a></li>
 										</ul> 
 									</div>
 									
